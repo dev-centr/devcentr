@@ -20,6 +20,14 @@ While GCC is the standard on Linux, using it on Windows often leads to a convolu
 * **Complexity & Confusion**: MSYS2 provides multiple "environments" (UCRT64, MINGW64, CLANG64, MSYS). This often confuses developers who find themselves accidentally linking against the POSIX-compatibility layer (`msys-2.0.dll`) instead of creating truly native Windows binaries.
 * **Path Pollution**: MSYS2 environments often rely on complex shell configurations and path management that can conflict with other Windows-native tools.
 
+== Linker Considerations
+
+The compiler is only half the story; the linker determines how your binary interacts with the system:
+
+* **MSVC Linker (`link.exe`)**: When using `clang-cl` (Clang's MSVC-compatible driver), you typically use the Microsoft linker. This provides the best compatibility with Windows SDKs and proprietary libraries but requires the **Visual Studio Build Tools**.
+* **LLVM Linker (`lld-link`)**: LLVM's own linker is much faster than `link.exe` and is highly compatible with the MSVC ABI. It is included in the `LLVM.LLVM` package as `lld`.
+* **The MinGW `ld` Trap**: Some build systems (like those ported from Linux) may still insist on using the `ld` linker from MinGW. If you find yourself needing `ld`, you are often forced back into the MSYS2 ecosystem, which reintroduces the compatibility and complexity issues mentioned above. We recommend using `lld` as a modern, high-performance alternative whenever possible.
+
 == Recommended Toolchain
 
 We recommend using the official LLVM distribution for Windows. It provides a clean, native experience without the overhead of a POSIX-emulation environment.
