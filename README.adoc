@@ -1,9 +1,57 @@
-= Dev Center App
+= DevCentr DOS (Development Orchestration Suite)
 
-Dev Center is an app to manage, model, and inspect software development projects on Windows, macOS, and Linux+GNU.
+**TL;DR:** DevCentr is an app to manage software development on Windows, macOS, and Linux+GNU.
 
-App is located in `/app`.
+DevCentr is a **Development Orchestration Suite (DOS)**—a platform that sits a layer above the code to manage the complexity of the modern developer's world. By treating development as an integrated ecosystem rather than just a series of text files, DevCentr provides an integrated workspace and infrastructure environment designed for the future of engineering.
 
-Docs are located in '/docs/modules/'. This app uses Antora for its docs site.
+== 🛰️ The DOS Vision
 
-Site: <https://devcntr.app> — Docs: <https://devcntr.app/docs>
+While traditional IDEs focus on the editor, DevCentr focuses on the **Orchestration** of the entire lifecycle. As a DOS, it is designed for:
+
+*   **Ecosystem Management:** Author and version your entire environment—shells, toolchains, and infrastructure—as first-class citizens.
+*   **Visual DevEx:** A "Live Blueprint" approach that visually models project architecture, moving beyond simple file trees into system design.
+*   **AI Vibe-Coding Synergy:** A hub that provides the deep contextual metadata necessary for human-in-the-loop AI coding to be truly effective.
+
+DevCentr is an open, extension-based platform for pure human development and emergent AI-assisted workflows.
+
+
+== 🚀 Capabilities
+
+DevCentr's environment management can install, configure, manage, and visually model environments including:
+* System shell environments
+* Global system tools
+* Developer toolchains (Node.js, Python, D, etc.)
+* Virtual environments (Docker, venv, pnpm)
+
+=== 🛠️ Core Functions
+* **Installation:** Automated setup of developer tools.
+* **Configuration:** Reproducible configuration management.
+* **Management:** Lifecycle control of multiple project environments.
+* **Visualization:** Visual modeling of local project architectures.
+
+== 📂 Repository & VCS Management
+
+Managed, browse, and sync local and remote codebases while connecting to various versioning systems and hosting providers:
+
+[cols="1,2", options="header"]
+|===
+| Version Control System | Common Hosting Providers
+| **Git** | GitHub, GitLab, Bitbucket, SourceForge, Gitea, Codeberg, Self-hosted
+| **Mercurial** | Heptapod, SourceForge, Bitbucket (Legacy), Self-hosted
+| **Subversion (SVN)** | Apache (Self-hosted), SourceForge, Assembla
+| **Bazaar** | Launchpad
+| **Perforce** | Helix Core, Assembla
+| **TFS / Azure DevOps** | Microsoft Azure, Self-hosted
+| **CVS** | SourceForge (Legacy)
+| **ClearCase** | IBM (Enterprise)
+|===
+
+DevCentr maintains a community-driven list of common self-hosted repository providers at link:https://github.com/dev-centr/repository-providers[repository-providers].
+
+== 🏗️ Structure
+* **App:** Located in `/app`
+* **Docs:** Centralized in `/docs` (built with Antora)
+* **Supporting Ecosystem:** Includes a suite of ancillary builders, optimized libraries, and infrastructure templates.
+* **Extension Architecture:** Copy-left source-available for community improvement.
+
+Site: link:https://devcentr.org[devcentr.org] — Docs: link:https://docs.devcentr.org[docs.devcentr.org]
