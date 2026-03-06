@@ -11,39 +11,43 @@ For complex topics that warrant deeper coverage, see the related documents linke
 
 == Line Endings Configuration
 
-Git warns about line ending inconsistencies when files in your working directory use different line endings than what Git expects. Windows typically uses **CRLF** (Carriage Return, Line Feed) line endings, while Linux and macOS use **LF** (Line Feed).
+Git warns about line ending inconsistencies when files in your working directory use different line endings than what Git expects. Windows typically uses **CRLF** (Carriage Return, Line Feed) line endings, while Linux and macOS use **LF** (Line Feed). If Git's line-ending behavior doesn't match your editor and repo (e.g. `core.eol` unset on Windows), you can get **false diffs** — every line showing as changed due only to CRLF vs LF, with no real content change.
 
 Git's `core.autocrlf` setting controls automatic conversion:
 
 * `true` (Windows default): Converts LF to CRLF on checkout, CRLF to LF on commit
 * `input`: Converts CRLF to LF on commit only (no conversion on checkout)
-* `false`: No conversion
+* `false`: No conversion; use with `core.eol` to define what Git expects in the working tree
 
-=== Resolution Options
+The `core.eol` setting (values: `lf`, `crlf`, or `native`) tells Git which line ending to use in the working tree when `core.autocrlf` is `false`. Setting it explicitly avoids ambiguity and false diffs.
 
-==== Option 1: Configure Git for Consistency (Recommended)
+=== When and Why Use `core.autocrlf true`
 
-Set Git to handle line endings for consistency across operating systems. This is best configured globally or per-repository.
+Use `core.autocrlf true` only when you need **CRLF in your working directory** for tooling that expects it (e.g. some legacy Windows-only scripts or editors). Git then converts to LF on commit so the repository stays LF. Downsides: conversion on every checkout/commit can introduce false diffs or merge noise if other tools (editors, formatters) also touch line endings, and it couples your workflow to Git's conversion instead of keeping one canonical ending everywhere.
 
-===== Step 1: Set `core.autocrlf` to `input`
+=== Recommended: `autocrlf false` and `core.eol lf`
 
-This tells Git to convert CRLF to LF on commit, but _not_ to convert LF to CRLF on checkout.
+For most development (especially cross-platform repos and modern editors), prefer **no conversion** and a single canonical ending: **LF**. That keeps the working tree and the repository in sync and avoids false diffs from CRLF/LF mismatches.
+
+==== Step 1: Set `core.autocrlf` to `false` and `core.eol` to `lf`
 
 .Global setting (affects all repositories):
 [source,bash]
 ----
-git config --global core.autocrlf input
+git config --global core.autocrlf false
+git config --global core.eol lf
 ----
 
 .Repository-specific setting:
 [source,bash]
 ----
-git config core.autocrlf input
+git config core.autocrlf false
+git config core.eol lf
 ----
 
-===== Step 2: Normalize the Repository
+==== Step 2: Normalize the Repository (if changing from a previous setting)
 
-After changing the setting, normalize the repository by running a reset. This ensures all files in the index use the standard LF ending.
+After changing the setting, normalize the repository so the index and working tree use LF:
 
 [source,bash]
 ----
@@ -51,29 +55,32 @@ git rm --cached -r .
 git reset --hard HEAD
 ----
 
-This removes files from the staging area (`git rm --cached -r .`) and then restores the working directory to the last committed state (`git reset --hard HEAD`), applying the new `core.autocrlf` rule during the checkout.
+This removes files from the staging area (`git rm --cached -r .`) and then restores the working directory to the last committed state (`git reset --hard HEAD`), applying the new line-ending behavior on checkout.
 
-==== Option 2: Configure VS Code to Use LF
+==== Step 3: Use LF in Your Editor
 
-If you want your files to _always_ use LF in your working directory, regardless of Git's setting, configure VS Code.
-
-. Open **VS Code Settings** (File > Preferences > Settings or `Ctrl+,`)
-. Search for **"files: eol"** or **"eol"**
-. Set the **`Files: Eol`** setting to **`\n`** (for LF)
+Configure your editor to use LF so new and saved files stay LF and match Git. In VS Code: set **`Files: Eol`** to **`\n`** (File > Preferences > Settings, search for "files: eol"). Other editors have similar options.
 
 [NOTE]
 ====
-This only affects new files or files saved in VS Code. For existing files, you may need to manually change their line endings in VS Code (check the status bar on the bottom right of the editor for line ending type, e.g., "CRLF" or "LF", and click it to change).
+Editor Eol only affects new files or files when you save. For existing files, change line endings in the editor (e.g. in VS Code use the status bar "CRLF"/"LF" control) if needed.
 ====
 
-==== Option 3: Suppress the Warning (Not Recommended)
+=== Alternative: `core.autocrlf input`
 
-If you understand the issue and accept the automatic conversion, you can suppress the warning by setting `core.safecrlf` to `false`.
+If you want Git to normalize line endings only on commit (CRLF→LF) and not on checkout, set `core.autocrlf` to `input`. Your working tree can then stay CRLF on Windows if you prefer; the repository will store LF. Use this if you explicitly want checkout-to-disk as "native" but still want commits normalized to LF.
 
-[WARNING]
-====
-This is **not recommended** as it masks a potential source of inconsistent commits.
-====
+.Global:
+[source,bash]
+----
+git config --global core.autocrlf input
+----
+
+After changing, run the same normalize steps (Step 2 above) if the repo had mixed endings.
+
+=== Suppress the Warning (Not Recommended)
+
+If you understand the issue and accept the automatic conversion, you can suppress the warning by setting `core.safecrlf` to `false`. This masks inconsistent commits and is not recommended.
 
 [source,bash]
 ----
@@ -88,15 +95,19 @@ git config --global core.safecrlf false
 
 | `core.autocrlf`
 | `true`
-| Convert LF→CRLF on checkout, CRLF→LF on commit (Windows default)
+| Convert LF→CRLF on checkout, CRLF→LF on commit (Windows default). Use only when tooling requires CRLF on disk.
 
 | `core.autocrlf`
 | `input`
-| Convert CRLF→LF on commit only (recommended for cross-platform)
+| Convert CRLF→LF on commit only; no conversion on checkout.
 
 | `core.autocrlf`
 | `false`
-| No automatic conversion
+| No conversion. Pair with `core.eol lf` (recommended) to avoid false diffs and keep working tree LF.
+
+| `core.eol`
+| `lf`
+| Working tree uses LF; use with `core.autocrlf false` for a single canonical ending.
 
 | `core.safecrlf`
 | `false`
