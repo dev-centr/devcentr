@@ -1,0 +1,33 @@
+= dprint-vscode
+:navtitle: dprint-vscode
+
+Upstream: link:https://github.com/dprint/dprint-vscode[dprint/dprint-vscode].  
+Fork: link:https://github.com/dev-centr/dprint-vscode[dev-centr/dprint-vscode] (under `dev-centr/.forks/dprint-vscode`).
+
+== Issue and PR
+
+* **Issue #138:** link:https://github.com/dprint/dprint-vscode/issues/138[Extension does not register as formatter for jsonc (and json) language]
+* **PR #139:** link:https://github.com/dprint/dprint-vscode/pull/139[fix: register formatter for jsonc and json language IDs] (and subsequent commits)
+
+== Summary of changes (PR #139)
+
+=== Original fix
+
+* VS Code does not reliably associate the extension with the `jsonc` (and `json`) language when the formatter is registered only via glob patterns. The PR explicitly registers the document formatting provider for those language IDs so dprint appears in the default formatter list.
+
+=== Extended scope
+
+* **Register only for configured plugins:** Supported language IDs are derived from the plugins reported by `dprint editor-info` (using each plugin’s `fileExtensions` / `fileNames`). The extension registers formatters only for those languages (e.g. no jsonc unless the JSON plugin is in config).
+* **One-click “Add to config”:** When suggesting a plugin (e.g. “dprint could format this file with the JSON plugin”), the user can choose “Add to config” to find or create a dprint config and either uncomment a matching plugin line or append the plugin URL, then open the file.
+* **Offer to create dprint.jsonc:** If dprint is set as default formatter (workspace or user) but no dprint config exists, the extension offers to create a starter `dprint.jsonc` with commented common plugin lines and opens it.
+* **Uncomment on install:** When adding a plugin via one-click, the extension first looks for a commented line in the config that matches that plugin (by URL or slug); if found, it uncomments instead of appending a duplicate.
+
+=== Later bug corrections (same PR)
+
+* **No-config error:** When the user chooses “Format with… → dprint” and there is no dprint config, the extension now shows an error message (“No configuration file found. Run 'dprint init' or add a dprint.jsonc…”) instead of failing silently, and still offers to create a starter config when dprint is set as formatter.
+* **Multiple “Dprint” entries:** Re-initialization on config change was registering a new formatter without disposing the previous one. The extension now keeps a single formatter subscription, disposes it before re-registering, and disposes it on backend teardown.
+* **.code-workspace support:** VS Code uses the language id `code-workspace` for workspace files. The extension registers for it when the JSON plugin is present. If the JSON plugin does not match that extension by default, the extension suggests adding `"**/*.code-workspace"` to the `json.associations` array in the dprint config, with a link to the config docs.
+
+== DevCentr usage
+
+* The link:https://github.com/dev-centr/devcentr[devcentr] workspace sets dprint as default formatter for `[jsonc]` and other languages and uses a `dprint.jsonc` that includes the JSON plugin with `json.associations: ["**/*.code-workspace"]` so workspace files are formatted.

@@ -3,4 +3,5 @@
 * xref:knowledge-base:index.adoc[Knowledge Base]
 * xref:specifications:index.adoc[Specifications]
 * xref:publishing:index.adoc[Software Publishing]
+* xref:upstream-contributions:index.adoc[Upstream Contributions]
 

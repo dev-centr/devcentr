@@ -1,0 +1,22 @@
+= Upstream Contributions
+:navtitle: Upstream Contributions
+
+This section tracks bug reports, feature requests, and pull requests submitted from DevCentr-maintained forks to upstream (third-party) repositories. It serves as a changelog of upstream contributions and a reference when testing or documenting tooling behavior.
+
+== Scope
+
+* **Fork location:** Repos under the dev-centr organization (e.g. `dev-centr/.forks/dprint-vscode`).
+* **Upstream:** The original project (e.g. `dprint/dprint-vscode`).
+* **Contents:** Links to issues and PRs, plus short notes on fixes and features so we can align docs and defaults (e.g. workspace settings, dprint config) with contributed behavior.
+
+== Repositories
+
+* xref:dprint-vscode.adoc[dprint-vscode] – VS Code extension for the dprint formatter.
+
+== Adding entries
+
+When you open an issue or PR from a dev-centr fork:
+
+* Add a subsection or page under this module for the upstream repo if it does not exist.
+* Record the issue and PR links and a brief summary of the fix or feature.
+* Update any DevCentr docs (e.g. workspace template, knowledge base) that depend on the new behavior.
