@@ -1,3 +1,5 @@
+link:https://devcentr.org[image:https://img.shields.io/badge/site-devcentr.org-2ea043?style=flat[devcentr.org]] link:https://docs.devcentr.org[image:https://img.shields.io/badge/docs-docs.devcentr.org-0066cc?style=flat[docs]]
+
 = DevCentr DOS (Development Orchestration Suite)
 
 **TL;DR:** DevCentr is an app to manage software development on Windows, macOS, and Linux+GNU.
