@@ -1,0 +1,26 @@
+= Vercel Deployment and Monorepo Build Asymmetry Configuration
+:navtitle: Vercel Deployment Configuration
+
+== Overview
+
+This update addresses the deployment consistency issues encountered when deploying DevCentr monorepos (specifically `packagehub`) to Vercel. It introduces formal documentation for the "Asymmetric Build Strategy" and technical fixes for PNPM 10 compatibility and Next.js static export conflicts.
+
+== Changes
+
+=== Documentation
+
+* Created xref:publishing:vercel-deployment.adoc[Vercel Monorepo Deployment] guide in the Publishing module.
+* Documented the rationale for the asymmetry between local root scripts (`pnpm build:web`) and Vercel's folder-scoped scripts (`pnpm build`).
+* Provided instructions for configuring Vercel's "Root Directory" to ensure correct framework detection and build isolation.
+
+=== Technical Fixes (packagehub)
+
+* **PNPM 10 Migration**: Standardized the workspace to PNPM 10.0.0 to resolve lockfile version warnings and potential dependency resolution errors on Vercel.
+* **Security & Build Pipeline**: Added `onlyBuiltDependencies` to the root `package.json` to explicitly allow `esbuild`, `@parcel/watcher`, and `sharp` to run their install scripts in strict pnpm 10 environments.
+* **Next.js Export Fix**: Modified `apps/docs/next.config.mjs` to dynamically disable `output: 'export'` when deploying to Vercel. This resolves a critical build failure where static exports were conflicting with API search routes and URL rewrites.
+* **Node Environment**: Standardized Node engine requirements to `>=22` across all workspace projects to align with Vercel's default environments.
+
+== Verification
+
+* Verified that `pnpm build` executes correctly when scoped to sub-directories.
+* Confirmed that Vercel-specific environment variables correctly toggle the Next.js export mode.

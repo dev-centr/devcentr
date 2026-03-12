@@ -1,0 +1,58 @@
+= Monorepo Deployment to Vercel
+:navtitle: Vercel Deployment
+
+This guide explains how to deploy individual applications from a DevCentr monorepo to Vercel, specifically addressing the **Asymmetric Build Strategy** required for workspace-aware projects.
+
+== The "Asymmetry" Problem
+
+In a DevCentr monorepo, you will encounter a deliberate inconsistency between how you build projects locally versus how Vercel builds them in the cloud.
+
+[cols="1,1"]
+|===
+| **Local Machine (Root)** | **Vercel (Cloud)**
+
+| You run workspace-aware scripts from the root.
+| Vercel identifies a "Root Directory" and builds *inside* it.
+
+| Example: `pnpm build:web`
+| Example: `pnpm build` (scoped to `apps/web`)
+|===
+
+=== Why this is necessary
+
+While it feels inconsistent, this asymmetry is a requirement of Vercel's optimized build pipeline:
+
+1. **Framework Detection**: Vercel needs to "see" the `package.json` of the specific app (e.g., Next.js or SolidStart) to apply the correct build optimizations and edge function configurations.
+2. **Build Isolation**: Deploying multiple apps from one repo requires Vercel to treat each one as a separate project with its own "Root Directory" reference point.
+3. **Caching efficiency**: Vercel caches the `node_modules` and build artifacts relative to the designated Root Directory.
+
+== Configuration Guide
+
+When registering your monorepo apps on Vercel, follow these steps to manage the asymmetry:
+
+=== 1. Root Directory Selection
+
+Do not leave the Root Directory at the repository root.
+
+* **Setting**: In Vercel Project Settings, set the **Root Directory** to the specific app folder (e.g., `apps/web` or `apps/docs`).
+* **Effect**: Vercel will now execute all commands *as if* it had `cd`-ed into that folder first, but it will still be able to reference the `pnpm-lock.yaml` and `node_modules` in the actual repo root.
+
+=== 2. Build Commands
+
+Since Vercel is scoped to the sub-folder, do not use the root convenience scripts.
+
+* **Local Command**: `pnpm build:web` (Convenient shortcut for you).
+* **Vercel Build Command**: `pnpm build` (The script defined inside `apps/web/package.json`).
+
+=== 3. Monorepo Settings
+
+Ensure Vercel recognizes the monorepo structure:
+
+* Ensure **"Include Source Files outside of the Root Directory in the Build Step"** is enabled (usually default).
+* This allows the sub-app to access shared packages or root configuration files.
+
+== Summary of Asymmetry
+
+Always remember: **Local scripts are for humans (root convenience); Vercel scripts are for machines (folder scoping).**
+
+If a build fails on Vercel but works locally, verify that your **Root Directory** setting matches the app you are trying to deploy.
