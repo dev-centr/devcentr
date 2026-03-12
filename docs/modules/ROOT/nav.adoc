@@ -3,6 +3,7 @@
 * xref:project-vision.adoc[Project Vision]
 * xref:todo-roadmap.adoc[Todo & Roadmap]
 * xref:activity-log.adoc[Activity Log]
+* xref:changelog.adoc[Changelog]
 * xref:knowledge-base:index.adoc[Knowledge Base]
 * xref:specifications:index.adoc[Specifications]
 * xref:secrets-manager:index.adoc[Secrets Manager]

@@ -1,0 +1,7 @@
+= 2026-01-26 – Diátaxis and docs refactor
+
+* Reorganized the documentation to follow the Diátaxis framework (tutorials, how-to guides, reference, explanation).
+* Added Biome and related tooling information into the docs structure.
+* Representative commits:
+** `4ba41a5` – refactor: reorganize docs to Diataxis framework and add Biome.
+

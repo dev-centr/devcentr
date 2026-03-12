@@ -16,6 +16,97 @@ While the app uses the APIs for different providers, the following tools are use
 * Repository renaming (local and remote synchronization)
 * Multi-provider support (GitHub, GitLab, Bitbucket, etc.)
 
+== Local and remote structure alignment
+
+The Git Repository Manager is aware of both:
+
+* The local workspace layout under `$ROOT` (see xref:knowledge-base:reference/workspace-organization.adoc[Workspace Organization]).
+* The remote structure for connected providers (owners, orgs, and repositories as reported by provider APIs).
+
+When a user connects a provider account (GitHub, GitLab, etc), the manager:
+
+* Discovers remote organizations and repositories for that account.
+* Compares remote repositories with local directories under `$ROOT/<host>/<owner>/<repo>`, including `.forks` and `.clones`.
+* Identifies:
+** Repositories that exist remotely but have no local clone.
+** Local repositories whose owner or host does not match the provider's current structure.
+** Local repositories that do not follow the workspace schema.
+
+This comparison feeds:
+
+* A remote browser view in the repository browser's right-hand panel.
+* The automated reorganization module described below.
+
+== Automated reorganization module
+
+The reorganization module proposes and applies moves to bring local repositories into alignment with the standard workspace schema and the remote provider structure.
+
+=== Plan generation
+
+Given the current local and remote state, the module computes a *reorganization plan*:
+
+* For each local repository, it determines the correct target path under `$ROOT` based on:
+** The remote owner and host (where known).
+** The fork/clone rules in the workspace organization schema.
+* It then produces a list of move operations with:
+** `from` path (current local directory).
+** `to` path (desired directory under `$ROOT`).
+** Repository identity (host, owner, name).
+
+The user can review this plan in a tree preview that shows the proposed new hierarchy for `$ROOT`, alongside a summary of:
+
+* Number of repositories to move.
+* Number of owners affected.
+* Any repositories that cannot be moved automatically (for example, due to ambiguous remote state).
+
+=== Atomic moves and file-handle detection
+
+Repository moves must be as atomic as the underlying filesystem allows. To safely move a repository directory:
+
+* The module first attempts a direct directory move (rename) operation.
+* If the move fails due to open file handles (for example, editors, Git GUIs, or language servers holding files open), the module:
+** Consults the xref:components/repository-tools-registry.adoc[Repository Tools Registry] to identify known tools attached to the repository.
+** Performs an additional scan for processes with open handles under the repository root (using the same techniques as the tools registry).
+** Presents the user with a list of processes using the repository, including application names where available.
+
+The user can then choose to:
+
+* Kill the listed processes and retry the move.
+* Skip moving this repository and continue with the rest of the plan.
+* Abort the reorganization entirely.
+
+Where platform capabilities differ:
+
+* Windows may rely on handle-enumeration APIs or helper tools to identify processes locking files.
+* Unix-like systems may use `lsof`, `/proc`, or equivalent.
+
+If full handle inspection is not possible, the module falls back to best-effort moves and clearly reports any failures.
+
+== Repository transfers across owners and providers
+
+The Git Repository Manager coordinates drag-and-drop transfers initiated from the repository browser:
+
+* *Same provider, different owner:* For example, moving a GitHub repository from one organization to another via API/CLI.
+* *Cross-provider:* For example, GitHub to GitLab (typically requiring manual steps).
+
+When a user drags a repository from one owner or provider to another in the repository browser:
+
+* A transfer dialog opens showing:
+** The source and target repository locations.
+** The CLI/API calls DevCentr will attempt (e.g. `gh api` for GitHub, `glab api` for GitLab).
+** Whether the transfer is fully automatable or requires manual completion.
+* On confirmation, the manager:
+** Attempts the automated transfer via provider APIs/CLIs.
+** If successful, updates the local remote configuration and optionally adds a local move to the reorganization plan so the directory layout matches the new owner.
+** If the automated operation fails or is unsupported, presents:
+*** A clear error message.
+*** A link to the provider's web UI for manual transfer (for example, a settings page for repository transfer).
+
+Transfers always respect:
+
+* The global remote naming conventions described in xref:knowledge-base:reference/git-management.adoc[Git Management].
+* The workspace organization schema for final on-disk layout.
+
 == Related
 
 * xref:components/repository-provider-registry.adoc[Repository Provider Registry] - Provider abstraction layer

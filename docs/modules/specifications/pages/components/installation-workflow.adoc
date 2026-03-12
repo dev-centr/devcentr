@@ -1,0 +1,104 @@
+= Installation Workflow
+
+The installation workflow is the GUI path for adding and bootstrapping tools, runtimes, frameworks, and infrastructure as code. It lets users discover options, try things out, and get a consistent setup without memorizing CLI commands.
+
+== Purpose
+
+* **Discover:** Show what can be installed (languages, frameworks, IaC tools) in a given context (personal vs org, owner vs repo).
+* **Install and bootstrap:** Run install scripts or wizards so the user gets a working setup (e.g. OpenTofu + initial config, or a framework in a repo).
+* **Context rules:** Personal use and org use are different. IaC is usually **repo-level** for personal repos; orgs may have an org-level infra repo and per-repo IaC with governance.
+
+== Context: personal vs org, owner vs repo
+
+The repository browser exposes **host**, **owner** (user or organization), and **repository**. The workflow adapts to whether the owner is a **personal account** or an **organization**.
+
+=== Personal account (user)
+
+When the user is browsing their **own account** (personal repos):
+
+* **At a repo:** Offer **repo-level IaC** as the main option when they choose “Add Infrastructure as Code.” This is the typical case: one repo, one project, infra in that repo (e.g. `infra/` with OpenTofu). Recommend OpenTofu, offer to bootstrap a minimal layout and install the CLI if needed. No “org-level infra repo” or “orphaned” / “register with central” messaging unless the user has explicitly set up a personal infra repo and wants to link projects to it.
+* **At the user (owner) level:** Optionally offer “Create or manage a personal infrastructure repo” for users who want one place for shared personal infra across many projects. This is an advanced option; the default guidance is repo-level IaC per project.
+
+Suggestions and explanations in the flow should match **personal use**: simple, repo-centric, no org governance or registration patterns unless the user opts in.
+
+=== Organization
+
+When the user is browsing an **organization**:
+
+* **At the org (owner) level:** Offer **org-level Infrastructure as Code** setup: create or link an `infrastructure` (or similar) repo for the org, recommend OpenTofu, bootstrap initial layout. This is the only place where org-level IaC setup is offered.
+* **At a repo:** Offer **project technologies** (languages, frameworks) and **per-project IaC**. Choosing per-project IaC enters the decision flow below (org-level vs per-project, orphaned IaC, registration).
+
+Project technologies (languages, runtimes, frameworks) are always installed **only into a repo**, whether the owner is personal or an org.
+
+== IaC as a sub-option
+
+IaC is one sub-option inside the broader installation workflow. The entry point might be “Install or add…” and then:
+
+* Add / manage **Infrastructure as Code**
+* Add / manage **project technologies** (languages, frameworks)
+
+Behavior depends on context:
+
+* **Personal + repo:** IaC flow is **repo-level** by default: add IaC to this repo, recommend OpenTofu, bootstrap. Docs button opens the IaC doc with **personal use** and **org use** sections so they can read more if needed.
+* **Org + owner:** IaC flow is **org-level** infra repo (create/link, OpenTofu, bootstrap).
+* **Org + repo:** IaC flow is **per-project** and must present the decision flow below (and orphaned/registration when relevant).
+
+During any IaC flow, a **Docs** button opens the DevCentr documentation section for Infrastructure as Code (the xref:knowledge-base:explanation/infrastructure/iac.adoc[Infrastructure as Code (IaC)] page). That page explains OpenTofu, **personal use (repo-level)** vs **organization use** (org-level, per-project, delegation patterns).
+
+== Decision flow: installing Infra into a repository
+
+When the user attempts to **install or add IaC definitions to a repository**, the app explains tradeoffs and adapts to personal vs org.
+
+=== When the repo is under a **personal** account
+
+* **Default:** Repo-level IaC is the norm. Explain that adding IaC to this repo keeps everything in one place (app + infra). Recommend **OpenTofu**, offer to bootstrap a minimal layout (e.g. `infra/main.tofu`, `variables.tofu`, `backend.tofu`) and install the OpenTofu CLI if missing.
+* **Optional:** If the user has a personal infra repo and wants to register this project with it, offer that as an advanced step; otherwise do not show “orphaned” or “register with central repo” messaging.
+
+=== When the repo is under an **organization**
+
+* **Explain the two main models:**
+.. **Org-level infra repo:** One central repo (e.g. `infrastructure`) for the org; app repos typically have no IaC or only thin wrappers. Best for consistency and governance.
+.. **Per-project IaC:** This repo gets its own IaC (e.g. `infra/` with OpenTofu). Best for team autonomy or isolated services.
+* **If the org already has an infrastructure repo:**
+.. Warn that adding IaC here may create **orphaned** IaC (infra outside the central model).
+.. Offer to **register** this project with the central repo instead (see Orphaned IaC and registration below), or to add a thin wrapper / registration file so the org can see and govern without moving code.
+* **If the user still wants to add IaC to this repo:**
+.. Recommend **OpenTofu** by default (open source, Terraform-compatible).
+.. Offer to bootstrap a minimal layout and optionally install the OpenTofu CLI if missing.
+.. Link to the Docs page for full patterns (registration, thin modules, remote state, policy as code).
+
+The flow should expose these patterns (registration via metadata, thin wrapper modules, remote state linking, policy as code) either in the UI or via the Docs button, so the user can choose an approach that fits their org.
+
+== Orphaned IaC detection and registration (org only)
+
+Orphaned IaC and registration assistance apply only when the repo’s **owner is an organization** and the org has (or is expected to have) a central infrastructure repo.
+
+When DevCentr detects that:
+
+* An **org-level infrastructure repo** exists (e.g. discovered under the same org or via a known naming convention), and
+* A **project repo** in that org contains its own IaC (e.g. an `infra/` directory with OpenTofu/Terraform files),
+
+it should **mark** that project IaC as potentially orphaned (e.g. in the Infra discovery view or repo browser) and **offer assistance** to register with the central repo.
+
+Registration assistance can follow the patterns described in the xref:knowledge-base:explanation/infrastructure/iac.adoc[Infrastructure as Code (IaC)] doc (organization use):
+
+* **Registration via metadata:** Add or edit a registration file in the central repo (e.g. `services/<project>.yaml`) with repo URL, environments, required modules, outputs, ownership. The central repo never holds the project’s actual `.tofu` files.
+* **Thin wrapper module:** Expose a small public module from this repo that the central repo can import; keep full IaC in the project.
+* **Remote state linking:** Central repo only references this project’s remote state outputs; no code move required.
+* **Policy as code:** Ensure this repo’s IaC is validated by org policies (OPA, Conftest, or CI checks); no need to move code.
+
+The UI should guide the user through one of these options (depending on what the org’s central repo supports) so they can keep IaC in the project while giving the org visibility and guardrails.
+
+For **personal repos**, do not treat IaC as “orphaned” or offer org-style registration unless the user has explicitly configured a personal infra repo and chosen to register projects with it.
+
+== Services vs language ecosystems
+
+* **Services** (e.g. OpenTofu, AWS, GitHub Actions, Cloud Run) are described in **service definition files** (e.g. `services/descriptions.sdl`). They are independent of any one language and are used for infra discovery, install offers, and docs links.
+* **Languages and frameworks** (e.g. Node.js, Next.js, Python, FastAPI) are grouped by **language ecosystem**. Each ecosystem has its own definition file (e.g. `languages/node.sdl`, `languages/python.sdl`) listing runtimes and frameworks that can be installed or bootstrapped in a repo.
+
+This split keeps file operations clear: service definitions stay in one place; framework and runtime definitions are split by ecosystem so that adding or editing a language does not touch unrelated services.
+
+== Related
+
+* xref:iac-discovery.adoc[IaC Discovery] — how IaC is discovered and mapped in repos.
+* xref:knowledge-base:explanation/infrastructure/iac.adoc[Infrastructure as Code (IaC)] — OpenTofu, **personal use (repo-level)** vs **organization use**, delegation patterns (Docs button target).

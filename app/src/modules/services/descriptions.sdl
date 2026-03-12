@@ -1,0 +1,38 @@
+services {
+    service {
+        id "opentofu"
+        name "OpenTofu"
+        shortDescription "Open-source Terraform-compatible IaC tool. Recommended default for infrastructure as code."
+        homepage "https://opentofu.org/"
+        docs "https://developer.opentofu.org/docs"
+        devcentrDoc "xref:knowledge-base:explanation/infrastructure/iac.adoc[]"
+    }
+
+    service {
+        id "aws"
+        name "Amazon Web Services"
+        shortDescription "General-purpose cloud platform offering compute, storage, networking, and managed services."
+        homepage "https://aws.amazon.com/"
+        docs "https://docs.aws.amazon.com/"
+        devcentrDoc "xref:knowledge-base:explanation/infrastructure/aws-overview.adoc[]"
+    }
+
+    service {
+        id "github-actions"
+        name "GitHub Actions"
+        shortDescription "CI/CD and automation platform tightly integrated with GitHub repositories."
+        homepage "https://github.com/features/actions"
+        docs "https://docs.github.com/actions"
+        devcentrDoc "xref:knowledge-base:reference/github-workflow-ui-hierarchy.adoc[]"
+    }
+
+    service {
+        id "cloud-run"
+        name "Google Cloud Run"
+        shortDescription "Fully managed container runtime for stateless HTTP services and background jobs."
+        homepage "https://cloud.google.com/run"
+        docs "https://cloud.google.com/run/docs"
+        devcentrDoc "xref:knowledge-base:explanation/infrastructure/index.adoc[]"
+    }
+}
+

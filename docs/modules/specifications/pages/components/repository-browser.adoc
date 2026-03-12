@@ -1,0 +1,126 @@
+= Repository Browser
+
+The repository browser (or workspace browser) is the UI that lets users navigate their local code hierarchy: hosts, owners (users or organizations), and repositories. It is the place where users choose a repo to open, or an org to manage (e.g. add infrastructure as code).
+
+The browser also acts as the launching point for repo-specific tools and external applications (text editors, Git GUIs, terminals, etc). It exposes a tools side-panel which tracks all tools currently attached to the selected repository, regardless of whether DevCentr launched them.
+
+== Model: hosts, owners, repos
+
+The browser reflects the workspace organization schema:
+
+* **Host:** The Git or version-control host (e.g. `github.com`, `gitlab.com`). One level under the code root.
+* **Owner:** The account that owns the repository. Can be a **user** (personal account) or an **organization**. Path segment under the host (e.g. `github.com/amdphreak`, `github.com/dev-centr`).
+* **Repository:** A single repo under an owner (e.g. `my-project`, `devcentr`).
+
+So **orgs and users are both modeled as “owners”** in the path: `$ROOT/<host>/<owner>/<repo>`. Whether an owner is an org or a user is not always visible from the path alone; it can be inferred from naming conventions or from the provider API when the app is connected (e.g. GitHub CLI `gh api user/memberships/orgs` lists orgs; the same path pattern holds for both).
+
+When browsing an **owner** node, the UI adapts to whether the owner is a **user** (personal) or an **organization**. For a personal account, the main IaC option is repo-level (add IaC to a repo); optionally the user can create a personal infra repo. For an org, the UI can offer org-level actions (e.g. set up an infrastructure repo for this org). When browsing a **repo** node, the UI offers repo-level actions (e.g. add project technologies or per-project IaC); for personal repos, repo-level IaC is the default suggestion. See xref:components/installation-workflow.adoc[Installation Workflow].
+
+== Relation to workspace schema
+
+The folder layout is defined in xref:knowledge-base:reference/workspace-organization.adoc[Workspace Organization]. The repository browser is the visual navigation over that layout (and optionally over remote discovery when connected to a provider). Clones, forks, and org membership rules in that doc determine where repos live and how they are grouped under owners and hosts.
+
+== UI layout and zones
+
+The repository browser follows a three-column layout:
+
+* *Left navigation:* Provider and owner filters, plus a hierarchical tree of hosts, owners, and repositories.
+* *Center list:* A tabular repository list for the currently selected provider and owner filters.
+* *Right tools panel:* A side-panel showing all tools attached to the currently selected repository.
+
+=== Provider and owner filter zones
+
+Above the repository list, two fast-selection zones allow quick switching in large workspaces:
+
+* *Provider zone:* A row of selectable providers (e.g. `github.com`, `gitlab.com`, `local`, `other`). Selecting a provider filters the tree and the repo list to that host.
+* *Owner zone:* A row of owners under the selected provider (user accounts and organizations). Selecting an owner filters the tree and repo list to that owner.
+
+These zones are optimized for fast scanning and selection (similar in spirit to Winamp's browser). They deliberately interrupt drag-and-drop workflows, which are limited to explicit transfer actions (see below).
+
+=== Search bar
+
+Directly above the repository list, a search bar filters hosts, owners, and repositories:
+
+* Matches against repository name, owner, host, and local path.
+* Filters within the current provider and owner filters (does not change the selected provider or owner).
+* Updates results in real-time as the user types.
+
+=== Repository tree
+
+The left-hand tree follows the `$ROOT/<host>/<owner>/<repo>` schema:
+
+* *Host nodes:* Root nodes for each discovered host under `$ROOT` (e.g. `github.com`, `gitlab.com`).
+* *Owner nodes:* Accounts under each host, based on local directories and (optionally) provider discovery.
+* *Repository nodes:* Leaf nodes for each repository directory under an owner.
+
+When a provider account is connected, the tree can optionally show remote-only owners or repositories that are not present on disk, surfaced via provider APIs. These nodes are marked visually as "remote only" and can be used to trigger cloning or local reorganization workflows.
+
+== Repository list and columns
+
+The central repository list shows repositories for the current provider and owner filters, with columns:
+
+* *Name:* Repository name.
+* *Path:* Local filesystem path under `$ROOT`.
+* *Provider/Owner:* Short label for `{host}/{owner}` if useful in the current context.
+* *Diff stats:* A summary of uncommitted changes.
+* *Tools:* Icons for tools currently attached to the repository.
+* *Selection marker:* A thin indicator at the far right marking the repository whose tools are shown in the right tools panel.
+
+=== Diff stats (dirty indicator)
+
+The *Diff stats* column doubles as the dirty indicator for each repository:
+
+* DevCentr runs `git status --porcelain=v1` to determine whether the working tree differs from `HEAD`.
+* If clean, the *Diff stats* cell is empty (or shows a faint placeholder such as `–`); there is no separate dirty column.
+* If dirty, DevCentr runs `git diff --numstat` and aggregates:
++
+* [added lines, removed lines, number of changed files]
++
+These are displayed as a compact summary:
+
+* `+123 / -45 (8 files)`
+
+For binary-only changes (where `git diff --numstat` prints `-` for counts), line counts are omitted and only the file count is shown.
+
+Diff stats are refreshed:
+
+* When the repository browser loads.
+* On explicit refresh.
+* When filesystem watchers observe changes under the repository root (with throttling and debouncing so that large workspaces remain responsive).
+
+== Tools column and right tools panel
+
+The *Tools* column and the right tools panel integrate with the xref:components/git-repository-manager.adoc[Git Repository Manager] and the tools registry to show which tools are actively attached to each repository.
+
+* *Tools column:* Shows a row of small icons for the most recent attached tools (e.g. VS Code, Cursor, built-in Git viewer, terminals). Icons are not wrapped; extra icons at the right edge may be clipped.
+* *Right tools panel:* When a repository row is clicked, the right-hand side-panel shows a full registry of tools attached to that repository. The far-right selection marker in the repo list indicates which repository is currently "active" in the tools panel.
+
+See xref:components/repository-tools-registry.adoc[Repository Tools Registry] for the discovery and tracking model that powers this panel, including automatic registration of external applications based on open file handles.
+
+== Context menus and actions
+
+The repository browser exposes context menus on hosts, owners, and repositories:
+
+* *Host node:*
+** Refresh discovery (local and remote).
+** Open host-level provider docs.
+* *Owner node (user or organization):*
+** Open in file explorer.
+** Provider-specific settings:
+*** `GitHub settings` (when provider is GitHub).
+*** `GitLab settings` (when provider is GitLab).
+** These entries open the provider settings UI described in xref:components/repository-provider-registry.adoc[Repository Provider Registry] and provider profile docs.
+* *Repository node / row:*
+** Open in file explorer.
+** Open in terminal.
+** Open in text editor (VS Code, Cursor, etc).
+** Open Git viewer (built-in Git viewer or external Git GUIs).
+** Manage IaC (open the Infra page scoped to this repo).
+
+Right-clicking a repository row also offers a *Transfer repository* action when the user drags the repository to a different owner or provider in the tree. This opens a confirmation dialog that shows:
+
+* The CLI/API operations DevCentr will attempt (e.g. `gh api` calls for GitHub transfers).
+* Whether the transfer can be fully automated or will fall back to manual steps.
+* Links to provider web UIs where manual transfers must be completed.
+
+Transfer operations are coordinated with the xref:components/git-repository-manager.adoc[Git Repository Manager] and the local workspace reorganization logic so that remote transfers and local directory moves stay in sync.

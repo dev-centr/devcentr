@@ -1,0 +1,10 @@
+= 2026-03-12 – Repository browser tools integration and dirty diff stats
+
+* Added specifications for:
+** Repository tools registry, including automatic discovery of external applications with open file handles in repositories.
+** Repository browser enhancements: diff-stats-as-dirty indicator, tools column, right-hand tools panel, provider/owner filters, and search.
+** Git repository manager extensions for workspace reorganization, atomic repo moves with handle detection, and drag-and-drop transfers across owners and providers.
+* Updated the DevCentr application to begin integrating these capabilities into the main UI.
+* Related commits:
+** _TBD: link to implementation commits for the repository tools registry and browser integration._
+

@@ -1,0 +1,123 @@
+= Repository Tools Registry
+
+The repository tools registry tracks all tools and applications that are currently attached to repositories in the local workspace. It powers the right-hand tools panel in the repository browser and the tools column in the repository list.
+
+The registry discovers tools in two ways:
+
+* Processes launched directly by DevCentr (built-in modules and external apps).
+* External applications that have open file handles within known repositories, even if DevCentr did not launch them.
+
+== Responsibilities
+
+The repository tools registry is responsible for:
+
+* Tracking built-in modules and external applications that operate on repositories.
+* Discovering external applications with open file handles inside repositories and registering them automatically.
+* Providing a per-repository list of attached tools for the UI.
+* Attempting to bring the window for a selected tool to the foreground when the user clicks its icon.
+* Persisting tool attachments across DevCentr restarts and reconnecting to still-running processes.
+
+== Data model
+
+At minimum, the registry maintains:
+
+* *Repository identity:*
+** Repository root path (absolute path under `$ROOT`).
+** Provider and owner identifiers where available (e.g. `github.com/dev-centr/devcentr`).
+* *Tool instance:*
+** Unique instance id (per process or module session).
+** Kind (`builtin-module` or `external-app`).
+** Human-readable label (e.g. `VS Code`, `DevCentr Git Viewer`, `Terminal`).
+** Icon id for the UI.
+** Process id (for external apps).
+** Executable path (for external apps, where available).
+** Start time and last-seen-alive timestamp.
+** Platform identifier for per-OS behavior.
+
+The registry persists this data in a local store (such as a small JSON5 or SQLite database) so that DevCentr can reconnect to active tools after a crash or restart.
+
+== Automatic discovery of external applications
+
+The registry runs a background discovery loop that scans for external processes with open file handles under the workspace root:
+
+* *Scope:* All processes on the system that the current user can see.
+* *Target paths:* Directories under the configured `$ROOT` that match the workspace schema (`$ROOT/<host>/<owner>/<repo>` and its `.forks` and `.clones` variants).
+* *Handle inspection:* For each process, inspect open file handles and map each file path to the corresponding repository root.
+
+=== Platform-specific handle inspection
+
+The specific mechanism for enumerating file handles is platform-dependent:
+
+* *Windows:*
+** Use Windows APIs (or a bundled helper tool) to enumerate processes and their open file handles.
+** Filter handles whose paths begin with `$ROOT`.
+** For each matching path, walk up the directory tree until a repository root is found.
+* *macOS and Linux:*
+** Use `lsof`, `/proc`, or equivalent platform facilities to enumerate open files per process.
+** Apply the same `$ROOT` prefix and repository-root resolution logic.
+
+DevCentr encapsulates these details behind a single discovery interface so that the higher-level registry logic remains platform-agnostic. If full handle enumeration is not available on a platform, the registry falls back to tracking processes that DevCentr launched directly, while surfacing a warning in diagnostics.
+
+=== Registration rules
+
+When the discovery loop finds a process with an open file handle inside a repository:
+
+* If there is no existing tool instance for `(repo, process id)`:
+** Create a new `external-app` tool instance.
+** Attempt to infer the application name and icon from the executable path.
+** Attach the instance to the repository in the registry.
+* If there is an existing tool instance for `(repo, process id)`:
+** Update its `last-seen-alive` timestamp.
+
+If multiple repositories are associated with a single process (for example, a multi-root editor workspace), the process may be attached to each relevant repo, with the registry storing the set of repository roots for that instance.
+
+== Integration with DevCentr-launched tools
+
+When DevCentr launches a built-in module or an external application (for example, VS Code, Cursor, or a Git GUI), it immediately:
+
+* Creates a tool instance record with the known repository root and process id (where applicable).
+* Marks the instance as `builtin-module` or `external-app` and records a stable label and icon id.
+
+The automatic discovery loop is responsible for reconciling these records with the live process list:
+
+* If a DevCentr-launched process is still running, its tool instance remains active.
+* If a process has exited, the registry marks the instance as closed and removes it from the active tools list for the repository.
+
+== UI behavior
+
+The tools registry feeds two UI locations:
+
+* *Tools column in the repository list:*
+** Shows up to N icons representing recent or important tools attached to each repository.
+** Does not wrap lines; extra icons are allowed to be clipped at the right edge.
+* *Right-hand tools panel:*
+** For the currently selected repository, shows all attached tools as tiles or icons.
+** Clicking a tool icon attempts to bring that tool's window to the foreground.
+
+Bringing a window to the foreground uses per-platform mechanisms:
+
+* On Windows, DevCentr resolves the main window handle for the process and calls the appropriate foreground window API.
+* On other platforms, equivalent window-manager integrations are used where available.
+* If a process is headless or has no associated window, the UI indicates that the tool cannot be focused.
+
+== Lifetime and reconnection
+
+The registry treats external tool instances as long-lived attachments tied to process lifetimes:
+
+* When DevCentr starts, it loads the persisted registry state.
+* It immediately runs a discovery pass to:
+** Confirm which recorded processes are still running.
+** Remove instances whose processes have exited.
+** Discover any new external applications that opened files under `$ROOT` while DevCentr was not running.
+
+This ensures that:
+
+* External tools opened independently of DevCentr still appear in the tools panel when DevCentr is launched.
+* DevCentr crashes or restarts do not lose track of running tools that are still operating on repositories.
+
+== Relation to other components
+
+* xref:components/repository-browser.adoc[Repository Browser] uses the registry to populate the tools column and right tools panel.
+* xref:components/git-repository-manager.adoc[Git Repository Manager] consults the registry when planning repository moves, so that it can warn about active processes and offer to close or skip them.
+* xref:components/repository-provider-registry.adoc[Repository Provider Registry] and provider profiles contribute icons and labels for known tools (for example, official Git GUIs from providers).
+

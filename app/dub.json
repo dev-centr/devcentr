@@ -3,7 +3,10 @@
     "targetType": "executable",
     "sourcePaths": ["src"],
     "dependencies": {
-        "dlangui": { "path": "../../dlangui" },
+        "dlangui": {
+            "repository": "git+https://github.com/dlang-supplemental/dlangui.git",
+            "version": "0.10.0-devcentr1"
+        },
         "sdlang-d": "~>0.10.6"
     },
     "preBuildCommands": [

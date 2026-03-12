@@ -144,6 +144,43 @@ git config --global init.defaultBranch main
 This setting only affects *new* repositories created with `git init` after the configuration is applied. Existing repositories retain their current branch names.
 ====
 
+== CLI Editor & Merge Tool Configuration
+
+On modern Windows 11 systems, we recommend using Microsoft's `edit` command-line editor as the default Git editor and merge editor in the terminal. `edit` is lightweight, ships with a familiar UI, and avoids the complexity of modal editors.
+
+.Install `edit` on Windows (if needed)
+[source,powershell]
+----
+winget install Microsoft.Edit
+----
+
+.Set `edit` or VSCode (`code`) as the default Git editor
+[source,bash]
+----
+git config --global core.editor edit
+# or
+git config --global core.editor code
+----
+
+.Set `meld` as the default merge editor (or find one you like first - you can even use vscode)
+[source,powershell]
+----
+# Install Meld
+winget install Meld.Meld
+----
+
+[source,bash]
+----
+git config --global merge.tool meld
+git config --global mergetool.edit.cmd 'meld "$MERGED"'
+git config --global mergetool.prompt false
+----
+
+[NOTE]
+====
+`edit` runs directly in your terminal session, so Git naturally waits for it to close before continuing (no special `--wait` flag is required). The simple mergetool configuration above opens the merged file with conflict markers; you resolve conflicts manually in `edit`, save, and then let `git mergetool` complete.
+====
+
 == Remote Naming Conventions
 
 By default, Git uses the name `origin` for the remote from which a repository was cloned. This terminology is relative to the local machine (essentially meaning "the remote place I push to") rather than reflecting the actual structure of the project ecosystem. To improve clarity and standardize terminology across our workflow, we recommend using absolute terminology that reflects the fork structure.

@@ -1,0 +1,18 @@
+DlangUI log file
+2026-03-12 01:42:30.457 I  UIAppMain started
+2026-03-12 01:42:30.457 I  DevCenterApp constructor started
+2026-03-12 01:42:30.458 I  Home dir: \Users\rjamd
+2026-03-12 01:42:30.458 I  Cache root: \Users\rjamd\.dev-center\templates
+2026-03-12 01:42:30.459 I  TemplateInstaller initialized
+2026-03-12 01:42:30.460 I  ToolManager initialized
+2026-03-12 01:42:30.460 I  Project root: Z:\code\github.com\dev-centr\devcentr\app
+2026-03-12 01:42:30.460 I  Profiles dir: Z:\code\github.com\dev-centr\devcentr\app\src\modules\project-recognizer\profiles
+2026-03-12 01:42:30.460 I  Loading recognizer from profiles dir
+2026-03-12 01:42:30.461 E  Caught exception: No JSON profiles found in directory: Z:\code\github.com\dev-centr\devcentr\app\src\modules\project-recognizer\profiles
+2026-03-12 01:42:30.461 I  UIAppMain returned -1
+2026-03-12 01:42:30.461 I  Destroying DrawableCache
+2026-03-12 01:42:30.461 I  Destroying ImageCache
+2026-03-12 01:42:30.461 I  Destroying Win32FontManager
+2026-03-12 01:42:30.461 D  Destroying font manager
+2026-03-12 01:42:30.461 D  Exiting main
+2026-03-12 01:42:30.461 D  Calling GC.collect

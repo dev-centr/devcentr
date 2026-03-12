@@ -1,0 +1,24 @@
+= Definition Files (Services and Language Ecosystems)
+
+DevCentr uses definition files (SDL and similar) to drive discovery, install offers, and documentation links. They are split so that services and language ecosystems are maintained separately.
+
+== Services
+
+* **Location (app):** `app/src/modules/services/descriptions.sdl`
+* **Purpose:** Infra and platform services (e.g. OpenTofu, AWS, GitHub Actions, Cloud Run). Not tied to a single language.
+* **Used by:** Infra discovery, installation workflow (IaC and service white-boxes), and docs links (homepage, native docs, DevCentr doc page).
+
+Each service entry typically has: id, name, shortDescription, homepage, docs, devcentrDoc. Keep all service definitions in this file (or in that folder); do not mix in language runtimes or frameworks.
+
+== Language ecosystems
+
+* **Location (app):** `app/src/modules/languages/<ecosystem>.sdl` (e.g. `node.sdl`, `python.sdl`)
+* **Purpose:** Runtimes and frameworks for that ecosystem (e.g. Node.js, pnpm, Next.js; Python, Poetry, FastAPI). Used when installing or bootstrapping **project technologies** into a repo.
+* **Used by:** Installation workflow when the user chooses to add a language or framework to a repository.
+
+Frameworks are split by ecosystem so that editing one language does not touch others or the services list. This keeps file operations and ownership clear.
+
+== Relation to installation workflow
+
+* **Org node:** Can offer IaC setup (e.g. create or link an infrastructure repo, install OpenTofu). Uses service definitions (e.g. OpenTofu) and the IaC docs.
+* **Repo node:** Can offer project technologies (from language-ecosystem files) or per-project IaC (with the decision flow and patterns from the IaC doc). See xref:../components/installation-workflow.adoc[Installation Workflow].

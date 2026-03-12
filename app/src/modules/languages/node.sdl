@@ -1,0 +1,10 @@
+// Node.js ecosystem: runtimes and frameworks for installation workflow.
+// See docs: specifications/reference/definition-files.adoc
+node {
+    runtime { id "node"; name "Node.js"; }
+    runtime { id "bun"; name "Bun"; }
+    packageManager { id "pnpm"; name "pnpm"; }
+    packageManager { id "yarn"; name "Yarn"; }
+    framework { id "next"; name "Next.js"; }
+    framework { id "vite"; name "Vite"; }
+}

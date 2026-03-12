@@ -55,6 +55,13 @@ The link:https://github.com/love-linger/sourcegit[SourceGit] project is a modern
 * **Graphics Support:** Fixes for `.dds` and `.tga` alpha rendering in diff views.
 * **Release Cycle:** Follows a "Year.Month" scheme with multiple updates per month.
 
+==== Further Git GUI resources
+
+* Official list of GUIs from the Git project: link:https://git-scm.com/tools/guis[git-scm.com/tools/guis]
+* Community-maintained alternatives index: link:https://alternativeto.net/software/git-gui/[AlternativeTo – Git GUIs]
+
+For a deeper discussion of Git GUI design trade-offs and DevCentr's own Git viewer goals, see xref:knowledge-base:reference/git-guis.adoc[Git GUIs and Visual History Browsers].
+
 === CLI & Server Tooling
 
 * link:https://cli.github.com/[GitHub CLI (`gh`)] - Official command-line interface for GitHub management.

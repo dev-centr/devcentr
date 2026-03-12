@@ -33,6 +33,7 @@
 *** xref:explanation/architecture/principles.adoc[Core Principles]
 *** xref:explanation/architecture/google-docs-apps-script.adoc[Apps Script Optimization]
 ** Infrastructure
+*** xref:explanation/infrastructure/iac.adoc[Infrastructure as Code (IaC)]
 *** xref:explanation/infrastructure/ssh-keys.adoc[SSH Keys]
 *** xref:explanation/infrastructure/git-branching.adoc[Branching Strategies]
 *** xref:explanation/infrastructure/git-submodules.adoc[Submodules & Monorepos]

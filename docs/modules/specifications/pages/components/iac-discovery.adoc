@@ -1,0 +1,172 @@
+= IaC Discovery
+
+== Purpose
+
+The IaC Discovery component helps DevCentr find and describe infrastructure‑as‑code (IaC) across your local repositories.
+
+It focuses on:
+
+* Detecting where OpenTofu, Terraform, and other IaC live in each repository.
+* Grouping those files into **IaC bases** (high‑level entry points for infra).
+* Building a simple dependency map so you can see how modules and configs relate.
+* Exposing this information so the UI can show clickable trees per base.
+
+The goal is to give a clear, honest picture of "where the infra really is" without forcing any one repository layout.
+
+== Scope
+
+* **Input:** One or more local repositories (project roots) discovered by DevCentr.
+* **Output:** For each repository:
+** A list of IaC bases.
+** For each base, a list of config files and a dependency tree.
+* **Supported tools (initial):**
+** OpenTofu / Terraform (`*.tf`, `*.tf.json`, `*.tofu`, `*.tofu.json`, `terragrunt.hcl`).
+** Basic hooks for other IaC styles (Pulumi, CloudFormation, Bicep, Ansible) via filename patterns only.
+
+Out of scope for this component:
+
+* Talking to cloud APIs.
+* Planning, applying, or destroying infra.
+* Deep parsing of every IaC dialect; the first version relies on file patterns and simple source scanning.
+
+== How IaC Discovery Works
+
+. **Discover repositories.**
+.. DevCentr already knows about project roots using the standard folder schema (for example `Z:\code\github.com\<owner>\<repo>`).
+.. For each project root, IaC Discovery is called with the absolute path.
+. **Scan for IaC bases (one level deep).**
+.. At the repo root and one folder level below, the scanner looks for directories or roots that contain IaC files.
+.. A directory or the repo root becomes an **IaC base** if it contains at least one IaC config file.
+. **Guard against submodule duplication.**
+.. If a folder is a Git submodule (it contains a `.git` file pointing elsewhere), IaC Discovery treats that as its own project and avoids double‑counting it inside the parent.
+. **Build dependency edges.**
+.. For OpenTofu/Terraform files, a lightweight parser looks for `module` blocks and the `source` attribute.
+.. Each `source` reference becomes an edge in the dependency tree for that base.
+. **Return a model.**
+.. The result is a small data model for each repo, listing bases, config files, and dependency edges.
+.. The UI can render this as a map of repos, bases, and IaC trees that users can click through.
+
+This design keeps the backend simple while giving enough structure for richer visualizations later.
+
+== IaC Repository Patterns
+
+This section explains the main patterns IaC Discovery expects to see. The real world is messy, but these patterns cover most teams.
+
+=== 1. Centralized infrastructure repository
+
+In this pattern, there is **one central infra repo** such as `infrastructure/` or `platform-infra/`.
+
+Key traits:
+
+* Application repos contain little or no IaC.
+* The central repo holds:
+** Environment folders (for example `prod/`, `staging/`, `dev/`).
+** Reusable modules.
+** State backends, pipelines, and policies.
+
+Why teams choose this:
+
+* One **source of truth** for infra.
+* Easier to review and secure, because an infra or platform team owns the repo.
+* Less duplicated state and fewer surprise `.tfstate` files scattered around.
+* Standards, linters, and policies are easier to enforce in one place.
+
+Impact on IaC Discovery:
+
+* The central infra repo will usually show **multiple IaC bases** at its root or under environment folders.
+* Application repos may show **no IaC bases at all**, which is expected and healthy for this pattern.
+
+=== 2. IaC inside each application repository
+
+Here, each application repo carries its own OpenTofu/Terraform configuration, often under a folder like `infra/` inside the repo.
+
+Example layout:
+
+----
+/infra
+  main.tofu
+  variables.tofu
+  backend.tofu
+----
+
+Why teams choose this:
+
+* Infra is tightly tied to the service.
+* App teams can deploy on their own schedule.
+* For a very small team, it feels simple and local.
+
+Downsides:
+
+* State is **fragmented** across many repos.
+* Common patterns such as VPCs, databases, and IAM roles are duplicated or drift apart.
+* Security and consistency are harder to enforce.
+* Refactors cut across many repos at once.
+
+Impact on IaC Discovery:
+
+* Most application repos will show **at least one IaC base**, usually at `/infra` one level under the repo root.
+* Dependency trees will often be shallow (a few modules per app), but spread across many repos.
+
+=== 3. Hybrid model
+
+Many teams evolve to a **hybrid** model:
+
+* A central infra repo owns shared building blocks:
+** Networks, VPCs, subnets.
+** Database clusters and shared data stores.
+** Baseline IAM roles and policies.
+* Application repos carry thin IaC layers:
+** App‑specific resources such as a single service or queue.
+** References to outputs from the central infra repo.
+
+This keeps shared infra in one trusted place while still letting app teams describe the pieces that belong only to their service.
+
+Impact on IaC Discovery:
+
+* The central repo looks like pattern 1.
+* Application repos look like pattern 2, but the IaC bases are smaller and more focused.
+* Dependency trees will often show module references pointing to:
+** Local modules inside the central repo.
+** Remote modules from registries.
+
+== Scoped discovery
+
+When discovery is scoped to a folder or repo (for example the current project), the system models only:
+
+* **The current scope** (the repo or folder you chose).
+* **Upstream dependencies** of that scope: other repos or bases that the current scope’s IaC references (for example via Terraform `module` sources that resolve to local paths).
+
+It does **not** model:
+
+* Siblings of the current scope branch (other repos or bases at the same level that are not on the dependency path).
+* Parents or grandparents of the current scope (containing repos or org structure above the current root).
+
+Those unrelated scopes are not expanded automatically. Instead, at **each upstream node** in the tree, the UI shows a single **"etc."** or **"Other services"** block. That one block stands for all unrelated scopes at that level: uncles, grand-uncles, siblings, and any other branches you did not follow. So at every level you see one modeled branch (the one you’re on) and one combined placeholder for everything else. The user can click that block to confirm loading more (with a warning that it may take a long time).
+
+== Design Assumptions
+
+The IaC Discovery component makes a few practical assumptions to keep scanning fast and predictable:
+
+* **Depth limit:** IaC config files are normally at the repo root or **one folder level** below it. The scanner only treats those locations as base candidates.
+* **Submodules:** If a path is a Git submodule, IaC Discovery does not treat the parent and the submodule as a single base. This avoids counting the same IaC twice.
+* **Pattern‑based detection:** The first version uses filename and extension patterns plus simple string scanning, not full parsers for every IaC language.
+
+These assumptions can be relaxed in future versions if real‑world usage shows the need.
+
+== API Shape (internal)
+
+The implementation exposes a small, internal API to other DevCentr components:
+
+* **Per‑repo scanning**
+** Input: Absolute repo root path.
+** Output: A struct describing all IaC bases and their dependency edges.
+* **Workspace scanning**
+** Input: A list of repo roots (for example discovered from the code folder schema).
+** Output: A list of per‑repo IaC summaries, suitable for an overview map.
+
+The UI can then:
+
+* Show a list of repos that contain IaC.
+* For each repo, show its bases.
+* When a base is selected, render its IaC dependency tree.
+

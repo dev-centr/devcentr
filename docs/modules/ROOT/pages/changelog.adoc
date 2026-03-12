@@ -1,0 +1,29 @@
+= Changelog
+
+This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
+
+== 2026-03-12 – Repository browser tools and diff stats
+
+* Added specs and initial implementation for repository tools integration, diff-stats-as-dirty indicator, and reorganization/transfer workflows.
+* See xref:ROOT:changelog-details/2026-03-12 - repository-browser-tools-and-diff-stats.adoc[Detailed changelog].
+
+== 2026-03-05 – Git management and workspace organization docs
+
+* Documented and refined workspace organization schema and Git management guidance.
+* See xref:ROOT:changelog-details/2026-03-05 - git-management-and-workspace-org.adoc[Detailed changelog].
+
+== 2026-02-15 – Workspace organization and core docs
+
+* Added workspace organization schema and core project/legal docs.
+* See xref:ROOT:changelog-details/2026-02-15 - workspace-organization-and-core-docs.adoc[Detailed changelog].
+
+== 2026-01-26 – Diátaxis and docs refactor
+
+* Reorganized docs to follow the Diátaxis model.
+* See xref:ROOT:changelog-details/2026-01-26 - diataxis-and-docs-refactor.adoc[Detailed changelog].
+
+== 2025-12-09 – Antora documentation structure and spec modules
+
+* Introduced Antora-based docs structure and initial specification modules.
+* See xref:ROOT:changelog-details/2025-12-09 - antora-docs-and-spec-modules.adoc[Detailed changelog].
+

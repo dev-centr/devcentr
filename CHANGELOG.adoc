@@ -1,0 +1,6 @@
+= DevCentr Changelog
+
+See the main changelog in the documentation:
+
+* xref:ROOT:changelog.adoc[DevCentr Changelog]
+

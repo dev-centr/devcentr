@@ -1,0 +1,14 @@
+= 2026-02-15 – Workspace organization and core docs
+
+* Introduced the workspace organization schema document and core documentation structure.
+* Added foundational legal and contribution files:
+** LICENSE and CONTRIBUTING.
+** FUNDING configuration.
+* Organized explanation docs into architecture and infrastructure categories.
+* Representative commits:
+** `87cd878` – docs: add workspace organization schema to knowledge base reference.
+** `7190c6b` – chore: add LICENSE and CONTRIBUTING.
+** `d2d900b` – chore: add GitHub FUNDING.yml.
+** `2000810` – docs: reorganize explanation into architecture and infrastructure categories.
+** `27db8ca` – docs: add Architectural Principles & Engineering Standards.
+

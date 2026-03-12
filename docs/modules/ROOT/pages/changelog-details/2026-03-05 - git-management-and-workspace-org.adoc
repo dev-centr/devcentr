@@ -1,0 +1,11 @@
+= 2026-03-05 – Git management and workspace organization docs
+
+* Documented and refined workspace organization schema for `$ROOT/<host>/<owner>/<repo>` including `.forks` and `.clones`.
+* Expanded Git management guidance, including:
+** Line-ending configuration (`core.autocrlf` and `core.eol` recommendations).
+** Default branch naming (`init.defaultBranch main`).
+** Remote naming conventions (`origin` vs `personal`).
+* Representative commits:
+** `685372a` – docs: recommend autocrlf false and core.eol lf, explain when to use autocrlf true.
+** `04b0385` – updated for split of docs main repo from devcentr.
+

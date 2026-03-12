@@ -1,0 +1,13 @@
+= 2025-12-09 – Antora documentation structure and spec modules
+
+* Introduced the initial Antora-based documentation structure.
+* Moved specifications into `docs/modules/specifications` and wired them into the docs site.
+* Adjusted the docs site layout and playbook naming to support the new structure.
+* Representative commits:
+** `3494491` – docs: move specifications from app/specs to docs/modules/specifications.
+** `ad5edcb` – docs: move docs-site to docs/site and rename playbook file.
+** `68d92e0` – docs: update documentation structure and references.
+** `97fdc78` – chore: update .gitignore for new documentation structure.
+** `1b72b3e` – Fix Antora component descriptor.
+** `e6cd0ed` – Added simple-icons vector file repository to the rust project using `pnpm`.
+

@@ -1,0 +1,115 @@
+= Git Viewer
+
+The Git Viewer is DevCentr's built-in project browser for exploring Git history. It combines a persistent project tree with a horizontal commit timeline and a replay index for fast seeking.
+
+== Goals
+
+* Show the **shape of work over time**, not just a flat commit list.
+* Provide a **persistent file/folder tree** that can be scrubbed through history.
+* Make it easy to **rewind and fast-forward** the project to any commit.
+* Enable **quick seeking** across long histories via an indexer.
+
+== Core UI elements
+
+The Git Viewer is organized into three main regions:
+
+* *Left:* Persistent project tree (folders and files).
+* *Center:* File details (diff view, metadata) for the selected file and commit.
+* *Bottom:* Horizontal timeline with a scrubber and zoom controls.
+
+=== Persistent project tree
+
+The left tree shows the project hierarchy:
+
+* Always visible while scrubbing through history.
+* Updates node states (color/decoration) as the scrubber moves:
+** New files/folders at a given commit are highlighted.
+** Deleted nodes are marked or hidden based on the current view mode.
+** Renames/moves are tracked so users can follow a file across history.
+
+This addresses the common limitation of Git GUIs that only show per-commit file lists without a stable sense of the project structure.
+
+=== Horizontal timeline and scrubber
+
+The bottom pane is a **horizontal commit timeline**:
+
+* HEAD is on the right and selected by default.
+* Each commit is a **block**:
+** Width represents size (e.g. number of lines or files changed).
+** Color can encode additional signals (e.g. branch, author, or type).
+* A **scrubber handle** (playhead) tracks the currently selected commit:
+** Dragging the scrubber moves the selected commit.
+** Zoom controls adjust the visible time window.
+
+This gives a film-editor-like view of the repository:
+
+* Dense clusters of large commits stand out visually.
+* Quiet periods are obvious gaps.
+* Users can quickly identify "big moments" in the project's history.
+
+== Replay index and quick seek
+
+To support near-instant seeking, the Git Viewer maintains a **replay index** separate from Git's internal data structures.
+
+=== Index contents
+
+For each commit, the index records:
+
+* Commit metadata (hash, parent hashes, author, timestamps, message).
+* Aggregated stats:
+** Lines added/removed.
+** Files changed.
+* A compact representation of tree changes needed to reconstruct snapshots quickly:
+** File adds/removes/renames.
+** Directory-level changes.
+
+This allows the viewer to:
+
+* Reconstruct the state of the project tree for any indexed commit.
+* Render the timeline with widths proportional to commit size.
+
+=== Indexing behavior
+
+* For repositories below a configured size threshold:
+** Indexing is **enabled by default**.
+** The indexer walks the history in the background.
+** Timeline blocks change outline to **purple** as their commits are indexed.
+** Unindexed commits appear **greyed out**.
+* For large repositories:
+** Automatic indexing is **disabled**.
+** The viewer shows a *Set up quick seek* button.
+** Clicking the button opens an explanation dialog that:
+*** Describes the indexing process and benefits.
+*** Shows the total number of commits.
+*** Warns if indexing may take a long time.
+*** Offers a *Start* button.
+
+=== Pause and resume
+
+Indexing is designed to be **interruptible**:
+
+* Users can press a *Pause* button to temporarily stop indexing.
+* The indexer records its progress (last indexed commit).
+* Users can later hit *Resume* to continue from where it left off.
+
+While indexing is running:
+
+* Seeks inside the currently indexed range are handled via the index for speed.
+* Seeks outside the indexed range either fall back to direct Git commands or are clearly indicated as slower operations.
+
+== Git GUI selection behavior
+
+When a user chooses *Open Git Viewer* for a repository:
+
+* DevCentr shows installed Git GUIs alongside its own viewer.
+* Only Git GUIs that are **detected as installed** are shown:
+** Detection is based on known installation paths or presence on PATH.
+** The detection logic is backed by the same tool metadata used in xref:knowledge-base:reference/recommended-tools.adoc[Recommended Development Tools].
+* The dialog includes a link to:
+** xref:knowledge-base:reference/git-guis.adoc[Git GUIs and Visual History Browsers].
+
+This ensures:
+
+* Users can quickly pick between their existing tools.
+* DevCentr still educates users about broader Git GUI options and trade-offs without cluttering the selection UI with tools that are not installed.
+

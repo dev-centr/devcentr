@@ -3,11 +3,14 @@ module app;
 import dlangui;
 import modules.template_installer.installer;
 import modules.template_installer.project_manager;
+import modules.repo_tools.registry;
 import modules.project_recognizer.recognizer;
 import modules.system_overview.tool_manager;
 import modules.system_overview.widgets;
 import modules.workflow_templates_store.browser;
 import modules.workflow_templates_store.store;
+import modules.infra.discovery : discoverInfra, InfraDiscoveryMode, InfraDiscoverySummary;
+import modules.infra.ui : InfraDiscoveryPanel, openUrlInBrowser;
 import std.stdio;
 import std.path;
 import std.file;
@@ -23,6 +26,7 @@ class DevCenterApp {
     TemplateInstaller installer;
     ProjectWorkspaceManager projectManager;
     ToolManager toolManager;
+    RepoToolsRegistry repoTools;
     ArchitectureModel currentModel;
 
     StringListAdapter templateAdapter;
@@ -35,6 +39,8 @@ class DevCenterApp {
         string cacheRoot = buildPath(getHomeDir(), ".dev-center", "templates");
         installer = new TemplateInstaller(cacheRoot);
         toolManager = new ToolManager();
+        string dataRoot = buildPath(getHomeDir(), ".dev-center");
+        repoTools = new RepoToolsRegistry(dataRoot);
 
         // Target current directory
         string projectRoot = getcwd();
@@ -85,6 +91,7 @@ class DevCenterApp {
                         Button { id: navTemplates; text: "Browse Projects"; layoutWidth: fill }
                         Button { id: navProject; text: "Project Analysis"; layoutWidth: fill }
                         Button { id: navWorkflowTemplates; text: "Workflow templates"; layoutWidth: fill }
+                        Button { id: navInfra; text: "Infra"; layoutWidth: fill }
                     }
 
                     // Main Content
@@ -128,21 +135,28 @@ class DevCenterApp {
                                     Spacer { layoutHeight: fill }
                                     Button { id: btnChoiceWorkflowTemplates; text: "Open store"; layoutWidth: fill }
                                 }
+
+                                // Choice 4: Install or add
+                                VerticalLayout {
+                                    id: choiceInstall; layoutWidth: 300; layoutHeight: 350; padding: 20; background: "#252525"
+                                    ImageWidget { drawableId: "settings"; layoutWidth: 128; layoutHeight: 128; alignment: center; margin: 10 }
+                                    TextWidget { text: "Install or add"; fontSize: 16pt; fontWeight: 600; alignment: center; margin: 10 }
+                                    TextWidget { text: "Add Infrastructure as Code (OpenTofu) or project technologies (frameworks, runtimes) to this repo."; fontSize: 10pt; textColor: "#AAAAAA"; alignment: center; maxLines: 3 }
+                                    Spacer { layoutHeight: fill }
+                                    Button { id: btnChoiceInstall; text: "Install or add..."; layoutWidth: fill }
+                                }
                             }
                         }
 
                         VerticalLayout {
                     id: pageTemplates; layoutWidth: fill; layoutHeight: fill; padding: 10
-                            TextWidget { text: "Available Templates"; fontSize: 14pt; margin: 5 }
+                            TextWidget { text: "Browse Projects"; fontSize: 14pt; margin: 5 }
                             HorizontalLayout {
                                 layoutWidth: fill; margin: 5
-                                EditLine { id: searchTemplates; text: ""; layoutWidth: fill; placeholderText: "Search templates..." }
+                                EditLine { id: searchRepos; text: ""; layoutWidth: fill; placeholderText: "Search hosts, owners, and repos..." }
                             }
-                            ListWidget { id: listTemplates; layoutWidth: fill; layoutHeight: fill }
-                            HorizontalLayout {
-                                Button { id: btnInstall; text: "Install Selected" }
-                                Button { id: btnReview; text: "Review Files" }
-                            }
+                            ListWidget { id: listRepos; layoutWidth: 220; layoutHeight: fill }
+                            // Right-hand tools panel can be added here in a future iteration.
                         }
 
                         VerticalLayout {
@@ -178,6 +192,28 @@ class DevCenterApp {
                                 Button { id: btnOpenWorkflowStore; text: "Open store in browser" }
                             }
                         }
+
+                        VerticalLayout {
+                    id: pageInfra; layoutWidth: fill; layoutHeight: fill; padding: 10
+                            TextWidget { text: "Infrastructure (IaC)"; fontSize: 14pt; margin: 5 }
+                            TextWidget { id: infraPathLabel; text: "Scope: "; margin: 2 }
+                            HorizontalLayout { layoutWidth: fill; margin: 5
+                                Button { id: btnRefreshInfra; text: "Refresh" }
+                                Button { id: btnInfraDocs; text: "Docs" }
+                            }
+                            HorizontalLayout { id: infraPanelContainer; layoutWidth: fill; layoutHeight: fill }
+                        }
+
+                        VerticalLayout {
+                    id: pageInstall; layoutWidth: fill; layoutHeight: fill; padding: 20
+                            TextWidget { text: "Install or add"; fontSize: 18pt; margin: 10 }
+                            TextWidget { id: installPathLabel; text: "Repo: "; margin: 5 }
+                            VerticalLayout { layoutWidth: fill; spacing: 10
+                                Button { id: btnInstallIac; text: "Add Infrastructure as Code (OpenTofu)"; layoutWidth: 300 }
+                                Button { id: btnInstallIacDocs; text: "Docs: Infrastructure as Code"; layoutWidth: 300 }
+                                Button { id: btnInstallTech; text: "Add project technologies (frameworks, runtimes)"; layoutWidth: 300 }
+                            }
+                        }
                     }
                 }
             }
@@ -194,8 +230,8 @@ class DevCenterApp {
         dashboardTabs.addTab(tabInstalled, "Installed Tools"d);
         dashboardTabs.addTab(tabAvailable, "Available Tools"d);
 
-        auto listTemplates = window.mainWidget.childById!ListWidget("listTemplates");
-        listTemplates.adapter = templateAdapter;
+        // Template list is no longer displayed directly; the Browse Projects page
+        // will be wired to a repository browser in a future revision.
 
         auto listStacks = window.mainWidget.childById!ListWidget("listStacks");
         listStacks.adapter = stackAdapter;
@@ -215,13 +251,20 @@ class DevCenterApp {
     auto sidebar = window.mainWidget.childById("sidebar");
 
         auto showPage = delegate(int index, bool showSidebar) {
-        string[] pageIds = ["pageHome", "pageTemplates", "pageProject", "pageDashboard", "pageWorkflowTemplates"];
+        string[] pageIds = ["pageHome", "pageTemplates", "pageProject", "pageDashboard", "pageWorkflowTemplates", "pageInfra", "pageInstall"];
         if (index >= 0 && index < pageIds.length) {
             contentStack.showChild(pageIds[index]);
         }
         sidebar.visibility = showSidebar ? Visibility.Visible : Visibility.Gone;
         if (index == 4) {
             refreshWorkflowTemplates();
+        }
+        if (index == 5) {
+            refreshInfra();
+        }
+        if (index == 6) {
+            auto installLabel = window.mainWidget.childById!TextWidget("installPathLabel");
+            if (installLabel) installLabel.text = UIString.fromRaw("Repo: "d ~ to!dstring(getcwd()));
         }
     };
 
@@ -264,6 +307,34 @@ class DevCenterApp {
         };
         window.mainWidget.childById!Button("btnChoiceWorkflowTemplates").click = delegate(Widget w) {
             showPage(4, true);
+            return true;
+        };
+        window.mainWidget.childById!Button("btnChoiceInstall").click = delegate(Widget w) {
+            showPage(6, true);
+            return true;
+        };
+        window.mainWidget.childById!Button("btnInstallIacDocs").click = delegate(Widget w) {
+            openUrlInBrowser("https://docs.devcentr.org/knowledge-base/latest/explanation/infrastructure/iac.html");
+            return true;
+        };
+        window.mainWidget.childById!Button("btnInstallIac").click = delegate(Widget w) {
+            bootstrapOpenTofuHere();
+            return true;
+        };
+        window.mainWidget.childById!Button("btnInstallTech").click = delegate(Widget w) {
+            window.showMessageBox(UIString.fromRaw("Project technologies"d), UIString.fromRaw("Frameworks and runtimes will be available here. Use the sidebar to open Project Analysis or Infra."d));
+            return true;
+        };
+        window.mainWidget.childById!Button("navInfra").click = delegate(Widget w) {
+            showPage(5, true);
+            return true;
+        };
+        window.mainWidget.childById!Button("btnRefreshInfra").click = delegate(Widget w) {
+            refreshInfra();
+            return true;
+        };
+        window.mainWidget.childById!Button("btnInfraDocs").click = delegate(Widget w) {
+            openUrlInBrowser("https://docs.devcentr.org/knowledge-base/latest/explanation/infrastructure/iac.html");
             return true;
         };
 
@@ -317,10 +388,6 @@ class DevCenterApp {
 
     void refreshTemplates() {
         templateAdapter.clear();
-        auto templates = installer.listTemplates();
-        foreach(t; templates) {
-            templateAdapter.add(to!dstring(t.name));
-        }
     }
 
     void refreshProject() {
@@ -345,6 +412,50 @@ class DevCenterApp {
         if (pathLabel) {
             pathLabel.text = UIString.fromRaw("Install into: "d ~ to!dstring(getcwd()));
         }
+    }
+
+    void refreshInfra() {
+        string scopeRoot = getcwd();
+        auto summary = discoverInfra(scopeRoot, InfraDiscoveryMode.IntegratedPerRepo, scopeRoot);
+        auto container = window.mainWidget.childById!HorizontalLayout("infraPanelContainer");
+        if (container) {
+            container.removeAllChildren();
+            container.addChild(new InfraDiscoveryPanel(summary));
+        }
+        auto label = window.mainWidget.childById!TextWidget("infraPathLabel");
+        if (label) {
+            label.text = UIString.fromRaw("Scope: "d ~ to!dstring(scopeRoot));
+        }
+    }
+
+    void bootstrapOpenTofuHere() {
+        string repo = getcwd();
+        string infraDir = buildPath(repo, "infra");
+        if (exists(infraDir) && isDir(infraDir)) {
+            window.showMessageBox(UIString.fromRaw("Infra"d), UIString.fromRaw("infra/ already exists. Use the Infra page to view it."d));
+            return;
+        }
+        mkdirRecurse(infraDir);
+        string mainContent = `// OpenTofu root module. Add resources and modules here.
+// See https://developer.opentofu.org/docs
+
+resource "null_resource" "example" {
+  triggers = {
+    example = "bootstrap"
+  }
+}
+`;
+        string varsContent = `// Input variables for this OpenTofu configuration.
+
+variable "example" {
+  description = "Example variable"
+  type        = string
+  default     = "hello"
+}
+`;
+        write(buildPath(infraDir, "main.tofu"), mainContent);
+        write(buildPath(infraDir, "variables.tofu"), varsContent);
+        window.showMessageBox(UIString.fromRaw("Infra"d), UIString.fromRaw("Created infra/ with main.tofu and variables.tofu. Open the Infra page to see it."d));
     }
 
     static string getHomeDir() {
