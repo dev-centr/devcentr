@@ -12,17 +12,20 @@
 * xref:how-to/git-hooks.adoc[Git Hooks]
 * xref:how-to/git-lfs.adoc[Large Files & LFS]
 * xref:how-to/git-recovery.adoc[Git Recovery]
-* xref:how-to/kvm-windows-automation.adoc[Windows Automation via KVM]
 * xref:how-to/github-pages-custom-domain.adoc[GitHub Pages Custom Domain]
+* xref:how-to/git-release-workflow.adoc[Git Release Workflow]
+* xref:how-to/automated-releases.adoc[Automated Releases]
 
 .📚 Reference
 * xref:reference/index.adoc[Overview]
 * xref:reference/workspace-organization.adoc[Workspace Organization]
 * xref:reference/recommended-tools.adoc[Recommended Tools]
 * xref:reference/git-management.adoc[Git Management]
+* xref:reference/github-actions-templates-vs-marketplace.adoc[Actions Templates vs Marketplace]
 * xref:reference/git-installation.adoc[Git Installation]
 * xref:reference/nodejs-env.adoc[Node.js Environment]
 * xref:reference/asciidoc-tools.adoc[AsciiDoc Tooling]
+* xref:reference/package-registries.adoc[Package Registries]
 
 .🧠 Explanation
 * xref:explanation/index.adoc[Overview]

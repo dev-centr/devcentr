@@ -1,0 +1,8 @@
+# Config format: prefer SDL (SDLang)
+
+For settings and configuration files that developers edit by hand, prefer **SDL** (SDLang — Simple Declarative Language) over JSON and JSON5 when the parser supports it.
+
+- **Use `.sdl`** for new or Dev-Centr-owned config (e.g. project recognizer profiles, app settings).
+- **Use JSON5** only when a tool or API requires JSON (e.g. `package.json`, VS Code `settings.json`, dprint/biome config).
+
+SDL is not libSDL/SDL2 (gaming library). Search for **"SDLang"** or **sdlang.org** for the config format. See `docs/modules/specifications/pages/sdl.adoc` for rationale, comparison, and official references.

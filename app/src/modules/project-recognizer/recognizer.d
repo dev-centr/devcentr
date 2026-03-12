@@ -14,6 +14,7 @@ import std.digest.sha : sha1Of;
 import std.digest : toHexString;
 import std.conv : to;
 import modules.json5 : parseJSON5;
+import sdlang;
 
 
 /// Maximum file size (in bytes) to scan when checking for keyword matches.
@@ -238,7 +239,7 @@ class ProjectRecognizer
             }
 
             auto ext = extension(entry.name).toLower();
-            if (ext != ".json" && ext != ".json5")
+            if (ext != ".json" && ext != ".json5" && ext != ".sdl")
             {
                 continue;
             }
@@ -246,15 +247,24 @@ class ProjectRecognizer
             profileFiles ~= entry.name;
         }
 
-        enforce(!profileFiles.empty, "No JSON profiles found in directory: " ~ profilesDir);
+        enforce(!profileFiles.empty, "No JSON or SDL profiles found in directory: " ~ profilesDir);
         sort(profileFiles);
 
         RecognitionRule[] allRules;
         foreach (profilePath; profileFiles)
         {
             auto content = readText(profilePath);
-            auto json = parseJSON5(content);
-            auto rules = parseRuleContainer(json, profilePath);
+            auto ext = extension(profilePath).toLower();
+            RecognitionRule[] rules;
+            if (ext == ".sdl")
+            {
+                rules = parseRuleContainerFromSdl(content, profilePath);
+            }
+            else
+            {
+                auto json = parseJSON5(content);
+                rules = parseRuleContainer(json, profilePath);
+            }
             allRules ~= rules;
         }
 
@@ -406,6 +416,86 @@ class ProjectRecognizer
         rule.required = jsonGetStringArray(value, "required");
         rule.anyOf = jsonGetStringArray(value, "anyOf");
         rule.dependencyFields = jsonGetStringArray(value, "dependencyFields");
+        return rule;
+    }
+
+    private static RecognitionRule[] parseRuleContainerFromSdl(const string content, const string sourceLabel)
+    {
+        Tag root = parseSource(content, sourceLabel);
+        auto rulesTag = root.getTag("rules");
+        if (rulesTag !is null)
+        {
+            RecognitionRule[] parsed;
+            foreach (tag; rulesTag.all.tags)
+            {
+                parsed ~= parseRuleFromSdlTag(tag, sourceLabel);
+            }
+            enforce(!parsed.empty, "SDL rules container did not contain any rules: " ~ sourceLabel);
+            return parsed;
+        }
+        return [parseRuleFromSdlRoot(root, sourceLabel)];
+    }
+
+    private static RecognitionRule parseRuleFromSdlRoot(Tag root, const string sourceLabel)
+    {
+        RecognitionRule rule;
+        auto nameTag = root.expectTag("name");
+        enforce(!nameTag.values.empty, "SDL tag `name` must have a value in " ~ sourceLabel);
+        rule.name = nameTag.values[0].get!string;
+
+        if (auto t = root.getTag("description"))
+            if (!t.values.empty)
+                rule.description = t.values[0].get!string;
+        if (auto t = root.getTag("parent"))
+            if (!t.values.empty)
+                rule.parent = t.values[0].get!string;
+
+        foreach (key; ["allOfFiles", "anyOfFiles", "excludedFiles", "keywords"])
+        {
+            if (auto t = root.getTag(key))
+            {
+                string[] arr;
+                foreach (v; t.values)
+                    arr ~= v.get!string;
+                switch (key)
+                {
+                    case "allOfFiles": rule.allOfFiles = arr; break;
+                    case "anyOfFiles": rule.anyOfFiles = arr; break;
+                    case "excludedFiles": rule.excludedFiles = arr; break;
+                    case "keywords": rule.keywords = arr; break;
+                    default: break;
+                }
+            }
+        }
+
+        if (auto manifestsTag = root.getTag("manifests"))
+            foreach (child; manifestsTag.all.tags)
+                rule.manifests ~= parseManifestFromSdlTag(child, sourceLabel ~ " -> " ~ rule.name);
+
+        return rule;
+    }
+
+    private static RecognitionRule parseRuleFromSdlTag(Tag tag, const string sourceLabel)
+    {
+        return parseRuleFromSdlRoot(tag, sourceLabel);
+    }
+
+    private static ManifestRule parseManifestFromSdlTag(Tag tag, const string sourceLabel)
+    {
+        ManifestRule rule;
+        rule.pathPattern = tag.getAttribute!string("pathPattern", "");
+        if (rule.pathPattern.empty && !tag.values.empty)
+            rule.pathPattern = tag.values[0].get!string;
+        enforce(!rule.pathPattern.empty, "manifest must have pathPattern (attribute or value) in " ~ sourceLabel);
+        rule.format = tag.getAttribute!string("format", "text");
+
+        if (auto t = tag.getTag("required"))
+            foreach (v; t.values) rule.required ~= v.get!string;
+        if (auto t = tag.getTag("anyOf"))
+            foreach (v; t.values) rule.anyOf ~= v.get!string;
+        if (auto t = tag.getTag("dependencyFields"))
+            foreach (v; t.values) rule.dependencyFields ~= v.get!string;
+
         return rule;
     }
 

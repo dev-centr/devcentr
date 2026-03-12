@@ -27,7 +27,7 @@ Thanks for your interest in contributing. This document explains how to get invo
 3. **Push** — Push your branch to your fork.
 4. **Pull request** — Open a PR against `dev-centr/dev-center` `main`. Describe what changed and why; reference any related issues.
 
-The maintainers may ask for edits. Once approved, your PR will be merged. Tagged releases follow the project’s [Git release workflow](docs/modules/publishing/pages/git-release-workflow.adoc).
+The maintainers may ask for edits. Once approved, your PR will be merged. Tagged releases follow the project’s [Git release workflow](docs/modules/knowledge-base/pages/how-to/git-release-workflow.adoc).
 
 ## License and branding
 

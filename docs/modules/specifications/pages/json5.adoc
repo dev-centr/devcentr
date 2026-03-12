@@ -1,7 +1,9 @@
 = JSON5 Endorsement
-:description: Formal endorsement and specification for using JSON5 in Dev-Centr projects.
+:description: Use JSON5 when tools require JSON; prefer SDL for human-edited config when possible.
 
 JSON5 is a superset of JSON that expands its syntax to include some features from ECMAScript 5.1. It is designed to be easier for humans to write and maintain by hand.
+
+When you control the parser (e.g. Dev Center app config, recognizer profiles), prefer xref:sdl.adoc[SDL (SDLang)] over JSON5. Use JSON5 when a tool or API strictly requires JSON (e.g. `package.json`, VS Code `settings.json`, dprint/biome config).
 
 == Rationale
 
@@ -41,5 +43,9 @@ For D-lang projects, we use the internal `json5-dlang` library (to be implemente
 
 * [JSON5 Official Site](https://json5.org/)
 * [JSON5 Specification](https://spec.json5.org/)
+
+== See also
+
+* xref:sdl.adoc[SDL (SDLang) preference] — Prefer SDL for settings and config when the parser supports it.
 
 

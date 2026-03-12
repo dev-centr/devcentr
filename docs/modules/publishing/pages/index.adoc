@@ -1,10 +1,36 @@
 = Software Publishing
 :navtitle: Publishing
 
-Welcome to the Software Publishing Hub. 
+Welcome to the Software Publishing Hub.
 
-This section covers strategies, tutorials, and best practices for distributing your software effectively.
+This section explains how DevCentr uses the general-purpose publishing knowledge-base articles to help you configure releases from inside the app.
 
-== Tutorials
+== Overview
 
-* xref:git-release-workflow.adoc[Git Release Workflow] - Determine when and how to "release" your software.
+The **Publishing** view in the DevCentr app surfaces curated knowledge-base articles directly in the in-app docs viewer while you are configuring your release/deploy process. Instead of duplicating content here, DevCentr points to the shared **Knowledge Base** so the guidance stays reusable and tool-agnostic.
+
+Conceptually, publishing covers the full path from **\"when is something a release?\"** to **\"where do I publish it?\"** and **\"how do I automate builds and artifacts?\"**. Antora doc-site deployment is maintained in the antora-supplemental organization; see the link below.
+
+When you open the Publishing area in DevCentr, the app loads these knowledge-base pages into its documentation viewer so you can:
+
+* Design a Git release workflow while looking at your repos and workflows.
+* Wire up automated builds and uploads in CI.
+* Decide which registries (npm, PyPI, crates.io, Winget, Homebrew, Docker, etc.) make sense for your project.
+
+== PackageHub
+
+`packagehub` is a DevCentr project focused on improving how software is published and released.
+
+The primary documentation for PackageHub lives in its own docs site (built with Fumadocs), not in this Antora component. Use these links for details, guides, and API/CLI docs:
+
+* link:https://docs.packagehub.dev[docs.packagehub.dev]
+* link:https://packagehub.dev/docs[packagehub.dev/docs]
+
+DevCentr’s Publishing view can link you into the appropriate PackageHub docs while still relying on the shared knowledge-base articles above for the underlying concepts and best practices.
+
+== In This Section
+
+* xref:knowledge-base:how-to/git-release-workflow.adoc[Git Release Workflow] — When and how to treat work as a "release" (general guide)
+* xref:knowledge-base:how-to/automated-releases.adoc[Automated Releases] — Building and attaching binaries with GitHub Actions (general guide)
+* xref:knowledge-base:reference/package-registries.adoc[Package Registries] — Choosing where to publish (ecosystem registries, GitHub, package managers)
+* link:https://antora-supplemental.github.io/docs/[Antora deployment and doc-site build] — Root vs. subfolder strategy, CI, GitHub Pages, and multi-repo playbooks (hosted in antora-supplemental docs)

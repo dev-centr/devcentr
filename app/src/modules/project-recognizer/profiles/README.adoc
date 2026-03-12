@@ -1,6 +1,8 @@
 = Sample Recognizer Profiles
 
-Each `.json` file in this directory represents a single technology profile that the recognizer can load. Use `ProjectRecognizer.fromProfilesDir(...)` with the path to a directory of profiles to assemble the recognizer at runtime.
+Each profile file in this directory represents a single technology profile that the recognizer can load. Use `ProjectRecognizer.fromProfilesDir(...)` with the path to a directory of profiles to assemble the recognizer at runtime.
+
+Supported extensions: `.sdl` (preferred), `.json5`, `.json`. Prefer editing the `.sdl` versions; see the project's SDL (SDLang) specification for format and rationale.
 
 Profiles follow this schema:
 

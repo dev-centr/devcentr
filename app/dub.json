@@ -3,7 +3,8 @@
     "targetType": "executable",
     "sourcePaths": ["src"],
     "dependencies": {
-        "dlangui": { "path": "../../dlangui" }
+        "dlangui": { "path": "../../dlangui" },
+        "sdlang-d": "~>0.10.6"
     },
     "preBuildCommands": [
         "pnpm install"

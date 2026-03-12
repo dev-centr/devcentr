@@ -2,7 +2,7 @@
 
 Docs site uses Antora Docs. Docs are stored in .adoc (AsciiDoc) format in the `modules` directory.
 
-In order to build the Antora site, see link:modules/publishing/pages/antora-deployment.adoc[Antora deployment and build instructions].
+To build the Antora site and for deployment (root vs. subfolder, CI, GitHub Pages), see the link:https://antora-supplemental.github.io/docs/[Antora Supplemental docs] (antora-deployment page).
 
 == Structure
 
@@ -13,9 +13,14 @@ This directory contains the Antora component descriptor. The playbook lives at r
 
 == Module Organization
 
-* **knowledge-base** - General reference material and best practices (not specific to dev-center)
-* **specifications** - Dev-center app component and feature specifications
-* **ROOT** - Project overview and vision
+Modules follow a hybrid of product/workflow boundaries and intent-based (Diátaxis) structure. See link:modules/ROOT/pages/docs-organization.adoc[Doc Organization] for the rationale and debate.
+
+* **ROOT** — Project overview, vision, and doc organization
+* **knowledge-base** — Diátaxis-organized tutorials, how-tos, reference, and explanations (shared, not dev-center-specific)
+* **specifications** — Dev-center app component and feature specifications
+* **secrets-manager** — Secrets Manager product docs
+* **publishing** — Release workflow, automation, package registries (Antora deployment lives in antora-supplemental docs)
+* **upstream-contributions** — Contributing to external projects
 
 == Future Work
 

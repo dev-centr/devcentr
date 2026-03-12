@@ -1,0 +1,44 @@
+= Per-Repository Devcentr Settings
+:description: Convention for storing Devcentr-specific settings per repository in an SDL file at repo root.
+
+Per-repository settings for Devcentr are stored in a single SDL file at the root of each repository. This gives each repo a place for Devcentr-specific configuration that can be versioned and shared with the team.
+
+== File name and location
+
+* **File name:** `.devcentr.sdl`
+* **Location:** Repository root (same level as `.git`, `package.json`, or other root config files).
+
+The leading dot keeps the file visible in file explorers that show dotfiles and follows common config-file convention (e.g. `.editorconfig`, `.gitignore`).
+
+== Format
+
+* **Format:** SDLang (SDL). See xref:sdl.adoc[SDL (SDLang) preference] for rationale and syntax.
+* **Encoding:** UTF-8.
+* **Extension:** `.sdl`.
+
+== Purpose and scope
+
+The file is intended for settings that:
+
+* Apply to this repository only (not global user settings).
+* Are useful to commit so other developers and tools get the same behavior (e.g. which templates to use, which modules to enable for this repo).
+* Are consumed by Devcentr or by tooling that follows this convention.
+
+User-specific or machine-specific data (e.g. paths, credentials) belong in user config (e.g. `%USERPROFILE%\Dev Center`) or environment, not in `.devcentr.sdl`.
+
+== Content (future)
+
+The exact keys and structure for `.devcentr.sdl` are not yet defined. When we add features that need per-repo configuration, we will document the tags and semantics here and in the relevant component specs. The file may be empty or contain only comments until then; Devcentr should treat a missing or empty file as “no overrides.”
+
+Example placeholder (no behavior assigned yet):
+
+```
+// Per-repo Devcentr settings. See docs/specifications/per-repo-settings.
+// Keys and structure TBD as features need them.
+```
+
+== Relation to other config
+
+* **User config:** `%USERPROFILE%\Dev Center` (or equivalent) holds user- and machine-specific settings; see project vision.
+* **Workspace templates:** The Workspace Template Manager may sync from a template repo; per-repo settings can override or extend which template applies.
+* **Universal config (project vision):** The vision mentions a “universal configuration file” from each repo; `.devcentr.sdl` is the Devcentr-specific instance of that idea, in SDL format.

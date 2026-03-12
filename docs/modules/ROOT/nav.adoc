@@ -1,4 +1,5 @@
 * xref:index.adoc[Dev Center]
+* xref:docs-organization.adoc[Doc Organization]
 * xref:project-vision.adoc[Project Vision]
 * xref:todo-roadmap.adoc[Todo & Roadmap]
 * xref:activity-log.adoc[Activity Log]

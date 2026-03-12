@@ -42,7 +42,7 @@ You do two things: (1) tell GitHub your domain name, and (2) tell the place that
 
 Use your real GitHub username or org name instead of `yourusername` / `yourorg`. Do not add the repository name in the CNAME value.
 
-== Order of work (do this first, then that)
+== Order of work
 
 . **First:** Add your custom domain in GitHub (Settings → Pages → Custom domain). Save. That way GitHub knows you own it and no one else can use it for their site.
 . **Second:** Add the DNS records at your DNS provider (see the table and sections below). If you do DNS first and forget GitHub, someone else could point your domain to their site.
@@ -59,6 +59,8 @@ DNS changes can take up to 24 hours to show up. Be patient.
 . Click **Save**.
 
 If you publish from a branch, GitHub will add a file called `CNAME` to your repo. If you build the site with GitHub Actions, you do not need that file.
+
+**If you deploy with GitHub Actions** (e.g. `upload-pages-artifact` + `deploy-pages`): In **Settings → Pages**, under "Build and deployment", set **Source** to **GitHub Actions**. If Source is "Deploy from a branch", GitHub will ignore the Actions deployment and your custom domain may not serve the built site.
 
 After the domain is set, you can turn on **Enforce HTTPS** when it appears (sometimes it takes a while). That makes your site load over a secure connection.
 
@@ -90,6 +92,8 @@ Go to your DNS provider and create **four** A records. Each record points your d
 
 * **Name / host:** Use `@` or your apex (e.g. leave blank or `example.com` depending on the provider).
 * **TTL:** Default is fine (e.g. 3600 or "Auto").
++
+If you use **Cloudflare:** each record has a proxy toggle (cloud icon). Use **grey cloud (DNS only)** for these records. Orange cloud (proxied) can leave "Enforce HTTPS" unavailable or cause certificate errors; grey avoids that. If you later try orange, set SSL/TLS to Full or Full (strict) in Cloudflare.
 
 === Option B: One ALIAS or ANAME record (if your DNS provider has it)
 
@@ -98,6 +102,8 @@ Some providers (e.g. Cloudflare, DNSimple) let you use one record instead of fou
 * **Type:** ALIAS or ANAME
 * **Name / host:** `@` or your apex
 * **Value / target:** `yourusername.github.io` or `yourorg.github.io` (user or org site). No repo name. No `https://`.
++
+If you use **Cloudflare:** set this record to **grey cloud (DNS only)**. Proxied (orange) can break Enforce HTTPS or cause certificate issues.
 
 If you do not see ALIAS or ANAME in your provider, use the four A records above.
 
@@ -120,11 +126,13 @@ This is a **subdomain**. You need **one CNAME** record.
 * **Name / host:** `www` (or `www.example.com` if the provider asks for the full name)
 * **Value / target:** `yourusername.github.io` or `yourorg.github.io`
 . Do **not** put the repository name in the value. Do **not** put `https://`. Just the `.github.io` address.
++
+If you use **Cloudflare:** set this CNAME to **grey cloud (DNS only)**. Orange cloud (proxied) often keeps "Enforce HTTPS" greyed out or causes certificate errors.
 
 == Step 2c: You want both the main domain and www
 
-. Do "Step 2a" for your main domain (four A records or one ALIAS/ANAME).
-. Do "Step 2b" for `www` (one CNAME pointing to `yourusername.github.io` or `yourorg.github.io`).
+. Do "Step 2a" for your main domain (four A records or one ALIAS/ANAME). If you use Cloudflare, use **grey cloud (DNS only)** for those records.
+. Do "Step 2b" for `www` (one CNAME pointing to `yourusername.github.io` or `yourorg.github.io`). Same Cloudflare rule: grey cloud for the CNAME.
 . In GitHub (Settings → Pages → Custom domain), type **one** of the two (either `example.com` or `www.example.com`) and save. GitHub will then redirect the other one to the one you chose. For example, if you set `example.com` in GitHub, then `www.example.com` will redirect to `example.com`.
 
 == Check that it worked
@@ -150,6 +158,16 @@ Then you can remove or change the DNS records at your DNS provider so the domain
 * **Verify your domain in GitHub** before or right after adding it. That helps stop someone else from using your domain on their repo. See GitHub’s doc on "Verifying your custom domain."
 * **Do not use wildcards** like `*.example.com` in DNS. That can let other people use subdomains of your domain (e.g. `something.example.com`) for their site. Use exact names only (e.g. `www`, or your apex).
 * If you **turn off GitHub Pages** but leave the domain in DNS pointing at GitHub, someone else could use your domain. If you disable the site, remove or change the DNS records too.
+
+== Troubleshooting: “Works on .github.io but not my domain” or “GitHub Actions deploy but domain is wrong”
+
+If your workflow uses `actions/upload-pages-artifact` and `actions/deploy-pages`:
+
+. In the repo on GitHub go to **Settings → Pages**.
+. Under **Build and deployment**, check **Source**. It must say **GitHub Actions**. If it says **Deploy from a branch**, GitHub is not using your Actions workflow for this site; change it to **GitHub Actions** and save.
+. Under **Custom domain**, make sure your domain (e.g. `devcentr.org` or `www.devcentr.org`) is set and saved. GitHub does not read the custom domain from a CNAME file when you use GitHub Actions.
+
+If the domain still fails, run `Resolve-DnsName yourdomain.com -Type A` (PowerShell) or `dig yourdomain.com +short` (Mac/Linux). For an apex domain you should see the four GitHub Pages IPs (see "Step 2a" above). For `www` you should see a CNAME to `yourorg.github.io`.
 
 == Summary
 

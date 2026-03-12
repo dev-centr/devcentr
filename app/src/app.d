@@ -6,6 +6,8 @@ import modules.template_installer.project_manager;
 import modules.project_recognizer.recognizer;
 import modules.system_overview.tool_manager;
 import modules.system_overview.widgets;
+import modules.workflow_templates_store.browser;
+import modules.workflow_templates_store.store;
 import std.stdio;
 import std.path;
 import std.file;
@@ -25,6 +27,8 @@ class DevCenterApp {
 
     StringListAdapter templateAdapter;
     StringListAdapter stackAdapter;
+    StringListAdapter workflowTemplateAdapter;
+    WorkflowTemplateRef[] workflowTemplateList;  /// Cached list for install
 
     this() {
         // Initialize backend
@@ -48,6 +52,7 @@ class DevCenterApp {
 
         templateAdapter = new StringListAdapter();
         stackAdapter = new StringListAdapter();
+        workflowTemplateAdapter = new StringListAdapter();
     }
 
     void createUI() {
@@ -79,6 +84,7 @@ class DevCenterApp {
                         Button { id: navDashboard; text: "Tool Status"; layoutWidth: fill }
                         Button { id: navTemplates; text: "Browse Projects"; layoutWidth: fill }
                         Button { id: navProject; text: "Project Analysis"; layoutWidth: fill }
+                        Button { id: navWorkflowTemplates; text: "Workflow templates"; layoutWidth: fill }
                     }
 
                     // Main Content
@@ -111,6 +117,16 @@ class DevCenterApp {
                                     TextWidget { text: "overview of installed development tools, PATH variables, and available missing tools."; fontSize: 10pt; textColor: "#AAAAAA"; alignment: center; maxLines: 3 }
                                     Spacer { layoutHeight: fill }
                                     Button { id: btnChoiceTools; text: "View Dashboard"; layoutWidth: fill }
+                                }
+
+                                // Choice 3: Workflow templates (replaces GitHub's broken template UX)
+                                VerticalLayout {
+                                    id: choiceWorkflowTemplates; layoutWidth: 300; layoutHeight: 350; padding: 20; background: "#252525"
+                                    ImageWidget { drawableId: "folder_open"; layoutWidth: 128; layoutHeight: 128; alignment: center; margin: 10 }
+                                    TextWidget { text: "Workflow templates"; fontSize: 16pt; fontWeight: 600; alignment: center; margin: 10 }
+                                    TextWidget { text: "Browse full workflow files to copy. Not GitHub Marketplace actions — real templates."; fontSize: 10pt; textColor: "#AAAAAA"; alignment: center; maxLines: 3 }
+                                    Spacer { layoutHeight: fill }
+                                    Button { id: btnChoiceWorkflowTemplates; text: "Open store"; layoutWidth: fill }
                                 }
                             }
                         }
@@ -150,6 +166,18 @@ class DevCenterApp {
                                 VerticalLayout { id: tabAvailable; text: "Available"; layoutWidth: fill; layoutHeight: fill }
                             }
                         }
+
+                        VerticalLayout {
+                    id: pageWorkflowTemplates; layoutWidth: fill; layoutHeight: fill; padding: 10
+                            TextWidget { text: "Workflow templates"; fontSize: 14pt; margin: 5 }
+                            TextWidget { id: workflowInstallPathLabel; text: "Install into: "; margin: 2 }
+                            ListWidget { id: listWorkflowTemplates; layoutWidth: fill; layoutHeight: fill }
+                            HorizontalLayout {
+                                Button { id: btnRefreshWorkflowTemplates; text: "Refresh list" }
+                                Button { id: btnInstallWorkflowTemplate; text: "Install into repo" }
+                                Button { id: btnOpenWorkflowStore; text: "Open store in browser" }
+                            }
+                        }
                     }
                 }
             }
@@ -172,6 +200,9 @@ class DevCenterApp {
         auto listStacks = window.mainWidget.childById!ListWidget("listStacks");
         listStacks.adapter = stackAdapter;
 
+        auto listWorkflowTemplates = window.mainWidget.childById!ListWidget("listWorkflowTemplates");
+        listWorkflowTemplates.adapter = workflowTemplateAdapter;
+
         setupEventHandlers();
         refreshTemplates();
         refreshProject();
@@ -184,11 +215,14 @@ class DevCenterApp {
     auto sidebar = window.mainWidget.childById("sidebar");
 
         auto showPage = delegate(int index, bool showSidebar) {
-        string[] pageIds = ["pageHome", "pageTemplates", "pageProject", "pageDashboard"];
+        string[] pageIds = ["pageHome", "pageTemplates", "pageProject", "pageDashboard", "pageWorkflowTemplates"];
         if (index >= 0 && index < pageIds.length) {
             contentStack.showChild(pageIds[index]);
         }
         sidebar.visibility = showSidebar ? Visibility.Visible : Visibility.Gone;
+        if (index == 4) {
+            refreshWorkflowTemplates();
+        }
     };
 
         window.mainWidget.childById!Button("btnHome").click = delegate(Widget w) {
@@ -221,6 +255,47 @@ class DevCenterApp {
         window.mainWidget.childById!Button("navProject").click = delegate(Widget w) {
             showPage(2, true);
             refreshProject();
+            return true;
+        };
+
+        window.mainWidget.childById!Button("navWorkflowTemplates").click = delegate(Widget w) {
+            showPage(4, true);
+            return true;
+        };
+        window.mainWidget.childById!Button("btnChoiceWorkflowTemplates").click = delegate(Widget w) {
+            showPage(4, true);
+            return true;
+        };
+
+        window.mainWidget.childById!Button("btnRefreshWorkflowTemplates").click = delegate(Widget w) {
+            refreshWorkflowTemplates();
+            return true;
+        };
+        window.mainWidget.childById!Button("btnInstallWorkflowTemplate").click = delegate(Widget w) {
+            auto list = window.mainWidget.childById!ListWidget("listWorkflowTemplates");
+            int idx = list.selectedItemIndex;
+            if (idx < 0 || idx >= workflowTemplateList.length) {
+                window.showMessageBox(UIString.fromRaw("Install"d), UIString.fromRaw("Select a template first."d));
+                return true;
+            }
+            string baseUrl = getWorkflowTemplatesStoreURL();
+            string id = workflowTemplateList[idx].id;
+            auto content = fetchTemplateContent(baseUrl, id);
+            if (!content) {
+                window.showMessageBox(UIString.fromRaw("Install"d), UIString.fromRaw("Could not fetch template content."d));
+                return true;
+            }
+            string errMsg;
+            bool ok = installTemplateIntoRepo(getcwd(), content.filename, content.content, errMsg);
+            if (ok) {
+                window.showMessageBox(UIString.fromRaw("Install"d), UIString.fromRaw("Installed "d ~ to!dstring(content.filename) ~ " into .github/workflows/"d));
+            } else {
+                window.showMessageBox(UIString.fromRaw("Install failed"d), UIString.fromRaw(to!dstring(errMsg)));
+            }
+            return true;
+        };
+        window.mainWidget.childById!Button("btnOpenWorkflowStore").click = delegate(Widget w) {
+            openWorkflowTemplatesStore();
             return true;
         };
 
@@ -257,6 +332,18 @@ class DevCenterApp {
         auto label = window.mainWidget.childById!TextWidget("projectPathLabel");
         if (label) {
             label.text = UIString.fromRaw("Path: "d ~ to!dstring(getcwd()));
+        }
+    }
+
+    void refreshWorkflowTemplates() {
+        workflowTemplateAdapter.clear();
+        workflowTemplateList = fetchTemplatesList(getWorkflowTemplatesStoreURL());
+        foreach (t; workflowTemplateList) {
+            workflowTemplateAdapter.add(to!dstring(t.name ~ " (" ~ t.source ~ ")"));
+        }
+        auto pathLabel = window.mainWidget.childById!TextWidget("workflowInstallPathLabel");
+        if (pathLabel) {
+            pathLabel.text = UIString.fromRaw("Install into: "d ~ to!dstring(getcwd()));
         }
     }
 

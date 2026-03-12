@@ -7,3 +7,4 @@ Dry, technical facts and specifications.
 * xref:reference/git-management.adoc[Git Repository Management]
 * xref:reference/nodejs-env.adoc[Node.js Environment]
 * xref:reference/asciidoc-tools.adoc[AsciiDoc Tooling]
+* xref:reference/package-registries.adoc[Package Registries]

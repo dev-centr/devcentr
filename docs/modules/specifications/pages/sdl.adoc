@@ -1,0 +1,69 @@
+= SDL (SDLang) Preference for Settings and Configuration
+:description: Prefer SDL over JSON and JSON5 for human-edited settings and config files. Official references and comparison.
+
+Developers in the Dev-Centr ecosystem should **favor SDL** (SDLang — Simple Declarative Language) over JSON and JSON5 for settings files and other human-edited configuration. This page explains why, compares formats, and points to the official language and tools.
+
+== What is SDL? (Disambiguation)
+
+**SDL** in this context means **SDLang** (Simple Declarative Language): a compact, human-readable data format for config files, property files, and serialization. It is **not** any of the following:
+
+* **libSDL / SDL2 / SDL3** — Simple Directmedia Layer (graphics/gaming library from https://libsdl.org[libsdl.org]). Web search for "SDL" often returns these first.
+* **SDL_Config** (C++ .ini/.cfg libraries) — Different purpose; not the SDLang language.
+* **GraphQL SDL** — Schema Definition Language for GraphQL; not a general config format.
+
+When searching for the *config format*, use **"SDLang"** or **"SDLang config"** or **"sdlang.org"** to avoid the gaming/library results.
+
+== Why Favor SDL (Even Over JSON5)
+
+SDL was designed as a human-friendly alternative to XML and property files. For settings and config that developers edit by hand, it is a better fit than JSON or JSON5.
+
+* **Comments out of the box** — Line comments (`//`, `#`, `--`) and block comments (`/* */`) with no need for a separate "JSON with comments" dialect.
+* **Less syntactic noise** — No required commas between elements; no mandatory quotes for keys; structure is clear without repeating tag names.
+* **Native types** — Booleans (`true`/`false`, `on`/`off`), numbers (integer, float, decimal), dates/times, durations, and binary (base64) without encoding them as strings.
+* **Readable nesting** — Tags and braces read like a lightweight document; easier to scan than dense JSON.
+* **Trailing structure** — Optional semicolons; newline or `}` ends a tag, so fewer easy-to-miss punctuation errors.
+
+JSON5 improves on JSON (comments, trailing commas, unquoted keys) but still carries JSON’s brace-and-comma style. SDL avoids that style entirely and stays concise and type-aware.
+
+== Comparison
+
+| Feature | JSON | JSON5 | SDL (SDLang)
+| Comments | No | Yes (`//`, `/* */`) | Yes (`//`, `#`, `--`, `/* */`)
+| Trailing commas | No | Yes | N/A (not used)
+| Unquoted keys | No | Yes | Yes (tag names)
+| Native date/time | No | No | Yes
+| Native booleans | No (literals) | Same | Yes (`on`/`off` etc.)
+| Verbosity | High | Medium | Low
+| Learning curve | Low | Low | Low
+| Ecosystem/tooling | Very large | Moderate | Smaller (but solid for D, Java, .NET, Ruby, C, etc.)
+
+*Recommendation:* Prefer **`.sdl`** for new settings and config files when you control the parser (e.g. Dev Center recognizer profiles, app config, per-repo settings). Use **JSON5** (or JSON) when a tool or API strictly requires it (e.g. `package.json`, VS Code `settings.json`, dprint/biome config).
+
+Per-repository Devcentr settings live in **`.devcentr.sdl`** at the root of each repo; see xref:per-repo-settings.adoc[Per-Repository Devcentr Settings].
+
+== File Extensions and Conventions
+
+* Use **`.sdl`** for SDLang configuration and settings files.
+* Files must be UTF-8. No `\uXXXX` escapes; use UTF-8 directly.
+* Indentation is by convention; the language does not require specific spaces/tabs.
+
+== Implementation in Dev Center (D)
+
+The Dev Center app uses the **sdlang-d** library (SDLang-D) for parsing `.sdl` config.
+
+* **Recognizer profiles:** `app/src/modules/project-recognizer/profiles/` — `.sdl`, `.json5`, or `.json`; one format per logical profile; prefer `.sdl`.
+* **Per-repo settings:** `.devcentr.sdl` at repository root — see xref:per-repo-settings.adoc[Per-Repository Devcentr Settings]. Structure and keys are reserved for future use.
+
+== Official References and Specs
+
+Use these to learn the language and to avoid confusion with libSDL/gaming hits:
+
+* **Official site:** https://sdlang.org/[SDLang — Simple Declarative Language] — syntax overview, data types, comment styles, implementations list.
+* **Language guide (spec-style):** https://github.com/dlang-community/SDLang-D/wiki/Language-Guide[SDLang-D Wiki — Language Guide] — tags, literals, strings, comments, file encoding; the authoritative language description.
+* **Original reference (mirror):** http://semitwist.com/sdl-mirror/Language+Guide.html[SDL Language Guide mirror] — original SDL documentation.
+* **D implementation (used in Dev Center):** https://code.dlang.org/packages/sdlang-d[sdlang-d on DUB] — D library; HOWTO and API links in the package description.
+* **Source repos:** https://github.com/dlang-community/SDLang-D[SDLang-D (D)], https://github.com/ikayzo/SDL[SDL (Java)], https://github.com/ikayzo/SDL.rb[SDL.rb (Ruby)], https://github.com/ellipticbit/SDLangNET[SDLangNET (.NET)].
+
+== Relation to JSON5
+
+When a tool or platform does not support SDL (e.g. npm, VS Code, many CI configs), use JSON5 over plain JSON so that comments and trailing commas are allowed. See xref:json5.adoc[JSON5 Endorsement] for that policy. For Dev-Centr-owned config (e.g. recognizer profiles), we use SDL where possible and document both formats in this specification set.
