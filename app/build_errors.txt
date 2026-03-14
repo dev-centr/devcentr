@@ -1,0 +1,51 @@
+     Warning Selected package arsd-official@11.5.3 does not match the dependency specification <11.0.0 in package dlangui. Need to "dub upgrade"?
+     Warning Selected package arsd-official@11.5.3 does not match the dependency specification <11.0.0 in package dlangui. Need to "dub upgrade"?
+    Starting Performing "debug" build using C:\Program Files\LDC 1.42\bin\ldc2.exe for x86_64.
+  Up-to-date arsd-official:core 11.5.3: target for configuration [library] is up to date.
+  Up-to-date arsd-official:characterencodings 11.5.3: target for configuration [library] is up to date.
+  Up-to-date arsd-official:dom 11.5.3: target for configuration [library] is up to date.
+  Up-to-date arsd-official:color_base 11.5.3: target for configuration [library] is up to date.
+  Up-to-date arsd-official:bmp 11.5.3: target for configuration [library] is up to date.
+  Up-to-date arsd-official:imageresize 11.5.3: target for configuration [library] is up to date.
+  Up-to-date arsd-official:jpeg 11.5.3: target for configuration [library] is up to date.
+  Up-to-date arsd-official:png 11.5.3: target for configuration [library] is up to date.
+  Up-to-date arsd-official:svg 11.5.3: target for configuration [library] is up to date.
+  Up-to-date arsd-official:image_files 11.5.3: target for configuration [library] is up to date.
+  Up-to-date bindbc-common 0.1.6: target for configuration [noBC] is up to date.
+  Up-to-date bindbc-loader 1.1.5: target for configuration [noBC] is up to date.
+  Up-to-date bindbc-freetype 1.2.6: target for configuration [dynamic] is up to date.
+  Up-to-date bindbc-opengl 1.1.1: target for configuration [dynamic] is up to date.
+  Up-to-date bindbc-sdl 1.4.8: target for configuration [dynamic] is up to date.
+  Up-to-date inilike 1.2.3: target for configuration [library] is up to date.
+  Up-to-date isfreedesktop 0.1.1: target for configuration [library] is up to date.
+  Up-to-date xdgpaths 0.2.5: target for configuration [library] is up to date.
+  Up-to-date icontheme 1.2.3: target for configuration [library] is up to date.
+  Up-to-date dlangui 0.10.8: target for configuration [default] is up to date.
+  Up-to-date taggedalgebraic 0.11.24: target for configuration [library] is up to date.
+  Up-to-date sdlang-d 0.10.6: target for configuration [library] is up to date.
+    Building dev-center ~master: building configuration [default]
+   Pre-build Running commands
+Lockfile is up to date, resolution step is skipped
+Packages: -7
+-------
+
+Done in 305ms using pnpm v10.30.3
+src\modules\repo_tools\git_viewers.d(6,8): Error: module `std.string` import `splitter` not found
+import std.string : splitter;
+       ^
+src\modules\repo_tools\git_viewer_indexer.d(4,8): Error: module `std.string` import `splitter` not found
+import std.string : splitLines, strip, splitter;
+       ^
+src\modules\repo_tools\git_viewer_indexer.d(6,8): Error: module `std.datetime` import `unixTimeToSysTime` not found, did you mean function `std.datetime.systime.unixTimeToStdTime`?
+import std.datetime : SysTime, DateTime, unixTimeToSysTime;
+       ^
+src\modules\repo_tools\git_viewer_widget.d(7,8): Error: module `std.datetime` import `unixTimeToSysTime` not found, did you mean function `std.datetime.systime.unixTimeToStdTime`?
+import std.datetime : SysTime, unixTimeToSysTime;
+       ^
+src\modules\repo_tools\git_viewer_widget.d(24,26): Error: undefined identifier `DrawContext`
+    override void onDraw(DrawContext* dc) {
+                         ^
+src\modules\repo_tools\git_viewer_widget.d(71,19): Error: function `bool modules.repo_tools.git_viewer_widget.TimelineWidget.onMouseEvent(MouseEvent* event)` does not override any function, did you mean to override `bool dlangui.widgets.widget.Widget.onMouseEvent(dlangui.core.events.MouseEvent event)`?
+    override bool onMouseEvent(MouseEvent* event) {
+                  ^
+Error C:\Program Files\LDC 1.42\bin\ldc2.exe failed with exit code 1.

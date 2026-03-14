@@ -1,9 +1,11 @@
 module modules.repo_tools.git_viewer_indexer;
 
 import std.process : pipeProcess, Redirect, wait;
-import std.string : splitLines, strip, splitter;
+import std.string : splitLines, strip;
+import std.algorithm : splitter;
 import std.conv : to;
-import std.datetime : SysTime, DateTime, unixTimeToSysTime;
+import std.datetime.systime : SysTime, unixTimeToStdTime;
+import std.datetime.date : DateTime;
 import std.array : array;
 import core.thread : Thread;
 
@@ -73,7 +75,10 @@ class GitViewerIndexer
 
             IndexedCommit item;
             item.hash = parts[0];
-            try { item.timestamp = to!long(parts[1]); } catch (Exception) {}
+            try {
+                item.timestamp = to!long(parts[1]);
+                item.timestampObj = SysTime(unixTimeToStdTime(item.timestamp)); // Populate SysTime field
+            } catch (Exception) {}
             item.subject = parts[2];
             item.isIndexed = false;
 

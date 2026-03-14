@@ -3,7 +3,7 @@ module modules.repo_tools.git_viewers;
 import std.file : exists, isFile;
 import std.path : buildPath;
 import std.process : environment;
-import std.string : splitter;
+import std.algorithm : splitter;
 import std.array : array;
 
 /// Type of Git viewer.

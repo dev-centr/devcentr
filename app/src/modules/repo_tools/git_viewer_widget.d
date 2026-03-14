@@ -1,10 +1,11 @@
 module modules.repo_tools.git_viewer_widget;
 
 import dlangui;
+import dlangui.graphics.drawbuf : DrawBuf;
 import modules.repo_tools.git_viewer_indexer;
 import std.conv : to;
 import std.path : baseName;
-import std.datetime : SysTime, unixTimeToSysTime;
+import std.datetime.systime : SysTime, unixTimeToStdTime;
 import std.algorithm : max, min;
 
 /// A custom widget to draw the horizontal commit timeline.
@@ -21,8 +22,8 @@ class TimelineWidget : Widget {
         backgroundColor(0x111111);
     }
 
-    override void onDraw(DrawContext* dc) {
-        super.onDraw(dc);
+    override void onDraw(DrawBuf buf) {
+        super.onDraw(buf);
         
         auto rect = contentRect;
         if (rect.isEmpty) return;
@@ -64,11 +65,11 @@ class TimelineWidget : Widget {
         if (_selectedTimestamp != 0) {
             float relPos = (_selectedTimestamp - minTs) / cast(float)duration;
             int x = cast(int)(rect.left + relPos * rect.width * _zoom - _scrollOffset);
-            dc.fillRect(Rect(x - 1, rect.top, x + 1, rect.bottom), 0xFFFFFF);
+            buf.fillRect(Rect(x - 1, rect.top, x + 1, rect.bottom), 0xFFFFFF);
         }
     }
 
-    override bool onMouseEvent(MouseEvent* event) {
+    override bool onMouseEvent(MouseEvent event) {
         if (event.action == MouseAction.ButtonDown || (event.action == MouseAction.Move && (event.flags & MouseFlag.LButton))) {
             // Calculate timestamp from X position
             auto rect = contentRect;
