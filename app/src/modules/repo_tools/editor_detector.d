@@ -19,7 +19,8 @@ static const EditorProfile[] KNOWN_VSCODE_FORKS = [
     EditorProfile("Cursor", "cursor", ""),
     EditorProfile("Windsurf", "windsurf", ""),
     EditorProfile("Trae", "trae", ""),
-    EditorProfile("PearAI", "pearai", "")
+    EditorProfile("PearAI", "pearai", ""),
+    EditorProfile("Google Antigravity", "antigravity", "")
 ];
 
 /// Returns a list of installed editor profiles that are detected on the system PATH

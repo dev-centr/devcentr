@@ -63,16 +63,17 @@ Widget createCompoundButton(string label, void delegate(Widget) onHighlight, voi
     return hl;
 }
 
-/// Discovers if a VSCode multi-root workspace file exists in the repo
-string findWorkspaceFile(string repoPath)
+/// Discovers all VSCode multi-root workspace files in the repo
+string[] findWorkspaceFiles(string repoPath)
 {
+    string[] wksps;
     foreach(entry; dirEntries(repoPath, SpanMode.shallow))
     {
         if (entry.name.endsWith(".code-workspace")) {
-            return entry.name;
+            wksps ~= entry.name;
         }
     }
-    return "";
+    return wksps;
 }
 
 /// Create the popup menu to choose a specific detected VSCode fork to open the workspace.
@@ -139,21 +140,89 @@ Widget createRepoToolbar(Window parentWindow, string repoPath)
     spacer.layoutWidth(FILL_PARENT);
     bar.addChild(spacer);
     
-    // IDE detection buttons
-    string workspaceFile = findWorkspaceFile(repoPath);
-    if (workspaceFile.length > 0)
+    // --- Workspaces & Editor Integration Block ---
+    
+    VerticalLayout workspaceBlock = new VerticalLayout("WorkspaceBlock");
+    workspaceBlock.layoutWidth(WRAP_CONTENT).layoutHeight(WRAP_CONTENT);
+    workspaceBlock.padding(5);
+    workspaceBlock.backgroundColor = 0x1A1A1A;
+    workspaceBlock.margins(Rect(10, 0, 0, 0)); // space out from hallmarks
+    
+    string[] workspaces = findWorkspaceFiles(repoPath);
+    
+    // Status text (analogous to permanent toast)
+    TextWidget wkspNote = new TextWidget("wkspNote", UIString.fromRaw(workspaces.length > 0 
+        ? "Workspaces detected. A workspace organizes IDE-specific settings isolated from global config."d
+        : "No workspace detected. IDE configs and root-scoping will default to .vscode/ layout or standard git root."d));
+    wkspNote.textColor = 0x888888;
+    wkspNote.fontSize = 9;
+    
+    HorizontalLayout btnsArea = new HorizontalLayout();
+    
+    if (workspaces.length > 0)
     {
-        Button btnWksp = new Button("btnWksp", UIString.fromRaw("Launch Workspace"d));
-        btnWksp.textColor = 0x00FF88; // distinctive color
-        btnWksp.click = delegate(Widget w) {
-            showEditorSelectorDialog(parentWindow, workspaceFile);
+        Button btnLaunchWksp = new Button("btnWksp", UIString.fromRaw("Launch Workspace"d));
+        btnLaunchWksp.textColor = 0x00FF88;
+        btnLaunchWksp.click = delegate(Widget w) {
+            if (workspaces.length == 1) {
+                showEditorSelectorDialog(parentWindow, workspaces[0]);
+            } else {
+                import dlangui.dialogs.dialog;
+                PopupMenu menu = new PopupMenu();
+                foreach(i, ws; workspaces) {
+                    auto item = menu.addMenuItem(new MenuItem(new Action(to!int(200+i), UIString.fromRaw(to!dstring(baseName(ws))))));
+                    item.action.bind(btnLaunchWksp, delegate(Action a) {
+                        showEditorSelectorDialog(parentWindow, workspaces[a.id - 200]);
+                        return true;
+                    });
+                }
+                menu.popup(parentWindow.mainWidget, 0, 0); 
+            }
             return true;
         };
-        bar.addChild(btnWksp);
+        btnsArea.addChild(btnLaunchWksp);
+    }
+    else
+    {
+        Button btnNoWksp = new Button("btnWksp", UIString.fromRaw("No Workspace"d));
+        btnNoWksp.textColor = 0x555555;
+        btnNoWksp.enabled = false;
+        btnsArea.addChild(btnNoWksp);
     }
     
-    // Open full directory
+    // Vertical Separator
+    TextWidget spanDiv = new TextWidget(null, UIString.fromRaw(" | "d));
+    spanDiv.textColor = 0x444444;
+    btnsArea.addChild(spanDiv);
+    
+    // Init/Import Compound Control
+    Button btnInit = new Button("btnInit", UIString.fromRaw("Init/Import"d));
+    btnInit.styleId = "BUTTON_TRANSPARENT";
+    btnInit.textColor = 0x00AAFF;
+    btnInit.click = delegate(Widget w) {
+        parentWindow.showMessageBox(UIString.fromRaw("Workspace Builder"d), 
+            UIString.fromRaw("Opening Workspace Generator... (This parses the DevCentr template repo to combine folders, extensions, and settings into a new .code-workspace vs standard .vscode/ depending on scope isolation needs)"d));
+        return true;
+    };
+    btnsArea.addChild(btnInit);
+    
+    // Sync Button
+    Button btnSync = new Button("btnSync", UIString.fromRaw("Sync Profile"d));
+    btnSync.styleId = "BUTTON_TRANSPARENT";
+    btnSync.click = delegate(Widget w) {
+        parentWindow.showMessageBox(UIString.fromRaw("Sync Provider"d), 
+            UIString.fromRaw("Overwrite repo workspace logic by checking remote templates repo or PR changes back if you have write access up-stream."d));
+        return true;
+    };
+    btnsArea.addChild(btnSync);
+    
+    workspaceBlock.addChild(wkspNote);
+    workspaceBlock.addChild(btnsArea);
+    bar.addChild(workspaceBlock);
+    
+    // Open full directory fallback
     Button btnOpenDir = new Button("btnOpenDir", UIString.fromRaw("Open Full Repo"d));
+    btnOpenDir.margins(Rect(10, 0, 0, 0));
     btnOpenDir.click = delegate(Widget w) {
         showEditorSelectorDialog(parentWindow, repoPath);
         return true;
