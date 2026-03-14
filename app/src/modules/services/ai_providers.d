@@ -24,7 +24,14 @@ static const AIProviderProfile[] KNOWN_PROVIDERS = [
     AIProviderProfile("anthropic", "Anthropic", "https://console.anthropic.com/settings/keys", "https://api.anthropic.com/v1/messages", "2023-06-01"),
     AIProviderProfile("gemini", "Google Gemini", "https://aistudio.google.com/app/apikey", "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent", ""),
     AIProviderProfile("mistral", "Mistral AI", "https://console.mistral.ai/api-keys/", "https://api.mistral.ai/v1/chat/completions", ""),
-    AIProviderProfile("groq", "Groq", "https://console.groq.com/keys", "https://api.groq.com/openai/v1/chat/completions", "")
+    AIProviderProfile("groq", "Groq", "https://console.groq.com/keys", "https://api.groq.com/openai/v1/chat/completions", ""),
+    AIProviderProfile("openrouter", "OpenRouter", "https://openrouter.ai/keys", "https://openrouter.ai/api/v1/chat/completions", ""),
+    AIProviderProfile("moonshot", "Moonshot / Kimi", "https://platform.moonshot.cn/console/api-keys", "https://api.moonshot.cn/v1/chat/completions", ""),
+    AIProviderProfile("deepseek", "DeepSeek", "https://platform.deepseek.com/api_keys", "https://api.deepseek.com/chat/completions", ""),
+    AIProviderProfile("zhipu", "Zhipu AI (GLM)", "https://open.bigmodel.cn/usercenter/apikeys", "https://open.bigmodel.cn/api/paas/v4/chat/completions", ""),
+    AIProviderProfile("dashscope", "Alibaba DashScope (Qwen)", "https://dashscope.console.aliyun.com/apiKey", "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions", ""),
+    AIProviderProfile("qianfan", "Baidu Qianfan", "https://console.bce.baidu.com/qianfan/ais/console/applicationConsole/application", "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions", ""),
+    AIProviderProfile("hunyuan", "Tencent Hunyuan", "https://console.cloud.tencent.com/hunyuan", "https://api.hunyuan.cloud.tencent.com/v1/chat/completions", "")
 ];
 
 /// Get a config path for a specific provider
