@@ -1,0 +1,98 @@
+= Prohelp CLI Specification
+dev-centr <devcentr.org>
+v0.1.0, 2026-05-27
+:toc:
+
+This technical specification describes the **Prohelp** (Progressive & Professional Help) standard and library. 
+
+Prohelp resolves the cognitive overload of traditional command-line `--help` outputs by enforcing *progressive information disclosure*. It structures command parameters, options, and descriptions into a conceptual hierarchy, providing developers with a drop-in integration API and terminal users with a premium navigation experience.
+
+== Core Concept & Progressive Hierarchy
+
+Rather than dumping hundreds of options in a single text block, Prohelp requires CLI applications to present help in tiered screen-budgeted sections:
+
+* **Level 0 (Root Page)**: Displays high-level summaries, usage syntax, and inline listings of Level 1 sections.
+  * **Line Budget: Strictly <= 20 lines** (guarantees fitting on standard 80x24 consoles without scrolling).
+* **Level 1 (Section Pages)**: Displays a targeted section summary, subcategories, or high-dominance options.
+  * **Line Budget: Max 40 lines** (approx. 1.5 to 2 screen pages).
+* **Level 2+ (Subsections/Leaf Options)**: Displays specific options, arguments, flags, and advanced examples grouped by dominance.
+  * **Line Budget: Max 60 lines**. If surpassed, the developer is prompted to sub-categorize further.
+
+=== Wildcard Subtree Globbing (`*`)
+
+In addition to sequential drilling (e.g. `tar ? operations creation`), the specification supports a **globbing wildcard (`*` or `all`)** as a trailing navigation token. 
+When appended, the engine recursively flattens and dumps that specific subtree (e.g. `tar ?:text operations *` retrieves only `operations` and its child subsections). This is highly optimized for AI agents and automation scripts that need command schemas on demand without downloading the full manual.
+
+== Integration API (The 1-Line Drop-in)
+
+The Prohelp library acts as a *first-pass CLI argument filter*. Integration is achieved by inserting a single call at the top of the application's entry `main` function:
+
+[source,d]
+----
+import prohelp;
+
+void main(string[] args) {
+    if (prohelp.intercept(args)) return;
+
+    // Normal application parsers and logic continue...
+}
+----
+
+If a help token is matched, Prohelp intercepts execution, reads the `help.sdl` schema, outputs the formatted documentation, and terminates the process with exit code `0`. If not matched, it immediately returns `false` and passes execution to the host application, keeping it completely unaffected.
+
+== The Hybrid Suffix Syntax (`?:[locale][,mode]`)
+
+To isolate help-system configurations from application subcommands, Prohelp maps directives using a **hybrid colon/comma suffix syntax**:
+
+`[help|?|--help|-h][:[locale][,mode]] [navigation tokens...]`
+
+* **The Colon (`:`)**: Separates the help interceptor token from its system settings.
+* **The Comma (`,`)**: Acts as a shift-free list separator for multiple parameters.
+* **Locales**: Dynamic system locale auto-detection (using Win32 API and POSIX environment variables) with explicit multilingual overrides (e.g., `?:de` or `?:es`).
+* **Modes**:
+  * `text` / `txt` (Default): Static styled stdout panels.
+  * `i` / `interactive`: Full-screen scrollable TUI viewport.
+
+== Text Mode: Unicode Box-Drawing Zoning
+
+Static progressive help output is framed line-by-line using Unicode box-drawing characters (`┌`, `─`, `┐`, `│`, `└`, `┘`, `├`, `┤`). This generates structured, premium visual panels that:
+1. Are fully compatible with pipes (`|`) and grep filters.
+2. Can be redirected to standard text files (`>`).
+3. Maintain pixel-perfect visual separation without terminal screen-clearing overhead.
+
+== Interactive Mode: TUI Viewport
+
+Interactive Mode launches a zero-dependency full-screen viewport with:
+* **Alphanumeric Filters**: Typing immediately filters visible subsections and options.
+* **Ctrl+F Search Focus**: Resets and focuses the filter input bar.
+* **Shift-Toggled Selection**: Pressing and releasing the `Shift` key (or `v` key on POSIX) toggles Highlight Mode. Viewport characters are highlighted using inverted terminal colors.
+* **Markdown Copying (`Ctrl+C`)**: Converts the active screen highlighted cells directly into clean Markdown text and copies it to the host OS clipboard.
+* **Safe Exit (`Ctrl+Esc`)**: Safely restores raw console states and exits.
+
+== Schema Configuration: `help.sdl`
+
+Prohelp enforces a mandatory schema filename: **`help.sdl`** in the application's root directory, preventing configuration fragmentation.
+
+[source,sdlang]
+----
+command "tar" {
+    summary "Tape archiver utility"
+    description "Combine multiple files into a single archive file."
+
+    locale "de" {
+        summary "Bandarchivierungsprogramm"
+    }
+
+    section "operations" {
+        summary "Main operation modes"
+        inline true
+
+        section "creation" {
+            summary "Creating new archives"
+            dominance "high" {
+                option "-c" "--create" "Create a new archive from files"
+            }
+        }
+    }
+}
+----
