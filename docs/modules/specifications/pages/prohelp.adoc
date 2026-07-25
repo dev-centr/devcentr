@@ -3,7 +3,9 @@ dev-centr <devcentr.org>
 v0.1.0, 2026-05-27
 :toc:
 
-This technical specification describes the **Prohelp** (Progressive & Professional Help) standard and library. 
+This technical specification describes **Prohelp** — progressive command-line help. The system delivers a professional-grade terminal documentation experience; the product name stays short on purpose.
+
+**Canonical repository:** link:https://github.com/openshellorg/prohelp[openshellorg/prohelp] (moved from Dev-Centr into OpenShellOrg). This page remains a Dev-Centr consumer copy of the specification; prefer the OpenShellOrg README and sources for implementation truth.
 
 Prohelp resolves the cognitive overload of traditional command-line `--help` outputs by enforcing *progressive information disclosure*. It structures command parameters, options, and descriptions into a conceptual hierarchy, providing developers with a drop-in integration API and terminal users with a premium navigation experience.
 
