@@ -1,0 +1,90 @@
+= Toolchain Management (TCM)
+:navtitle: Toolchain Management (TCM)
+:description: DevCentr component for Toolchain Management—pattern, protocol, control-plane advisories, and Toolchain Framework integration.
+
+**Toolchain Management (TCM)** is the DevCentr product component that owns how the app teaches and enforces lifecycle integrity for software ecosystems: install, pin, health, repair, and upgrade in the official entrypoint.
+
+It is the in-product home for the xref:general-knowledge:explanation/infrastructure/toolchain-management.adoc[Toolchain Management Pattern]. Per-ecosystem UI surfaces live under xref:ecosystem-management.adoc[Ecosystem Management]; TCM is the umbrella component that ties pattern, protocol, control plane, and framework together.
+
+== Purpose
+
+* Encode the Toolchain Management vocabulary in DevCentr (Pattern → Protocol → Control Plane → Framework).
+* Drive `unifiedControlPlane` metadata and top-of-module advisories when an ecosystem lacks an official plane.
+* Point maintainers at the xref:general-knowledge:explanation/infrastructure/toolchain-framework.adoc[Toolchain Framework (TCF)] repository for generating compliant planes.
+* Stay distinct from xref:toolchain-advisor.adoc[Toolchain Advisor] (host/target decision flow) and xref:cli-tools-catalog.adoc[CLI Tools Catalog] (install profiles).
+
+== Vocabulary (locked)
+
+[cols="1,2"]
+|===
+| Term | Role in TCM
+
+| **Toolchain Management**
+| Umbrella / problem space (this component’s name).
+
+| **Pattern**
+| How maintainers should think — GK explanation.
+
+| **Protocol**
+| Repeatable behaviors — see <<protocol>> and Ecosystem Management.
+
+| **Control Plane (TCP / TCoP)**
+| Product metaphor for what ecosystems ship; DevCentr records status via SDL.
+
+| **Toolchain Framework (TCF)**
+| External kit (`dev-centr/toolchain-framework`) that builds/validates planes. Not “TMF.”
+|===
+
+[[protocol]]
+== Protocol behaviors
+
+Canonical list: xref:ecosystem-management.adoc#toolchain-management-protocol[Ecosystem Management — Protocol].
+
+Bootstrap, pin/resolve, health, repair, upgrade/rollback, surface parity.
+
+== UI and data
+
+[cols="1,2"]
+|===
+| Piece | Location
+
+| Language / ecosystem defs
+| `app/src/modules/languages/<ecosystem>.sdl` — `unifiedControlPlane` block
+
+| Advisory banner
+| `app/src/modules/ui/advisory_banner.d`
+
+| Ecosystem panel
+| `app/src/modules/ecosystems/`
+
+| First instance
+| Flutter page (`pageFlutter`) — see xref:ecosystem-management.adoc[Ecosystem Management]
+
+| Docs Learn more
+| `https://docs.devcentr.org/general-knowledge/latest/explanation/infrastructure/toolchain-management.html`
+|===
+
+== External repositories
+
+[cols="1,2"]
+|===
+| Repo | Role
+
+| link:https://github.com/dev-centr/toolchain-framework[`dev-centr/toolchain-framework`]
+| TCF schemas, validators, CI; generates/conforms control planes
+
+| link:https://github.com/dev-centr/general-knowledge[`dev-centr/general-knowledge`]
+| Pattern / Protocol / Control Plane / TCF explanations (Diátaxis)
+
+| link:https://github.com/dev-centr/toolchain-advisor[`dev-centr/toolchain-advisor`]
+| Unrelated: host/target advisor catalog (do not conflate)
+|===
+
+== Related
+
+* xref:ecosystem-management.adoc[Ecosystem Management]
+* xref:toolchain-management.adoc[Toolchain Management (TCM)]
+* xref:ROOT:toolchain-management.adoc[Product pointer]
+* xref:ROOT:project-vision.adoc[Project Vision]
+* xref:../reference/definition-files.adoc[Definition Files]
+* link:https://github.com/dev-centr/toolchain-framework[dev-centr/toolchain-framework (TCF)]

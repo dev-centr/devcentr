@@ -1,0 +1,17 @@
+= 2026-07-24 – Toolchain Management vocabulary
+
+== Summary
+
+Aligned DevCentr product docs and Flutter advisory with the Toolchain Management vocabulary: Pattern → Protocol → Control Plane → TCF.
+
+== Documentation
+
+* ROOT: `toolchain-management.adoc`; retargeted `toolchain-control-plane.adoc`
+* Spec: protocol section + advisory copy on `ecosystem-management.adoc`; new component `toolchain-management.adoc` (TCM).
+* Vision / definition-files xrefs
+* TCF: https://github.com/dev-centr/toolchain-framework
+
+== Application
+
+* `modules.ecosystems.model` default docs URL → `toolchain-management.html`
+* Advisory banner copy and “Toolchain Management docs” button label

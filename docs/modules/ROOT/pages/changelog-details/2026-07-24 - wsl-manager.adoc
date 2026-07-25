@@ -1,0 +1,17 @@
+= 2026-07-24 – WSL Manager
+
+== Summary
+
+New DevCentr page for managing WSL distributions on Windows and teaching which Linux to choose as default. Links the official **WSL Settings** app (global VM / `.wslconfig`) and the new general-knowledge articles.
+
+== Application
+
+* Module: `app/src/modules/wsl_manager/` (`model.d`, `guide_loader.d`, `ui.d`, `distro-guide.sdl`)
+* UI: `pageWsl` in `main.sdl`; page index 8 in `app.d`
+* Home card + sidebar nav “WSL”
+
+== Documentation
+
+* Spec: `specifications/pages/components/wsl-manager.adoc`
+* Cross-link from Secrets Manager `connecting-to-wsl.adoc`
+* Companion content lives in **general-knowledge** (WSL distro comparison + setup how-to)

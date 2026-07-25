@@ -30,11 +30,50 @@ Each client entry can include:
 
 == Language ecosystems
 
-* **Location (app):** `app/src/modules/languages/<ecosystem>.sdl` (e.g. `node.sdl`, `python.sdl`)
-* **Purpose:** Runtimes and frameworks for that ecosystem (e.g. Node.js, pnpm, Next.js; Python, Poetry, FastAPI). Used when installing or bootstrapping **project technologies** into a repo.
-* **Used by:** Installation workflow when the user chooses to add a language or framework to a repository.
+* **Location (app):** `app/src/modules/languages/<ecosystem>.sdl` (e.g. `node.sdl`, `flutter.sdl`, `python.sdl`)
+* **Purpose:** Runtimes and frameworks for that ecosystem (e.g. Node.js, pnpm, Next.js; Flutter SDK, FVM; Python, Poetry, FastAPI). Used when installing or bootstrapping **project technologies** into a repo, and by per-ecosystem management modules.
+* **Used by:** Installation workflow when the user chooses to add a language or framework to a repository; ecosystem management UI for versions, health summary, and Toolchain Management / control-plane advisories.
 
 Frameworks are split by ecosystem so that editing one language does not touch others or the services list. This keeps file operations and ownership clear.
+
+=== `unifiedControlPlane` block
+
+Each language ecosystem file may include a `unifiedControlPlane` block. DevCentr uses it to decide whether to show a **Toolchain Management advisory** (gap vs official control plane) at the top of that ecosystem’s management module.
+
+[cols="1,2"]
+|===
+| Field | Meaning
+
+| `status`
+| `missing` — no first-party plane and weak community story; `community` — community version managers exist but are not the official entrypoint; `official` — ecosystem owns pin/resolve (and ideally health/repair) in the main workflow.
+
+| `entrypoint`
+| Official CLI or shim name when `status` is `official` (e.g. `rustup`, `flutter`). Empty when missing/community.
+
+| `communityTools`
+| Bridge tools DevCentr may offer for setup (e.g. `fvm`, `puro`, `mise`).
+
+| `advisory`
+| When `true` (or when `status` is not `official`), show the top-of-module advisory linking to the Toolchain Management Pattern philosophy.
+|===
+
+Example (Flutter — community bridges, no official plane yet):
+
+[source,sdl]
+----
+flutter {
+    unifiedControlPlane {
+        status "community"
+        entrypoint ""
+        communityTools "fvm" "puro" "mise"
+        advisory true
+    }
+    runtime { id "flutter"; name "Flutter SDK"; }
+}
+----
+
+Philosophy: xref:general-knowledge:explanation/infrastructure/toolchain-management.adoc[Toolchain Management Pattern].
+Product behavior: xref:../components/ecosystem-management.adoc[Ecosystem Management].
 
 == Relation to installation workflow
 

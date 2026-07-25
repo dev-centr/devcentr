@@ -1,0 +1,13 @@
+= Toolchain Control Plane
+:navtitle: Toolchain Control Plane
+:description: Product pointer to the Toolchain Control Plane metaphor under Toolchain Management.
+
+A **Toolchain Control Plane (TCP / TCoP)** is what an ecosystem *ships* when it follows the Toolchain Management Pattern—the official lifecycle surface for install, pin, health, repair, and upgrade.
+
+Start here for the full pedagogy:
+
+* xref:general-knowledge:explanation/infrastructure/toolchain-management.adoc[Toolchain Management Pattern]
+* xref:general-knowledge:explanation/infrastructure/toolchain-control-plane.adoc[Toolchain Control Plane (detail)]
+* xref:ROOT:toolchain-management.adoc[Toolchain Management (product overview)]
+
+Spec and UI advisories: xref:specifications:components/ecosystem-management.adoc[Ecosystem Management].

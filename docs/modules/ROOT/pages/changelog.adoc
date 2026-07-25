@@ -2,6 +2,43 @@
 
 This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
 
+== 2026-07-24 – Toolchain Management vocabulary
+
+* Product pointers: xref:ROOT:toolchain-management.adoc[Toolchain Management] + retargeted xref:ROOT:toolchain-control-plane.adoc[Control Plane].
+* Spec components: xref:specifications:components/toolchain-management.adoc[Toolchain Management (TCM)] and xref:specifications:components/ecosystem-management.adoc[Ecosystem Management] (protocol + advisories).
+* Vision and definition-files xrefs point at the Pattern page; Flutter advisory Learn more → `toolchain-management.html`.
+* TCF kit repo: link:https://github.com/dev-centr/toolchain-framework[`dev-centr/toolchain-framework`] (schemas, validators, CI).
+* Companion: general-knowledge vocabulary lock-in (xref:general-knowledge:changelog.adoc[Changelog]).
+* See xref:ROOT:changelog-details/2026-07-24 - toolchain-management-vocabulary.adoc[Detailed changelog].
+
+== 2026-07-24 – Toolchain Control Plane and Flutter ecosystem module
+
+* Documented Toolchain Control Plane / Flutter ecosystem module (vocabulary later locked under Toolchain Management — see entry above).
+* Spec: xref:specifications:components/ecosystem-management.adoc[Ecosystem Management]; definition files gain `unifiedControlPlane` metadata.
+* App: reusable `AdvisoryBanner`; `modules.ecosystems` loader/panel; **Flutter** home/sidebar page with advisory and community bridge tools (`fvm`, `puro`, `mise`).
+* Language SDL: `languages/flutter.sdl`; `languages/node.sdl` includes control-plane metadata.
+* See xref:ROOT:changelog-details/2026-07-24 - toolchain-control-plane.adoc[Detailed changelog].
+* Docs sibling: general-knowledge Toolchain Control Plane + Flutter setup (xref:general-knowledge:changelog.adoc[Changelog]).
+
+== 2026-07-24 – WSL Manager page
+
+* Added sidebar/home **WSL** page: list distros (`wsl -l -v`), set default, educational blurbs from `distro-guide.sdl`, and **Open WSL Settings** (official Microsoft GUI for `.wslconfig`).
+* Links to general-knowledge comparison + setup how-to and Microsoft Learn.
+* Spec: xref:specifications:components/wsl-manager.adoc[WSL Manager].
+* See xref:ROOT:changelog-details/2026-07-24 - wsl-manager.adoc[Detailed changelog].
+* Docs sibling: general-knowledge 2026-07-24 WSL distro comparison (xref:general-knowledge:changelog.adoc[Changelog]).
+
+== 2026-07-22 – Appearance: Cascadia Mono / JetBrains Mono
+
+* Added Appearance settings (top bar): code/terminal font choice between **Cascadia Mono** (default) and **JetBrains Mono**.
+* Persisted in `~/.dev-center/ui-settings.json` (`codeFontFace`). Applied to the repository browser terminal and AI Config monospace panels.
+* Spec: xref:specifications:components/appearance.adoc[Appearance (code font)]; terminal spec notes the font requirement.
+
+== 2026-07-22 – Nushell as recommended system shell
+
+* Capabilities and project vision now endorse link:https://www.nushell.sh/[Nushell] as the default cross-platform shell, with xrefs to general-knowledge.
+* See general-knowledge changelog: xref:general-knowledge:changelog.adoc[Changelog] (2026-07-22 entry).
+
 == 2026-03-27 – Dynamic Agent Preamble specification
 
 * Added xref:specifications:features/dynamic-agent-preamble.adoc[Dynamic Agent Preamble] specification.

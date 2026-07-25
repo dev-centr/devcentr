@@ -1,6 +1,8 @@
 * xref:index.adoc[Dev Center]
 * xref:docs-organization.adoc[Doc Organization]
 * xref:project-vision.adoc[Project Vision]
+* xref:toolchain-management.adoc[Toolchain Management]
+* xref:toolchain-control-plane.adoc[Toolchain Control Plane]
 * xref:aspect-oriented-programming.adoc[Aspect-Oriented Programming]
 * xref:todo-roadmap.adoc[Todo & Roadmap]
 * xref:gitignore-whitelist.adoc[Gitignore Strategy]

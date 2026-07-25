@@ -1,0 +1,119 @@
+= Ecosystem Management
+
+Per-ecosystem management modules are DevCentr’s deep surface for a language or tooling stack: versions/pins, detected tools, health summary, bootstrap actions, and documentation links. They sit beside Install (orchestration funnel) and Toolchain Advisor (host/target decisions).
+
+== Purpose
+
+* Give each ecosystem a dedicated management UI (pattern after xref:wsl-manager.adoc[WSL Manager]).
+* Prefer an **official Toolchain Control Plane** when the ecosystem ships one (xref:general-knowledge:explanation/infrastructure/toolchain-management.adoc[Toolchain Management Pattern]).
+* When it does not, show a short **advisory** at the top of the module and offer community version managers as a bridge.
+* Educate maintainers and users via a link to the philosophy doc—do not block setup.
+
+[[toolchain-management-protocol]]
+== Toolchain Management Protocol
+
+The **Toolchain Management Protocol** is the set of standard, repeatable *behaviors* (not a network protocol) expected of an official toolchain entrypoint. Philosophy: xref:general-knowledge:explanation/infrastructure/toolchain-management.adoc[Toolchain Management Pattern].
+
+[cols="1,2"]
+|===
+| Behavior | Expectation
+
+| **Bootstrap**
+| Install via OS package managers when possible; refresh PATH; gate on a post-install health check.
+
+| **Pin and resolve**
+| Per-project pin wins over user default over system; resolution is part of the official entrypoint.
+
+| **Health**
+| Machine-readable component status (`ok`, `warn`, `broken`, `missing`) with evidence.
+
+| **Repair**
+| Failures map to ordered, idempotent repair actions that can run non-interactively.
+
+| **Upgrade and rollback**
+| Upgrades are transactional; failed mid-state can return to last known-good.
+
+| **Surface parity**
+| CLI, GUI, and ideally IDE/agent APIs expose the same verbs and health model.
+|===
+
+These are behavioral expectations for maintainers and tools. Wire formats and schemas arrive with the xref:general-knowledge:explanation/infrastructure/toolchain-framework.adoc[Toolchain Framework (TCF)].
+
+== Toolchain Management advisory
+
+Philosophy: xref:general-knowledge:explanation/infrastructure/toolchain-management.adoc[Toolchain Management Pattern].
+Control plane metaphor: xref:general-knowledge:explanation/infrastructure/toolchain-control-plane.adoc[Toolchain Control Plane (TCP / TCoP)].
+Maintainer toolkit (planned): xref:general-knowledge:explanation/infrastructure/toolchain-framework.adoc[Toolchain Framework (TCF)].
+
+Metadata lives on each language definition (`app/src/modules/languages/<ecosystem>.sdl`) in the `unifiedControlPlane` block. See xref:../reference/definition-files.adoc[Definition Files].
+
+[cols="1,2"]
+|===
+| Condition | UI behavior
+
+| `status` = `official` and `advisory` false
+| No gap advisory. Optional positive note that an official toolchain control plane was detected.
+
+| `status` = `community` or `missing`, or `advisory` true
+| `AdvisoryBanner` under the page title: short explanation + **Learn more** → docs URL.
+|===
+
+Advisory copy (canonical):
+
+____
+This ecosystem has no official Toolchain Control Plane yet (Toolchain Management Pattern). Version pinning and environment repair should live in the main entrypoint—not only in community tools. Community version managers are a stopgap.
+____
+
+Learn more links to the Toolchain Management Pattern explanation.
+
+== Architecture (module first)
+
+[cols="1,2"]
+|===
+| Choice | Decision
+
+| **Shared banner**
+| `modules.ui.advisory_banner.AdvisoryBanner` — reusable muted/warn strip with Learn more.
+
+| **Shared loader / panel**
+| `modules.ecosystems` — load language SDL, decide advisory, render community tools list.
+
+| **Per-ecosystem page**
+| Thin page shell in `main.sdl` (e.g. `pageFlutter`) that mounts `EcosystemManagerPanel` for that id.
+|===
+
+== Entry points (Flutter — first instance)
+
+* **Home hub:** Card “Flutter” → Manage Flutter.
+* **Sidebar:** Nav item “Flutter”.
+* Page id: `pageFlutter` (index **9** in the page switcher array in `app.d`).
+
+== Layout
+
+[source]
+----
+pageFlutter
+├── title row
+├── AdvisoryBanner (when unifiedControlPlane requires it)
+├── muted help line
+└── ecosystemManagerHost
+    └── EcosystemManagerPanel
+        ├── status summary (control-plane status)
+        ├── community tools list (bridge)
+        └── actions: Learn more (philosophy) | Setup how-to (when available)
+----
+
+== Data
+
+* Language SDL: `app/src/modules/languages/flutter.sdl` (and peers).
+* Docs URL (default): `https://docs.devcentr.org/general-knowledge/latest/explanation/infrastructure/toolchain-management.html`
+
+== Related
+
+* xref:../reference/definition-files.adoc[Definition Files]
+* xref:installation-workflow.adoc[Installation Workflow]
+* xref:toolchain-advisor.adoc[Toolchain Advisor]
+* xref:toolchain-management.adoc[Toolchain Management (TCM)]
+* xref:ROOT:project-vision.adoc[Project Vision]
+* xref:ROOT:toolchain-management.adoc[Toolchain Management (product pointer)]
+* link:https://github.com/dev-centr/toolchain-framework[dev-centr/toolchain-framework (TCF)]

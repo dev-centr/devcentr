@@ -8,7 +8,7 @@ Our flagship project, **DevCentr**, is a **Development Orchestration Suite (DOS)
 
 While traditional IDEs focus on the editor, DevCentr focuses on the **Orchestration** of the entire development lifecycle:
 
-*   **Ecosystem Management:** Author and version your entire environment—shells, toolchains, and infrastructure—as first-class citizens.
+*   **Ecosystem Management:** Author and version your entire environment—shells, toolchains, and infrastructure—as first-class citizens. For shells, we standardize on link:https://www.nushell.sh/[Nushell] across Windows, macOS, and Linux (structured pipelines; see xref:general-knowledge:explanation/infrastructure/nushell.adoc[Why We Recommend Nushell]). For toolchains, we endorse xref:general-knowledge:explanation/infrastructure/toolchain-management.adoc[Toolchain Management]: the ecosystem’s main entrypoint must own install, version pinning, health, repair, and upgrade—shipping a xref:general-knowledge:explanation/infrastructure/toolchain-control-plane.adoc[Toolchain Control Plane] rather than leaving newcomers to discover tribal version managers.
 *   **Visual DevEx:** A "Live Blueprint" approach that visually models project architecture, moving beyond simple file trees into system design.
 *   **AI Vibe-Coding Synergy:** A hub that provides the deep contextual metadata necessary for human-in-the-loop AI coding to be truly effective.
 *   **Literate Programming First:** Promoting an architecture where documentation is the primary source, and code is an extracted artifact. We endorse **Synchronous Literate Programming (SLP)** to eliminate the gap between narrative and execution.
@@ -22,11 +22,14 @@ In Dev-Centr, any doc about a language—such as C or D—mentions literate prog
 
 This diagram shows the "what controls what" hierarchy of management roles, reflecting the ideal way to manage development environments.
 
+In a mature ecosystem, **version management is not a side tool the user must find**—it is part of the main toolchain entrypoint (or a thin official shim that *is* what you install). Community version managers are a bridge when the official entrypoint still lacks that capability. See xref:general-knowledge:explanation/infrastructure/toolchain-management.adoc[Toolchain Management Pattern].
+
 [mermaid]
 ----
 graph TD
-    SYS["System Package Manager (e.g. winget, brew)"] --> VM["Version Manager (e.g. nvm, asdf)"]
-    VM --> RT["Language Runtime (e.g. Node.js)"]
+    SYS["System Package Manager (e.g. winget, brew)"] --> TCP["Toolchain Control Plane / official entrypoint"]
+    TCP --> VM["Version resolve and pin (first-party; community VM as bridge)"]
+    VM --> RT["Language Runtime (e.g. Node.js, Flutter SDK)"]
     RT --> WRAP["Manager Wrapper (e.g. Corepack)"]
     RT --> NPM["Bundled Manager (e.g. npm)"]
     WRAP --> PM["External Package Manager (e.g. pnpm, yarn)"]
@@ -35,6 +38,7 @@ graph TD
     DEP --> APP["Application Codebase"]
     SYS --> B_RT["Independent Runtime/PM (e.g. Bun)"]
     B_RT --> DEP
+    TCP --> HEALTH["Health, repair, upgrade, rollback"]
 ----
 
 === Management Tool Hierarchy (Specific)
@@ -122,12 +126,19 @@ needs to support recognizing virtual environments and virtual machines. mounting
 
 the project viewer must show various types of models/diagrams of the project architecture. Dependency tree/graph is required. Control tree/graph is required. For cases like Next.js, which relies on React but controls React's usage, dependency doesn't communicate the whole picture. The control tree will differ from the dependency tree in cases like this.
 
-For ecosystems that support version managers, require the user to install those before working with the ecosystem. Let them choose which one they want to use, then install that one. For any new project, allow them to choose again. support the 3 most popular version managers for each ecosystem.
+For each language ecosystem, prefer an **official Toolchain Control Plane** when one exists (`unifiedControlPlane.status` = `official` in the language definition)—that is the product of the xref:general-knowledge:explanation/infrastructure/toolchain-management.adoc[Toolchain Management Pattern]. When the ecosystem still lacks one, DevCentr:
+
+. Shows a short **advisory** at the top of that ecosystem’s management module (link to the Toolchain Management Pattern).
+. Offers the top community version managers as a **bridge** so the user can still pin safely.
+. Lets the user choose again per new project when multiple bridges exist.
+
+Do not treat “pick among three community VMs” as the end state—encourage maintainers to absorb pinning into the main entrypoint (optionally via the xref:general-knowledge:explanation/infrastructure/toolchain-framework.adoc[Toolchain Framework (TCF)]).
 
 ecosystems to target:
 
 * Web
 * System languages
+* Mobile / multi-platform (e.g. Flutter) as a control-plane case study
 
 === SSH Key Management
 

@@ -1,0 +1,18 @@
+= 2026-07-24 – Toolchain Control Plane
+
+== Summary
+
+DevCentr now documents and surfaces the **Toolchain Control Plane** pattern: ecosystems should own pinning and environment integrity in the official entrypoint. The Flutter management page leads with an advisory when that plane is missing and lists community bridges.
+
+== Application
+
+* `app/src/modules/ui/advisory_banner.d` — reusable top-of-page advisory
+* `app/src/modules/ecosystems/` — model, SDL loader, `EcosystemManagerPanel`
+* `app/src/modules/languages/flutter.sdl`, updated `node.sdl` (`unifiedControlPlane`)
+* UI: `pageFlutter` (index 9), home card + sidebar **Flutter**
+
+== Documentation
+
+* ROOT: `toolchain-control-plane.adoc`; vision hierarchy/policy updates
+* Spec: `ecosystem-management.adoc`; definition-files `unifiedControlPlane` section
+* Companion philosophy + Flutter how-to in **general-knowledge**
