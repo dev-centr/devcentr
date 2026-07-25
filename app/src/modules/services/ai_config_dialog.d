@@ -3,7 +3,7 @@ module modules.services.ai_config_dialog;
 import dlangui;
 import dlangui.dialogs.dialog : Dialog, DialogFlag;
 import dlangui.widgets.styles : Align;
-import dlangui.graphics.fonts : FontFamily;
+import modules.appearance.fonts : applyCodeFont;
 import modules.infra.logging : logInfo, logWarning;
 import modules.infra.ui : openUrlInBrowser;
 import modules.repo_tools.editor_detector : detectInstalledEditors, openPathWithEditor, EditorProfile;
@@ -147,7 +147,7 @@ void showContext7IssueReportDialog(Window parentWindow, const AIClientProfile cl
 
     auto preview = new EditBox("ctx7IssuePreview", ""d);
     preview.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT);
-    preview.fontFamily(FontFamily.MonoSpace);
+    applyCodeFont(preview);
     preview.readOnly(true);
     content.addChild(preview);
 
@@ -251,7 +251,7 @@ private class MCPSetupWidget : VerticalLayout
         leftCol.addChild(new TextWidget(null, "Snippet / setup summary"d).fontWeight(700).margins(Rect(0, 0, 0, 4)));
         _snippetBox = new EditBox("ctx7SnippetBox", ""d);
         _snippetBox.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT);
-        _snippetBox.fontFamily(FontFamily.MonoSpace);
+        applyCodeFont(_snippetBox);
         _snippetBox.readOnly(true);
         leftCol.addChild(_snippetBox);
         infoRow.addChild(leftCol);
@@ -264,7 +264,7 @@ private class MCPSetupWidget : VerticalLayout
         centerCol.addChild(_targetPath);
         _configEditor = new EditBox("ctx7ConfigEditor", ""d);
         _configEditor.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT);
-        _configEditor.fontFamily(FontFamily.MonoSpace);
+        applyCodeFont(_configEditor);
         centerCol.addChild(_configEditor);
         infoRow.addChild(centerCol);
 
@@ -334,7 +334,7 @@ private class MCPSetupWidget : VerticalLayout
         controls.addChild(cliLabel);
         _cliBox = new EditBox("ctx7CliBox", ""d);
         _cliBox.layoutWidth(FILL_PARENT).layoutHeight(90);
-        _cliBox.fontFamily(FontFamily.MonoSpace);
+        applyCodeFont(_cliBox);
         _cliBox.readOnly(true);
         controls.addChild(_cliBox);
 

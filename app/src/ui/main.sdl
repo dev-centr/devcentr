@@ -8,6 +8,7 @@ VerticalLayout {
         TextWidget { text: "Dev Center"; fontSize: 18pt; fontWeight: 800; textColor: "#007AFF" }
         HSpacer { layoutWidth: fill }
         Button { id: btnAIConfig; text: "AI Config" }
+        Button { id: btnAppearance; text: "Appearance" }
         Button { id: btnHome; text: "Home"; styleId: "BUTTON_TRANSPARENT" }
         Button { id: btnUpdate; text: "Check for Updates" }
     }
@@ -26,6 +27,9 @@ VerticalLayout {
             Button { id: navProject; text: "Project Analysis"; layoutWidth: fill }
             Button { id: navWorkflowTemplates; text: "Workflow templates"; layoutWidth: fill }
             Button { id: navInfra; text: "Infra"; layoutWidth: fill }
+            Button { id: navToolchainAdvisor; text: "Toolchain Advisor"; layoutWidth: fill }
+            Button { id: navWsl; text: "WSL"; layoutWidth: fill }
+            Button { id: navFlutter; text: "Flutter"; layoutWidth: fill }
         }
 
         // Main Content
@@ -36,6 +40,9 @@ VerticalLayout {
             VerticalLayout {
                 id: pageHome; layoutWidth: fill; layoutHeight: fill; padding: 40; alignment: center
                 TextWidget { text: "Welcome to Dev Center"; fontSize: 24pt; fontWeight: 800; margins: 20; alignment: center }
+
+                VerticalLayout {
+                    layoutWidth: fill; alignment: center
 
                 HorizontalLayout {
                     layoutWidth: fill; alignment: center
@@ -79,6 +86,35 @@ VerticalLayout {
                         VSpacer { layoutHeight: fill }
                         Button { id: btnChoiceInstall; text: "Install or add..."; layoutWidth: fill }
                     }
+                }
+
+                HorizontalLayout {
+                    layoutWidth: fill; alignment: center; margins: 20
+
+                    VerticalLayout {
+                        id: choiceToolchainAdvisor; layoutWidth: 300; layoutHeight: 200; padding: 20; backgroundColor: "#252525"
+                        TextWidget { text: "Toolchain Advisor"; fontSize: 16pt; fontWeight: 600; alignment: center; margins: 10 }
+                        TextWidget { text: "Choose host OS, target platform, and toolchain—WSL vs MinGW vs MSVC and cross-build paths explained."; fontSize: 10pt; textColor: "#AAAAAA"; alignment: center }
+                        VSpacer { layoutHeight: fill }
+                        Button { id: btnChoiceToolchainAdvisor; text: "Open advisor"; layoutWidth: fill }
+                    }
+
+                    VerticalLayout {
+                        id: choiceWsl; layoutWidth: 300; layoutHeight: 200; padding: 20; backgroundColor: "#252525"
+                        TextWidget { text: "WSL"; fontSize: 16pt; fontWeight: 600; alignment: center; margins: 10 }
+                        TextWidget { text: "List distros, set the default, read which Linux to pick, and open Windows WSL Settings."; fontSize: 10pt; textColor: "#AAAAAA"; alignment: center }
+                        VSpacer { layoutHeight: fill }
+                        Button { id: btnChoiceWsl; text: "Manage WSL"; layoutWidth: fill }
+                    }
+
+                    VerticalLayout {
+                        id: choiceFlutter; layoutWidth: 300; layoutHeight: 200; padding: 20; backgroundColor: "#252525"
+                        TextWidget { text: "Flutter"; fontSize: 16pt; fontWeight: 600; alignment: center; margins: 10 }
+                        TextWidget { text: "Ecosystem management: community version bridges, control-plane advisory, and docs."; fontSize: 10pt; textColor: "#AAAAAA"; alignment: center }
+                        VSpacer { layoutHeight: fill }
+                        Button { id: btnChoiceFlutter; text: "Manage Flutter"; layoutWidth: fill }
+                    }
+                }
                 }
             }
 
@@ -143,12 +179,16 @@ VerticalLayout {
 
             VerticalLayout {
                 id: pageDashboard; layoutWidth: fill; layoutHeight: fill; padding: 10
-                TextWidget { text: "Tool Status Overview"; fontSize: 18pt; margins: 10 }
+                HorizontalLayout { layoutWidth: fill; margins: 5
+                    TextWidget { text: "Tool Status Overview"; fontSize: 18pt; layoutWidth: fill }
+                    Button { id: btnRefreshCliToolsCatalog; text: "Refresh catalog" }
+                }
+                TextWidget { id: cliToolsContextLabel; text: "CLI install profiles from dev-centr/equivalence-rules-cli. Installs run interactively and are logged to ~/.dev-center/install-audit/."; fontSize: 10pt; textColor: "#AAAAAA"; margins: 5 }
 
                 TabWidget {
                     id: dashboardTabs; layoutWidth: fill; layoutHeight: fill
                     VerticalLayout { id: tabInstalled; text: "Installed"; layoutWidth: fill; layoutHeight: fill }
-                    VerticalLayout { id: tabAvailable; text: "Available"; layoutWidth: fill; layoutHeight: fill }
+                    VerticalLayout { id: tabAvailable; text: "Catalog"; layoutWidth: fill; layoutHeight: fill }
                 }
             }
 
@@ -176,6 +216,17 @@ VerticalLayout {
             }
 
             VerticalLayout {
+                id: pageToolchainAdvisor; layoutWidth: fill; layoutHeight: fill; padding: 10
+                HorizontalLayout { layoutWidth: fill; margins: 5
+                    TextWidget { text: "Toolchain Advisor"; fontSize: 18pt; layoutWidth: fill }
+                    Button { id: btnAdvisorSettings; text: "Definitions source…" }
+                    Button { id: btnRefreshAdvisorCatalog; text: "Refresh definitions" }
+                }
+                TextWidget { text: "Definitions sync from github.com/dev-centr/toolchain-advisor. Walk through each step; recommendations update as you select."; fontSize: 10pt; textColor: "#AAAAAA"; margins: 5 }
+                VerticalLayout { id: toolchainAdvisorHost; layoutWidth: fill; layoutHeight: fill }
+            }
+
+            VerticalLayout {
                 id: pageInstall; layoutWidth: fill; layoutHeight: fill; padding: 20
                 TextWidget { text: "Install or add"; fontSize: 18pt; margins: 10 }
                 TextWidget { id: installPathLabel; text: "Repo: "; margins: 5 }
@@ -184,6 +235,27 @@ VerticalLayout {
                     Button { id: btnInstallIacDocs; text: "Docs: Infrastructure as Code"; layoutWidth: 300 }
                     Button { id: btnInstallTech; text: "Add project technologies (frameworks, runtimes)"; layoutWidth: 300 }
                 }
+            }
+
+            VerticalLayout {
+                id: pageWsl; layoutWidth: fill; layoutHeight: fill; padding: 10
+                HorizontalLayout { layoutWidth: fill; margins: 5
+                    TextWidget { text: "WSL"; fontSize: 18pt; layoutWidth: fill }
+                    Button { id: btnRefreshWsl; text: "Refresh" }
+                }
+                TextWidget { text: "Instance management lives here (list, default, guidance). WSL Settings is complementary—shared VM options like memory and networking."; fontSize: 10pt; textColor: "#AAAAAA"; margins: 5 }
+                VerticalLayout { id: wslManagerHost; layoutWidth: fill; layoutHeight: fill }
+            }
+
+            VerticalLayout {
+                id: pageFlutter; layoutWidth: fill; layoutHeight: fill; padding: 10
+                HorizontalLayout { layoutWidth: fill; margins: 5
+                    TextWidget { text: "Flutter"; fontSize: 18pt; layoutWidth: fill }
+                    Button { id: btnRefreshFlutter; text: "Refresh" }
+                }
+                VerticalLayout { id: flutterAdvisoryHost; layoutWidth: fill; layoutHeight: WRAP_CONTENT }
+                TextWidget { text: "Ecosystem management for Flutter. Community version managers are a bridge until the official entrypoint owns pinning and repair."; fontSize: 10pt; textColor: "#AAAAAA"; margins: 5 }
+                VerticalLayout { id: flutterManagerHost; layoutWidth: fill; layoutHeight: fill }
             }
         }
     }

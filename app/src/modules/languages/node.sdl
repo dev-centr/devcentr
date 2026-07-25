@@ -1,6 +1,12 @@
 // Node.js ecosystem: runtimes and frameworks for installation workflow.
 // See docs: specifications/reference/definition-files.adoc
 node {
+    unifiedControlPlane {
+        status "community"
+        entrypoint ""
+        communityTools "fnm" "nvm" "mise"
+        advisory true
+    }
     runtime { id "node"; name "Node.js"; }
     runtime { id "bun"; name "Bun"; }
     packageManager { id "pnpm"; name "pnpm"; }

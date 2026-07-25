@@ -17,8 +17,24 @@ import modules.workflow_templates_store.store;
 import modules.infra.discovery : discoverInfra, InfraDiscoveryMode, InfraDiscoverySummary;
 import modules.infra.logging : initDevCenterLogging, logInfo;
 import modules.infra.ui : InfraDiscoveryPanel, openUrlInBrowser;
+import modules.toolchain_advisor.ui : ToolchainAdvisorPanel;
+import modules.toolchain_advisor.cache : ToolchainAdvisorCache;
+import modules.toolchain_advisor.settings : loadAdvisorSettings;
+import modules.toolchain_advisor.settings_dialog : showAdvisorSettingsDialog;
+import modules.wsl_manager.ui : WslManagerPanel;
+import modules.wsl_manager.guide_loader : loadDistroGuideFromSdl, bundledGuideSdlPath;
+import modules.ecosystems.loader : loadEcosystemFromSdl, bundledLanguageSdlPath;
+import modules.ecosystems.ui : EcosystemManagerPanel, maybeControlPlaneAdvisory;
+import modules.ecosystems.model : defaultTcpDocsUrl;
+import modules.cli_tools.ui : CliToolsCatalogPanel;
+import modules.cli_tools.cache : CliToolsCatalogCache;
+import modules.cli_tools.settings : loadCliToolsSettings, CliToolsSettings;
+import modules.cli_tools.catalog : loadCliToolsCatalogFromJson;
+import modules.cli_tools.context : detectHostContext, contextLabel;
+import modules.cli_tools.model : CliToolsCatalog;
 import modules.repo_tools.repo_terminal_widget : RepoTerminalWidget;
 import modules.services.ai_config_dialog : showAIConfigDialog;
+import modules.appearance.settings_dialog : showAppearanceSettingsDialog;
 import modules.vcs.vcs_profiles : loadProfilesJson, getProviderForHost, hasOrgProfileSupport, orgProfilePublicUrl, orgProfileMemberUrl, orgProfilePublicRepoUrl, orgProfilePrivateRepoUrl, VCSProviderProfile;
 import std.json : JSONValue;
 import std.stdio;
@@ -37,6 +53,13 @@ class DevCenterApp {
     TemplateInstaller installer;
     ProjectWorkspaceManager projectManager;
     ToolManager toolManager;
+    ToolchainAdvisorCache toolchainCache;
+    CliToolsCatalogCache cliToolsCache;
+    CliToolsSettings cliToolsSettings;
+    CliToolsCatalog cliToolsCatalog;
+    string cliToolsFallbackJsonPath;
+    string dataRootPath;
+    string toolchainFallbackPath;
     RepoToolsRegistry repoTools;
     ArchitectureModel currentModel;
     string codeRoot;          /// Root of the code hierarchy (Z:\code)
@@ -63,9 +86,22 @@ class DevCenterApp {
         installer = new TemplateInstaller(cacheRoot);
         toolManager = new ToolManager();
         string dataRoot = buildPath(getHomeDir(), ".dev-center");
+        dataRootPath = dataRoot;
         initDevCenterLogging(dataRoot);
         logInfo("DevCenterApp constructor started.");
         repoTools = new RepoToolsRegistry(dataRoot);
+        auto advisorSettings = loadAdvisorSettings(dataRoot);
+        toolchainCache = new ToolchainAdvisorCache(buildPath(dataRoot, "toolchain-advisor"),
+            advisorSettings.definitionsRepoUrl);
+        toolchainFallbackPath = ToolchainAdvisorPanel.bundledFallbackSdlPath();
+        toolchainCache.updateCache(false);
+
+        cliToolsSettings = loadCliToolsSettings(dataRoot);
+        cliToolsCache = new CliToolsCatalogCache(buildPath(dataRoot, "equivalence-rules-cli"),
+            cliToolsSettings.definitionsRepoUrl);
+        cliToolsFallbackJsonPath = CliToolsCatalogPanel.bundledFallbackJsonPath();
+        cliToolsCache.updateCache(false);
+        reloadCliToolsCatalog();
 
         // Determine code root from environment or default
         string drive = environment.get("CODE_ROOT");
@@ -113,13 +149,10 @@ class DevCenterApp {
         window.mainWidget = parseML(readText(uiPath));
 
         // The tab bodies are declared in DML already; just populate them.
-        auto tabInstalled = window.mainWidget.childById!VerticalLayout("tabInstalled");
-        if (tabInstalled)
-            tabInstalled.addChild(new ToolStatusDashboard(toolManager, true));
+        // Tool dashboard: installed tools + catalog from equivalence-rules-cli
+        mountCliToolsDashboard();
 
-        auto tabAvailable = window.mainWidget.childById!VerticalLayout("tabAvailable");
-        if (tabAvailable)
-            tabAvailable.addChild(new ToolStatusDashboard(toolManager, false));
+        mountToolchainAdvisorPanel();
 
         // Template list is no longer displayed directly; the Browse Projects page
         // will be wired to a repository browser in a future revision.
@@ -183,7 +216,7 @@ class DevCenterApp {
 
         auto showPage = delegate(int index, bool showSidebar) {
         logInfo("Switching to page index " ~ to!string(index));
-        string[] pageIds = ["pageHome", "pageTemplates", "pageProject", "pageDashboard", "pageWorkflowTemplates", "pageInfra", "pageInstall"];
+        string[] pageIds = ["pageHome", "pageTemplates", "pageProject", "pageDashboard", "pageWorkflowTemplates", "pageInfra", "pageInstall", "pageToolchainAdvisor", "pageWsl", "pageFlutter"];
         if (index >= 0 && index < pageIds.length) {
             contentStack.showChild(pageIds[index]);
         }
@@ -201,6 +234,19 @@ class DevCenterApp {
             auto installLabel = window.mainWidget.childById!TextWidget("installPathLabel");
             if (installLabel) installLabel.text = UIString.fromRaw("Repo: "d ~ to!dstring(getcwd()));
         }
+        if (index == 3) {
+            reloadCliToolsCatalog();
+            mountCliToolsDashboard();
+        }
+        if (index == 7) {
+            toolchainCache.updateCache(false);
+        }
+        if (index == 8) {
+            mountWslManagerPanel();
+        }
+        if (index == 9) {
+            mountFlutterEcosystemPanel();
+        }
     };
 
         auto bindClick = delegate(string id, bool delegate(Widget) handler) {
@@ -211,6 +257,10 @@ class DevCenterApp {
 
         bindClick("btnHome", delegate(Widget w) { showPage(0, false); return true; });
         bindClick("btnAIConfig", delegate(Widget w) { showAIConfigDialog(window, selectedRepoPath); return true; });
+        bindClick("btnAppearance", delegate(Widget w) {
+            showAppearanceSettingsDialog(window, dataRootPath);
+            return true;
+        });
         bindClick("navHome", delegate(Widget w) { showPage(0, false); return true; });
         bindClick("btnChoiceBrowse", delegate(Widget w) { showPage(1, true); return true; });
         bindClick("navTemplates", delegate(Widget w) { showPage(1, true); return true; });
@@ -220,6 +270,32 @@ class DevCenterApp {
         bindClick("navWorkflowTemplates", delegate(Widget w) { showPage(4, true); return true; });
         bindClick("btnChoiceWorkflowTemplates", delegate(Widget w) { showPage(4, true); return true; });
         bindClick("btnChoiceInstall", delegate(Widget w) { showPage(6, true); return true; });
+        bindClick("btnChoiceToolchainAdvisor", delegate(Widget w) { showPage(7, true); return true; });
+        bindClick("navToolchainAdvisor", delegate(Widget w) { showPage(7, true); return true; });
+        bindClick("btnChoiceWsl", delegate(Widget w) { showPage(8, true); return true; });
+        bindClick("navWsl", delegate(Widget w) { showPage(8, true); return true; });
+        bindClick("btnRefreshWsl", delegate(Widget w) { mountWslManagerPanel(); return true; });
+        bindClick("btnChoiceFlutter", delegate(Widget w) { showPage(9, true); return true; });
+        bindClick("navFlutter", delegate(Widget w) { showPage(9, true); return true; });
+        bindClick("btnRefreshFlutter", delegate(Widget w) { mountFlutterEcosystemPanel(); return true; });
+        bindClick("btnRefreshCliToolsCatalog", delegate(Widget w) {
+            cliToolsCache.updateCache(true);
+            reloadCliToolsCatalog();
+            mountCliToolsDashboard();
+            return true;
+        });
+        bindClick("btnRefreshAdvisorCatalog", delegate(Widget w) {
+            refreshToolchainAdvisorDefinitions(true);
+            return true;
+        });
+        bindClick("btnAdvisorSettings", delegate(Widget w) {
+            string dataRoot = buildPath(DevCenterApp.getHomeDir(), ".dev-center");
+            showAdvisorSettingsDialog(window, dataRoot, toolchainCache.remoteUrl, delegate(string url) {
+                toolchainCache = new ToolchainAdvisorCache(buildPath(dataRoot, "toolchain-advisor"), url);
+                refreshToolchainAdvisorDefinitions(true);
+            });
+            return true;
+        });
         bindClick("btnInstallIacDocs", delegate(Widget w) {
             openUrlInBrowser("https://docs.devcentr.org/general-knowledge/latest/explanation/infrastructure/iac.html");
             return true;
@@ -598,6 +674,105 @@ class DevCenterApp {
         auto label = window.mainWidget.childById!TextWidget("infraPathLabel");
         if (label) {
             label.text = UIString.fromRaw("Scope: "d ~ to!dstring(scopeRoot));
+        }
+    }
+
+    void reloadCliToolsCatalog()
+    {
+        string jsonPath = cliToolsCache.resolveCatalogJsonPath(cliToolsFallbackJsonPath);
+        cliToolsCatalog = loadCliToolsCatalogFromJson(jsonPath);
+        toolManager.refresh(&cliToolsCatalog);
+    }
+
+    void mountCliToolsDashboard()
+    {
+        string ctx = detectHostContext(cliToolsCatalog, cliToolsSettings.preferImmutable);
+
+        auto ctxLabel = window.mainWidget.childById!TextWidget("cliToolsContextLabel");
+        if (ctxLabel) {
+            ctxLabel.text = UIString.fromRaw(
+                ("Host: " ~ contextLabel(cliToolsCatalog, ctx) ~
+                 " | Profiles: dev-centr/equivalence-rules-cli | " ~
+                 cast(string)cliToolsCatalog.tools.length ~ " tools | " ~
+                 "Audit: ~/.dev-center/install-audit/").d
+            );
+        }
+
+        auto tabInstalled = window.mainWidget.childById!VerticalLayout("tabInstalled");
+        if (tabInstalled) {
+            tabInstalled.removeAllChildren();
+            tabInstalled.addChild(new ToolStatusDashboard(toolManager, true));
+        }
+
+        auto tabAvailable = window.mainWidget.childById!VerticalLayout("tabAvailable");
+        if (tabAvailable) {
+            tabAvailable.removeAllChildren();
+            tabAvailable.addChild(new CliToolsCatalogPanel(
+                cliToolsCatalog, ctx, cliToolsSettings.preferImmutable, dataRootPath,
+                delegate() {
+                    reloadCliToolsCatalog();
+                    mountCliToolsDashboard();
+                }
+            ));
+        }
+    }
+
+    void mountToolchainAdvisorPanel()
+    {
+        auto host = window.mainWidget.childById!VerticalLayout("toolchainAdvisorHost");
+        if (!host)
+            return;
+        host.removeAllChildren();
+        string sdlPath = toolchainCache.resolveCatalogSdlPath(toolchainFallbackPath);
+        string jsonPath = toolchainCache.resolveCatalogJsonPath(ToolchainAdvisorPanel.bundledFallbackJsonPath());
+        auto catalog = ToolchainAdvisorPanel.loadCatalog(sdlPath, jsonPath);
+        host.addChild(new ToolchainAdvisorPanel(catalog));
+    }
+
+    void mountWslManagerPanel()
+    {
+        auto host = window.mainWidget.childById!VerticalLayout("wslManagerHost");
+        if (!host)
+            return;
+        host.removeAllChildren();
+        auto guide = loadDistroGuideFromSdl(bundledGuideSdlPath());
+        host.addChild(new WslManagerPanel(guide, delegate(string title, string message) {
+            window.showMessageBox(UIString.fromRaw(to!dstring(title)), UIString.fromRaw(to!dstring(message)));
+        }));
+    }
+
+    void mountFlutterEcosystemPanel()
+    {
+        auto def = loadEcosystemFromSdl(bundledLanguageSdlPath("flutter"), "flutter");
+        enum flutterSetupUrl =
+            "https://docs.devcentr.org/general-knowledge/latest/how-to/flutter-setup.html";
+
+        auto advisoryHost = window.mainWidget.childById!VerticalLayout("flutterAdvisoryHost");
+        if (advisoryHost)
+        {
+            advisoryHost.removeAllChildren();
+            auto banner = maybeControlPlaneAdvisory(def, defaultTcpDocsUrl);
+            if (banner !is null)
+                advisoryHost.addChild(banner);
+        }
+
+        auto host = window.mainWidget.childById!VerticalLayout("flutterManagerHost");
+        if (!host)
+            return;
+        host.removeAllChildren();
+        host.addChild(new EcosystemManagerPanel(def, defaultTcpDocsUrl, flutterSetupUrl));
+    }
+
+    void refreshToolchainAdvisorDefinitions(bool forceful)
+    {
+        bool ok = toolchainCache.updateCache(forceful);
+        mountToolchainAdvisorPanel();
+        if (!ok && forceful)
+        {
+            window.showMessageBox(
+                UIString.fromRaw("Toolchain Advisor"d),
+                UIString.fromRaw("Could not sync definitions from Git. Using bundled fallback. Check network and git."d)
+            );
         }
     }
 

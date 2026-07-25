@@ -6,7 +6,7 @@
         "arsd-official": "~>10.9.10",
         "dlangui": {
             "repository": "git+https://github.com/dlang-supplemental/dlangui.git",
-            "version": "0.10.0-devcentr1"
+            "version": "457ffb3c856bedba5fdcf481fc0d787e4c9c1da3"
         },
         "sdlang-d": "~>0.10.6"
     },
@@ -18,6 +18,11 @@
             "name": "default",
             "targetType": "executable",
             "mainSourceFile": "src/app.d"
+        },
+        {
+            "name": "compile-catalog",
+            "targetType": "executable",
+            "mainSourceFile": "src/compile_catalog.d"
         }
     ]
 }

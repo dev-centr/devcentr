@@ -1,0 +1,95 @@
+= WSL Manager
+
+The WSL Manager is DevCentr’s **instance-oriented** front-end for Windows Subsystem for Linux: list distributions, choose a default, install/remove with guidance, and explain which Linux to pick. Microsoft’s **WSL Settings** app is treated as a **complementary** tool for shared WSL2 VM knobs (`.wslconfig`), not as the primary management UI.
+
+== Purpose
+
+* **Own the instance story:** Distro inventory, default selection, lifecycle (`wsl.exe`), and education. Windows does not ship a strong UI for this.
+* **Complement, don’t replace, WSL Settings:** Launch Settings for memory, CPUs, networking, and related global options. Keep a clear split in the UI so users are not sent to Settings expecting “manage my Ubuntus.”
+* **Educate in-context:** Short blurbs aligned with general-knowledge docs (Ubuntu LTS as merit-based default; Tumbleweed as rolling workshop; never default Docker/Podman helper distros).
+* **Link out:** Full comparison and setup how-to on docs.devcentr.org; Microsoft Learn for WSL Settings / WSL overview.
+
+== Architecture (module first)
+
+[cols="1,2"]
+|===
+| Choice | Decision
+
+| **In-app module (current)**
+| Primary surface. Lives in DevCentr so Toolchain Advisor, Secrets/SSH, and docs links stay one hop away. Matches “environment navigator” product direction.
+
+| **Separate binary**
+| Optional later extraction: a small Windows helper (CLI or GUI) that wraps `wsl.exe` + Settings launch, callable from DevCentr *or* standalone. Do **not** start here unless a second consumer (installer, Tray app, CI bootstrap) appears.
+
+| **WSL Settings**
+| Always external. Never re-implement `.wslconfig` editors inside DevCentr while Microsoft’s app exists; deep-link / spawn it instead.
+|===
+
+Shared logic (`listInstalledDistros`, `setDefaultDistro`, `openWslSettings`, guide matching) should stay in `modules.wsl_manager` so a future helper binary can call the same D library or a thin CLI without rewriting rules.
+
+== Entry points
+
+* **Home hub:** Card “WSL” → Manage WSL.
+* **Sidebar:** Nav item “WSL”.
+* Page id: `pageWsl` (index **8** in the page switcher array in `app.d`).
+* **Complementary:** Button **Open WSL Settings** (and docs fallback).
+
+== Layout
+
+[source]
+----
+pageWsl
+├── title row + Refresh
+├── muted help line (this page = instances; Settings = shared VM)
+└── wslManagerHost
+    └── WslManagerPanel
+        ├── intro (from distro-guide.sdl)
+        ├── actions: Refresh | Open WSL Settings | Distro comparison docs | Setup how-to | Microsoft WSL docs
+        ├── status line
+        └── split
+            ├── left: installed list + “Set as default” (+ future: install / terminate / unregister)
+            └── right: scrollable guide detail for selection
+----
+
+== Behavior
+
+[cols="1,2"]
+|===
+| Action | Behavior
+
+| Refresh / page open
+| Run `wsl -l -v` (decode UTF-16 NULs), populate list; mark `*` default.
+
+| Select row
+| Match name against `distro-guide.sdl` tokens; show role, overview, prefer/avoid.
+
+| Set as default
+| `wsl --set-default <Name>`. **Refuse** matches for engine-managed ids (`docker-desktop`, `podman-machine`).
+
+| Open WSL Settings
+| Try `Program Files\WSL\wslsettings.exe`, then WindowsApps alias, then `wslsettings:` / Start name; on failure open Microsoft `.wslconfig` docs URL. Framed as complementary (VM config), not instance management.
+|===
+
+=== Planned instance actions (not all shipped yet)
+
+* Install from `wsl --list --online` with guide blurbs before confirm.
+* Open shell in selected distro (`wsl -d <Name>`).
+* `wsl --terminate` / `--shutdown` with clear copy.
+* Export / import / unregister behind confirmations (destructive paths last).
+
+== Data
+
+* **Guide file:** `app/src/modules/wsl_manager/distro-guide.sdl` (bundled; loaded via `bundledGuideSdlPath()`, with `builtinGuide()` fallback).
+* **Docs URLs** (also in SDL):
+
+**Comparison:** `https://docs.devcentr.org/general-knowledge/latest/explanation/infrastructure/wsl-distro-comparison.html`
+
+**Setup:** `https://docs.devcentr.org/general-knowledge/latest/how-to/wsl-setup.html`
+
+**WSL Settings docs:** `https://learn.microsoft.com/windows/wsl/wsl-config`
+
+== Related
+
+* General-knowledge: xref:general-knowledge:explanation/infrastructure/wsl-distro-comparison.adoc[Choosing a WSL Linux Distro], xref:general-knowledge:how-to/wsl-setup.adoc[WSL setup]
+* xref:components/toolchain-advisor.adoc[Toolchain Advisor] (WSL as a host option)
+* Secrets Manager: xref:secrets-manager:explanation/connecting-to-wsl.adoc[Connecting to WSL]

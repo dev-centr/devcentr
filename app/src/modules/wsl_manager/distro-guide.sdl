@@ -1,0 +1,95 @@
+// Distro guide copy for the WSL manager UI (educational blurbs).
+// Keep in sync with general-knowledge explanation/infrastructure/wsl-distro-comparison.adoc
+
+guide {
+    docsComparisonUrl "https://docs.devcentr.org/general-knowledge/latest/explanation/infrastructure/wsl-distro-comparison.html"
+    docsSetupUrl "https://docs.devcentr.org/general-knowledge/latest/how-to/wsl-setup.html"
+    wslSettingsDocsUrl "https://learn.microsoft.com/windows/wsl/wsl-config"
+    microsoftWslDocsUrl "https://learn.microsoft.com/windows/wsl/"
+
+    intro "Pick a default distro for bare wsl and everyday terminals. Ubuntu LTS is the merit-based default; keep rolling or RHEL-clone distros as named specialists. Never default docker-desktop or podman-machine."
+
+    distro {
+        id "ubuntu"
+        match "ubuntu"
+        title "Ubuntu LTS"
+        role "Ideal system default"
+        summary "Real Ubuntu for the LTS release you installed (e.g. 24.04)—not a Microsoft fork. LTS holds major package versions and applies security backports; it is not rolling 'always newest Ubuntu'."
+        preferWhen "Daily shell, matching most docs/CI, low-surprise default."
+        avoidWhen "You need bleeding-edge system libraries without version managers or a second rolling distro."
+    }
+
+    distro {
+        id "tumbleweed"
+        match "tumbleweed"
+        match "opensuse"
+        title "openSUSE Tumbleweed"
+        role "Ideal rolling workshop"
+        summary "Curated rolling release with excellent packaging (zypper). Great current toolchains; smaller WSL-specific community than Ubuntu."
+        preferWhen "You want fresh packages and a strong rolling userspace."
+        avoidWhen "You want the maximum 'Stack Overflow assumes this' default."
+    }
+
+    distro {
+        id "arch"
+        match "arch"
+        title "Arch Linux"
+        role "Enthusiast / experiment"
+        summary "Rolling + AUR. Maximum newness; you are the support channel. Poor choice as the only/default shell for most people."
+        preferWhen "Throwaway experiments and always-latest packages."
+        avoidWhen "A boring, shared-assumptions default."
+    }
+
+    distro {
+        id "alma"
+        match "alma"
+        match "rocky"
+        match "rhel"
+        title "AlmaLinux / RHEL clones"
+        role "Prod-parity specialty"
+        summary "Enterprise-shaped userspace for matching RHEL/Rocky/Alma servers. Intentionally older defaults—use language version managers or containers for modern app stacks."
+        preferWhen "Your production or CI is RHEL-family."
+        avoidWhen "General personal development with no RHEL target."
+    }
+
+    distro {
+        id "debian"
+        match "debian"
+        title "Debian"
+        role "Stable generalist"
+        summary "Conservative base closely related to Ubuntu's heritage. Fine daily driver; fewer WSL onboarding docs than Ubuntu."
+        preferWhen "You prefer Debian packaging and stability."
+        avoidWhen "You specifically need Ubuntu-numbered CI parity."
+    }
+
+    distro {
+        id "fedora"
+        match "fedora"
+        title "Fedora"
+        role "Current Red Hat desktop line"
+        summary "Newer packages than Alma, still dnf-based. Good if you like Fedora on bare metal; less 'default gravity' than Ubuntu on WSL."
+        preferWhen "Fedora is already your muscle memory."
+        avoidWhen "You need RHEL-exact parity (use Alma) or max docs overlap (use Ubuntu)."
+    }
+
+    distro {
+        id "managed"
+        match "docker-desktop"
+        match "podman-machine"
+        title "Engine-managed (Docker / Podman)"
+        role "Never set as default"
+        summary "Helper distros owned by Docker Desktop or Podman. Not a daily development shell—engines may reset or update them."
+        preferWhen "Leave them alone for the container engine."
+        avoidWhen "Using as your default wsl target."
+    }
+
+    distro {
+        id "other"
+        match "*"
+        title "Other distro"
+        role "Named specialist"
+        summary "Any other Store or imported distribution. Use on purpose (security labs, vendor images, custom rootfs)—keep Ubuntu LTS as default unless you have a clear reason."
+        preferWhen "A specific image or workflow requires it."
+        avoidWhen "Replacing a well-understood default without need."
+    }
+}

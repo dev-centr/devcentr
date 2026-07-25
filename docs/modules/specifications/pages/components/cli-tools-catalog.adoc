@@ -1,0 +1,77 @@
+= CLI Tools Catalog
+
+Cross-platform **CLI tool install profiles** for DevCentr, powered by the link:https://github.com/dev-centr/equivalence-engine[Equivalence Engine] `cli` domain and the link:https://github.com/dev-centr/equivalence-rules-cli[equivalence-rules-cli] catalog.
+
+== Purpose
+
+Developers browse a catalog of common CLI tools (Turso, Convex, Vercel, Netlify, `gh`, `glab`, cloud CLIs, IaC, containers, immutable package managers, and more). DevCentr resolves the correct install command for the detected host context, runs it **interactively**, and records stdout/stderr under `~/.dev-center/install-audit/` for long-term auditing.
+
+== Definitions source
+
+[cols="1,2"]
+|===
+| Item | Value
+
+| Repository
+| `https://github.com/dev-centr/equivalence-rules-cli`
+
+| Source file
+| `catalog/tools.sdl`
+
+| Compiled artifact
+| `catalog/tools.json` (via `pnpm exec node scripts/compile-sdl.mjs`)
+
+| Local cache
+| `~/.dev-center/equivalence-rules-cli/repo/`
+
+| Settings
+| `~/.dev-center/cli-tools-settings.json` (`definitionsRepoUrl`, `preferImmutable`)
+|===
+
+== Host contexts
+
+Contexts mirror filesystem equivalence layout: `windows/winget`, `macos/homebrew`, `linux/debian/default`, `linux/nix/default`, `linux/guix/default`, `default/npm-global`, etc.
+
+Each context declares:
+
+* `mutable` — `false` for Nix and Guix (immutable); `true` for winget/brew/apt
+* `detect` — command DevCentr runs to see if the context applies
+
+When **Prefer immutable installs** is enabled (default), resolution prefers Nix/Guix methods before winget/brew/apt.
+
+== Equivalence Engine resolution
+
+[source,bash]
+----
+equivalence-engine --domain cli \
+  --rules-repo https://github.com/dev-centr/equivalence-rules-cli \
+  --to linux/nix/default turso
+----
+
+Pass `--prefer-mutable` to favor traditional package managers.
+
+== DevCentr UI
+
+**Tool Status Overview** (`pageDashboard`, index 3):
+
+* **Installed** — tools from the catalog where `verifyCommand` succeeds
+* **Catalog** — browsable install profiles grouped by category; **Install** runs the resolved command interactively
+
+**Refresh catalog** pulls latest definitions from Git (24h TTL, same pattern as Toolchain Advisor).
+
+== Tool schema (SDL)
+
+See `equivalence-rules-cli/docs/SDL-CONVENTIONS.adoc`.
+
+Each `tool` block: `id`, `name`, `description`, `categories[]`, `verifyCommand`, `launchCommand`, and `install { method { context command … } }`.
+
+== Related repos
+
+* link:https://github.com/dev-centr/equivalence-engine[equivalence-engine] — CLI binary (`code`, `filesystem`, `cli`)
+* link:https://github.com/dev-centr/libequivalence[libequivalence] — D resolver library
+* link:https://github.com/dev-centr/equivalence-rules-code[equivalence-rules-code]
+* link:https://github.com/dev-centr/equivalence-rules-filesystem[equivalence-rules-filesystem]
+
+== Migration from AMDphreak
+
+The Equivalence Engine ecosystem moved to the `dev-centr` GitHub org. See `MIGRATION.adoc` in the archived `AMDphreak/equivalence-engine` repository.

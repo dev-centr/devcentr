@@ -1,11 +1,10 @@
 module modules.system_overview.tool_manager;
 
+import modules.cli_tools.model;
+import modules.cli_tools.catalog;
 import std.array;
 import std.algorithm;
-import std.process : environment;
 import std.path;
-import std.file;
-import std.json;
 
 struct ToolStatus {
     string name;
@@ -15,6 +14,8 @@ struct ToolStatus {
     string installLocation;
     bool onPath;
     string[] pathVariables;
+    string toolId;
+    string verifyCommand;
 }
 
 struct ToolStackGroup {
@@ -24,54 +25,71 @@ struct ToolStackGroup {
 
 class ToolManager {
     ToolStatus[] allTools;
+    CliToolsCatalog _catalog;
 
     this() {
-        refresh();
+        refresh(null);
     }
 
-    void refresh() {
+    void refresh(CliToolsCatalog* catalog) {
         allTools = [];
-        // Mock data as requested
-        allTools ~= ToolStatus("DMD Compiler", "dlang_logo", ["D"], true, "C:\\D\\dmd2\\windows\\bin", true, ["USER", "PATH"]);
-        allTools ~= ToolStatus("LDC Compiler", "dlang_logo", ["D"], false, "", false, []);
-        allTools ~= ToolStatus("Node.js", "nodejs_logo", ["JavaScript", "TypeScript"], true, "C:\\Program Files\\nodejs", true, ["System PATH"]);
-        allTools ~= ToolStatus("pnpm", "pnpm_logo", ["JavaScript", "Node.js"], true, "C:\\Users\\User\\AppData\\Local\\pnpm", true, ["User PATH"]);
-        allTools ~= ToolStatus("Python 3.12", "python_logo", ["Python"], true, "C:\\Python312", true, ["System PATH", "User PATH"]);
-        allTools ~= ToolStatus("Rust Toolchain", "rust_logo", ["Rust"], false, "", false, []);
-        allTools ~= ToolStatus("dub", "dlang_logo", ["D"], true, "C:\\D\\dmd2\\windows\\bin", true, ["User PATH"]);
-        allTools ~= ToolStatus("Go Compiler", "go_logo", ["Go"], false, "", false, []);
-        allTools ~= ToolStatus("Java SDK 21", "java_logo", ["Java", "JVM"], true, "C:\\Program Files\\Java\\jdk-21", false, []);
+        _catalog = catalog !is null ? *catalog : CliToolsCatalog.init;
 
-        // Virtualization & Testing
-        allTools ~= ToolStatus("virt-manager", "settings", ["Virtualization", "Windows Testing"], true, "/usr/bin/virt-manager", true, ["System PATH"]);
-        allTools ~= ToolStatus("virsh (libvirt)", "terminal", ["Virtualization", "Automation"], true, "/usr/bin/virsh", true, ["System PATH"]);
-        allTools ~= ToolStatus("QEMU/KVM", "cpu", ["Virtualization"], true, "/usr/bin/qemu-system-x86_64", true, ["System PATH"]);
+        if (_catalog.tools.length > 0) {
+            foreach (t; _catalog.tools) {
+                bool installed = isToolInstalled(t.verifyCommand);
+                string icon = categoryIcon(t.categories);
+                allTools ~= ToolStatus(
+                    t.name.length ? t.name : t.id,
+                    icon,
+                    t.categories.length ? t.categories : ["CLI"],
+                    installed,
+                    installed ? t.launchCommand : "",
+                    installed,
+                    installed ? ["PATH"] : [],
+                    t.id,
+                    t.verifyCommand
+                );
+            }
+            return;
+        }
+
+        // Fallback when catalog unavailable
+        allTools ~= ToolStatus("GitHub CLI (gh)", "terminal", ["vcs", "devops"], isToolInstalled("gh --version"), "", true, ["PATH"], "gh", "gh --version");
+        allTools ~= ToolStatus("Turso CLI", "database", ["database", "backend"], isToolInstalled("turso --version"), "", false, [], "turso", "turso --version");
+    }
+
+    private string categoryIcon(string[] categories) {
+        foreach (c; categories) {
+            if (c == "database") return "database";
+            if (c == "deployment" || c == "hosting") return "cloud";
+            if (c == "vcs" || c == "git") return "terminal";
+            if (c == "containers" || c == "kubernetes") return "cpu";
+            if (c == "immutable" || c == "package-manager") return "settings";
+        }
+        return "terminal";
     }
 
     ToolStackGroup[] getGroupedTools(bool installedOnly) {
         ToolStackGroup[] groups;
-
-        // Collect all unique stacks
         string[] stacks;
-        foreach(tool; allTools) {
+        foreach (tool; allTools) {
             if (tool.isInstalled != installedOnly) continue;
-            foreach(s; tool.techStacks) {
+            foreach (s; tool.techStacks) {
                 if (!stacks.canFind(s)) stacks ~= s;
             }
         }
         sort(stacks);
 
-        foreach(stack; stacks) {
+        foreach (stack; stacks) {
             ToolStatus[] toolsInStack;
-            foreach(tool; allTools) {
+            foreach (tool; allTools) {
                 if (tool.isInstalled != installedOnly) continue;
-                if (tool.techStacks.canFind(stack)) {
+                if (tool.techStacks.canFind(stack))
                     toolsInStack ~= tool;
-                }
             }
-            if (!toolsInStack.empty) {
+            if (!toolsInStack.empty)
                 groups ~= ToolStackGroup(stack, toolsInStack);
-            }
         }
         return groups;
     }

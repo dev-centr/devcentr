@@ -2,7 +2,7 @@ module modules.repo_tools.repo_terminal_widget;
 
 import dlangui;
 import dlangui.widgets.styles : Align;
-import dlangui.graphics.fonts : FontFamily;
+import modules.appearance.fonts : applyCodeFont;
 import modules.infra.logging : logInfo, logError;
 import modules.repo_tools.registry;
 import std.algorithm : min;
@@ -154,6 +154,7 @@ class RepoTerminalWidget : VerticalLayout
         toolbar.layoutWidth(FILL_PARENT).padding(6).backgroundColor(0x1A1A1A).margins(Rect(0, 6, 0, 0));
         _commandInput = new EditLine("repoTerminalInput", ""d);
         _commandInput.layoutWidth(FILL_PARENT);
+        applyCodeFont(_commandInput);
         toolbar.addChild(_commandInput);
 
         auto runBtn = new Button(null, "Run"d);
@@ -281,12 +282,13 @@ class RepoTerminalWidget : VerticalLayout
         block.layoutWidth(FILL_PARENT).padding(8).margins(Rect(6, 6, 6, 6)).backgroundColor(0x303030);
 
         auto header = new TextWidget(null, to!dstring(command ~ "  [running]"));
-        header.fontFamily(FontFamily.MonoSpace).fontWeight(700).margins(Rect(0, 0, 0, 6));
+        applyCodeFont(header);
+        header.fontWeight(700).margins(Rect(0, 0, 0, 6));
         block.addChild(header);
 
         auto output = new EditBox(null, ""d);
         output.layoutWidth(FILL_PARENT).layoutHeight(140);
-        output.fontFamily(FontFamily.MonoSpace);
+        applyCodeFont(output);
         output.readOnly(true);
         output.backgroundColor = 0x1B1B1B;
         block.addChild(output);

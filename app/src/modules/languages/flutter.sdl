@@ -1,0 +1,15 @@
+// Flutter ecosystem: SDK + community version managers (bridge until official TCP).
+// See docs: specifications/reference/definition-files.adoc
+// Philosophy: general-knowledge explanation/infrastructure/toolchain-control-plane.adoc
+flutter {
+    unifiedControlPlane {
+        status "community"
+        entrypoint ""
+        communityTools "fvm" "puro" "mise"
+        advisory true
+    }
+    runtime { id "flutter"; name "Flutter SDK"; }
+    runtime { id "dart"; name "Dart SDK"; }
+    packageManager { id "pub"; name "pub"; }
+    framework { id "flutter"; name "Flutter"; }
+}

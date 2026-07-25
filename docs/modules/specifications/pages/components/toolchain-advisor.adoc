@@ -1,0 +1,267 @@
+= Toolchain Advisor
+
+The Toolchain Advisor is an interactive decision flow in DevCentr that helps users choose a development setup when the “right” toolchain is unclear—especially on Windows, where choices include native MSVC, MinGW-w64/MSYS2, WSL2, cross-compilation from Linux, containers, and CI-only builds.
+
+== Purpose
+
+* **Reduce confusion:** Surface tradeoffs between WSL, MinGW, MSVC, Clang, and cross-compilers without requiring prior expertise.
+* **Encode dimensions explicitly:** Separate *where you work* (host), *what you ship* (target), *language*, *toolchain family*, and *build/run model*.
+* **Stay extensible:** Rules and copy live in data files so new stacks and recommendations can ship without rewriting UI code.
+* **Rebuildable from spec:** Layout, behavior, data schema, and ranking rules are specified here so the view can be reimplemented in DevCentr or another client.
+
+== Problem framing
+
+Users often describe goals in informal terms:
+
+* “I want to develop Windows apps on Linux.”
+* “I want to develop Windows apps using Linux tools on Windows.”
+* “Should I use WSL or MinGW?”
+
+Those sentences mix three different axes:
+
+[cols="1,2,2"]
+|===
+| Axis | Question it answers | Examples
+
+| **Host environment**
+| Where the editor, terminal, and local builds run
+| Windows native, Windows + WSL2, Linux, macOS, remote SSH
+
+| **Target output**
+| What artifact or runtime you deliver
+| Windows desktop, Linux server, web, mobile, library, embedded
+
+| **Toolchain & execution model**
+| Which compiler/linker/SDK runs, and whether build location matches run location
+| MSVC on Windows, MinGW on Windows, mingw-w64 cross on Linux, WSL gcc, Docker, CI-only
+|===
+
+The advisor does **not** replace official documentation; it routes users to a ranked recommendation plus optional doc links.
+
+== Definitions repository (source of truth)
+
+All steps, options, and recommendation rules live in a **dedicated Git repository**, not in application source:
+
+* **Repository:** `https://github.com/dev-centr/toolchain-advisor`
+* **Catalog file:** `catalog/advisor.json`
+* **Shared logic (web):** `lib/src/index.ts` — parse, rank, pick best (`@dev-centr/toolchain-advisor-core`)
+
+=== Sync behavior
+
+[cols="1,2"]
+|===
+| Consumer | Update mechanism
+
+| **DevCentr desktop**
+| `git clone` / `git pull` into `~/.dev-center/toolchain-advisor/repo/` (24h TTL). **Refresh definitions** forces sync. Falls back to `fallback-advisor.json` bundled with the app if Git is unavailable.
+
+| **devcentr.org**
+| Build: CI checks out `toolchain-advisor`, copies catalog to `public/catalog/advisor.json`. Runtime: fetches `catalog/advisor.json` from raw GitHub `main`, then falls back to bundled `/catalog/advisor.json`.
+
+| **Contributors**
+| PR against `toolchain-advisor`; CI validates JSON parses via `lib` parser.
+|===
+
+Compile for web: `node scripts/compile-sdl.mjs` in the definitions repo (or `dub run --config=compile-catalog` from `devcentr/app` when DMD is available).
+
+== Entry points
+
+* **Home hub (desktop):** Card “Toolchain Advisor” → opens the advisor page.
+* **Sidebar (desktop):** Nav item “Toolchain Advisor”.
+* **Web:** `https://devcentr.org/toolchain-advisor` (same catalog and ranking rules).
+* **Future:** Deep links from Tool Status when a missing tool is detected (e.g. no `cl.exe`, no `x86_64-w64-mingw32-gcc`).
+
+Page id in the main layout stack: `pageToolchainAdvisor` (index **7** in the page switcher array in `app.d`).
+
+== Visual layout (rebuild specification)
+
+=== Overall page structure
+
+[source]
+----
+VerticalLayout (pageToolchainAdvisor, full size, padding 10)
+├── TextWidget — title: "Toolchain Advisor" (18pt)
+├── TextWidget — subtitle / one-line help (10pt, muted #AAAAAA)
+└── VerticalLayout (toolchainAdvisorHost, fill) — hosts ToolchainAdvisorPanel
+----
+
+=== ToolchainAdvisorPanel
+
+[source]
+----
+VerticalLayout (fill)
+├── TextWidget — intro paragraph (9pt, muted)
+├── ScrollWidget (horizontal scroll, max height ~260px)
+│   └── HorizontalLayout (wrap content)
+│       ├── [DecisionStepBox] × N
+│       └── FlowConnector between each pair (not before first)
+└── ScrollWidget (vertical, fill) — "Recommendation" region
+    └── VerticalLayout — dynamic content
+----
+
+=== DecisionStepBox (one per step)
+
+Each step is a **card** tiling **left to right**:
+
+[cols="1,3"]
+|===
+| Property | Value
+
+| Width
+| min 220px, max 280px, `WRAP_CONTENT` horizontal
+
+| Background
+| `#252525` (card surface)
+
+| Padding
+| 12px
+
+| Title
+| 11pt, weight 700, accent `#007AFF`
+
+| Hint
+| 8pt, muted `#AAAAAA`, optional
+
+| Search field
+| `EditLine`, full width of card; filters list on every keystroke (case-insensitive substring on label and id)
+
+| Option list
+| `ListWidget` + `StringListAdapter`, min height 140px, max 180px; single selection
+
+| Default selection
+| First visible option after load/filter
+|===
+
+**Searchable dropdown behavior:** There is no native combo box; behavior is **filter + list**, equivalent to a searchable dropdown. Empty filter shows all options.
+
+=== FlowConnector
+
+A narrow widget (24px wide) between cards:
+
+* Vertical line centered in the widget (color `#555555`).
+* Small horizontal bar at the bottom suggesting flow continuation (arrow-like).
+* Drawn in `onDraw` on a custom `Widget` subclass.
+
+=== Recommendation region
+
+Below the horizontal flow:
+
+* Section title “Recommendation” (12pt, accent).
+* **Primary result:** title (14pt bold), summary (10pt), bullet lists for “Suggested tooling” and “Caveats”.
+* **Docs button:** Shown when the matched rule includes a `docs` URL; opens the system browser (same helper as Infra docs).
+* **Other matches:** Up to three alternate rules with positive match score, excluding fallback and the primary id.
+
+== Decision steps (default catalog)
+
+Data file: `toolchain-advisor/catalog/advisor.json` (see Definitions repository above). Desktop fallback copy: `app/src/modules/toolchain_advisor/fallback-advisor.json`.
+
+| Step id | Title | Role
+| `host` | Host environment | Where you develop
+| `target` | Target output | What you ship
+| `language` | Primary language | Narrows toolchain families
+| `toolchain` | Toolchain family | MSVC, MinGW, Clang, etc.; includes “Help me choose”
+| `execution` | Build & run model | Native, WSL build, cross-compile, container, CI-only
+
+Options within each step are `{ id, label }` pairs. Labels are user-facing; ids are stable keys for rules.
+
+Additional steps may be added in JSON (e.g. `deployment`, `ide`) without changing the UI contract: one `DecisionStepBox` per step object in array order.
+
+== Recommendation engine
+
+=== Rule format
+
+Each recommendation object:
+
+[source,json5]
+----
+{
+  "id": "unique-key",
+  "match": {
+    "host": ["windows-wsl2"],
+    "target": ["windows-desktop"],
+    "language": ["cpp"],
+    "toolchain": ["auto", "mingw"],
+    "execution": ["auto", "wsl-build"]
+  },
+  "title": "…",
+  "summary": "…",
+  "tooling": ["…", "…"],
+  "caveats": ["…"],
+  "docs": "https://…"
+}
+----
+
+* `match` keys are step ids; values are arrays of **allowed option ids** for that step.
+* The special token `auto` in an allowed list means “any selection is acceptable for this criterion” (wildcard for optional dimensions).
+* An empty `match` object is reserved for the **fallback** rule (`id: fallback`).
+
+=== Ranking
+
+For each non-fallback rule:
+
+* For each step id in `match` with a non-empty allowed list, count a criterion.
+* If the user’s selection is in the allowed list, or allowed contains `auto`, add **+2** to score.
+* If the user selected a value **not** in the allowed list (and `auto` is not allowed), add **-4**.
+* Sort descending by score.
+
+**Pick primary:** First ranked rule with score `> 0` and `id != fallback`. If none, use `fallback`.
+
+=== Live update
+
+Any change in any step box triggers:
+
+1. Update `selections[stepId] = optionId`.
+2. Re-rank all rules.
+3. Rebuild the recommendation `VerticalLayout`.
+
+== Representative scenarios (content requirements)
+
+The default JSON must include clear guidance for at least:
+
+| User intent | Host | Target | Typical recommendation theme
+| Windows C++ on Linux | linux | windows-* | mingw-w64 cross toolchain; Wine limitations; Windows CI for QA
+| Windows C++ on Windows + WSL | windows-wsl2 | windows-* | Native MSVC/MinGW vs WSL mingw; path/debugging caveats
+| Windows C++ native MSVC | windows-native | windows-* | Visual Studio Build Tools, Windows SDK
+| Windows C++ native MinGW | windows-native | windows-* | MSYS2, UCRT toolchain
+| Linux targets from Windows | windows-wsl2 | linux-* | WSL2 distro packages; avoid `/mnt/c/` builds
+| .NET on Windows | windows-* | windows/web | .NET SDK; WinUI needs native Windows
+| Rust cross | * | windows/linux | rustup targets; msvc vs gnu ABI
+| Web | * | web | Node LTS; container parity
+
+Copy should mention **MSVC vs MinGW incompatibility** (object files/linkers) where relevant.
+
+== Theming (match DevCentr shell)
+
+Use the same dark palette as `main.sdl`:
+
+* Page background: inherited from content area.
+* Cards: `#252525`.
+* Accent: `#007AFF`.
+* Muted text: `#AAAAAA`.
+* Connector: `#555555`.
+* Caveat bullets: `#CC8866` (warning tone).
+
+== Implementation map (current DevCentr)
+
+| Concern | Location
+| Definitions repo | `github.com/dev-centr/toolchain-advisor` — `catalog/advisor.json`, `lib/` (TS core)
+| Git cache (desktop) | `app/src/modules/toolchain_advisor/cache.d` — `ToolchainAdvisorCache`
+| UI panel (desktop) | `app/src/modules/toolchain_advisor/ui.d` — `ToolchainAdvisorPanel`, `DecisionStepBox`, `FlowConnector`
+| Model / ranking (desktop) | `app/src/modules/toolchain_advisor/model.d` (D; mirrors TS core)
+| Web UI | `devcentr.org/src/routes/toolchain-advisor.tsx`, `devcentr.org/src/components/ToolchainAdvisor.tsx`
+| Page shell | `app/src/ui/main.sdl` — `pageToolchainAdvisor`, `toolchainAdvisorHost`, `btnRefreshAdvisorCatalog`
+| Navigation | `app/src/app.d` — page index 7, home card, sidebar `navToolchainAdvisor`
+
+== Future enhancements
+
+* Link recommendations to Tool Status install actions (detect missing `cl`, `gcc`, `rustup`).
+* Persist last selections in `~/.dev-center/toolchain-advisor.json5`.
+* Org-specific rule overlays from a repo-level `.devcentr/toolchain-rules.json5`.
+* Localized labels.
+* Export selection summary to clipboard or README snippet.
+
+== Related
+
+* xref:installation-workflow.adoc[Installation Workflow] — installing runtimes after a toolchain is chosen.
+* xref:reference/definition-files.adoc[Definition Files] — service/language definitions for install offers.
+* Secrets Manager xref:devcentr:secrets-manager:explanation/connecting-to-wsl.adoc[Connecting to WSL] — paths and bridges when WSL is part of the workflow.

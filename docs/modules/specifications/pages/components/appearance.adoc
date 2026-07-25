@@ -1,0 +1,37 @@
+= Appearance (code font)
+:navtitle: Appearance
+:description: DevCentr code/terminal font preference — Cascadia Mono default, JetBrains Mono optional.
+
+DevCentr uses a dedicated **monospace** face for the integrated terminal and other code panels. UI chrome stays on the normal UI font.
+
+== Choices
+
+[cols="1,2", options="header"]
+|===
+| Face | Role
+
+| link:https://github.com/microsoft/cascadia-code[**Cascadia Mono**]
+| **Default.** No ligatures — better for tables, grids, and judging column alignment (Nu `table` output, logs, diffs).
+
+| link:https://www.jetbrains.com/lp/mono/[**JetBrains Mono**]
+| Supported alternate. Good coding face; ligatures optional at the OS/editor level, but DevCentr asks for the Mono family name as installed.
+|===
+
+Do **not** default to Cascadia *Code* (ligatures) for DevCentr terminals. Mono is the recommendation.
+
+== In the app
+
+. Open **Appearance** in the top bar.
+. Pick Cascadia Mono or JetBrains Mono.
+. Save. Stored in `~/.dev-center/ui-settings.json` as `codeFontFace`.
+
+New terminal command blocks pick up the face immediately. Reopen panels that were already open if they still show the old face.
+
+Fallbacks if the chosen face is missing: the other recommended mono, then Consolas, then Courier New.
+
+== Outside DevCentr
+
+Strong recommendation for editors and terminal hosts used with Dev-Centr workflows:
+
+* Prefer **Cascadia Mono** (or JetBrains Mono) in Windows Terminal / Cursor / VS Code for terminal and editor monospace.
+* See xref:general-knowledge:reference/recommended-tools.adoc[Recommended Tools].
