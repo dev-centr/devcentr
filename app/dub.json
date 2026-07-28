@@ -8,7 +8,10 @@
             "repository": "git+https://github.com/dlang-supplemental/dlangui.git",
             "version": "457ffb3c856bedba5fdcf481fc0d787e4c9c1da3"
         },
-        "sdlang-d": "~>0.10.6"
+        "sdlang-d": "~>0.10.6",
+        "project-map": {
+            "path": "../../../openshellorg/project-map/lib"
+        }
     },
     "preBuildCommands": [
         "pnpm install"

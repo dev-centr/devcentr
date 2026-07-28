@@ -120,13 +120,27 @@ class DevCenterApp {
         // Target current directory
         string projectRoot = getcwd();
 
-        // Load recognizer rules
-        string profilesDir = buildPath(projectRoot, "src", "modules", "project-recognizer", "profiles");
+        // Load recognizer rules from openshellorg/project-map profiles (stacks)
+        string profilesDir = buildPath(codeRoot, "github.com", "openshellorg", "project-map", "profiles", "stacks");
+        if (!exists(profilesDir))
+        {
+            // Fallback: relative to this app when developing inside the monorepo layout
+            profilesDir = absolutePath(buildPath(dirName(projectRoot), "..", "..", "openshellorg", "project-map", "profiles", "stacks"));
+        }
+        if (!exists(profilesDir))
+            profilesDir = buildPath(projectRoot, "src", "modules", "project-recognizer", "profiles");
+
+        ViewOptions recogOpts;
+        recogOpts.cacheRoot = buildPath(".dev-center", "cache", "recognizer");
+        recogOpts.includeInactiveFiles = true;
+        recogOpts.includeStacks = true;
+        recogOpts.includeRoles = false;
+
         ProjectRecognizer recognizer;
         if (exists(profilesDir)) {
-             recognizer = ProjectRecognizer.fromProfilesDir(profilesDir);
+             recognizer = ProjectRecognizer.fromProfilesDir(profilesDir, recogOpts);
         } else {
-             recognizer = new ProjectRecognizer([RecognitionRule("Generic", "General project", "", [], [], [], [], [])]);
+             recognizer = new ProjectRecognizer([RecognitionRule("Generic", "General project", "", [], [], [], [], [])], recogOpts);
         }
 
         projectManager = new ProjectWorkspaceManager(projectRoot, recognizer);
@@ -690,12 +704,11 @@ class DevCenterApp {
 
         auto ctxLabel = window.mainWidget.childById!TextWidget("cliToolsContextLabel");
         if (ctxLabel) {
-            ctxLabel.text = UIString.fromRaw(
-                ("Host: " ~ contextLabel(cliToolsCatalog, ctx) ~
-                 " | Profiles: dev-centr/equivalence-rules-cli | " ~
-                 cast(string)cliToolsCatalog.tools.length ~ " tools | " ~
-                 "Audit: ~/.dev-center/install-audit/").d
-            );
+            ctxLabel.text = UIString.fromRaw(to!dstring(
+                "Host: " ~ contextLabel(cliToolsCatalog, ctx) ~
+                " | Profiles: dev-centr/equivalence-rules-cli | " ~
+                to!string(cliToolsCatalog.tools.length) ~ " tools | " ~
+                "Audit: ~/.dev-center/install-audit/"));
         }
 
         auto tabInstalled = window.mainWidget.childById!VerticalLayout("tabInstalled");

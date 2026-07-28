@@ -24,7 +24,7 @@ class ProjectWorkspaceManager
     /// Identifies tech stacks in the project.
     ArchitectureModel identifyStacks()
     {
-        return recognizer.recognize(projectRoot);
+        return recognizer.recognize(projectRoot, true);
     }
 
     /// Gets a list of templates already installed in the project.
