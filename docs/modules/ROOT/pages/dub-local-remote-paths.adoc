@@ -52,3 +52,28 @@ To use the fork locally and silence those warnings:
 3. Run `dub upgrade` from the `app` directory. DUB will resolve `unit-threaded` from your local path.
 
 CI uses the registry version; no `dub.selections.json` with local paths is committed.
+
+== 6. Git dependencies (DUB 1.41+)
+
+DUB 1.41 and later require a **full commit hash** in the `version` field when a dependency uses `"repository": "git+…"`. Tag names such as `0.10.0-devcentr1` or `v0.2.1` are rejected with “does the repository and version exist?”.
+
+Pinned hashes / registry versions in this monorepo:
+
+[cols="1,2,3"]
+|===
+| Package | Source | Pin
+
+| `dlangui`
+| `git+https://github.com/dlang-supplemental/dlangui.git`
+| `457ffb3c856bedba5fdcf481fc0d787e4c9c1da3` (`v0.10.0-devcentr1`)
+
+| `repo-get`
+| https://code.dlang.org/packages/repo-get[DUB registry]
+| `~>0.2.1` (release https://github.com/dlang-supplemental/repo-get/releases/tag/v0.2.1[v0.2.1]; GitHub update webhook keeps the registry in sync)
+|===
+
+=== Stale `local-overrides.json`
+
+If `~/.dub/packages/local-overrides.json` (Windows: `%LOCALAPPDATA%\dub\packages\local-overrides.json`) redirects `repo-get` to a path that does not contain `dub.json`, every project using `repo-get` fails. Remove the override or point it at a valid clone (for example `dlang-supplemental/repo-get`). Prefer `dub add-local` instead of the deprecated overrides file.
+
+As of 2026-07-26 the stale `repo-get` override on this machine was deleted so DUB no longer prints the “Found local override file” / “Overrides are deprecated” warnings. If you need a local `repo-get` again, use `dub add-local <path> <version>` rather than recreating `local-overrides.json`.

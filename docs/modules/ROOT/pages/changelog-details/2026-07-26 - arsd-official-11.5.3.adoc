@@ -1,0 +1,20 @@
+= 2026-07-26 — Align arsd-official with dlangui (~>11.5.3)
+
+== Problem
+
+`dub build` warned that `arsd-official@10.9.10` did not match dlangui’s `~>11.5.3` dependency, and that a deprecated `local-overrides.json` was in use.
+
+== Cause
+
+* Dev Center still pinned `arsd-official` to `~>10.9.10` from when dlangui required `&lt;11.0.0` and we carried a local fork for the `extern(C) in` deprecation in `svg.d`.
+* Pinned dlangui (`457ffb3…` / `0.10.0-devcentr1`) now depends on `arsd-official:dom` / `:image_files` at `~>11.5.3`.
+* A `dub add-local` of `.forks/arsd` as version `10.9.10` kept forcing the old selection.
+* `%LOCALAPPDATA%\dub\packages\local-overrides.json` still redirected `repo-get` to a path that no longer exists.
+
+== Fix
+
+1. Set `"arsd-official": "~>11.5.3"` in `app/dub.json` and ran `dub upgrade` (root + `app/`) so selections record `11.5.3`.
+2. Ran `dub remove-local` on `Z:\code\github.com\dev-centr\.forks\arsd\` (fork tree can remain on disk unused).
+3. Deleted the stale `local-overrides.json`. Prefer `dub add-local` for any future local package registration (see xref:ROOT:dub-local-remote-paths.adoc[DUB Local vs Remote Paths]).
+
+The March 2026 arsd fork / patch script remain historical documentation for the 10.9.x era; they are not required for current builds.

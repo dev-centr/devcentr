@@ -7,6 +7,9 @@ This section contains technical specifications for Dev Center components and fea
 * xref:components/dependency-modeler.adoc[Dependency Modeler] - Dependency modeling system for intra-project and external dependencies
 * xref:components/project-recognizer.adoc[Project Recognizer] - Project technology stack recognition module
 * xref:components/ai-config-interface.adoc[AI Config Interface] - Global AI configuration dialog for providers, MCP setup, and skills
+* xref:components/role-topology-composer.adoc[Role Topology Composer] - Generic canvas + guided-add for a domain **layer spine** (cognitive bins); orthogonal concerns attach later
+* xref:components/ai-workflow-arrangement.adoc[AI Workflow Arrangement] - `ai-stack` pack: blank map landing, Add an AI tool guided flow, layout recipes
+* xref:components/agent-shell-registry.adoc[Agent Shell Registry] - Catalog of standalone agent shells, runtimes, inference hosts, and interconnects
 * xref:components/repository-provider-registry.adoc[Repository Provider Registry] - Version control system provider registry
 * xref:components/repository-browser-terminal.adoc[Repository Browser Terminal] - Integrated repo-scoped terminal with segmented command history blocks
 * xref:components/text-editor-link-system.adoc[Text Editor Link System] - Text editor with visual link system design

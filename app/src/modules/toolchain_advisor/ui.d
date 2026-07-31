@@ -7,7 +7,7 @@ import modules.toolchain_advisor.sdl_parser : loadAdvisorCatalogFromSdl;
 import modules.infra.ui : openUrlInBrowser;
 import std.conv : to;
 import std.path : buildPath, dirName;
-import std.file : exists, thisExePath;
+import std.file : exists, getcwd, thisExePath;
 
 private enum BoxStyle {
     bg = 0x252525,
@@ -32,9 +32,9 @@ class FlowConnector : Widget
         Rect rc = _pos;
         if (rc.empty)
             return;
-        int cx = rc.x + rc.width / 2;
-        int y1 = rc.y + rc.height / 3;
-        int y2 = rc.y + 2 * rc.height / 3;
+        int cx = rc.left + rc.width / 2;
+        int y1 = rc.top + rc.height / 3;
+        int y2 = rc.top + 2 * rc.height / 3;
         buf.fillRect(Rect(cx - 1, y1, cx + 1, y2), BoxStyle.connector);
         buf.fillRect(Rect(cx - 4, y2 - 2, cx + 4, y2 + 2), BoxStyle.connector);
     }
@@ -92,7 +92,6 @@ class DecisionStepBox : VerticalLayout
 
         _filter.contentChange = delegate(EditableContent content) {
             refreshList(to!string(_filter.text));
-            return true;
         };
 
         _list.itemClick = delegate(Widget source, int itemIndex) {

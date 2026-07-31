@@ -1,0 +1,89 @@
+= Agent Shell Registry
+:navtitle: Agent Shell Registry
+:description: Living SDL catalog of standalone agent execution shells, fleet orchestrators, runtimes, inference hosts, and interconnects for detect / shop / set up / launch.
+
+DevCentr maintains a **registry of agent control-plane options** so users can choose, install, and configure workflows without DevCentr reimplementing those UIs.
+
+== Location
+
+* **SDL (source of truth):** `app/src/modules/services/agent_shell_registry.sdl`
+* **Companion explanation:** xref:general-knowledge:explanation/infrastructure/agent-control-planes.adoc[Agent control planes and compute topologies]
+* **Related (MCP/skills clients):** `app/src/modules/services/ai_client_profiles.json5` — different job; do not merge blindly
+
+== Product job
+
+| DevCentr owns | External shells own |
+| --- | --- |
+| Detect installed shells/runtimes/inference hosts | Session rail, action traces, approve gates |
+| Recommend by hardware / topology posture | Multi-agent tiling and diffs |
+| Write shared MCP, providers, skills, agent-rules / preamble | Model dialogue and tool loop |
+| Launch / deep-link into the chosen shell | First-party auth with Claude/Codex/etc. |
+
+Building a competing Agent-Control Plane Layout inside DevCentr is explicitly **out of scope**. Fork only if a listed shell is abandoned and a thin launcher is required.
+
+== SDL shape
+
+Top-level `registry { }` contains:
+
+* `meta` — version, `lastReviewed`, maintenance rules
+* `category` — structural kinds (`execution-shell`, `fleet-orchestrator`, `agent-runtime`, `ide-hosted`, `inference-host`, `interconnect`, `workflow-arrangement`)
+* `arrangement` — named UI / env / inference placements for **AI Workflow Arrangement** (icons + diagrams; not a wizard)
+* `shell` — standalone / web / TUI control planes
+* `runtime` — CLI/TUI/daemon agents shells wrap
+* `ide` — IDE-hosted peers (detection only)
+* `inference` — local/owned model servers
+* `interconnect` — laptop ↔ compute paths (LM Link, SSH, Hermes gateway, NVIDIA Sync, …)
+* `posture` — qualitative recommend bundles (links an `arrangement` id)
+
+=== Arrangement fields
+
+Each `arrangement` should include:
+
+* `id`, `title`, `iconKey`, `fit`, `avoidWhen`
+* `uiHost` / `envHost` / `inferenceHost` roles
+* `preferShells` / interconnects / inference as relevant
+* Capability booleans when known (`supportsRemoteEnv`, `supportsRemoteInference`, `supportsRemoteUi`, `supportsTravelThreeTier`)
+* `devcentrShell` — where the env-aware human terminal attaches (`local-repo-terminal` \| `env-host-terminal` \| …)
+* `diagramRef` — points at the matching Mermaid on the general-knowledge page
+
+=== Required fields on `shell` / `runtime` entries
+
+Keep entries greppable and detection-friendly:
+
+* `id`, `displayName`, `category`, `status` (`active` \| `preview` \| `archived`)
+* `homepage` and `repo` when public
+* `frameworks` (e.g. `tauri`, `electron`, `tui`, `web`)
+* `platforms`
+* `backends` (runtime ids) and/or `modelTopologies` (`local`, `network-local`, `cloud`, `vendor-open-cloud`, `depends-on-backend`, …)
+* `detectCommand` or `detectHints` when known
+* Short `strengths` / `notes`
+
+Cross-link MCP-capable runtimes with `aiClientProfile "<id>"` when an entry exists in `ai_client_profiles.json5`.
+
+== Initial catalog highlights (2026-07-27)
+
+Not exhaustive — see the SDL file. Notable additions beyond the IDE/MCP client list:
+
+* **LM Studio Bionic** — local / LM Link / Secure Cloud; often searched as “LLM Bionic”
+* **T3 Code**, **Hermes Desktop**, **Goose desktop**, **AiderDesk**, **opcode**, **Palot**, **Codexia**, **OpenAI Codex App**, **Nimbalyst**
+* Fleet: **Agent Deck** (TUI), **AgentDeck** (WSL Electron), **Athena**
+* Inference/interconnect: **LM Studio**, **llmster**, **Ollama**, **vLLM**, **LM Link**, **Hermes remote gateway**, **NVIDIA Sync**, SSH tunnels
+
+== UI expectations (future)
+
+When wired into the app:
+
+. **Shop / compare / canvas** — Role Topology Composer `ai-stack` pack; layout recipes from `arrangement` blocks
+. **Detect** — PATH + known install locations + posture fit
+. **Set up** — guided add + install-from-map; hand off to AI Config for MCP/skills
+. **Launch** — open the external shell on the current repo/worktree when a launch command exists
+. **Human shell** — always keep repository browser terminal on the environment host (local or remote)
+
+Until then, the SDL + explanation docs are the contract for agents and humans maintaining the list.
+
+== Maintenance protocol
+
+. Discover a new player → add SDL block the same day; bump `meta.lastReviewed`
+. Prefer official homepage; note name collisions (e.g. Hermes Desktop vs community Hermes IDE)
+. When uncertain, `status "preview"` and say what to verify in `notes`
+. Update the general-knowledge explanation if a *new topology pattern* appears (not for every GUI clone)

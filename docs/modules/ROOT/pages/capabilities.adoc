@@ -6,10 +6,20 @@ DevCentr is a **Development Orchestration Suite (DOS)**—an ecosystem-centric p
 
 DevCentr manages the "gravity" of your development world by automating the installation and configuration of:
 
-*   **System Shells:** Standardizing and configuring your shell environment.
+*   **System Shells:** Standardizing and configuring your shell environment. Dev-Centr recommends link:https://www.nushell.sh/[Nushell] as the default cross-platform shell (see xref:general-knowledge:explanation/infrastructure/nushell.adoc[Why We Recommend Nushell]).
+*   **Session env refresh:** The repository browser terminal detects stale PATH/system env, surfaces status outside the shell canvas, and injects (optionally auto-runs) a shell-aware refresh command. Prefer OpenShellOrg `env-refresh` / shell-host when installed (see xref:general-knowledge:explanation/infrastructure/shell-env-refresh.adoc[Shell Environment Refresh] and xref:specifications:components/repository-browser-terminal.adoc[Repository Browser Terminal]).
 *   **Global Tooling:** Installing system-wide developer tools.
 *   **Language Toolchains:** Managing versions and environments for Node.js, Python, D, and more.
 *   **Containerization:** Native integration with Docker and other virtualized environments.
+
+== AI workflow orchestration (spec / registry)
+
+DevCentr configures and hands off to external agents; it does not replace agent control-plane UIs.
+
+*   **Always-on human shell:** Repository browser terminal with env intelligence — independent of IDE/agent-manager PTYs.
+*   **Registries:** `agent_shell_registry.sdl` (shells, runtimes, inference, interconnects, arrangements); `ai_client_profiles.json5` (MCP/skills clients); `ai_stack_domain_pack.sdl` (layer spine for cognitive bins).
+*   **Planned UI:** Role Topology Composer + AI stack canvas / guided add — see xref:specifications:components/role-topology-composer.adoc[Role Topology Composer] and xref:specifications:components/ai-workflow-arrangement.adoc[AI Workflow Arrangement]. Layered placement only; MCP/skills remain AI Config tabs.
+*   **Topologies:** xref:general-knowledge:explanation/infrastructure/agent-control-planes.adoc[Agent control planes and compute topologies].
 
 == 🛠️ Core Functional Pillars
 

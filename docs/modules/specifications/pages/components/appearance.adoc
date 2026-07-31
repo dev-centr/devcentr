@@ -23,9 +23,10 @@ Do **not** default to Cascadia *Code* (ligatures) for DevCentr terminals. Mono i
 
 . Open **Appearance** in the top bar.
 . Pick Cascadia Mono or JetBrains Mono.
-. Save. Stored in `~/.dev-center/ui-settings.json` as `codeFontFace`.
+. Optionally set **repository terminal** shell preference (`auto` prefers Nushell when `nu` is on `PATH`) and **Env refresh: inject and run**.
+. Save. Stored in `~/.dev-center/ui-settings.json` as `codeFontFace`, `terminalShell`, and `envRefreshAutoRun`.
 
-New terminal command blocks pick up the face immediately. Reopen panels that were already open if they still show the old face.
+New terminal command blocks pick up the face immediately. Reopen panels that were already open if they still show the old face. The Auto-run checkbox on the terminal env chrome also persists `envRefreshAutoRun`.
 
 Fallbacks if the chosen face is missing: the other recommended mono, then Consolas, then Courier New.
 

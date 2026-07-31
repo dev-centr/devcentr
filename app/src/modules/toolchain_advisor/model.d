@@ -60,7 +60,7 @@ struct AdvisorCatalog
     AdvisorRecommendation[] recommendations;
 }
 
-AdvisorOption findOption(const AdvisorCatalog catalog, string stepId, string optionId)
+AdvisorOption findOption(AdvisorCatalog catalog, string stepId, string optionId)
 {
     foreach (step; catalog.steps)
     {

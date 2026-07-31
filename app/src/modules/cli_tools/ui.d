@@ -8,7 +8,8 @@ import modules.cli_tools.install_runner;
 import modules.infra.ui : openUrlInBrowser;
 import std.conv : to;
 import std.algorithm : canFind, sort;
-import std.array : array;
+import std.array : array, join;
+import std.file : getcwd;
 import std.string : toLower;
 
 private enum PanelStyle {
@@ -135,7 +136,6 @@ class CliToolsCatalogPanel : ScrollWidget {
         _filter.layoutWidth(FILL_PARENT).margins(Rect(0, 0, 0, 8));
         _filter.contentChange = delegate(EditableContent content) {
             rebuildList(to!string(_filter.text));
-            return true;
         };
         root.addChild(_filter);
 
@@ -182,7 +182,7 @@ class CliToolsCatalogPanel : ScrollWidget {
 
             auto expander = new VerticalLayout();
             expander.layoutWidth(FILL_PARENT);
-            auto header = new TextWidget(null, to!dstring(cat ~ " (" ~ cast(string)inCat.length ~ ")"));
+            auto header = new TextWidget(null, to!dstring(cat ~ " (" ~ to!string(inCat.length) ~ ")"));
             header.fontSize(11).fontWeight(700).padding(6).backgroundColor(0x222222);
             expander.addChild(header);
 

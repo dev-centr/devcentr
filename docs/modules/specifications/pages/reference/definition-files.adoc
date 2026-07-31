@@ -28,6 +28,23 @@ Each client entry can include:
 * Manual setup requirements
 * Skills/rules support notes
 
+== Agent shell registry
+
+* **Location (app):** `app/src/modules/services/agent_shell_registry.sdl`
+* **Purpose:** Living catalog of **standalone agent execution shells**, fleet orchestrators, agent runtimes, IDE-hosted peers, inference hosts, and network-local interconnects — for detect / shop / set up / launch. Not a substitute for implementing those UIs inside DevCentr.
+* **Used by:** Future shopping/detection UI; human and agent maintainers keeping pace with the ecosystem. Cross-links to `ai_client_profiles` via `aiClientProfile` when MCP setup applies.
+* **Spec:** xref:../components/agent-shell-registry.adoc[Agent Shell Registry]
+* **Companion:** xref:general-knowledge:explanation/infrastructure/agent-control-planes.adoc[Agent control planes and compute topologies]
+* **Setup UI:** xref:../components/role-topology-composer.adoc[Role Topology Composer] + xref:../components/ai-workflow-arrangement.adoc[AI Workflow Arrangement] (`ai-stack` canvas + guided add; arrangements = layout recipes)
+
+Keep MCP/skills setup data in the JSON5 profiles. Keep control-plane shopping, topology arrangements, and framework-tax notes in the SDL registry.
+
+== AI stack domain pack
+
+* **Location (app):** `app/src/modules/services/ai_stack_domain_pack.sdl`
+* **Purpose:** Layer spine (ordered roles / memory bins), between-layer edge kinds, layout-recipe refs, and explicit orthogonal attach list for the Role Topology Composer `ai-stack` instance.
+* **Used by:** AI Workflow Arrangement canvas + guided add (when implemented); must not grow fake roles for MCP/skills/features.
+
 == Language ecosystems
 
 * **Location (app):** `app/src/modules/languages/<ecosystem>.sdl` (e.g. `node.sdl`, `flutter.sdl`, `python.sdl`)

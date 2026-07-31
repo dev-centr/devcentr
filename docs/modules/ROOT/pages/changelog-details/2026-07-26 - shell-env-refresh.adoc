@@ -1,0 +1,20 @@
+= 2026-07-26 — Shell environment refresh (terminal spec + implementation)
+
+Expanded the repository browser terminal specification and implemented the first DevCentr slice of that UX.
+
+== Why
+
+Stale PATH/env after installs is a chronic IDE and shell pain. VS Code historically declined product fixes; Chocolatey `refreshenv` is unreliable. OpenShellOrg owns the durable CLI and full shell-host; DevCentr ships usable inject/monitor chrome now.
+
+== What landed
+
+* Spec: xref:specifications:components/repository-browser-terminal.adoc[Repository Browser Terminal] — env chrome, modes, recipes, monitoring, shell-host preference
+* App: `env_refresh.d` + upgraded `repo_terminal_widget.d` (chrome, watch, auto-run, shell-aware run/refresh)
+* Settings: `envRefreshAutoRun`, `terminalShell` in `ui-settings.json` / Appearance dialog
+* Capabilities: Environment Orchestration mentions session env refresh
+* Docs siblings: general-knowledge explanation; OpenShellOrg shell-architecture product plan
+
+== Still open
+
+* Full app binary build may still be blocked by unrelated pre-existing compile errors in other modules
+* OpenShellOrg `env-refresh` / `shell-host` repos not scaffolded yet

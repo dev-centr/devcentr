@@ -38,11 +38,22 @@ This page is the **task-level** TODO and roadmap for the DevCentr app and its do
 ** [ ] Support viewing and editing rule/memory text files in a tabbed interface.
 ** [ ] Enable movement of specific rule blocks between files (e.g., from `MEMORIES.md` to `RULES.md`).
 ** [ ] Provide direct access to the central `Z:\code\MEMORIES.md` workstation log.
+* [ ] **AI stack topology (Role Topology Composer — `ai-stack` pack)**
+** [x] Specs + SDL: role-topology-composer, AI Workflow Arrangement, `agent_shell_registry.sdl`, `ai_stack_domain_pack.sdl`, companion topologies doc.
+** [x] Implement topology **canvas** landing (blank map; layout recipes; install-from-map) reading the domain pack + registries.
+** [x] Implement **guided add** (“Add an AI tool…”) and role-scoped vacancy branches; Arrangement tab on AI Config.
+** [ ] Wire detect/launch for registry products; attach human-shell to env host; deep-link Providers/MCP/Skills as orthogonal follow-ons only.
+** [ ] Icon assets for `arr-*` layout recipes.
 * [ ] **Synchronous Literate Programming (SLP) Implementation**
 ** [ ] Update core parser to support `.cmk` (CentrMark) with unified AST database.
 ** [ ] Implement live Tangle/Weave as a background service for sub-second synchronization.
 ** [ ] Build Timeline Visualizer GUI for module evolution.
 * [ ] **GraphRAG Client Support**: Add support to DevCentr to connect to a standalone persistent GraphRAG D-lang indexer service. Explore Unison-lang architectural models (content-addressable immutable ASTs instead of traditional text files) to potentially augment or replace standard compilation flows.
+* [ ] **code-lens IDE integrations**
+** [ ] Track upstream link:https://github.com/AMDphreak/code-lens[code-lens] — pedagogical lens switching (didactic, schematic, contextual, role-labeled) for code examples.
+** [ ] VS Code extension: webview panel with `@code-lens/vanilla`, editor decorations for slotted tokens, AI-generated lens documents from real selections (see `extensions/vscode/` in code-lens repo).
+** [ ] Zed extension / LSP: inlay hints for structural roles; external preview until native overlay APIs exist (see `extensions/zed/` and link:https://github.com/AMDphreak/code-lens/blob/main/docs/editor-integrations.md[editor feasibility]).
+** [ ] DevCentr app: optional launcher to open selection in code-lens preview; share AI provider config with Secrets Manager when available.
 
 
 == Extensibility Ecosystem (Planned)
@@ -57,5 +68,7 @@ This page is the **task-level** TODO and roadmap for the DevCentr app and its do
 * **UI:** DPI-aware / logical pixel support for consistent sizing across high-density displays (see project vision UI Specification & Roadmap).
 * **Ecosystem Streaming:** Empowering devs to publish extensions directly from their repos by streaming and local-building through DevCentr's build systems.
 * **Intelligent App Interop**: Providing integrations with GraphRAG background services (D-lang) to allow semantic understanding of codebases. Long-term goals include bridging into Unison-lang style paradigms (AST hashing vs pure text logic) to radically drop build times.
+* **code-lens (IDE)**: Pedagogical lens switching in VS Code and Zed — upstream link:https://github.com/AMDphreak/code-lens[code-lens]; AI-assisted role naming for real-world code; see link:https://github.com/AMDphreak/code-lens/blob/main/docs/editor-integrations.md[editor feasibility].
+* **AI stack topology:** Layer-spine canvas + guided add (specs/SDL done; UI implementation tracked under Core app).
 * **Visual Identity:** Implement the "Castle on a Cloud" theme for cloud-deployment sub-hubs, including custom iconography and a "castle keep" management metaphor.
 

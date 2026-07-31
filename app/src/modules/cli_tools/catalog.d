@@ -5,7 +5,7 @@ import std.file : readText, exists;
 import std.json : JSONValue, parseJSON, JSONType;
 import std.string : toLower;
 import std.algorithm : canFind, filter;
-import std.array : array;
+import std.array : array, split, join;
 
 private string jsonStr(JSONValue j, string key) {
     if (key !in j || j[key].type == JSONType.null_)

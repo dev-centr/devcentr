@@ -4,6 +4,7 @@ import std.file : exists, readText, write, mkdirRecurse;
 import std.path : buildPath, dirName;
 import std.json : JSONValue, parseJSON, JSONType;
 import std.process : environment;
+import std.string : strip, toLower;
 
 /// Allowed code / terminal monospace faces in DevCentr.
 enum string CODE_FONT_CASCADIA_MONO = "Cascadia Mono";
@@ -13,6 +14,10 @@ struct AppearanceSettings
 {
     /// Primary monospace face for terminals and code panels. Default: Cascadia Mono.
     string codeFontFace = CODE_FONT_CASCADIA_MONO;
+    /// When true, Refresh injects and runs the env refresh command without requiring Enter.
+    bool envRefreshAutoRun = false;
+    /// Terminal shell preference: auto | nushell | powershell | cmd | bash | zsh | fish | sh
+    string terminalShell = "auto";
 }
 
 bool isAllowedCodeFont(string face)
@@ -25,6 +30,26 @@ string normalizeCodeFontFace(string face)
     if (isAllowedCodeFont(face))
         return face;
     return CODE_FONT_CASCADIA_MONO;
+}
+
+string normalizeTerminalShell(string pref)
+{
+    auto p = pref.strip.toLower;
+    foreach (allowed; [
+            "auto", "nushell", "nu", "powershell", "pwsh", "cmd",
+            "bash", "zsh", "fish", "sh"
+        ])
+    {
+        if (p == allowed)
+        {
+            if (p == "nu")
+                return "nushell";
+            if (p == "pwsh")
+                return "powershell";
+            return p;
+        }
+    }
+    return "auto";
 }
 
 /// Comma-separated faces for dlangui (tries each until one exists).
@@ -64,6 +89,12 @@ AppearanceSettings loadAppearanceSettings(string dataRoot = null)
         auto j = parseJSON(readText(path));
         if ("codeFontFace" in j && j["codeFontFace"].type == JSONType.string)
             s.codeFontFace = normalizeCodeFontFace(j["codeFontFace"].str);
+        if ("envRefreshAutoRun" in j && j["envRefreshAutoRun"].type == JSONType.true_)
+            s.envRefreshAutoRun = true;
+        else if ("envRefreshAutoRun" in j && j["envRefreshAutoRun"].type == JSONType.false_)
+            s.envRefreshAutoRun = false;
+        if ("terminalShell" in j && j["terminalShell"].type == JSONType.string)
+            s.terminalShell = normalizeTerminalShell(j["terminalShell"].str);
     }
     catch (Exception) { }
     return s;
@@ -76,7 +107,22 @@ void saveAppearanceSettings(string dataRoot, AppearanceSettings s)
     if (!exists(dir))
         mkdirRecurse(dir);
     s.codeFontFace = normalizeCodeFontFace(s.codeFontFace);
-    JSONValue j;
+    s.terminalShell = normalizeTerminalShell(s.terminalShell);
+
+    JSONValue j = parseJSON("{}");
+    if (exists(path))
+    {
+        try
+        {
+            auto loaded = parseJSON(readText(path));
+            if (loaded.type == JSONType.object)
+                j = loaded;
+        }
+        catch (Exception) { }
+    }
+
     j["codeFontFace"] = JSONValue(s.codeFontFace);
+    j["envRefreshAutoRun"] = JSONValue(s.envRefreshAutoRun);
+    j["terminalShell"] = JSONValue(s.terminalShell);
     write(path, j.toPrettyString());
 }

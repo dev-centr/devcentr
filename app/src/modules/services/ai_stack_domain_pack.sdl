@@ -1,0 +1,131 @@
+// AI stack domain pack for the Role Topology Composer.
+// Layer spine only — cognitive memory bins for hierarchical placement.
+// Orthogonal concerns (MCP, skills, providers, features) stay out of roles;
+// they attach later via AI Config / node inspector.
+// Products/catalog: agent_shell_registry.sdl + ai_client_profiles.json5
+// Specs: role-topology-composer.adoc, ai-workflow-arrangement.adoc
+
+domainPack {
+    id "ai-stack"
+    title "AI stack"
+    version "0.1.0"
+    lastReviewed "2026-07-27"
+    canvasLanding true
+    charter "Cast only layered AI-stack concerns into a hierarchy so users get clean memory bins; connect orthogonal ideas later."
+    productRegistry "agent_shell_registry.sdl"
+    mcpProfiles "ai_client_profiles.json5"
+    humanShellProduct "devcentr-repo-terminal"
+    guidedAddLabel "Add an AI tool…"
+    canvasLabel "AI stack"
+
+    // Ordered spine = guided-add walk order and memory-bin sequence.
+    role {
+        id "env-host"
+        title "Environment / ops host"
+        spineOrder 1
+        cardinality "1-n"
+        memoryBin "Where tools and the working tree run"
+        catalogFrom "arrangement.envHost"
+    }
+    role {
+        id "inference-host"
+        title "Inference"
+        spineOrder 2
+        cardinality "0-n"
+        memoryBin "Where model weights run (cloud API, local, or network-local GPU)"
+        catalogFrom "inference"
+        catalogFrom "interconnect"
+    }
+    role {
+        id "agent-runtime"
+        title "Agent runtime"
+        spineOrder 3
+        cardinality "0-n"
+        memoryBin "What plans, tools, and edits"
+        catalogFrom "runtime"
+    }
+    role {
+        id "control-plane-ui"
+        title "Control plane UI"
+        spineOrder 4
+        cardinality "0-n"
+        memoryBin "Agent manager / IDE surface (not DevCentr human shell)"
+        catalogFrom "shell"
+        catalogFrom "ide"
+    }
+    role {
+        id "human-shell"
+        title "Human ops shell"
+        spineOrder 5
+        cardinality "1"
+        memoryBin "Always-on env-aware terminal on the env host"
+        fixedProduct "devcentr-repo-terminal"
+        notes "DevCentr repository browser terminal; not an agent-manager PTY."
+    }
+
+    edgeKind {
+        id "runs-tools-on"
+        title "Runs tools on"
+        from "agent-runtime"
+        from "control-plane-ui"
+        to "env-host"
+    }
+    edgeKind {
+        id "draws-inference-from"
+        title "Draws inference from"
+        from "agent-runtime"
+        from "control-plane-ui"
+        to "inference-host"
+    }
+    edgeKind {
+        id "drives"
+        title "Drives"
+        from "control-plane-ui"
+        to "agent-runtime"
+    }
+    edgeKind {
+        id "uses-human-shell-on"
+        title "Human shell on"
+        from "human-shell"
+        to "env-host"
+    }
+
+    // Layout recipes seed spine vacancies; ids match arrangement {} in agent_shell_registry.sdl
+    layoutRecipe {
+        id "all-local"
+        arrangementRef "all-local"
+        iconKey "arr-all-local"
+    }
+    layoutRecipe {
+        id "inference-remote-session-local"
+        arrangementRef "inference-remote-session-local"
+        iconKey "arr-infer-remote"
+    }
+    layoutRecipe {
+        id "remote-env"
+        arrangementRef "remote-env"
+        iconKey "arr-remote-env"
+    }
+    layoutRecipe {
+        id "three-tier"
+        arrangementRef "three-tier"
+        iconKey "arr-three-tier"
+    }
+    layoutRecipe {
+        id "agent-gateway-remote"
+        arrangementRef "agent-gateway-remote"
+        iconKey "arr-agent-gateway"
+    }
+    layoutRecipe {
+        id "workspace-remote"
+        arrangementRef "workspace-remote"
+        iconKey "arr-workspace-remote"
+    }
+
+    orthogonal {
+        // Not spine roles — follow-ons after bins exist
+        attach "providers" via "ai-config:Providers"
+        attach "mcp" via "ai-config:MCP Setup"
+        attach "skills" via "ai-config:Skills"
+    }
+}

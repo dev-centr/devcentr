@@ -43,12 +43,12 @@ InstallAuditResult runInteractiveInstall(
 
     version (Windows) {
         auto r = execute(["cmd", "/c", method.command]);
-        result.output = r.output ~ r.error;
+        result.output = r.output;
         append(result.auditLogPath, result.output ~ "\n");
         result.success = r.status == 0;
     } else {
         auto r = execute(["sh", "-c", method.command]);
-        result.output = r.output ~ r.error;
+        result.output = r.output;
         append(result.auditLogPath, result.output ~ "\n");
         result.success = r.status == 0;
     }

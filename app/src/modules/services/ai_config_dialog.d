@@ -9,6 +9,7 @@ import modules.infra.ui : openUrlInBrowser;
 import modules.repo_tools.editor_detector : detectInstalledEditors, openPathWithEditor, EditorProfile;
 import modules.services.ai_providers : KNOWN_PROVIDERS, getProviderKey, saveProviderKey;
 import modules.services.ai_client_profiles;
+import modules.services.ai_arrangement_widget : AIArrangementWidget;
 import std.algorithm : min;
 import std.array : split;
 import std.conv : to;
@@ -558,12 +559,15 @@ void showAIConfigDialog(Window parentWindow, string repoRoot = "")
     heading.fontSize(18).fontWeight(800).margins(Rect(0, 0, 0, 8));
     outer.addChild(heading);
 
-    auto tabBarNote = new TextWidget(null, "Providers, MCP Setup, and Skills live together here because they all affect what AI tools can do."d);
+    auto tabBarNote = new TextWidget(null,
+        "Arrangement maps the layered AI stack. Providers, MCP Setup, and Skills are orthogonal follow-ons."d);
     tabBarNote.textColor(0xAAAAAA).fontSize(10).margins(Rect(0, 0, 0, 8));
     outer.addChild(tabBarNote);
 
     auto tabs = new TabWidget();
     tabs.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT);
+
+    auto arrangementTab = new AIArrangementWidget(parentWindow);
 
     auto providersTab = new ScrollWidget();
     providersTab.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT);
@@ -609,6 +613,7 @@ void showAIConfigDialog(Window parentWindow, string repoRoot = "")
     auto mcpTab = new MCPSetupWidget(parentWindow, repoRoot);
     auto skillsTab = new SkillsWidget();
 
+    tabs.addTab(arrangementTab, "Arrangement"d);
     tabs.addTab(providersTab, "Providers"d);
     tabs.addTab(mcpTab, "MCP Setup"d);
     tabs.addTab(skillsTab, "Skills"d);

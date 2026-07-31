@@ -1,0 +1,16 @@
+= 2026-07-27 – Agent shell registry
+
+== Summary
+
+Started a living catalog of standalone agent execution shells, fleet orchestrators, runtimes, inference hosts, and interconnects — including **LM Studio Bionic** — so DevCentr can detect, recommend, and hand off without building a competing agent control plane.
+
+== Changes
+
+* SDL: `app/src/modules/services/agent_shell_registry.sdl` (v0.1.0)
+* Spec: xref:specifications:components/agent-shell-registry.adoc[Agent Shell Registry]
+* Definition files doc updated to describe the new registry beside AI client profiles
+* Companion explanation lives in general-knowledge (agent control planes + compute topologies)
+
+== Why
+
+Training data and ad-hoc lists miss players (Bionic) and conflate IDE agents, CLI runtimes, and desktop shells. One SDL file is the allow-listed source of truth for shopping and future detection.

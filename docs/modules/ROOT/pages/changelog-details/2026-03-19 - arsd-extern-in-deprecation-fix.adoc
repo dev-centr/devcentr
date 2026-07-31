@@ -20,7 +20,7 @@ Upstream arsd (admadruppe/arsd) fixed this in v11.0.1 by changing:
 
   `in void *p, in void *q` → `scope const void *p, scope const void *q`
 
-But dev-center uses dlangui, which pins arsd-official to `&lt;11.0.0`, so we stay on 10.9.10 which still has the deprecated form.
+At the time, dlangui pinned arsd-official to `&lt;11.0.0`, so we stayed on 10.9.10 which still had the deprecated form. As of 2026-07-26, dlangui requires `~>11.5.3` and Dev Center uses registry arsd-official 11.5.3 (upstream already includes this fix); the 10.9.x fork is no longer selected for builds.
 
 == Fix
 

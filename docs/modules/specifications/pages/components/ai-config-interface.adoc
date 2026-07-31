@@ -26,9 +26,12 @@ At the top is a rounded bar with rounded button tabs.
 
 The initial tabs are:
 
+* `Arrangement`
 * `Providers`
 * `MCP Setup`
 * `Skills`
+
+`Arrangement` opens the **AI stack topology canvas** (Role Topology Composer, `ai-stack` pack): blank map landing, layout recipes, and **Add an AI tool…** guided add. Full behavior: xref:ai-workflow-arrangement.adoc[AI Workflow Arrangement] and xref:role-topology-composer.adoc[Role Topology Composer].
 
 == Providers tab
 
@@ -198,4 +201,6 @@ The UI should use `app/src/modules/services/ai_client_profiles.json5` as the sou
 
 * The editor manager module is the primary entry point.
 * The AI module links into this dialog.
+* xref:ai-workflow-arrangement.adoc[AI Workflow Arrangement] / xref:role-topology-composer.adoc[Role Topology Composer] — Arrangement tab opens the AI stack canvas (not a one-shot wizard; guided add is separate)
+* xref:agent-shell-registry.adoc[Agent Shell Registry] supplies arrangement ids and shopping data.
 * xref:features/ai-doc-sources-and-mcp-setup.adoc[AI Doc Sources and MCP Setup] defines the docs-source priority rules behind this interface.

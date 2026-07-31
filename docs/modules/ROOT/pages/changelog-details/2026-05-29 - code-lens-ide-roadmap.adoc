@@ -1,0 +1,10 @@
+= 2026-05-29 – code-lens IDE roadmap
+
+DevCentr roadmap now tracks **code-lens** editor integrations:
+
+* **Upstream project:** link:https://github.com/AMDphreak/code-lens[AMDphreak/code-lens] — portable JSON5 spec, `@code-lens/vanilla` web component, live demo at link:https://ryanjohnson.dev/code-lens/[ryanjohnson.dev/code-lens].
+* **VS Code:** webview panel (full glass-lens UI), editor decorations on slotted tokens, AI generation of four pedagogical variants from real selections. Scaffold at `extensions/vscode/` in the code-lens repo.
+* **Zed:** LSP + inlay hints for structural roles; full inline morph depends on future editor overlay APIs. Scaffold at `extensions/zed/`.
+* **Feasibility:** link:https://github.com/AMDphreak/code-lens/blob/main/docs/editor-integrations.md[Editor integrations — VS Code vs Zed].
+
+Updated `todo-roadmap.adoc`, `TODO.adoc`, and org-wide docs `todo-roadmap.adoc`.

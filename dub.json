@@ -1,0 +1,8 @@
+{
+	"name": "devcentr",
+	"description": "Dev Center monorepo root - builds the app under app/",
+	"targetType": "none",
+	"dependencies": {
+		"dev-center": { "path": "app" }
+	}
+}

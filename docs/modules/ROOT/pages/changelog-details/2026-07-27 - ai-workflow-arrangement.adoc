@@ -1,0 +1,17 @@
+= 2026-07-27 – AI Workflow Arrangement
+
+== Summary
+
+Specified a generic **Role Topology Composer** (blank canvas landing + guided add + layout recipes over a role-typed graph), then the **AI stack** instance: map-first management, hierarchical “Add an AI tool…” flow, vacancies opening role-scoped branches. Hierarchy is catalog UX; features/MCP/skills stay attachments, not fake layers.
+
+== Changes
+
+* Spec: xref:specifications:components/role-topology-composer.adoc[Role Topology Composer]
+* Spec: xref:specifications:components/ai-workflow-arrangement.adoc[AI Workflow Arrangement] (rewritten as `ai-stack` pack)
+* SDL: `agent_shell_registry.sdl`; `ai_stack_domain_pack.sdl`
+* **Implemented:** Arrangement tab — canvas, guided add, layout recipes, JSON persistence (`ai_arrangement_widget.d` et al.)
+* Remaining: detect/launch wiring, `arr-*` icons
+
+== Why
+
+Users need a hierarchical casting of **only the layered** stack concerns into stable memory bins, plus install-from-map editing — then orthogonal ideas (MCP, skills, features) connect later without fake rungs.

@@ -2,6 +2,55 @@
 
 This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
 
+== 2026-07-27 – AI stack canvas + guided add (implemented)
+
+* App: Arrangement tab on AI Config — topology canvas, layout recipes, **Add an AI tool…** guided add, persist `~/.dev-center/ai-stack-topology.json`.
+* Modules: `ai_stack_model.d`, `ai_stack_loader.d`, `ai_stack_state.d`, `topology_canvas_widget.d`, `ai_arrangement_widget.d`.
+* See xref:ROOT:changelog-details/2026-07-27 - ai-workflow-arrangement.adoc[Detailed changelog].
+
+== 2026-07-27 – AI Workflow Arrangement + topologies
+
+* Spec: xref:specifications:components/role-topology-composer.adoc[Role Topology Composer] — generic canvas + guided-add over a **layer spine** (cognitive bins for hierarchical aspects only; orthogonal concerns attach later).
+* Spec: xref:specifications:components/ai-workflow-arrangement.adoc[AI Workflow Arrangement] — `ai-stack` pack: blank map landing, Add an AI tool…, vacancies open role-scoped guided add; arrangements as layout recipes.
+* SDL: `agent_shell_registry.sdl` v0.2; **`ai_stack_domain_pack.sdl`** (concrete spine + layout-recipe refs).
+* Repository browser terminal: always-on human ops shell; attach to env host under remote arrangements.
+* Capabilities + todo-roadmap updated; companion docs in general-knowledge (Mermaid topologies).
+* See xref:ROOT:changelog-details/2026-07-27 - ai-workflow-arrangement.adoc[Detailed changelog].
+
+== 2026-07-27 – Agent shell registry
+
+* SDL catalog: `app/src/modules/services/agent_shell_registry.sdl` — standalone shells (incl. LM Studio Bionic), fleet UIs, runtimes, inference hosts, interconnects, hardware postures.
+* Spec: xref:specifications:components/agent-shell-registry.adoc[Agent Shell Registry]; definition-files updated.
+* Companion: general-knowledge agent control planes explanation.
+* See xref:ROOT:changelog-details/2026-07-27 - agent-shell-registry.adoc[Detailed changelog].
+
+== 2026-07-26 – Shell environment refresh (terminal implementation)
+
+* App: `modules/repo_tools/env_refresh.d` — shell detection (auto prefers Nushell), built-in recipes, prefer `env-refresh` / `shell-host` on PATH, OS PATH fingerprint.
+* App: repository terminal env chrome (health light, notice, command preview, Auto-run checkbox), toolbar Refresh, session commands run via detected shell.
+* Settings: `ui-settings.json` keys `envRefreshAutoRun`, `terminalShell` (Appearance dialog); merge-safe save.
+* Spec + capabilities remain the product contract; companion docs in general-knowledge / OpenShellOrg shell-architecture.
+* See xref:ROOT:changelog-details/2026-07-26 - shell-env-refresh.adoc[Detailed changelog].
+
+== 2026-07-26 – repo-get via DUB registry
+
+* Confirmed https://code.dlang.org/packages/repo-get[`repo-get` 0.2.1] on the DUB registry (GitHub update webhook).
+* `equivalence-engine` now depends on `~>0.2.1` instead of a git commit pin; docs table in xref:ROOT:dub-local-remote-paths.adoc[DUB Local vs Remote Paths] updated.
+
+== 2026-07-26 – Align arsd-official with dlangui (~>11.5.3)
+
+* Bumped `app/dub.json` / selections from `arsd-official` 10.9.10 to **11.5.3** to match dlangui’s `~>11.5.3` requirement (ends the “Selected package does not match” DUB warning).
+* Removed machine-local `dub add-local` for `.forks/arsd` (10.9.10 patch fork); upstream 11+ already has the `extern(C) in` fix.
+* Deleted stale `%LOCALAPPDATA%\dub\packages\local-overrides.json` (`repo-get` → missing path), which triggered the deprecated-overrides warning.
+* See xref:ROOT:changelog-details/2026-07-26 - arsd-official-11.5.3.adoc[Detailed changelog].
+
+== 2026-07-26 – Shell environment refresh (terminal spec)
+
+* Expanded xref:specifications:components/repository-browser-terminal.adoc[Repository Browser Terminal]: env chrome outside the shell canvas (health light, notice, command preview), monitor drift, preview vs inject-and-run (`envRefresh.autoRun`), shell-aware recipes (Nushell first), prefer OpenShellOrg `env-refresh` / shell-host when present.
+* Capabilities note under Environment Orchestration.
+* Companion: general-knowledge xref:general-knowledge:explanation/infrastructure/shell-env-refresh.adoc[Shell Environment Refresh]; OpenShellOrg shell-architecture plan for `env-refresh` + `shell-host`.
+* See xref:ROOT:changelog-details/2026-07-26 - shell-env-refresh.adoc[Detailed changelog].
+
 == 2026-07-24 – Toolchain Management vocabulary
 
 * Product pointers: xref:ROOT:toolchain-management.adoc[Toolchain Management] + retargeted xref:ROOT:toolchain-control-plane.adoc[Control Plane].

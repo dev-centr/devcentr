@@ -1,0 +1,141 @@
+= AI Workflow Arrangement
+:navtitle: AI Workflow Arrangement
+:description: AI-stack instance of the Role Topology Composer — blank topology canvas as landing, guided add for tools, layout recipes for common placements.
+
+This is the **`ai-stack` domain pack** of the generic xref:role-topology-composer.adoc[Role Topology Composer]. Prefer generic composer terms in shared code; this page is the AI-facing product behavior.
+
+**Charter:** cast only the **layered** AI stack (UI / runtime / env / inference / human shell) into hierarchy so users get clean memory bins — then connect orthogonal ideas (MCP, skills, providers) later. Not a map of every relationship in the AI ecosystem.
+
+Companion explanation (arrangement diagrams): xref:general-knowledge:explanation/infrastructure/agent-control-planes.adoc[Agent control planes and compute topologies].
+
+Data:
+
+* Domain pack (spine): `app/src/modules/services/ai_stack_domain_pack.sdl`
+* Products / arrangements: `app/src/modules/services/agent_shell_registry.sdl`
+* MCP/skills clients: `app/src/modules/services/ai_client_profiles.json5`
+
+== Product story
+
+. **Landing = topology canvas** (blank at first). Map of the **layer spine** only; install from the map; alternatives live inside a role bin.
+. **Guided add flow** (hierarchical catalog; OK to call this the “wizard” in speech) — first-run CTA and **Add an AI tool…**. Walks spine roles so newcomers fill one concern at a time.
+. **Role-scoped branch** — vacancy or “Add…” on a layer opens guided add **for that bin only**.
+. **Layout recipes** — three-tier, remote-env, etc. seed the spine’s vacancies; they teach stacking, not the whole industry graph.
+
+The canvas is ongoing management of the layered spine. Guided add is first-run **and** an alternative entry anytime. Orthogonal config stays in AI Config / inspector attachments.
+
+== Naming (AI chrome)
+
+[cols="1,2", options="header"]
+|===
+| UI copy | Maps to composer
+
+| AI stack / AI workflow map
+| Topology canvas (`ai-stack` pack)
+
+| Add an AI tool…
+| Guided add flow (domain root)
+
+| Add here… / Fill role…
+| Guided add scoped to a role / vacancy
+
+| Layout / Starting shape…
+| Apply layout recipe (`arrangement` ids)
+
+| Alternatives
+| Peer nodes in the same role
+|===
+
+Do **not** call the canvas a wizard. Do **not** pretend skills/MCP are stack layers — those open as **attachments** via AI Config (`Providers`, `MCP Setup`, `Skills`) from the node inspector.
+
+== Roles in the AI pack
+
+[cols="1,1,2", options="header"]
+|===
+| Role id | Cardinality | Notes
+
+| `control-plane-ui`
+| 0–n
+| T3, Hermes Desktop, Bionic, Cursor, … — alternatives allowed
+
+| `agent-runtime`
+| 0–n
+| Claude Code, Codex, OpenCode, … — often paired with a UI node
+
+| `env-host`
+| 1–n
+| Where tools + working tree run (laptop, remote env box, …)
+
+| `inference-host`
+| 0–n
+| Cloud API endpoint, LM Studio, Ollama, Spark/llmster, …
+
+| `interconnect`
+| 0–n
+| LM Link, SSH tunnel, … — usually an **edge annotation** or small edge-node; pack may model either way
+
+| `human-shell`
+| 1 (fixed product)
+| DevCentr env-aware repository terminal on the chosen env host — always in the story; not an agent-manager PTY
+|===
+
+Suggested edge kinds: `runs-tools-on`, `draws-inference-from`, `controlled-by` / `drives`, `uses-human-shell-on`.
+
+== Why not only hierarchy
+
+Hierarchy here is **deliberate**: a cognitive casting of the stack’s layered spine into memory bins (see Role Topology Composer). It is not meant to absorb MCP, skills, or features as extra rungs. Peers inside a bin (two runtimes) are fine; orthogonal concerns connect **after** the spine is clear.
+
+== Entry points
+
+* AI area / AI Config — **Arrangement** or **AI stack** opens the **canvas** (blank or saved graph)
+* Empty canvas CTA + toolbar **Add an AI tool…** → guided add at root
+* Vacancy or role-group **Add** → guided add for that role
+* Optional first-run: if no saved graph, offer guided add *or* “Start from a layout…” (recipes)
+
+Persistence (e.g. `~/.dev-center/ai-stack-topology.json`):
+
+* Nodes (role, product id, detect/install state, primary flag within alternatives)
+* Edges (kind, endpoints)
+* Optional last-applied `layoutRecipe` id (informational)
+* Host descriptors for remote env / inference targets
+
+== Canvas layout
+
+* Empty state: short copy + **Add an AI tool…** + **Start from a layout…**
+* Graph: iconified nodes by role; dashed vacancies from recipes; edge labels for API / remote session
+* Selection → inspector (install, configure, add alternative, remove, open DevCentr shell on env host)
+* Play/edit: drag to rearrange; add/remove alternatives without re-running full guided add
+
+Icons for layout recipes remain the `arr-*` keys from the registry; node icons come from product entries.
+
+== Guided add (hierarchical catalog)
+
+Default root order for first-run (pack-defined, editable later):
+
+. Environment / ops host (incl. “this machine”)
+. Inference (cloud / local / network-local)
+. Agent runtime
+. Control plane UI (filter by runtime compatibility + remote-env flags)
+. Confirm human-shell attachment on env host
+. Deep-link MCP/skills/providers as optional follow-ons (not fake layers)
+
+When opened from a vacancy, **skip to that role’s step** and return to the canvas on completion.
+
+== Layout recipes (from SDL `arrangement`)
+
+| Id | Seeds |
+| --- | --- |
+| `all-local` | Single env-host vacancy; optional local inference; UI+runtime on same host |
+| `inference-remote-session-local` | Local env-host; remote inference vacancy + interconnect |
+| `remote-env` | Thin UI host hint; remote env-host vacancy (Theo / T3-style) |
+| `three-tier` | Travel UI + remote env + Spark inference vacancies |
+| `agent-gateway-remote` | Local UI + remote gateway/runtime |
+| `workspace-remote` | Remote env as whole workspace |
+
+Recipes **suggest**; users then add/remove alternatives on the canvas.
+
+== Relation to other modules
+
+* xref:role-topology-composer.adoc[Role Topology Composer] — generic system
+* xref:ai-config-interface.adoc[AI Config Interface] — Providers / MCP / Skills; Arrangement opens this pack’s canvas
+* xref:agent-shell-registry.adoc[Agent Shell Registry] — products + arrangements as layout recipes
+* xref:repository-browser-terminal.adoc[Repository Browser Terminal] — fixed `human-shell` product

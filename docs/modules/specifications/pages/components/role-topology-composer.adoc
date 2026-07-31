@@ -1,0 +1,202 @@
+= Role Topology Composer
+:navtitle: Role Topology Composer
+:description: Generic canvas + guided-add for the hierarchical/layered slice of a tech stack — a cognitive projection for separating concerns, not a model of the whole system.
+
+DevCentr needs a **generic** management pattern for the **layered** parts of an architecture: a blank **topology canvas** as the landing view, plus a **guided add flow** (first-run and on demand) that fills roles in that layering. Domain packs supply the layer vocabulary, catalog bindings, icons, and install actions.
+
+The first instance is the AI agent stack (xref:ai-workflow-arrangement.adoc[AI Workflow Arrangement]). The same composer should later serve other domains that have a real stack/layer spine — without renaming the core UI to AI terms.
+
+== Why hierarchy at all
+
+Real systems are messy graphs. Users still need a way to **cast the hierarchical/layered aspects** of a stack into a clean spine so they can:
+
+* Separate concerns into stable **memory bins** (this is “where tools run,” that is “where weights run”)
+* Build understanding one layer at a time
+* **Later** connect orthogonal ideas (MCP, skills, auth, features) without stuffing them into the same bins
+
+So the composer **intentionally targets only what subdivides into layers**. It is a **cognitive projection** and teaching surface over the stackable slice — not an attempt to represent every relationship in the product.
+
+That is narrower than “model the whole architecture as a graph,” and that narrowness is the point.
+
+== Scope rule
+
+**In scope for roles / guided add / layout recipes:** placement and product choice along a declared layer spine (e.g. control-plane UI → runtime → env host → inference).
+
+**Out of scope as layers:** orthogonal or cross-cutting concerns — features, MCP servers, skills/rules, API keys, policy flags, arbitrary integrations. Those attach **after** the spine makes sense: inspector facets, AI Config tabs, or a separate overlay. Do not invent fake rungs so everything “fits the wizard.”
+
+Peers at the same layer (two runtimes, two UIs) are still hierarchical *concerns* — alternatives inside one bin — not a reason to abandon layering.
+
+== Two surfaces, one spine
+
+[cols="1,2", options="header"]
+|===
+| Concept | Job
+
+| **Layer spine** (domain pack)
+| Ordered roles that form the memory bins; what guided add walks; what layout recipes seed
+
+| **Topology canvas**
+| Spatial view of that spine (and peer alternatives per role); install/detect; blank landing
+
+| **Guided add flow** (“wizard” only in this sense)
+| Fill a bin / walk the spine; first-run *or* role-scoped from a vacancy
+
+| **Orthogonal attachments** (outside the spine)
+| MCP, skills, providers, features — linked from nodes, never promoted to layers
+|===
+
+A fuller **typed graph** may still exist under the hood for edges between bins (e.g. runtime *draws inference from* host). That graph supports the layered view; it does not expand the composer’s charter to “every nonhierarchical relationship.” If a concern cannot be honestly described as a layer of the stack, it does not get a role in this pack.
+
+== Generic naming
+
+Use these names in code and shared docs. Domain packs may add marketing labels in the UI chrome only.
+
+[cols="1,2", options="header"]
+|===
+| Term | Meaning
+
+| **Role Topology Composer**
+| The generic system (canvas + guided add + layer-spine schema)
+
+| **Layer spine**
+| Ordered roles for one domain — the hierarchical casting users learn
+
+| **Topology canvas**
+| Primary landing map of the spine; starts empty; install from the map
+
+| **Guided add flow**
+| Hierarchical catalog path along the spine (or one role). First-run and “Add a tool…” Prefer this phrase in chrome; “wizard” is acceptable only as shorthand for this flow — never for the canvas itself
+
+| **Domain pack**
+| Layer spine + catalog + installers for one stackable domain (e.g. `ai-stack`)
+
+| **Role**
+| One memory bin / layer (`control-plane-ui`, `agent-runtime`, `env-host`, …)
+
+| **Edge kind**
+| Allowed link *between spine roles* (not a dumping ground for orthogonal links)
+
+| **Vacancy**
+| Empty slot on the spine from a layout recipe; opens guided add for that role
+
+| **Alternative set**
+| Peer products in the same role / bin
+
+| **Layout recipe**
+| Named stacking of vacancies (three-tier, all-local, …) — still only spine layers
+|===
+
+== Surfaces
+
+=== Topology canvas (landing)
+
+* Opens **blank** until the user adds nodes or applies a layout recipe
+* Serves as the **home view** for this domain pack
+* User can add/remove nodes, add/remove alternatives in a role, draw or accept suggested edges, trigger **install** from a node
+* Toolbar: **Add a tool…** (opens guided add at domain root), **Apply layout recipe…**, detect/refresh, export/share later
+
+=== Guided add flow (first-run + branch)
+
+* **First-run / empty canvas:** “Add a tool…” or first-run CTA walks the domain’s default hierarchy (role order from the pack) so a useful starter graph appears quickly
+* **From a vacancy or “Add…” on a role group:** opens the **same flow scoped to that role** (the “branch”), not the full root walk
+* **From an existing node:** “Add alternative…” stays on that role; “Replace…” optional
+* Non-blocking: user can cancel back to the canvas at any time; partial graphs are valid
+
+Hierarchy here means **walking the layer spine** (pick role → pick product → install) so each concern lands in one bin — not “claim the whole industry is a tree.”
+
+=== Node / edge inspector
+
+* Detection status, install actions, launch, config deep-links
+* Alternative set membership inside a role
+* Orthogonal follow-ons (for AI pack: MCP, skills, providers) — link out to AI Config; never new spine roles
+
+== Domain pack schema (SDL-shaped)
+
+Each pack declares roughly:
+
+[source,sdl]
+----
+domainPack {
+    id "ai-stack"
+    title "AI stack"
+    canvasLanding true
+    role {
+        id "control-plane-ui"
+        title "Control plane UI"
+        cardinality "0-n"
+        catalogRef "shell"   // or ide entries
+    }
+    role {
+        id "agent-runtime"
+        title "Agent runtime"
+        cardinality "0-n"
+    }
+    role {
+        id "env-host"
+        title "Environment / ops host"
+        cardinality "1-n"
+    }
+    role {
+        id "inference-host"
+        title "Inference"
+        cardinality "0-n"
+    }
+    role {
+        id "human-shell"
+        title "Human ops shell"
+        cardinality "1"
+        fixedProduct "devcentr-repo-terminal"
+    }
+    edgeKind {
+        id "runs-tools-on"
+        from "agent-runtime" "control-plane-ui"
+        to "env-host"
+    }
+    edgeKind {
+        id "draws-inference-from"
+        from "agent-runtime" "control-plane-ui"
+        to "inference-host"
+    }
+    edgeKind {
+        id "uses-human-shell-on"
+        from "human-shell"
+        to "env-host"
+    }
+    layoutRecipe {
+        id "three-tier"
+        // seeds spine vacancies + suggested between-layer edges only
+    }
+}
+----
+
+Catalog rows (installable products) live in existing registries (`agent_shell_registry.sdl`, `ai_client_profiles.json5`, …) and are **bound to roles** via fields already present or `role "…"`.
+
+**AI pack file:** `app/src/modules/services/ai_stack_domain_pack.sdl` — concrete spine, edge kinds, layout-recipe refs, and orthogonal attach list for the first instance.
+
+== Install from the map
+
+Selecting a catalog product on the canvas (or finishing guided add) should:
+
+. Create/update the node
+. Run detect; if missing, offer install (winget/brew/docs link/script) from registry metadata
+. Offer configure (MCP/skills/providers) via existing AI Config surfaces
+. Suggest edges to compatible neighbors (user confirms)
+
+The canvas is therefore a **layered model + install surface** — a map of the spine, not a portrait of every integration.
+
+== What this is *not*
+
+* Not a replacement for agent session UIs (T3, Hermes, …)
+* Not a place to hang features, MCP, or skills as extra layers
+* Not a forced single path: blank canvas and layout recipes coexist with guided add
+* Not obligated to model non-layered architecture — those concerns connect later, orthogonally
+== Instances
+
+* **AI stack** — xref:ai-workflow-arrangement.adoc[AI Workflow Arrangement] (this pack)
+* Future candidates (out of scope until needed): toolchain control-plane maps, secrets/provider graphs, env↔repo maps already hinted in product vision
+
+== Relation to other modules
+
+* AI Config hosts or deep-links the AI pack canvas
+* Agent shell registry supplies products + layout recipes (`arrangement` → `layoutRecipe`)
+* Repository browser terminal is the fixed `human-shell` product for the AI pack

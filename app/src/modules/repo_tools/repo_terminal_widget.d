@@ -1,15 +1,14 @@
 module modules.repo_tools.repo_terminal_widget;
 
 import dlangui;
-import dlangui.widgets.styles : Align;
 import modules.appearance.fonts : applyCodeFont;
+import modules.appearance.settings : AppearanceSettings, appearanceDataRoot, loadAppearanceSettings,
+    saveAppearanceSettings;
 import modules.infra.logging : logInfo, logError;
+import modules.repo_tools.env_refresh;
 import modules.repo_tools.registry;
-import std.algorithm : min;
-import std.array : split;
 import std.conv : to;
 import std.datetime : Clock;
-import std.path : buildPath;
 import std.process : pipeProcess, Redirect, Config, wait, spawnProcess;
 import std.string : strip;
 import core.sync.mutex : Mutex;
@@ -91,8 +90,19 @@ class RepoTerminalWidget : VerticalLayout
     private EditLine _commandInput;
     private TextWidget _status;
 
+    private TextWidget _healthDot;
+    private TextWidget _envNotice;
+    private TextWidget _cmdPreview;
+    private CheckBox _autoRunCheck;
+    private Button _refreshBtn;
+
     private CommandBlockRefs[] _entries;
     private ulong _pollTimerId;
+    private ulong _envWatchTimerId;
+
+    private string _baselineFingerprint;
+    private bool _envDrift;
+    private EnvRefreshPlan _plan;
 
     this(string repoRoot, RepoToolsRegistry repoTools)
     {
@@ -102,6 +112,14 @@ class RepoTerminalWidget : VerticalLayout
         layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT);
         buildUI();
         registerSelf();
+        refreshPlanAndChrome();
+        _baselineFingerprint = osEnvFingerprint();
+        _envWatchTimerId = setTimer(3000);
+    }
+
+    private AppearanceSettings uiSettings()
+    {
+        return loadAppearanceSettings(appearanceDataRoot());
     }
 
     private void registerSelf()
@@ -123,6 +141,49 @@ class RepoTerminalWidget : VerticalLayout
     {
         backgroundColor = 0x000000;
         padding(6);
+
+        auto envChrome = new VerticalLayout();
+        envChrome.layoutWidth(FILL_PARENT).padding(8).backgroundColor(0x141414)
+            .margins(Rect(0, 0, 0, 6));
+
+        auto statusRow = new HorizontalLayout();
+        statusRow.layoutWidth(FILL_PARENT);
+        _healthDot = new TextWidget(null, "●"d);
+        _healthDot.fontSize(14).margins(Rect(0, 0, 8, 0));
+        statusRow.addChild(_healthDot);
+        _envNotice = new TextWidget(null, "Env in sync"d);
+        _envNotice.layoutWidth(FILL_PARENT).textColor(0xCCCCCC).fontSize(10);
+        statusRow.addChild(_envNotice);
+        envChrome.addChild(statusRow);
+
+        _cmdPreview = new TextWidget(null, ""d);
+        applyCodeFont(_cmdPreview);
+        _cmdPreview.layoutWidth(FILL_PARENT).textColor(0x9CCC65).fontSize(9)
+            .margins(Rect(0, 6, 0, 4));
+        envChrome.addChild(_cmdPreview);
+
+        auto actionRow = new HorizontalLayout();
+        actionRow.layoutWidth(FILL_PARENT);
+        _refreshBtn = new Button(null, "Refresh Env"d);
+        _refreshBtn.click = delegate(Widget w) {
+            onRefreshEnvClicked();
+            return true;
+        };
+        actionRow.addChild(_refreshBtn);
+
+        _autoRunCheck = new CheckBox("envRefreshAutoRun", "Auto-run (no Enter)"d);
+        _autoRunCheck.checked = uiSettings().envRefreshAutoRun;
+        _autoRunCheck.checkChange = delegate(Widget w, bool checked) {
+            auto s = uiSettings();
+            s.envRefreshAutoRun = checked;
+            saveAppearanceSettings(appearanceDataRoot(), s);
+            refreshPlanAndChrome();
+            return true;
+        };
+        actionRow.addChild(_autoRunCheck);
+        envChrome.addChild(actionRow);
+
+        addChild(envChrome);
 
         auto mainRow = new HorizontalLayout();
         mainRow.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT);
@@ -161,9 +222,16 @@ class RepoTerminalWidget : VerticalLayout
         runBtn.click = delegate(Widget w) { runCurrentCommand(); return true; };
         toolbar.addChild(runBtn);
 
-        auto refreshEnvBtn = new Button(null, "Inject Env Refresh"d);
+        auto clearBtn = new Button(null, "Clear Input"d);
+        clearBtn.click = delegate(Widget w) {
+            _commandInput.text = UIString.fromRaw(""d);
+            return true;
+        };
+        toolbar.addChild(clearBtn);
+
+        auto refreshEnvBtn = new Button(null, "Refresh Env"d);
         refreshEnvBtn.click = delegate(Widget w) {
-            injectEnvRefreshCommand();
+            onRefreshEnvClicked();
             return true;
         };
         toolbar.addChild(refreshEnvBtn);
@@ -176,13 +244,89 @@ class RepoTerminalWidget : VerticalLayout
         toolbar.addChild(openExternalBtn);
         addChild(toolbar);
 
-        _status = new TextWidget(null, "Repo terminal keeps per-command history blocks. Environment changes across commands are not fully persistent yet."d);
+        _status = new TextWidget(null, ""d);
         _status.textColor(0xAAAAAA).fontSize(9).margins(Rect(4, 4, 0, 0));
         addChild(_status);
     }
 
+    private void refreshPlanAndChrome()
+    {
+        auto s = uiSettings();
+        _plan = planEnvRefresh(s.terminalShell);
+        if (_autoRunCheck)
+            _autoRunCheck.checked = s.envRefreshAutoRun;
+
+        auto mode = s.envRefreshAutoRun ? "inject+run" : "preview";
+        auto hostNote = shellHostOnPath() ? "shell-host available" : "built-in external terminal";
+        _cmdPreview.text = UIString.fromRaw(to!dstring(
+                "[" ~ _plan.shellLabel ~ "] " ~ _plan.command ~ "  (" ~ _plan.sourceNote ~ ", " ~ mode ~ ")"));
+        updateEnvNoticeText();
+        _status.text = UIString.fromRaw(to!dstring(
+                "Session shell: " ~ _plan.shellLabel ~ ". External: " ~ hostNote ~
+                ". History is kept across env refresh."));
+        if (window)
+            window.update(true);
+    }
+
+    private void updateEnvNoticeText()
+    {
+        if (_envDrift)
+        {
+            _healthDot.textColor = 0xFFA726;
+            _envNotice.text = UIString.fromRaw(
+                "PATH / system env changed — refresh this session?"d);
+            _envNotice.textColor = 0xFFCC80;
+        }
+        else
+        {
+            _healthDot.textColor = 0x66BB6A;
+            _envNotice.text = UIString.fromRaw("Env in sync with OS store snapshot"d);
+            _envNotice.textColor = 0xCCCCCC;
+        }
+    }
+
+    private void onRefreshEnvClicked()
+    {
+        refreshPlanAndChrome();
+        _commandInput.text = UIString.fromRaw(to!dstring(_plan.command));
+        if (uiSettings().envRefreshAutoRun)
+            runCurrentCommand();
+        // After a successful refresh intent, re-baseline so light can return to green
+        // once the user has acted (OS store itself is "current").
+        _baselineFingerprint = osEnvFingerprint();
+        _envDrift = false;
+        updateEnvNoticeText();
+        if (window)
+            window.update(true);
+    }
+
+    private void checkEnvDrift()
+    {
+        auto fp = osEnvFingerprint();
+        if (_baselineFingerprint.length == 0)
+        {
+            _baselineFingerprint = fp;
+            return;
+        }
+        bool drifted = fp != _baselineFingerprint;
+        if (drifted != _envDrift)
+        {
+            _envDrift = drifted;
+            updateEnvNoticeText();
+            if (drifted)
+                refreshPlanAndChrome();
+            else if (window)
+                window.update(true);
+        }
+    }
+
     override bool onTimer(ulong id)
     {
+        if (id == _envWatchTimerId)
+        {
+            checkEnvDrift();
+            return true; // keep watching
+        }
         if (id == _pollTimerId)
         {
             bool stillRunning = false;
@@ -239,29 +383,19 @@ class RepoTerminalWidget : VerticalLayout
         auto shellCommand = command;
         auto repoRoot = _repoRoot;
         auto threadState = state;
+        auto shell = resolveTerminalShell(uiSettings().terminalShell);
+        auto args = shellInvokeArgs(shell, shellCommand);
 
         auto worker = new Thread({
             int exitCode = 1;
             try
             {
-                version (Windows)
-                {
-                    auto pipes = pipeProcess(
-                        ["powershell", "-NoLogo", "-NoProfile", "-Command", shellCommand],
-                        Redirect.stdout | Redirect.stderr, null, Config.none, repoRoot);
-                    foreach (line; pipes.stdout.byLine())
-                        threadState.appendLine(line.idup);
-                    exitCode = wait(pipes.pid);
-                }
-                else
-                {
-                    auto pipes = pipeProcess(
-                        ["sh", "-lc", shellCommand],
-                        Redirect.stdout | Redirect.stderr, null, Config.none, repoRoot);
-                    foreach (line; pipes.stdout.byLine())
-                        threadState.appendLine(line.idup);
-                    exitCode = wait(pipes.pid);
-                }
+                auto pipes = pipeProcess(
+                    args,
+                    Redirect.stdout | Redirect.stderr, null, Config.none, repoRoot);
+                foreach (line; pipes.stdout.byLine())
+                    threadState.appendLine(line.idup);
+                exitCode = wait(pipes.pid);
             }
             catch (Exception e)
             {
@@ -337,27 +471,18 @@ class RepoTerminalWidget : VerticalLayout
             window.update(true);
     }
 
-    private void injectEnvRefreshCommand()
-    {
-        version (Windows)
-        {
-            _commandInput.text = UIString.fromRaw(to!dstring("$env:Path = [System.Environment]::GetEnvironmentVariable(\"Path\",\"Machine\") + \";\" + [System.Environment]::GetEnvironmentVariable(\"Path\",\"User\")"));
-        }
-        else
-        {
-            _commandInput.text = UIString.fromRaw("exec $SHELL -l"d);
-        }
-    }
-
     private void openExternalTerminal()
     {
-        version (Windows)
+        auto args = externalTerminalArgs(_repoRoot, uiSettings().terminalShell);
+        try
         {
-            spawnProcess(["cmd", "/c", "start", "\"\"", "powershell", "-NoExit", "-Command", "Set-Location \"" ~ _repoRoot ~ "\""]);
+            spawnProcess(args);
+            logInfo("Opened external terminal: " ~ args.to!string);
         }
-        else version (Posix)
+        catch (Exception e)
         {
-            spawnProcess(["sh", "-lc", "cd \"" ~ _repoRoot ~ "\"; exec $SHELL -l"]);
+            logError("Open external terminal failed: " ~ e.msg);
+            _status.text = UIString.fromRaw(to!dstring("Open external terminal failed: " ~ e.msg));
         }
     }
 }

@@ -1,7 +1,10 @@
-﻿* xref:index.adoc[Specifications]
+* xref:index.adoc[Specifications]
 * xref:components/dependency-modeler.adoc[Dependency Modeler]
 * xref:components/project-recognizer.adoc[Project Recognizer]
 * xref:components/ai-config-interface.adoc[AI Config Interface]
+* xref:components/role-topology-composer.adoc[Role Topology Composer]
+* xref:components/ai-workflow-arrangement.adoc[AI Workflow Arrangement]
+* xref:components/agent-shell-registry.adoc[Agent Shell Registry]
 * xref:components/repository-browser.adoc[Repository Browser]
 * xref:components/repository-browser-terminal.adoc[Repository Browser Terminal]
 * xref:components/appearance.adoc[Appearance (code font)]
@@ -33,4 +36,5 @@
 * xref:reference/definition-files.adoc[Definition Files (Services and Languages)]
 * xref:templates-schema.adoc[Templates Repository Schema]
 * xref:prohelp.adoc[Prohelp CLI Specification]
+
 

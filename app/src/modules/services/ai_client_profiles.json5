@@ -1,6 +1,8 @@
 {
   // Profiles for AI-capable editors, coding agents, and CLIs that can use Context7.
   // The future DevCentr AI Config interface should read from this file.
+  // Layer spine / canvas: ai_stack_domain_pack.sdl + agent_shell_registry.sdl (Role Topology Composer).
+  // Keep MCP setup here; keep control-plane catalog and layered placement there.
   context7: {
     docsIndexUrl: "https://context7.com/docs/llms.txt",
     skillsBrowserUrl: "https://context7.com/skills/",

@@ -2,7 +2,7 @@ module modules.toolchain_advisor.settings;
 
 import std.file : exists, readText, write, mkdirRecurse;
 import std.path : buildPath, dirName;
-import std.json : JSONValue, parseJSON;
+import std.json : JSONValue, parseJSON, JSONType;
 import modules.toolchain_advisor.cache : ToolchainAdvisorCache;
 
 struct AdvisorSettings

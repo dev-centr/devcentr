@@ -1,0 +1,854 @@
+// Living registry of AI agent execution shells, runtimes, inference hosts, and interconnects.
+// Product job: detect / shop / set up / launch — not reimplement agent control planes.
+// Human companion: general-knowledge explanation/infrastructure/agent-control-planes.adoc
+// Spec: specifications/components/agent-shell-registry.adoc
+// Keep in sync with ai_client_profiles.json5 for MCP/skills clients (different concern).
+
+registry {
+    meta {
+        id "agent-shells"
+        title "Agent shells and control planes"
+        version "0.2.0"
+        lastReviewed "2026-07-27"
+        purpose "Catalog standalone and related agent UIs so DevCentr can detect, recommend, configure, and hand off — without owning the Agent-Control Plane Layout. Named arrangements are layout recipes for the Role Topology Composer (ai-stack pack in ai_stack_domain_pack.sdl)."
+        maintenance "Add new players here first; docs catalog is generated/curated from this file. Mark status archived when a project dies; do not delete history entries. New topology patterns get an arrangement (layoutRecipe) block + docs Mermaid, not only a shell entry."
+    }
+
+    // Structural categories (distinct product jobs).
+    category {
+        id "execution-shell"
+        title "Standalone execution shell"
+        summary "Desktop/web UI that wraps headless agent runtimes (CLI/app-server/daemon). Session rail + action trace + artifact/preview + approve gates."
+    }
+    category {
+        id "fleet-orchestrator"
+        title "Multi-agent fleet / deck"
+        summary "Grid or TUI for many parallel agent PTYs/sessions across projects; often thinner protocol integration than a first-party shell."
+    }
+    category {
+        id "agent-runtime"
+        title "Agent runtime (CLI / TUI / daemon)"
+        summary "The thing that actually plans/tools/edits. Shells wrap these; DevCentr configures env/MCP/rules for them."
+    }
+    category {
+        id "ide-hosted"
+        title "IDE-hosted agent"
+        summary "Agent UI living inside an editor (extension or built-in). Heavier host process; strong for edit loops, weaker for multi-agent tiling."
+    }
+    category {
+        id "inference-host"
+        title "Inference host"
+        summary "Serves local or owned-hardware models (OpenAI-compatible API). Not an agent shell; shells and runtimes point at these."
+    }
+    category {
+        id "interconnect"
+        title "Network-local interconnect"
+        summary "Secure path from thin client machine to owned compute (DGX Spark, home GPU box) without public exposure."
+    }
+    category {
+        id "workflow-arrangement"
+        title "Workflow arrangement"
+        summary "Named placement of UI vs environment/ops vs inference. Product surface: AI Workflow Arrangement (not a wizard)."
+    }
+
+    // --- Named arrangements (AI Workflow Arrangement cards) ---
+
+    arrangement {
+        id "all-local"
+        title "All local"
+        iconKey "arr-all-local"
+        category "workflow-arrangement"
+        uiHost "local"
+        envHost "local"
+        inferenceHost "local-or-cloud-api"
+        fit "Everyday work; simplest mental model. UI, tools, and repo on one machine; inference local or vendor cloud."
+        avoidWhen "Laptop FS or RAM cannot host agent tool loops; or you need owned GPU capacity."
+        preferShells "t3-code" "opcode" "openai-codex-app" "cursor" "lm-studio-bionic"
+        devcentrShell "local-repo-terminal"
+        diagramRef "general-knowledge agent-control-planes arrangement A"
+    }
+
+    arrangement {
+        id "inference-remote-session-local"
+        title "Inference remote, session local"
+        iconKey "arr-infer-remote"
+        category "workflow-arrangement"
+        uiHost "local"
+        envHost "local"
+        inferenceHost "network-local"
+        fit "Default network-local: environment matches user awareness; DGX Spark / GPU box only serves weights (LM Link, tunnel, OpenAI-compatible API)."
+        avoidWhen "You need the working tree and builds on a different OS/FS than the laptop."
+        preferShells "lm-studio-bionic" "t3-code" "hermes-desktop" "aider-webui"
+        preferInterconnects "lm-link" "ssh-tunnel" "nvidia-sync"
+        preferInference "llmster" "ollama" "vllm" "lm-studio"
+        supportsRemoteInference true
+        devcentrShell "local-repo-terminal"
+        diagramRef "general-knowledge agent-control-planes arrangement B"
+    }
+
+    arrangement {
+        id "remote-env"
+        title "Remote environment host"
+        iconKey "arr-remote-env"
+        category "workflow-arrangement"
+        uiHost "local-or-thin"
+        envHost "remote"
+        inferenceHost "cloud-or-with-env"
+        fit "Theo / T3-style: dedicated ops machine for tools + working tree (e.g. avoid macOS filesystem pain). UI on laptop; session runs on env host."
+        avoidWhen "You only need bigger weights and the laptop FS is already fine — use inference-remote-session-local instead."
+        preferShells "t3-code" "hermes-desktop" "athena-workspace" "agent-deck-tui" "aider-webui" "codexia"
+        supportsRemoteEnv true
+        supportsRemoteUi true
+        devcentrShell "env-host-terminal"
+        notes "DevCentr shell and env-refresh must attach to the env host (SSH/remote), not pretend laptop PATH is the agent PATH."
+        diagramRef "general-knowledge agent-control-planes arrangement C"
+    }
+
+    arrangement {
+        id "three-tier"
+        title "Three-tier travel"
+        iconKey "arr-three-tier"
+        category "workflow-arrangement"
+        uiHost "travel-laptop"
+        envHost "remote"
+        inferenceHost "network-local"
+        fit "Conference/vacation laptop → home/office environment machine (ops + session) → DGX Spark inference. Supports agent managers with remote env + remote inference."
+        avoidWhen "Collapsing env host and Spark onto one box if builds and VRAM fight; or when a single remote-env without owned GPU is enough."
+        preferShells "t3-code" "hermes-desktop" "lm-studio-bionic" "aider-webui" "codexia"
+        preferInterconnects "lm-link" "hermes-remote-gateway" "ssh-tunnel" "nvidia-sync"
+        preferInference "llmster" "ollama" "vllm"
+        supportsRemoteEnv true
+        supportsRemoteInference true
+        supportsRemoteUi true
+        supportsTravelThreeTier true
+        devcentrShell "env-host-terminal"
+        diagramRef "general-knowledge agent-control-planes arrangement D"
+    }
+
+    arrangement {
+        id "agent-gateway-remote"
+        title "Agent gateway remote"
+        iconKey "arr-agent-gateway"
+        category "workflow-arrangement"
+        uiHost "local"
+        envHost "gateway-or-local"
+        inferenceHost "depends"
+        fit "Long-lived agent daemon/gateway on a server; laptop UI is remote control (e.g. Hermes serve)."
+        avoidWhen "You only needed remote weights — prefer inference-remote-session-local."
+        preferShells "hermes-desktop"
+        preferInterconnects "hermes-remote-gateway"
+        supportsRemoteUi true
+        devcentrShell "clarify-tree-location"
+        diagramRef "general-knowledge agent-control-planes arrangement E"
+    }
+
+    arrangement {
+        id "workspace-remote"
+        title "Whole workspace remote"
+        iconKey "arr-workspace-remote"
+        category "workflow-arrangement"
+        uiHost "display-client"
+        envHost "remote"
+        inferenceHost "with-workspace-or-separate"
+        fit "Editor/agent/repo live on remote machine (NVIDIA Sync, SSH desktop, cloud workspace); laptop is display/input."
+        avoidWhen "You only want remote inference while keeping local edit awareness."
+        preferInterconnects "nvidia-sync" "ssh-tunnel"
+        devcentrShell "remote-first"
+        diagramRef "general-knowledge agent-control-planes arrangement F"
+    }
+
+    // --- Execution shells (primary shopping list) ---
+
+    shell {
+        id "lm-studio-bionic"
+        displayName "LM Studio Bionic"
+        category "execution-shell"
+        status "active"
+        homepage "https://lmstudio.ai/docs/bionic"
+        vendor "LM Studio"
+        frameworks "native-desktop"
+        platforms "windows" "macos" "linux"
+        backends "bionic-agent"
+        modelTopologies "local" "network-local" "vendor-open-cloud"
+        interconnects "lm-link"
+        detectHints "Bionic app install; LM Studio sibling still used for low-level model config"
+        strengths "First-class local + LM Link + Secure Cloud switch; code + work projects; privacy-oriented open models"
+        notes "Often misnamed 'LLM Bionic'. Separate app from classic LM Studio chat. Compute location is the control-plane choice."
+        supportsRemoteInference true
+    }
+
+    shell {
+        id "t3-code"
+        displayName "T3 Code"
+        category "execution-shell"
+        status "active"
+        homepage "https://github.com/pingdotgg/t3code"
+        repo "https://github.com/pingdotgg/t3code"
+        vendor "T3 Tools / pingdotgg"
+        frameworks "electron" "web"
+        platforms "windows" "macos" "linux"
+        backends "openai-codex" "claude-code" "cursor-cli" "opencode"
+        modelTopologies "depends-on-backend"
+        detectCommand "t3code"
+        installHints "winget T3Tools.T3Code; brew --cask t3-code"
+        strengths "Minimal multi-provider GUI; remote access docs; decouples session from IDE buffers"
+        notes "Wraps CLI auth of each provider; does not replace Codex/Claude/OpenCode installs. Strong fit for remote-env / three-tier when UI is thin and ops run on a dedicated machine (Theo-style)."
+        supportsRemoteEnv true
+        supportsRemoteUi true
+        supportsTravelThreeTier true
+    }
+
+    shell {
+        id "hermes-desktop"
+        displayName "Hermes Desktop"
+        category "execution-shell"
+        status "active"
+        homepage "https://hermes-agent.nousresearch.com/docs/user-guide/desktop"
+        repo "https://github.com/NousResearch/hermes-agent"
+        vendor "Nous Research"
+        frameworks "electron"
+        platforms "windows" "macos" "linux"
+        backends "hermes-agent"
+        modelTopologies "local" "cloud" "remote-gateway"
+        detectCommand "hermes"
+        launchHints "hermes desktop"
+        strengths "Official GUI for Hermes; shared config/memory/skills with CLI; remote gateway to VPS/home server"
+        notes "Drives headless hermes serve (tui_gateway). Web dashboard is a sibling surface, not required by Desktop."
+        supportsRemoteEnv true
+        supportsRemoteUi true
+        supportsTravelThreeTier true
+    }
+
+    shell {
+        id "goose-desktop"
+        displayName "Goose (desktop)"
+        category "execution-shell"
+        status "active"
+        homepage "https://github.com/block/goose"
+        repo "https://github.com/block/goose"
+        vendor "Block"
+        frameworks "desktop" "tui"
+        platforms "macos" "linux" "windows"
+        backends "goose"
+        modelTopologies "cloud" "local"
+        detectCommand "goose"
+        strengths "Corporate-backed open agent; TUI + desktop; BYO model including Ollama"
+        notes "Platform coverage for desktop has historically lagged TUI; verify current OS builds when recommending."
+    }
+
+    shell {
+        id "aider-desk"
+        displayName "AiderDesk"
+        category "execution-shell"
+        status "active"
+        homepage "https://aiderdesk.hotovo.com/docs"
+        repo "https://github.com/hotovo/aider-desk"
+        vendor "Hotovo"
+        frameworks "electron" "web-headless"
+        platforms "windows" "macos" "linux"
+        backends "aider"
+        modelTopologies "depends-on-backend"
+        detectHints "aider-desk; ~/.aider-desk"
+        strengths "Orchestration over Aider; diffs, cost, subagents, skills; IDE connectors"
+        notes "Also runnable headless via npm for browser access."
+    }
+
+    shell {
+        id "opcode"
+        displayName "opcode"
+        category "execution-shell"
+        status "active"
+        homepage "https://github.com/winfunc/opcode"
+        repo "https://github.com/winfunc/opcode"
+        vendor "winfunc"
+        frameworks "tauri"
+        platforms "windows" "macos" "linux"
+        backends "claude-code"
+        modelTopologies "depends-on-backend"
+        strengths "Lightweight Tauri Claude Code command center; CC Agents; MCP registry UI"
+        notes "Claude-first; good example of low shell overhead vs Electron fleets."
+    }
+
+    shell {
+        id "palot"
+        displayName "Palot"
+        category "execution-shell"
+        status "active"
+        homepage "https://github.com/ItsWendell/palot"
+        repo "https://github.com/ItsWendell/palot"
+        vendor "community"
+        frameworks "electron"
+        platforms "windows" "macos" "linux"
+        backends "opencode"
+        modelTopologies "depends-on-backend"
+        strengths "Desktop GUI for OpenCode; multi-session; diffs; schedules"
+        notes "Spawns/manages OpenCode server via SDK."
+    }
+
+    shell {
+        id "codexia"
+        displayName "Codexia"
+        category "execution-shell"
+        status "active"
+        homepage "https://github.com/Ramtinhoss/codexia"
+        repo "https://github.com/Ramtinhoss/codexia"
+        vendor "community"
+        frameworks "tauri"
+        platforms "windows" "macos" "linux"
+        backends "openai-codex" "claude-code"
+        modelTopologies "depends-on-backend"
+        strengths "App-server style workstation; worktrees; headless remote web; MCP/skills UI"
+        notes "Also appears under OnlyCode naming in some forks/mirrors — verify canonical repo when linking."
+    }
+
+    shell {
+        id "codex-monitor"
+        displayName "CodexMonitor"
+        category "execution-shell"
+        status "active"
+        homepage "https://nimbalyst.com/blog/best-codex-gui-tools-and-desktop-apps-2026/"
+        vendor "community"
+        frameworks "tauri"
+        platforms "windows" "macos" "linux"
+        backends "openai-codex"
+        modelTopologies "depends-on-backend"
+        strengths "Codex-first orchestration; remote backend mode called out in roundups"
+        notes "Confirm current homepage/repo before install offers; listed from 2026 Codex GUI comparisons."
+    }
+
+    shell {
+        id "nimbalyst"
+        displayName "Nimbalyst"
+        category "execution-shell"
+        status "active"
+        homepage "https://nimbalyst.com/"
+        vendor "Nimbalyst"
+        frameworks "electron"
+        platforms "windows" "macos" "linux" "ios"
+        backends "openai-codex" "claude-code"
+        modelTopologies "depends-on-backend"
+        strengths "Visual multi-session workspace; parallel agents; mobile companion mentioned in roundups"
+        notes "Heavier Electron workspace class."
+    }
+
+    shell {
+        id "openai-codex-app"
+        displayName "OpenAI Codex App"
+        category "execution-shell"
+        status "active"
+        homepage "https://developers.openai.com/codex/"
+        vendor "OpenAI"
+        frameworks "native-desktop"
+        platforms "macos" "windows"
+        backends "openai-codex"
+        modelTopologies "cloud"
+        strengths "First-party rich client over Codex app-server"
+        notes "Linux gap historically filled by CodexMonitor/Nimbalyst/T3/CLI."
+    }
+
+    shell {
+        id "gt-office"
+        displayName "GT Office"
+        category "execution-shell"
+        status "active"
+        homepage "https://github.com/Laplace-bit/GT-Office"
+        repo "https://github.com/Laplace-bit/GT-Office"
+        vendor "community"
+        frameworks "tauri"
+        platforms "windows" "macos" "linux"
+        backends "claude-code" "openai-codex" "gemini-cli"
+        modelTopologies "depends-on-backend"
+        strengths "Multi-agent workspace; agent-to-agent CLI (gto); wraps official CLIs"
+    }
+
+    shell {
+        id "ccgui"
+        displayName "Desktop CC GUI (ccgui)"
+        category "execution-shell"
+        status "active"
+        homepage "https://github.com/hlong026/desktop-cc-gui"
+        repo "https://github.com/hlong026/desktop-cc-gui"
+        vendor "community"
+        frameworks "tauri"
+        platforms "windows" "macos" "linux"
+        backends "claude-code" "openai-codex" "opencode"
+        modelTopologies "depends-on-backend"
+        strengths "Local-first Tauri wrapper; multi-engine; session resume"
+    }
+
+    shell {
+        id "kangnam-client"
+        displayName "Kangnam Client"
+        category "execution-shell"
+        status "active"
+        homepage "https://github.com/kangnam7654/kangnam-client"
+        repo "https://github.com/kangnam7654/kangnam-client"
+        vendor "community"
+        frameworks "tauri" "web"
+        platforms "windows" "macos" "linux"
+        backends "claude-code" "openai-codex"
+        modelTopologies "depends-on-backend"
+        strengths "JSON stream → chat UI; permission dialogs; setup wizard; browser via WebSocket"
+    }
+
+    shell {
+        id "cantus"
+        displayName "Cantus"
+        category "execution-shell"
+        status "active"
+        homepage "https://github.com/manan45/Cantus"
+        repo "https://github.com/manan45/Cantus"
+        vendor "community"
+        frameworks "tauri"
+        platforms "macos"
+        backends "claude-code"
+        modelTopologies "depends-on-backend"
+        strengths "Claude-first IDE shell (Monaco + PTY + git); small native binary"
+        notes "Apple Silicon macOS focus."
+    }
+
+    shell {
+        id "athena-workspace"
+        displayName "Athena"
+        category "fleet-orchestrator"
+        status "active"
+        homepage "https://github.com/dorucioclea/Athena"
+        repo "https://github.com/dorucioclea/Athena"
+        vendor "community"
+        frameworks "electron"
+        platforms "windows" "macos" "linux"
+        backends "openai-codex" "opencode" "claude-code" "hermes-agent"
+        modelTopologies "depends-on-backend"
+        strengths "Embedded PTYs; session handoff/recall; MCP bridge into desktop"
+        notes "Electron + FastAPI; heavier than Tauri single-agent shells."
+    }
+
+    shell {
+        id "agentdeck-wsl"
+        displayName "AgentDeck (WSL Electron)"
+        category "fleet-orchestrator"
+        status "active"
+        homepage "https://github.com/Wintersta7e/agentdeck"
+        repo "https://github.com/Wintersta7e/agentdeck"
+        vendor "community"
+        frameworks "electron"
+        platforms "windows"
+        backends "claude-code" "openai-codex" "aider" "goose" "gemini-cli" "amazon-q" "opencode"
+        modelTopologies "depends-on-backend"
+        strengths "Split terminals; visual workflows; plan-limit tracking via WSL"
+        notes "Windows+WSL2 oriented. Distinct from agent-deck TUI."
+    }
+
+    shell {
+        id "agent-deck-tui"
+        displayName "Agent Deck (TUI)"
+        category "fleet-orchestrator"
+        status "active"
+        homepage "https://github.com/asheshgoplani/agent-deck"
+        repo "https://github.com/asheshgoplani/agent-deck"
+        vendor "community"
+        frameworks "tui" "web"
+        platforms "windows" "macos" "linux"
+        backends "claude-code" "gemini-cli" "opencode" "openai-codex" "github-copilot" "crush" "cursor-cli" "hermes-agent"
+        modelTopologies "depends-on-backend"
+        detectCommand "agent-deck"
+        strengths "Lowest UI overhead fleet view; worktrees; cost; phone conductor; optional web UI"
+        notes "Best-in-class for many sessions on constrained laptop RAM if you accept TUI."
+    }
+
+    shell {
+        id "hermes-ide"
+        displayName "Hermes IDE"
+        category "execution-shell"
+        status "active"
+        homepage "https://github.com/hermes-hq/hermes-ide"
+        repo "https://github.com/hermes-hq/hermes-ide"
+        vendor "community"
+        frameworks "tauri"
+        platforms "windows" "macos" "linux"
+        backends "claude-code" "aider" "openai-codex" "gemini-cli"
+        modelTopologies "depends-on-backend"
+        strengths "AI-native terminal/IDE; Claude chat mode with tool cards"
+        notes "Not the official Nous Hermes Desktop; name collision — prefer hermes-desktop for Nous product."
+    }
+
+    shell {
+        id "corey-agents"
+        displayName "Agents (corey-burns-dev)"
+        category "execution-shell"
+        status "preview"
+        homepage "https://github.com/corey-burns-dev/agents"
+        repo "https://github.com/corey-burns-dev/agents"
+        vendor "community"
+        frameworks "electron" "tauri" "qt" "web"
+        platforms "windows" "macos" "linux"
+        backends "openai-codex" "claude-code" "gemini-cli"
+        modelTopologies "depends-on-backend"
+        strengths "Multi-client experiment (web/Electron/Tauri/Qt); shared contracts"
+        notes "Early WIP; useful as architecture reference more than default recommend."
+    }
+
+    shell {
+        id "aider-webui"
+        displayName "Aider WebUI"
+        category "execution-shell"
+        status "active"
+        homepage "https://github.com/leandix-ai/aider-webui"
+        repo "https://github.com/leandix-ai/aider-webui"
+        vendor "community"
+        frameworks "web"
+        platforms "windows" "macos" "linux"
+        backends "aider"
+        modelTopologies "depends-on-backend"
+        strengths "Browser split chat+terminal; good for remote display to a compute box"
+    }
+
+    shell {
+        id "cline-desktop"
+        displayName "Cline Desktop"
+        category "execution-shell"
+        status "preview"
+        homepage "https://github.com/Statusnone420/cline-desktop"
+        repo "https://github.com/Statusnone420/cline-desktop"
+        vendor "community"
+        frameworks "electron"
+        platforms "windows"
+        backends "cline"
+        modelTopologies "depends-on-backend"
+        strengths "Chat-first cockpit on @cline/sdk"
+        notes "Unofficial; Cline also has official standalone/core API builds."
+    }
+
+    shell {
+        id "bodega-one-code"
+        displayName "Bodega One Code"
+        category "execution-shell"
+        status "preview"
+        homepage "https://www.bodegaone.ai/"
+        vendor "Bodega One"
+        frameworks "electron"
+        platforms "windows" "macos" "linux"
+        backends "bodega-agent"
+        modelTopologies "local" "cloud"
+        strengths "Standalone IDE+agent; air-gap mode; BYOLLM presets"
+        notes "Commercial/local-first; not open source. Positioned as Roo-era standalone alternative."
+    }
+
+    // --- Runtimes (wrapped by shells; DevCentr configures these) ---
+
+    runtime {
+        id "claude-code"
+        displayName "Claude Code"
+        category "agent-runtime"
+        status "active"
+        homepage "https://docs.anthropic.com/en/docs/claude-code"
+        detectCommand "claude"
+        modelTopologies "cloud" "compatible-proxy"
+        aiClientProfile "claude-code"
+    }
+
+    runtime {
+        id "openai-codex"
+        displayName "OpenAI Codex CLI / app-server"
+        category "agent-runtime"
+        status "active"
+        homepage "https://developers.openai.com/codex/"
+        detectCommand "codex"
+        modelTopologies "cloud" "compatible-proxy"
+        aiClientProfile "openai-codex"
+        notes "app-server is the rich-client protocol surface."
+    }
+
+    runtime {
+        id "opencode"
+        displayName "OpenCode"
+        category "agent-runtime"
+        status "active"
+        homepage "https://opencode.ai"
+        detectCommand "opencode"
+        modelTopologies "cloud" "local" "compatible-proxy"
+        aiClientProfile "opencode"
+    }
+
+    runtime {
+        id "hermes-agent"
+        displayName "Hermes Agent"
+        category "agent-runtime"
+        status "active"
+        homepage "https://hermes-agent.nousresearch.com/"
+        detectCommand "hermes"
+        modelTopologies "cloud" "local" "remote-gateway"
+    }
+
+    runtime {
+        id "aider"
+        displayName "Aider"
+        category "agent-runtime"
+        status "active"
+        homepage "https://aider.chat/"
+        detectCommand "aider"
+        modelTopologies "cloud" "local" "compatible-proxy"
+    }
+
+    runtime {
+        id "gemini-cli"
+        displayName "Gemini CLI"
+        category "agent-runtime"
+        status "active"
+        homepage "https://google-gemini.github.io/gemini-cli/"
+        detectCommand "gemini"
+        modelTopologies "cloud"
+        aiClientProfile "gemini-cli"
+    }
+
+    runtime {
+        id "goose"
+        displayName "Goose"
+        category "agent-runtime"
+        status "active"
+        homepage "https://github.com/block/goose"
+        detectCommand "goose"
+        modelTopologies "cloud" "local"
+    }
+
+    runtime {
+        id "crush"
+        displayName "Crush"
+        category "agent-runtime"
+        status "active"
+        homepage "https://github.com/charmbracelet/crush"
+        detectCommand "crush"
+        modelTopologies "cloud" "compatible-proxy"
+        notes "Charm TUI agent; multi-model; MCP."
+    }
+
+    runtime {
+        id "cline"
+        displayName "Cline"
+        category "agent-runtime"
+        status "active"
+        homepage "https://github.com/cline/cline"
+        modelTopologies "cloud" "local"
+        notes "VS Code extension + standalone/core + CLI surfaces."
+    }
+
+    runtime {
+        id "cursor-cli"
+        displayName "Cursor Agent CLI"
+        category "agent-runtime"
+        status "active"
+        homepage "https://cursor.com/cli"
+        detectCommand "cursor-agent"
+        modelTopologies "cloud"
+        aiClientProfile "cursor"
+    }
+
+    runtime {
+        id "amp"
+        displayName "Amp"
+        category "agent-runtime"
+        status "active"
+        homepage "https://ampcode.com/"
+        detectCommand "amp"
+        modelTopologies "cloud"
+        aiClientProfile "amp"
+    }
+
+    runtime {
+        id "github-copilot"
+        displayName "GitHub Copilot coding agent / CLI"
+        category "agent-runtime"
+        status "active"
+        homepage "https://docs.github.com/en/copilot"
+        detectCommand "copilot"
+        modelTopologies "cloud"
+        aiClientProfile "github-copilot"
+    }
+
+    // --- IDE-hosted (detection peers; not the standalone category) ---
+
+    ide {
+        id "cursor"
+        displayName "Cursor"
+        category "ide-hosted"
+        status "active"
+        detectCommand "cursor"
+        aiClientProfile "cursor"
+        modelTopologies "cloud"
+        notes "Full IDE + agent. Highest host RAM; best when edit loop and agent share one window."
+    }
+
+    ide {
+        id "windsurf"
+        displayName "Windsurf"
+        category "ide-hosted"
+        status "active"
+        detectCommand "windsurf"
+        aiClientProfile "windsurf"
+        modelTopologies "cloud"
+    }
+
+    ide {
+        id "google-antigravity"
+        displayName "Google Antigravity"
+        category "ide-hosted"
+        status "active"
+        detectCommand "antigravity"
+        aiClientProfile "google-antigravity"
+        modelTopologies "cloud"
+    }
+
+    ide {
+        id "zed"
+        displayName "Zed"
+        category "ide-hosted"
+        status "active"
+        detectCommand "zed"
+        aiClientProfile "zed"
+        modelTopologies "cloud" "compatible-proxy"
+        notes "Lighter native editor host than Electron IDEs."
+    }
+
+    // --- Inference hosts & interconnects (compute topology) ---
+
+    inference {
+        id "lm-studio"
+        displayName "LM Studio"
+        category "inference-host"
+        status "active"
+        homepage "https://lmstudio.ai/"
+        localApiDefault "http://127.0.0.1:1234"
+        modelTopologies "local"
+        notes "Low-level model runner; pair with Bionic for agent UX or point CLIs at local OpenAI-compatible API."
+    }
+
+    inference {
+        id "llmster"
+        displayName "llmster (headless LM Studio)"
+        category "inference-host"
+        status "active"
+        homepage "https://build.nvidia.com/spark/lm-studio"
+        modelTopologies "local" "network-local"
+        notes "Terminal-native LM Studio on servers / DGX Spark."
+    }
+
+    inference {
+        id "ollama"
+        displayName "Ollama"
+        category "inference-host"
+        status "active"
+        homepage "https://ollama.com/"
+        detectCommand "ollama"
+        localApiDefault "http://127.0.0.1:11434"
+        modelTopologies "local" "network-local"
+        notes "Common DGX Spark / LAN pattern via OLLAMA_HOST=0.0.0.0 or SSH tunnel."
+    }
+
+    inference {
+        id "vllm"
+        displayName "vLLM"
+        category "inference-host"
+        status "active"
+        homepage "https://github.com/vllm-project/vllm"
+        modelTopologies "local" "network-local"
+        notes "High-throughput OpenAI-compatible server on serious GPU boxes."
+    }
+
+    interconnect {
+        id "lm-link"
+        displayName "LM Link"
+        category "interconnect"
+        status "active"
+        homepage "https://lmstudio.ai/link"
+        modelTopologies "network-local"
+        strengths "Tailscale/tsnet userspace mesh; remote models appear on localhost:1234; no public ports"
+        notes "Primary path laptop ↔ DGX Spark / home GPU for LM Studio ecosystem and any localhost OpenAI client."
+    }
+
+    interconnect {
+        id "ssh-tunnel"
+        displayName "SSH local port forward"
+        category "interconnect"
+        status "active"
+        modelTopologies "network-local"
+        notes "ssh -N -L 11434:127.0.0.1:11434 user@compute — universal lowest-common-denominator."
+    }
+
+    interconnect {
+        id "nvidia-sync"
+        displayName "NVIDIA Sync"
+        category "interconnect"
+        status "active"
+        homepage "https://docs.nvidia.com/dgx/dgx-spark/nvidia-sync.html"
+        modelTopologies "network-local"
+        notes "DGX Spark remote workflow companion; often paired with Ollama/vLLM/toolbox scripts."
+    }
+
+    interconnect {
+        id "hermes-remote-gateway"
+        displayName "Hermes remote gateway"
+        category "interconnect"
+        status "active"
+        homepage "https://hermes-agent.nousresearch.com/docs/user-guide/features/web-dashboard"
+        modelTopologies "network-local" "cloud"
+        notes "Desktop/UI on thin client; hermes serve/dashboard on compute or VPS (prefer VPN/OAuth for non-LAN)."
+    }
+
+    // Performance posture cheat-sheet (qualitative; details in docs).
+    posture {
+        id "min-ram-laptop"
+        title "Constrained laptop (≤16 GB), cloud models"
+        arrangement "all-local"
+        preferShells "agent-deck-tui" "opcode" "codexia" "t3-code"
+        preferRuntimes "claude-code" "openai-codex" "opencode"
+        avoid "full Electron IDE + Electron fleet + local 70B"
+        rationale "Pay for frontier quality in the API; keep UI thin; do not also host weights."
+    }
+
+    posture {
+        id "local-privacy"
+        title "Local-first / air-gapped open models"
+        arrangement "all-local"
+        preferShells "lm-studio-bionic" "goose-desktop" "bodega-one-code"
+        preferInference "lm-studio" "ollama"
+        avoid "cloud-only shells without offline path"
+        rationale "Shell overhead secondary to VRAM/quantization; Bionic makes compute location explicit."
+    }
+
+    posture {
+        id "network-local-spark"
+        title "Session local + owned inference (DGX Spark / GPU box)"
+        arrangement "inference-remote-session-local"
+        preferShells "lm-studio-bionic" "hermes-desktop" "aider-webui" "t3-code"
+        preferInference "llmster" "ollama" "vllm"
+        preferInterconnects "lm-link" "hermes-remote-gateway" "ssh-tunnel" "nvidia-sync"
+        rationale "UI + tools + repo on the machine whose env the user understands; weights on Spark. Default network-local."
+    }
+
+    posture {
+        id "remote-env-ops"
+        title "Dedicated environment / ops machine"
+        arrangement "remote-env"
+        preferShells "t3-code" "hermes-desktop" "athena-workspace" "agent-deck-tui" "codexia"
+        rationale "Theo / T3-style: run agent tool loops on a machine with a good FS/OS for ops (often Linux), UI on the daily driver."
+    }
+
+    posture {
+        id "three-tier-travel"
+        title "Travel UI + home env + owned GPU"
+        arrangement "three-tier"
+        preferShells "t3-code" "hermes-desktop" "lm-studio-bionic" "aider-webui" "codexia"
+        preferInference "llmster" "ollama" "vllm"
+        preferInterconnects "lm-link" "hermes-remote-gateway" "ssh-tunnel" "nvidia-sync"
+        rationale "Laptop at a conference sends work to the env machine; env machine calls Spark for inference."
+    }
+
+    posture {
+        id "sota-online"
+        title "State-of-the-art hosted models"
+        arrangement "all-local"
+        preferShells "openai-codex-app" "t3-code" "hermes-desktop" "cursor"
+        preferRuntimes "claude-code" "openai-codex" "cursor-cli"
+        rationale "Shell choice is UX; model quality and latency dominate. Still pick env host deliberately if FS/ops hurt."
+    }
+}

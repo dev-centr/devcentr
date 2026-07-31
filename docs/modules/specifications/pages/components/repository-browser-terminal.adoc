@@ -4,13 +4,31 @@ DevCentr should include an integrated terminal in the repository browser so user
 
 This terminal is not meant to replace full terminal apps. It is a repo-scoped command workspace with better history visibility than a plain black console pane.
 
+For the industry-wide stale-PATH problem, VS Code history, and OpenShellOrg product ownership, see xref:general-knowledge:explanation/infrastructure/shell-env-refresh.adoc[Shell Environment Refresh].
+
 == Goals
 
 * Open a terminal directly in the selected repository directory
-* Keep the session independent from external editors
+* Keep the session independent from external editors **and** from agent-manager PTYs
+* Remain **always accessible and visible** while a repository is selected — not tied to a conversation view
 * Make command history easy to scan and revisit
 * Visually segment output by command
 * Preserve session history while still allowing environment refresh actions
+* Surface env drift outside the shell canvas and offer shell-aware refresh (visible command; optional auto-run)
+
+== Independence from IDE / agent-manager shells
+
+Cursor and similar hosts often keep a shell alive for a workspace but still push users to **reopen a shell per conversation view**. Agent-manager terminals also usually lack env health chrome and OpenShellOrg-oriented refresh.
+
+DevCentr’s repository browser terminal is the **human ops shell** for the selected repo:
+
+* Always available from the repository browser tool area while the repo is selected
+* Not reset when the user switches agent conversations in an external IDE
+* Owns Refresh / drift detection / shell-aware recipes (prefer `env-refresh` / `shell-host` on PATH)
+
+Agent managers keep their own traces and approve gates. They do not replace this surface. AI Workflow Arrangement should attach “DevCentr shell on the environment host” as a fixed layer of every topology.
+
+When the saved arrangement uses a **remote env host**, this component (or a sibling remote tab) should target that host so PATH awareness matches where tools actually run — see xref:ai-workflow-arrangement.adoc[AI Workflow Arrangement] and xref:general-knowledge:explanation/infrastructure/agent-control-planes.adoc[Agent control planes].
 
 == Placement
 
@@ -22,10 +40,11 @@ The repository browser remains the owner of repo context, while the terminal com
 
 == Main layout
 
-The component uses three zones:
+The component uses these zones:
 
 * Left: command index list
 * Center: scrollable terminal viewer zone
+* Top or strip above/beside the viewer: **env chrome** (health + notice + command preview) — outside the classical shell surface
 * Bottom: compact toolbar
 
 === Terminal viewer zone
@@ -37,6 +56,15 @@ The viewer zone has:
 * A stack of command blocks inside the scroll area
 
 Each command execution creates its own block.
+
+=== Env chrome (outside the shell canvas)
+
+Env status must not live only in scrollback. A strip outside the viewer shows:
+
+* **Health indicator** — green when the session env matches the last known OS store snapshot; orange when drift is detected (for example PATH or other watched system/user vars changed)
+* **Notice** — short copy when orange, e.g. `PATH changed — refresh this session?`
+* **Command preview** — the exact shell-specific refresh command that Refresh will inject (so users can learn it)
+* **Refresh** control — triggers inject, or inject-and-run per settings
 
 == Command blocks
 
@@ -97,19 +125,88 @@ It should include:
 
 * Run current command
 * Clear current input only
-* Refresh environment
-* Open external terminal
+* Refresh environment (same action as env chrome Refresh)
+* Open external terminal (prefer OpenShellOrg **shell-host** when installed; otherwise OS default)
 
-=== Refresh environment behavior
+== Environment refresh
 
 Refreshing the environment must not erase the session history.
 
-Preferred behaviors:
+Background and ownership: xref:general-knowledge:explanation/infrastructure/shell-env-refresh.adoc[Shell Environment Refresh]. Durable CLI and full terminal product: planned OpenShellOrg `env-refresh` and `shell-host` (see OpenShellOrg shell-architecture).
 
-* Native environment refresh if the host platform supports it safely
-* Otherwise inject the refresh command into the terminal input for the user to run manually
+=== Modes
 
-On Windows PowerShell, the UI can inject the standard PATH refresh command used by this workspace.
+[cols="1,2", options="header"]
+|===
+| Mode | Behavior
+
+| **Preview + confirm** (default)
+| Fill the command input (and show preview in env chrome). User runs it explicitly — good for learning.
+
+| **Inject and run**
+| Inject the shell-appropriate command and submit it without requiring Enter. Controlled by a setting such as `envRefresh.autoRun`.
+|===
+
+=== Preference order for how to refresh
+
+. If OpenShellOrg `env-refresh` (or equivalent) is on `PATH`, prefer invoking that (visible in the preview).
+. Else inject a built-in shell-aware recipe for the active shell.
+. Native in-process env rebuild only if the platform supports it safely for this session model without lying about host inheritance.
+
+Do not recommend Chocolatey `refreshenv` as the primary path.
+
+=== Shell-aware inject recipes
+
+Detect the session shell type and inject the matching command. Illustrative recipes (implementations may call `env-refresh` instead when available):
+
+[cols="1,2", options="header"]
+|===
+| Shell | Inject target (illustrative)
+
+| Nushell
+| Reload PATH and documented keys into `$env` from the OS store (preferred when Nushell is the configured system shell)
+
+| PowerShell 7 / Windows PowerShell
+| `$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")` (and broader reload via `env-refresh` when present)
+
+| cmd.exe
+| Helper/`set` sequence that rebuilds PATH from Machine + User
+
+| bash / zsh
+| Re-source login PATH sources, or `exec $SHELL -l` when a full login re-entry is appropriate
+
+| fish
+| fish-appropriate PATH reload from system sources
+|===
+
+Implementation status: env chrome, OS PATH fingerprint watch, shell-aware recipes (prefer `env-refresh` when on `PATH`), Auto-run / preview modes, and session command execution via the resolved shell are in the app (`env_refresh.d`, `repo_terminal_widget.d`). OpenShellOrg `env-refresh` / `shell-host` remain preferred when installed.
+
+=== Monitoring
+
+Watch for changes that should turn health orange:
+
+* **Windows** — Machine and User environment (registry and/or `WM_SETTINGCHANGE` where available); at minimum PATH; preferably other system/user vars the session cares about
+* **Unix-like** — best-effort sources (for example profile/path files the product documents); polling is acceptable for v1
+
+On change: update health light, show notice, keep command preview in sync with the active shell.
+
+=== Relation to OpenShellOrg shell-host
+
+When OpenShellOrg **shell-host** is installed:
+
+* **Open external terminal** should prefer launching shell-host in the repo directory
+* Future: optional embed or "use OpenShellOrg shell-host" handoff for richer PTY + chrome
+
+Until then, DevCentr keeps the built-in inject path so refresh works without the external app.
+
+== Fonts
+
+Terminal command headers, output panes, and the command input use the user-selected **code font** from Appearance settings.
+
+* Default: **Cascadia Mono**
+* Alternate: **JetBrains Mono**
+
+See xref:components/appearance.adoc[Appearance (code font)]. Do not use ligature-heavy faces (e.g. Cascadia Code) as the default terminal face.
 
 == Process model
 
@@ -131,8 +228,8 @@ This lets the repository browser show terminal presence alongside editors and Gi
 
 The first version does not need:
 
-* Full terminal emulation parity with external terminal apps
+* Full terminal emulation parity with external terminal apps (that is OpenShellOrg **shell-host**'s job)
 * Tabs inside the integrated terminal
 * Multiplexing remote shells
 
-The core value is command segmentation, repo scoping, and a better visual history than a plain terminal pane.
+The core value is command segmentation, repo scoping, environment refresh without history loss, and a better visual history than a plain terminal pane.

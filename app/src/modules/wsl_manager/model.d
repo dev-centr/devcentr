@@ -40,7 +40,7 @@ struct DistroGuide
     DistroGuideEntry[] distros;
 }
 
-DistroGuideEntry findGuideForName(const DistroGuide guide, string distroName)
+DistroGuideEntry findGuideForName(DistroGuide guide, string distroName)
 {
     string lower = toLower(distroName);
     DistroGuideEntry wildcard;

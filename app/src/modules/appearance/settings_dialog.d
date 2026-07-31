@@ -4,7 +4,7 @@ import dlangui;
 import dlangui.dialogs.dialog : Dialog, DialogFlag;
 import modules.appearance.settings;
 
-/// Appearance preferences: code / terminal monospace font.
+/// Appearance preferences: code / terminal monospace font and env-refresh behavior.
 void showAppearanceSettingsDialog(Window parent, string dataRoot,
     void delegate(AppearanceSettings s) onSave = null)
 {
@@ -12,7 +12,7 @@ void showAppearanceSettingsDialog(Window parent, string dataRoot,
 
     auto dlg = new Dialog(UIString.fromRaw("Appearance"d), parent,
         DialogFlag.Popup | DialogFlag.Resizable);
-    dlg.minWidth(480).minHeight(240);
+    dlg.minWidth(520).minHeight(360);
 
     auto content = new VerticalLayout();
     content.layoutWidth(FILL_PARENT).padding(15);
@@ -41,20 +41,66 @@ void showAppearanceSettingsDialog(Window parent, string dataRoot,
         UIString.fromRaw("Install the font on your OS if glyphs fall back to Consolas/Courier. New terminal blocks pick up the choice immediately; reopen open panels if needed."d))
         .fontSize(9).textColor(0x888888).margins(Rect(0, 12, 0, 12)));
 
+    content.addChild(new TextWidget(null, UIString.fromRaw("Repository terminal"d))
+        .fontSize(10).fontWeight(700).margins(Rect(0, 4, 0, 6)));
+
+    content.addChild(new TextWidget(null,
+        UIString.fromRaw("Shell preference (auto prefers Nushell when nu is on PATH)."d))
+        .fontSize(9).textColor(0xAAAAAA).margins(Rect(0, 0, 0, 4)));
+
+    auto shellCombo = new ComboBox("terminal_shell",
+        [
+            "auto"d,
+            "nushell"d,
+            "powershell"d,
+            "cmd"d,
+            "bash"d,
+            "zsh"d,
+            "fish"d,
+            "sh"d
+        ]);
+    shellCombo.layoutWidth(FILL_PARENT);
+    auto shellPref = normalizeTerminalShell(current.terminalShell);
+    int shellIdx = 0;
+    auto shellItems = [
+        "auto", "nushell", "powershell", "cmd", "bash", "zsh", "fish", "sh"
+    ];
+    foreach (i, item; shellItems)
+        if (item == shellPref)
+            shellIdx = cast(int) i;
+    shellCombo.selectedItemIndex = shellIdx;
+    content.addChild(shellCombo);
+
+    auto cbAutoRun = new CheckBox("env_refresh_autorun",
+        UIString.fromRaw("Env refresh: inject and run (skip Enter)"d));
+    cbAutoRun.checked = current.envRefreshAutoRun;
+    cbAutoRun.margins(Rect(0, 10, 0, 4));
+    content.addChild(cbAutoRun);
+
+    content.addChild(new TextWidget(null,
+        UIString.fromRaw("When unchecked, Refresh fills the command preview so you can learn the shell-specific recipe. Prefer OpenShellOrg env-refresh when installed."d))
+        .fontSize(9).textColor(0x888888).margins(Rect(0, 0, 0, 12)));
+
     auto row = new HorizontalLayout();
     row.layoutWidth(FILL_PARENT);
     auto btnCancel = new Button(null, UIString.fromRaw("Cancel"d));
-    btnCancel.click = delegate(Widget w) { dlg.close(); return true; };
+    btnCancel.click = delegate(Widget w) { dlg.close(new Action(2)); return true; };
     row.addChild(btnCancel);
 
     auto btnSave = new Button(null, UIString.fromRaw("Save"d));
     btnSave.click = delegate(Widget w) {
-        AppearanceSettings s;
+        AppearanceSettings s = loadAppearanceSettings(dataRoot);
         s.codeFontFace = rbJetBrains.checked
             ? CODE_FONT_JETBRAINS_MONO
             : CODE_FONT_CASCADIA_MONO;
+        s.envRefreshAutoRun = cbAutoRun.checked;
+        auto idx = shellCombo.selectedItemIndex;
+        if (idx >= 0 && idx < cast(int) shellItems.length)
+            s.terminalShell = shellItems[idx];
+        else
+            s.terminalShell = "auto";
         saveAppearanceSettings(dataRoot, s);
-        dlg.close();
+        dlg.close(new Action(1));
         if (onSave !is null)
             onSave(s);
         return true;
@@ -62,6 +108,6 @@ void showAppearanceSettingsDialog(Window parent, string dataRoot,
     row.addChild(btnSave);
     content.addChild(row);
 
-    dlg.contentWidget = content;
+    dlg.addChild(content);
     dlg.show();
 }

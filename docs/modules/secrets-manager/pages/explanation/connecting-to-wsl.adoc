@@ -29,6 +29,8 @@ The SSH client that runs **inside WSL** (e.g. `git pull`, `ssh server`) is a **L
 
 So we plug in by documenting or shipping a **WSL bridge** so that `SSH_AUTH_SOCK` in WSL points at a socket that eventually reaches our Windows agent (or the user's chosen Windows agent). The existing xref:general-knowledge:explanation/infrastructure/ssh-keys.adoc[SSH Keys] doc already notes that WSL users need a bridge to use the Windows ssh-agent; the same idea applies when our SSH Manager is the coordinator.
 
+For choosing **which** Linux distribution to run under WSL (default vs specialists), see xref:general-knowledge:explanation/infrastructure/wsl-distro-comparison.adoc[Choosing a WSL Linux Distro] and the DevCentr **WSL** page (xref:specifications:components/wsl-manager.adoc[WSL Manager]).
+
 == Summary
 
 | Goal | How we connect |

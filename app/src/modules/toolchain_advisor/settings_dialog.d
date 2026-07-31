@@ -27,14 +27,14 @@ void showAdvisorSettingsDialog(Window parent, string dataRoot, string currentRep
     auto row = new HorizontalLayout();
     row.layoutWidth(FILL_PARENT);
     auto btnCancel = new Button(null, UIString.fromRaw("Cancel"d));
-    btnCancel.click = delegate(Widget w) { dlg.close(); return true; };
+    btnCancel.click = delegate(Widget w) { dlg.close(new Action(2)); return true; };
     row.addChild(btnCancel);
     auto btnSave = new Button(null, UIString.fromRaw("Save"d));
     btnSave.click = delegate(Widget w) {
         AdvisorSettings s;
         s.definitionsRepoUrl = to!string(repoEdit.text);
         saveAdvisorSettings(dataRoot, s);
-        dlg.close();
+        dlg.close(new Action(1));
         if (onSave !is null)
             onSave(s.definitionsRepoUrl);
         return true;
@@ -42,6 +42,6 @@ void showAdvisorSettingsDialog(Window parent, string dataRoot, string currentRep
     row.addChild(btnSave);
     content.addChild(row);
 
-    dlg.contentWidget = content;
+    dlg.addChild(content);
     dlg.show();
 }
