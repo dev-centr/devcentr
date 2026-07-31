@@ -1,4 +1,4 @@
-* xref:index.adoc[Specifications]
+﻿* xref:index.adoc[Specifications]
 * xref:components/dependency-modeler.adoc[Dependency Modeler]
 * xref:components/project-recognizer.adoc[Project Recognizer]
 * xref:components/ai-config-interface.adoc[AI Config Interface]
@@ -17,6 +17,7 @@
 * xref:components/ssh-manager.adoc[SSH Manager]
 * xref:components/iac-discovery.adoc[IaC Discovery]
 * xref:components/installation-workflow.adoc[Installation Workflow]
+* xref:components/org-setup-wizard.adoc[Org Setup Wizard]
 * xref:components/toolchain-advisor.adoc[Toolchain Advisor]
 * xref:components/toolchain-management.adoc[Toolchain Management (TCM)]
 * xref:components/wsl-manager.adoc[WSL Manager]
@@ -32,5 +33,4 @@
 * xref:reference/definition-files.adoc[Definition Files (Services and Languages)]
 * xref:templates-schema.adoc[Templates Repository Schema]
 * xref:prohelp.adoc[Prohelp CLI Specification]
-
 

@@ -1,0 +1,54 @@
+= Org setup wizard
+:description: Spec for organization-owner guided setup of infra repos and email/messaging service lanes.
+:navtitle: Org setup wizard
+
+== Purpose
+
+At an **organization** owner node in the repository browser, DevCentr offers a guided add flow ("wizard" only as shorthand — same language rules as AI Workflow Arrangement) to bootstrap:
+
+. Org-level **`infra`** repository (Pulumi preferred; OpenTofu alternative)
+. **Email / messaging** service lanes as separate catalog items
+
+This pass specifies behavior and docs links. Full ESP API automation is out of scope.
+
+== Entry points
+
+* Repository browser → org owner → **Set up organization infrastructure**
+* Repository browser → org owner → **Bootstrap email and messaging**
+* Installation workflow org-owner IaC path (see xref:installation-workflow.adoc[Installation Workflow])
+
+== Infra branch
+
+. Detect whether `<org>/infra` or `<org>/infrastructure` already exists.
+. If missing: offer create from link:https://github.com/dev-centr/infra-template[dev-centr/infra-template] (Pulumi TypeScript + Antora `docs/`).
+. If present: offer open / link / register in IaC Discovery.
+. Docs: xref:business-bootstrap:explanation/org-infra-repo-pattern.adoc[Org infra repo pattern], xref:general-knowledge:explanation/infrastructure/iac.adoc[IaC].
+
+== Email / messaging branch
+
+Walk the four services independently (do not merge into one "pick an ESP" step):
+
+[cols="1,2",options="header"]
+|===
+| Service | Default guidance
+
+| Email Inbound
+| Cloudflare Email Routing (or Workspace MX)
+
+| Email Outbound Human
+| ZeptoMail + per-user SMTP keys; Gmail send-as
+
+| Email Transactional App
+| Resend API on a sending subdomain (`updates.`)
+
+| Marketing Journeys
+| Customer.io (+ Twilio for SMS); separate marketing subdomain
+|===
+
+Docs: xref:business-bootstrap:explanation/email-decision-matrix.adoc[Email decision matrix], xref:business-bootstrap:explanation/itil-email-services.adoc[ITIL-shaped email services].
+
+== Related
+
+* xref:installation-workflow.adoc[Installation Workflow]
+* xref:iac-discovery.adoc[IaC Discovery]
+* xref:repository-browser.adoc[Repository Browser]
