@@ -48,6 +48,10 @@ This page is the **task-level** TODO and roadmap for the DevCentr app and its do
 ** [ ] Update core parser to support `.cmk` (CentrMark) with unified AST database.
 ** [ ] Implement live Tangle/Weave as a background service for sub-second synchronization.
 ** [ ] Build Timeline Visualizer GUI for module evolution.
+* [ ] **Scriptbook (runnable script documents)**
+** [x] v0.1 library + CLI + sidecars (`dev-centr/scriptbook`); CentrMark playbook/step profile docs.
+** [ ] DevCentr GUI player: open `.cmk`, run steps, weave sidecar output (do not rewrite source).
+** [ ] Discover/play Scriptbooks from docs and project templates.
 * [ ] **GraphRAG Client Support**: Add support to DevCentr to connect to a standalone persistent GraphRAG D-lang indexer service. Explore Unison-lang architectural models (content-addressable immutable ASTs instead of traditional text files) to potentially augment or replace standard compilation flows.
 * [ ] **code-lens IDE integrations**
 ** [ ] Track upstream link:https://github.com/AMDphreak/code-lens[code-lens] — pedagogical lens switching (didactic, schematic, contextual, role-labeled) for code examples.

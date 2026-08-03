@@ -15,5 +15,6 @@
 * xref:specifications:index.adoc[Specifications]
 * xref:secrets-manager:index.adoc[Secrets Manager]
 * xref:publishing:index.adoc[Software Publishing]
+* xref:publishing:licensing.adoc[Licensing]
 * xref:upstream-contributions:index.adoc[Upstream Contributions]
 

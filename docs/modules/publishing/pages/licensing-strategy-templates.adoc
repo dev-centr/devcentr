@@ -1,0 +1,47 @@
+= Licensing strategy templates
+:navtitle: Strategy templates
+:description: Pick a CSL tier or proprietary posture by product type.
+
+Use these templates when starting or relicensing a project. Prefer
+xref:licensing.adoc[Licensing] for tier definitions.
+
+== 1. Widely adopted CLI / library (Scriptbook)
+
+* License: *CSL-1.0-B*
+* Public repo
+* Branding reserved in the LICENSE header
+* Proprietary value in complementary SaaS or private modules (e.g. Live Fix),
+  not in locking the runner
+* Do *not* ship ANL on this component until ANL is refined
+
+== 2. Flagship desktop (DevCentr)
+
+* License: *CSL-1.0-BCI*
+* Source-available; no Incorporation; no Competing Use; Branding reserved
+* Monetize support, hosting, or private modules
+
+== 3. Open-core with private moat (Guidance + Live Fix)
+
+* Open runner / playbooks under CSL-B or CSL-BC
+* *Private* cloud agent, curated definitions, authenticated updates
+* Reject “world-readable definitions repo anyone clones” when definitions
+  *are* the product
+
+== 4. True OSI open (distro main)
+
+* If Debian/`main` or corporate OSI policy is a hard requirement, use
+  *LGPL* / *Apache-2.0* / *MIT* for *that* component instead of CSL
+* Keep CSL for products that need Competing Use / Incorporation tools
+* Document the split honestly in the README
+
+== 5. Do not
+
+* Company name whitelists in the license text
+* MIT the moat (agent prompts, fix pipelines, paid definition packs)
+* Rely on ANL alone against invisible training
+* Publish customer DOM dumps or system prompts
+
+== Related product notes
+
+Guidance Host consumes Scriptbook (CLI/lib). Live Fix stays private.
+Local Gmail GraphRAG is a separate product line when monetized.

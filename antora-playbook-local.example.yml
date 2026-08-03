@@ -9,3 +9,6 @@ content:
     - url: ../general-knowledge
       branches: HEAD
       start_path: docs
+    - url: ../toolchain-framework
+      branches: HEAD
+      start_path: docs

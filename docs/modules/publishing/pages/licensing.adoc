@@ -1,0 +1,76 @@
+= Licensing (Centr Source License family)
+:navtitle: Licensing
+:description: CSL tiers, ANL experimental track, and how DevCentr licenses its software.
+
+== Overview
+
+Dev-Centr publishes the *Centr Source License* (*CSL*) family: source-available
+licenses aimed at protecting software integrity (branding, embrace–extend–extinguish,
+abusive redistribution) without abandoning collaboration.
+
+Each tier is a *complete stand-alone text* (no legal inheritance). Docs describe
+the ladder; SPDX-style identifiers name the tier.
+
+Canonical files live in the repo: link:https://github.com/dev-centr/devcentr/tree/main/licenses[`licenses/`].
+
+== Tiers
+
+[cols="1,2,3", options="header"]
+|===
+| ID | Adds | Typical use
+
+| *CSL-1.0-B*
+| Branding reserved; linking / bundling (*Incorporation*) allowed
+| Wide adoption (e.g. Scriptbook); OK for hosts that depend on the library
+
+| *CSL-1.0-BC*
+| + *Competing Use* reserved
+| Popular tools you open for adoption but not as a rival company clone
+
+| *CSL-1.0-BCI*
+| + *No Incorporation*
+| Flagship apps (DevCentr itself)
+
+| *ANL-0.1*
+| Experimental agentic / training restrictions
+| Optional later; *not* OSI; weak vs invisible training — refine before production
+|===
+
+DevCentr (this project) uses *CSL-1.0-BCI*.
+
+== What licenses do not do
+
+Licenses deter literal forks, brand theft, and some commercial redistribution.
+They do *not* stop AI systems from reading public text and reimplementing ideas.
+Operational moats (private services, authenticated definition CDNs, data
+flywheels) matter more for agentic-era products. See
+xref:licensing-strategy-templates.adoc[strategy templates].
+
+== FAQ
+
+=== Is CSL “Open Source” (OSI)?
+
+*CSL-BC* and *CSL-BCI* are *source-available*, not OSI Open Source, because of
+Competing Use and/or Incorporation limits. *CSL-B* is closer to permissive +
+trademark, but remains a custom text—distros may still prefer MIT/LGPL. Use
+strategy template “True OSI open” when a component must enter Debian `main`.
+
+=== Can I ship Scriptbook inside my proprietary Guidance Host?
+
+Yes under *CSL-1.0-B* (Incorporation allowed; Branding reserved). Do not claim
+DevCentr or Scriptbook branding as your own product name without permission.
+
+=== Can I use ANL on everything?
+
+No. *ANL-0.1* is experimental. Do not put it on Scriptbook until refined. Keep
+Live Fix and curated definitions *proprietary* when that is the product.
+
+=== Where is the old DevCntr custom license?
+
+Its substance is preserved as *CSL-1.0-BCI*, renamed into the family.
+
+== See also
+
+* xref:licensing-strategy-templates.adoc[Licensing strategy templates]
+* link:https://github.com/dev-centr/devcentr/blob/main/LICENSE[Root LICENSE]
+* xref:ROOT:gitignore-whitelist.adoc[Gitignore whitelist] (unrelated “whitelist”)

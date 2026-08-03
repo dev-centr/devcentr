@@ -1,0 +1,142 @@
+CENTR SOURCE LICENSE 1.0 — BRANDING + COMPETING USE (CSL-1.0-BC)
+
+Copyright (c) the copyright holders listed in the Software distribution.
+All rights reserved except as expressly granted below.
+
+Identifier: CSL-1.0-BC
+Family: Centr Source License
+Canonical texts: https://github.com/dev-centr/devcentr (licenses/)
+
+--------------------------------------------------------------------------------
+SUMMARY
+--------------------------------------------------------------------------------
+
+  * YOU MAY: Use, modify, and run the Software. Make and sell your own
+    software, including by linking to, calling, or bundling the Software
+    (Incorporation is allowed). Fork and contribute back. Distribute under
+    this same license. Ship binaries with an OS/runtime image. Build plugins.
+
+  * YOU MAY NOT: Use Branding without permission. Operate a Competing Use
+    (substitute/near-identical product or business) without written
+    permission. Engage in Prohibited Distribution.
+
+--------------------------------------------------------------------------------
+
+CSL-1.0-BC adds a Competing Use reservation to CSL-1.0-B. Incorporation
+remains allowed. For a ban on Incorporation, use CSL-1.0-BCI.
+
+================================================================================
+1. DEFINITIONS
+================================================================================
+
+"Software" means source code, documentation, configuration, and other
+materials in the distribution that adopts this license, except Branding.
+
+"Branding" means the project names, logos, icons, splash screens, visual
+identity, and trade dress designated in the COPYRIGHT NOTICE or LICENSE
+header of the Software distribution (and any confusingly similar marks).
+Branding is NOT licensed under this document.
+
+"Competing Use" means using the Software or any derivative (including forks)
+to operate, offer, market, or promote a product, service, or business that
+competes with or substitutes for the official project designated in the
+Software's COPYRIGHT NOTICE—for example, offering a near-identical fork as
+a product or service, or a paid alternative that replaces the official
+project. Competing Use requires prior written permission from the copyright
+holder and is not granted under this license.
+
+"Incorporation" means distributing, bundling, embedding, or otherwise
+including the Software (or a derivative) as part of your own product.
+Under CSL-1.0-BC, Incorporation is permitted subject to Branding and
+Competing Use rules.
+
+"Prohibited Distribution" means any distribution of the Software (or a
+derivative) that:
+
+  (a) is a frivolous or duplicate marketplace listing adding no substantial
+      value;
+  (b) is malicious; or
+  (c) is cognitively or commercially abusive (ads, dark patterns, or
+      monetization exploiting users or project reputation without
+      commensurate value).
+
+================================================================================
+2. GRANT OF RIGHTS
+================================================================================
+
+Subject to this license, you are granted a worldwide, non-exclusive,
+royalty-free, source-available license to:
+
+  * use the Software for any purpose, including commercial use, except
+    Competing Use;
+  * modify the Software;
+  * distribute source and binaries, including via Incorporation, provided
+    you do not engage in Competing Use, Prohibited Distribution, or Branding
+    misuse;
+  * distribute binaries with a platform the Software runs on.
+
+You must retain this license and copyright notices. Modified distributions
+must use CSL-1.0-BC (or a later BC version designated by the copyright
+holder), with changes clearly indicated. Additional written permissions
+may be granted by the copyright holder.
+
+================================================================================
+3. RESERVED RIGHTS: BRANDING; COMPETING USE
+================================================================================
+
+3.1 Branding. No right is granted to use Branding without separate written
+permission. Forks must not present themselves as official.
+
+3.2 Competing Use. No right is granted to engage in Competing Use without
+prior written permission from the copyright holder.
+
+3.3 Incorporation is NOT banned under CSL-1.0-BC (see CSL-1.0-BCI).
+
+================================================================================
+4. PROHIBITED CONDUCT AND REMEDIES
+================================================================================
+
+4.1 You may not engage in Prohibited Distribution, Competing Use, or
+Branding misuse. Material breach terminates rights automatically as to you
+and controlled entities participating in the breach.
+
+4.2 The copyright holder may seek injunctive relief and damages, including
+(where enforceable) liquidated damages of USD 50,000 per distinct Prohibited
+Distribution, per distinct Competing Use, or per distinct Branding misuse
+instance, plus an additional USD 50,000 if a Prohibited Distribution is
+malicious or cognitively abusive, and reasonable attorneys' fees to the
+prevailing party.
+
+4.3 Remedies are cumulative and not exclusive.
+
+================================================================================
+5. DISCLAIMER OF WARRANTY
+================================================================================
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================================
+6. LIMITATION OF LIABILITY
+================================================================================
+
+EXCEPT FOR BREACH OF SECTIONS 3 OR 4, IN NO EVENT SHALL THE COPYRIGHT HOLDERS
+OR AUTHORS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, EVEN IF
+ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+================================================================================
+7. GENERAL
+================================================================================
+
+This license is the entire agreement regarding the Software under CSL-1.0-BC.
+Severability, non-waiver, non-assignment without consent, and version updates
+apply as is customary. This tier is source-available and is not an OSI-
+approved Open Source license.
+
+Contact the copyright holder via the canonical project repository.

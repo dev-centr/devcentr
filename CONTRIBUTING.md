@@ -34,7 +34,7 @@ The maintainers may ask for edits. Once approved, your PR will be merged. Tagged
 
 ## License and branding
 
-By contributing, you agree that your contributions will be licensed under the same terms as the project. See [LICENSE](LICENSE) in the repo root. The license keeps most of the project open while reserving **branding** (names, logos, trade dress) and prohibiting certain abusive distributions (e.g. duplicate or ad-stuffed app-store forks). Do not use Dev Center branding to imply official endorsement without permission.
+By contributing, you agree that your contributions will be licensed under the same terms as the project. See [LICENSE](LICENSE) in the repo root (**CSL-1.0-BCI** — Centr Source License: Branding + Competing Use + No Incorporation). Overview: [Licensing docs](https://devcentr.org/docs) (Publishing → Licensing). Do not use DevCentr branding to imply official endorsement without permission.
 
 ## Questions
 

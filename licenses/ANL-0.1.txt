@@ -1,0 +1,97 @@
+AGENTIC NERD LICENSE 0.1 (ANL-0.1) — EXPERIMENTAL
+
+Copyright (c) the copyright holders listed in the Software distribution.
+All rights reserved except as expressly granted below.
+
+Identifier: ANL-0.1
+Status: EXPERIMENTAL DRAFT — refine before relying on in production
+Humor optional: “we’re ANL about protecting our software.”
+
+--------------------------------------------------------------------------------
+WARNING
+--------------------------------------------------------------------------------
+
+Visible source is when copyright licenses matter. ANL does NOT reliably stop
+invisible model training, silent reimplementation, or agent farms that never
+accept a license. Prefer private services, authenticated data, and operational
+moats. Treat ANL-0.1 as an experiment to refine later.
+
+Do NOT apply ANL-0.1 to Scriptbook or other wide-adoption CSL-B components
+until this text is revised.
+
+--------------------------------------------------------------------------------
+SUMMARY
+--------------------------------------------------------------------------------
+
+  * YOU MAY: Use and modify the Software for human-directed development and
+    operation under any companion license the distribution also adopts (e.g.
+    a Centr Source License tier), subject to that companion license.
+
+  * YOU MAY NOT (under ANL, in addition to any companion license): Use the
+    Software as bulk input for training, fine-tuning, or evaluating machine-
+    learning models intended to produce a Competing Automated Derivative;
+    operate an unattended agent system whose primary purpose is to republish
+    Competing Automated Derivatives of the Software at scale without human
+    stewardship and without written permission.
+
+--------------------------------------------------------------------------------
+
+================================================================================
+1. DEFINITIONS
+================================================================================
+
+"Software" means the materials in the distribution that adopts ANL-0.1.
+
+"Competing Automated Derivative" means a product, service, or dataset offered
+to third parties that substantially reproduces the expressive structure,
+unique workflows, or curated content of the Software, and that was produced
+primarily through automated ingestion of the Software (including scraping
+public repositories or docs) for the purpose of substituting for the
+Software or its official commercial offerings.
+
+"Companion License" means any other license file shipped with the Software
+(for example CSL-1.0-BCI). ANL-0.1 adds terms; it does not remove Companion
+License obligations.
+
+================================================================================
+2. ADDITIONAL RESTRICTIONS
+================================================================================
+
+Subject to the Companion License (if any), you must not:
+
+  (a) Use the Software as training, fine-tuning, or evaluation data for a
+      model or agent whose purpose is to ship a Competing Automated
+      Derivative; or
+
+  (b) Operate an unattended agent pipeline whose primary purpose is mass
+      production of Competing Automated Derivatives from the Software
+      without prior written permission from the copyright holder.
+
+Personal learning, human code review, ordinary IDE assistance that does not
+ship a Competing Automated Derivative, and security research conducted in
+good faith are not prohibited by this section.
+
+================================================================================
+3. RELATIONSHIP TO OTHER LICENSES
+================================================================================
+
+If the Software is also offered under a Centr Source License or other
+Companion License, both apply. Where terms conflict, the more restrictive
+term controls for the conflicting subject matter. ANL-0.1 alone does not
+grant copyright permission to copy the Software.
+
+================================================================================
+4. NO WARRANTY; EXPERIMENTAL
+================================================================================
+
+ANL-0.1 IS EXPERIMENTAL. THE COPYRIGHT HOLDERS MAKE NO WARRANTY THAT THESE
+TERMS ARE ENFORCEABLE IN ANY JURISDICTION. THE SOFTWARE AND THIS LICENSE ARE
+PROVIDED "AS IS".
+
+================================================================================
+5. GENERAL
+================================================================================
+
+The copyright holder may publish ANL-0.2+ refinements. Contact the canonical
+repository for permissions. Private product code and Live Fix / definition
+CDNs remain outside this experiment when kept proprietary.

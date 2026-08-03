@@ -35,3 +35,6 @@ docs/_local-library-docs/
 
 # Local Antora playbook (use sibling paths, no remote URLs)
 antora-playbook-local.yml
+
+# Local agent notes
+MEMORIES.md

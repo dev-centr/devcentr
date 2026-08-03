@@ -1,0 +1,42 @@
+= Feature: Scriptbook (runnable script documents)
+:navtitle: Scriptbook
+:description: CentrMark playbooks with sidecar run output — distinct from Synchronous Literate Programming.
+
+== Objective
+
+Ship **Scriptbook**: documents authored in CentrMark (`.cmk`) that can be **played** on a developer machine (install steps, DNS checks, setup recipes). Run output lives in **sidecars**; the source document is never rewritten.
+
+Upstream: link:https://github.com/dev-centr/scriptbook[dev-centr/scriptbook].
+
+== Not SLP
+
+[cols="1,2,2", options="header"]
+|===
+| | Synchronous Literate Programming (SLP) | Scriptbook
+
+| Goal
+| Document ↔ **source code** sync (`::: tangle`, evolution scrubber)
+| Document ↔ **shell/script execution**
+
+| Output
+| Tangled source files
+| `<file.cmk>.runs/` sidecars
+
+| Mutates `.cmk`?
+| Bi-directional edit may update AST/source
+| **No** — weave in UI only
+|===
+
+See also xref:features/synchronous-literate-programming.adoc[Synchronous Literate Programming].
+
+== v0.1 surface
+
+* CLI: `scriptbook run|status|clean-runs`
+* Shells: `auto` / `nu` / `sh` / `bash` / `pwsh`
+* Library for future DevCentr GUI player
+* Example: GitHub Pages + Cloudflare HTTPS dance (with general-knowledge Nu checker)
+
+== DevCentr integration (later)
+
+* Open `.cmk` playbooks in-app; stream step progress; weave sidecar results beside narrative
+* Prefer Scriptbook library over reimplementing exec in the docs UI

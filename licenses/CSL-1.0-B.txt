@@ -1,0 +1,155 @@
+CENTR SOURCE LICENSE 1.0 — BRANDING (CSL-1.0-B)
+
+Copyright (c) the copyright holders listed in the Software distribution.
+All rights reserved except as expressly granted below.
+
+Identifier: CSL-1.0-B
+Family: Centr Source License
+Canonical texts: https://github.com/dev-centr/devcentr (licenses/)
+
+--------------------------------------------------------------------------------
+SUMMARY
+--------------------------------------------------------------------------------
+
+  * YOU MAY: Use, modify, and run the Software. Make and sell your own
+    software, including by linking to, calling, or bundling the Software
+    as a component (Incorporation is allowed under this tier). Fork and
+    contribute back. Distribute the Software or your modified version under
+    this same license. Distribute binaries together with a platform the
+    Software runs on (e.g., an OS or runtime image). Build plugins that
+    work with the Software.
+
+  * YOU MAY NOT: Use Branding to imply official endorsement without
+    permission. Engage in Prohibited Distribution (malware, frivolous
+    app-store clones, ad-stuffed abuse). Claim this license is OSI
+    “Open Source” if you rely on Branding reservations alone as a
+    marketing claim without reading the full text.
+
+The full license below governs your rights and obligations.
+
+--------------------------------------------------------------------------------
+
+This license makes the Software source-available. Commercial use is permitted.
+Unlike tighter Centr Source License tiers (CSL-1.0-BC, CSL-1.0-BCI), this tier
+does NOT reserve Competing Use or ban Incorporation. Branding remains reserved.
+
+================================================================================
+1. DEFINITIONS
+================================================================================
+
+"Software" means source code, documentation, configuration, and other
+materials in the distribution that adopts this license, except Branding.
+
+"Branding" means the project names, logos, icons, splash screens, visual
+identity, and trade dress designated in the COPYRIGHT NOTICE or LICENSE
+header of the Software distribution (and any confusingly similar marks).
+Branding is NOT licensed under this document. Use of Branding requires
+separate written permission from the copyright holder.
+
+"Prohibited Distribution" means any distribution of the Software (or a
+derivative) that:
+
+  (a) is a frivolous or duplicate listing in an app store, marketplace, or
+      similar channel that adds no substantial value;
+
+  (b) is malicious (e.g., contains malware, steals data, or harms users); or
+
+  (c) is cognitively or commercially abusive, including stuffing the product
+      with ads, dark patterns, or monetization that exploits users or the
+      reputation of the project without adding commensurate value.
+
+"Incorporation" means distributing, bundling, embedding, or otherwise
+including the Software (or a derivative) as part of your own product.
+Under CSL-1.0-B, Incorporation is permitted, provided you comply with
+Branding rules and do not engage in Prohibited Distribution.
+
+================================================================================
+2. GRANT OF RIGHTS
+================================================================================
+
+Subject to this license, you are granted a worldwide, non-exclusive,
+royalty-free, source-available license to:
+
+  * use the Software for any purpose, including commercial use;
+  * modify the Software;
+  * distribute source and binaries of the Software or your modifications,
+    including via Incorporation, provided you do not engage in Prohibited
+    Distribution and you comply with Branding restrictions;
+  * distribute binaries of the Software together with a platform the
+    Software runs on (OS image, runtime, distribution).
+
+You must retain this license and copyright notices. Distribution of
+modified Software must be under this same license (CSL-1.0-B) or a later
+CSL-1.0-B version the copyright holder designates, with clear indication
+of your changes. The copyright holder may grant additional permissions
+or commercial licenses in writing.
+
+================================================================================
+3. RESERVED RIGHTS: BRANDING ONLY
+================================================================================
+
+3.1 Branding. No right is granted to use Branding. You may not use the
+names, logos, or trade dress designated for the Software to imply
+endorsement, official status, or origin from the copyright holder unless
+you have separate written permission. Forks must not present themselves
+as the official project without such permission.
+
+3.2 Competing Use and Incorporation are NOT reserved under CSL-1.0-B
+(see CSL-1.0-BC and CSL-1.0-BCI for those restrictions).
+
+================================================================================
+4. PROHIBITED CONDUCT AND REMEDIES
+================================================================================
+
+4.1 You may not create, publish, or maintain any Prohibited Distribution,
+or misuse Branding in violation of Section 3.1. Doing so is a material
+breach.
+
+4.2 Upon material breach, rights under this license terminate automatically
+as to you and any entity you control that participates in the breach.
+The copyright holder may seek injunctive relief and damages, including
+(where enforceable) liquidated damages of USD 50,000 per distinct
+Prohibited Distribution, plus an additional USD 50,000 if the distribution
+is malicious or cognitively abusive as in Section 1(c), and reasonable
+attorneys' fees to the prevailing party in enforcement actions.
+
+4.3 Remedies are cumulative and not exclusive.
+
+================================================================================
+5. DISCLAIMER OF WARRANTY
+================================================================================
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================================
+6. LIMITATION OF LIABILITY
+================================================================================
+
+EXCEPT FOR BREACH OF SECTIONS 3 OR 4, IN NO EVENT SHALL THE COPYRIGHT HOLDERS
+OR AUTHORS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, EVEN IF
+ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+================================================================================
+7. GENERAL
+================================================================================
+
+This license is the entire agreement regarding the Software under CSL-1.0-B.
+If any provision is held unenforceable, the remainder remains in effect.
+Failure to enforce a term does not waive it. You may not assign rights under
+this license without the copyright holder's prior written consent. The
+copyright holder may publish updated versions; continued distribution under
+a new version you adopt constitutes acceptance for that distribution.
+
+This tier is source-available with Branding reserved. It is not an OSI-
+approved Open Source license. For distro policies that require OSI licenses,
+see project documentation strategy templates.
+
+Contact the copyright holder via the canonical project repository for
+Branding permission or commercial terms.

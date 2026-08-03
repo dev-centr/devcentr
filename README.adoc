@@ -78,7 +78,7 @@ For DevCentr, local indexed docs are usually better than web search for `std`, `
 
 == License
 
-See link:LICENSE[LICENSE]. Custom source-available license with branding restrictions.
+See link:LICENSE[LICENSE] (**CSL-1.0-BCI**). Family overview: xref:publishing:licensing.adoc[Licensing].
 
 == Contributing
 

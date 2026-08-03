@@ -1,0 +1,32 @@
+licenses/README.adoc
+= Centr Source License family + ANL
+:toc: preamble
+
+Canonical license texts for Dev-Centr / related projects.
+
+[cols="1,2,2", options="header"]
+|===
+| ID | File | Typical use
+
+| CSL-1.0-B
+| link:CSL-1.0-B.txt[]
+| Wide adoption (Scriptbook); Branding reserved; linking/bundling OK
+
+| CSL-1.0-BC
+| link:CSL-1.0-BC.txt[]
+| + Competing Use reserved
+
+| CSL-1.0-BCI
+| link:CSL-1.0-BCI.txt[]
+| + No Incorporation (DevCentr)
+
+| ANL-0.1
+| link:ANL-0.1.txt[]
+| Experimental agentic terms — refine before production use
+|===
+
+Docs: xref:publishing:licensing.adoc[Licensing] and
+xref:publishing:licensing-strategy-templates.adoc[Strategy templates].
+
+Each complete text is stand-alone (no legal “inheritance”). Branding names
+are designated in each project's root `LICENSE` / copyright notice.

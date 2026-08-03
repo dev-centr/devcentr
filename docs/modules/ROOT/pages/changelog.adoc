@@ -2,6 +2,12 @@
 
 This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
 
+== 2026-08-03 – Centr Source License family (CSL) + ANL
+
+* Relicensed project to *CSL-1.0-BCI* (substance of prior custom source-available license, named family).
+* Added canonical texts under `licenses/` (CSL-B, BC, BCI; experimental ANL-0.1).
+* Docs: xref:publishing:licensing.adoc[Licensing], xref:publishing:licensing-strategy-templates.adoc[Strategy templates].
+
 == 2026-07-27 – AI stack canvas + guided add (implemented)
 
 * App: Arrangement tab on AI Config — topology canvas, layout recipes, **Add an AI tool…** guided add, persist `~/.dev-center/ai-stack-topology.json`.
