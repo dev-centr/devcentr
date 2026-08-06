@@ -2,6 +2,13 @@
 
 This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
 
+== 2026-08-06 – Content Create lineage LEDs and richer type facts
+
+* Lineage rows: invented year + vitality LED (current/mature/legacy/outdated/reference).
+* Detail pane: homepage, repository, specification links; invented / last-updated fields.
+* Catalog expanded (schema, data, more docs/config/code); AsciiDoc `spec` points at Asciidoctor language docs (Eclipse formal spec still drafting).
+* See xref:specifications:components/content-create.adoc[Content Create].
+
 == 2026-08-06 – Node package managers: Bun + Orogene
 
 * `languages/node.sdl`: package managers now include pnpm (preferred), Bun, Yarn, npm, and **Orogene** (`closed-aspirational`); optional `status` / `notes` / `homepage` fields.

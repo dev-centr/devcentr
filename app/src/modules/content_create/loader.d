@@ -82,6 +82,16 @@ private ContentTypeNode parseType(Tag t)
     n.extension = tagStr(t, "extension");
     n.suggestedName = tagStr(t, "suggestedName");
     n.templateBody = tagStr(t, "template");
+    n.inventedYear = tagInt(t, "inventedYear", 0);
+    n.lastUpdated = tagStr(t, "lastUpdated");
+    n.repoUrl = tagStr(t, "repo");
+    if (n.repoUrl.length == 0)
+        n.repoUrl = tagStr(t, "repoUrl");
+    n.specUrl = tagStr(t, "spec");
+    if (n.specUrl.length == 0)
+        n.specUrl = tagStr(t, "specUrl");
+    n.homepage = tagStr(t, "homepage");
+    n.vitality = tagStr(t, "vitality");
     bool hasCreatable = t.getTag("creatable") !is null;
     if (hasCreatable)
         n.creatable = tagBool(t, "creatable", true);
@@ -95,6 +105,8 @@ private ContentTypeNode parseType(Tag t)
     }
     if (n.children.length > 0 && t.getTag("creatable") is null && n.extension.length == 0)
         n.creatable = false;
+    if (n.vitality.length == 0)
+        n.vitality = n.creatable ? "mature" : "reference";
     return n;
 }
 

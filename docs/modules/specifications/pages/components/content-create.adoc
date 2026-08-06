@@ -34,23 +34,23 @@ The Content Create flow lets users add a new project asset from a repository con
 
 | **Top-right — lineage**
 | Orthogonal `lineage` edges scoped to this classification (`evolves`, `supersedes`, `specializes`, `dialect`)
-| Secondary navigation when the job tree fails to disambiguate. Clickable DAG/list subset (not a freeform canvas in this pass). Selecting a node syncs the left tree and detail. Hide this pane when the scope has no edges.
+| Secondary navigation. Each row shows a **vitality LED**, **invented year**, label, edge kind, and short note. LED colors: green=`current`, blue=`mature`, amber=`legacy`, red=`outdated`, gray=`reference`. Selecting a row syncs the left tree and detail.
 
 | **Bottom-right — detail**
-| `label`, `role`, `description` for the current selection
-| Scrollable copy. *Create* enabled only when the selection is creatable (`creatable` true and an `extension` is set). *Cancel* dismisses.
+| Facts + description for the current selection
+| Scrollable: vitality LED, role, invented year, last updated, extension, homepage / repository / specification link buttons, description. *Create* enabled only when creatable with an extension.
 |===
 
 Layout sketch:
 
 ----
-┌──────────────┬─────────────────────────────┐
-│ Job / role   │ Lineage (evolution)         │
-│ type tree    │ clickable graph subset      │
-│              ├─────────────────────────────┤
-│              │ Role + description          │
-│              │ [Create] [Cancel]           │
-└──────────────┴─────────────────────────────┘
+┌──────────────┬─────────────────────────────────────┐
+│ Job / role   │ Lineage  [LED][year] label [kind]   │
+│ type tree    │                                     │
+│              ├─────────────────────────────────────┤
+│              │ Facts + links + description         │
+│              │ [Create] [Cancel]                   │
+└──────────────┴─────────────────────────────────────┘
 ----
 
 == Catalog (source of truth)
@@ -58,6 +58,8 @@ Layout sketch:
 * **Location:** `app/src/modules/content_create/content-types.sdl`
 * **Root tag:** `contentTypes`
 * **Loader:** `modules.content_create.loader` (sdlang-d)
+
+Top-level classifications (expandable via SDL): **Documentation**, **Configuration**, **Schema / API contract**, **Code**, **Tabular / data files**, **Plain text**.
 
 See xref:reference/definition-files.adoc[Definition Files] for ownership relative to services and language ecosystems.
 
@@ -93,6 +95,24 @@ See xref:reference/definition-files.adoc[Definition Files] for ownership relativ
 
 | `creatable`
 | When `false`, the node is an anchor for lineage only (e.g. plain JSON). Default `true` for leaves with an extension; folders without extension are not creatable.
+
+| `inventedYear`
+| Calendar year the format/language appeared (shown in lineage and Facts).
+
+| `lastUpdated`
+| `YYYY` or `YYYY-MM` of last notable release or spec touch.
+
+| `homepage`
+| Project or marketing home URL (detail link button).
+
+| `repo` / `repoUrl`
+| Official source repository URL.
+
+| `spec` / `specUrl`
+| Official specification or language-definition URL. For AsciiDoc: the de facto definition is the Asciidoctor-hosted https://docs.asciidoctor.org/asciidoc/latest/[AsciiDoc Language Documentation] until the Eclipse AsciiDoc Language Spec is ratified (`gitlab.eclipse.org/eclipse/asciidoc-lang/asciidoc-lang`).
+
+| `vitality`
+| `current` \| `mature` \| `legacy` \| `outdated` \| `reference` — drives the LED color and “outdated?” cue.
 |===
 
 === Lineage edge kinds

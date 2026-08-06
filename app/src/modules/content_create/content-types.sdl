@@ -1,13 +1,14 @@
-// Content Create catalog — classifications, types, and orthogonal lineage graphs.
+// Content Create catalog — classifications, types, metadata, lineage.
 // Parsed by modules.content_create.loader
+// vitality: current | mature | legacy | outdated | reference
 
 contentTypes {
-    version 1
+    version 2
 
     classification {
         id "docs"
         label "Documentation"
-        summary "Prose for humans: guides, READMEs, Antora pages."
+        summary "Prose for humans: guides, READMEs, Antora pages, literate notes."
 
         type {
             id "centrmark"
@@ -15,8 +16,7 @@ contentTypes {
             role "Dev-Centr prose markup with a stable directive AST"
             description """
             Prefer CentrMark for new Dev-Centr technical docs when a CentrMark toolchain is available.
-            Void, block, and inline directives replace HTML hacks and MDX/JS injection while staying close to Markdown feel.
-            Publishing may still target Antora via AsciiDoc backends during migration.
+            Void, block, and inline directives replace HTML hacks and MDX/JS injection.
             """
             extension ".cmk"
             suggestedName "README"
@@ -26,6 +26,11 @@ Welcome.
 
 :: toc
 """
+            inventedYear 2025
+            lastUpdated "2026"
+            homepage "https://github.com/dev-centr/centrmark"
+            repo "https://github.com/dev-centr/centrmark"
+            vitality "current"
             creatable true
         }
 
@@ -35,7 +40,10 @@ Welcome.
             role "Antora and published docs today"
             description """
             Use AsciiDoc when you need Antora component pages, xrefs, and the org’s existing docs pipeline.
-            Strong for multi-repo documentation sites; syntax is heavier than Markdown for casual README work.
+            Official language definition today is the Asciidoctor-hosted AsciiDoc Language Documentation
+            (https://docs.asciidoctor.org/asciidoc/latest/) — there is no ratified Eclipse Language Spec yet;
+            the Eclipse AsciiDoc Language project (gitlab.eclipse.org/eclipse/asciidoc-lang/asciidoc-lang)
+            is drafting a formal specification from that contribution. Until ratification, Asciidoctor defines the language.
             """
             extension ".adoc"
             suggestedName "README"
@@ -44,6 +52,12 @@ Welcome.
 
 Opening paragraph.
 """
+            inventedYear 2002
+            lastUpdated "2026"
+            homepage "https://asciidoc.org/"
+            repo "https://gitlab.eclipse.org/eclipse/asciidoc-lang/asciidoc-lang"
+            spec "https://docs.asciidoctor.org/asciidoc/latest/"
+            vitality "mature"
             creatable true
         }
 
@@ -52,8 +66,7 @@ Opening paragraph.
             label "Markdown"
             role "Interoperable plain prose"
             description """
-            Use Markdown for maximum portability (GitHub README, forge defaults, tools that only speak CommonMark/GFM).
-            Tabs, TOC, and admonitions usually need HTML or non-standard extensions—prefer CentrMark or AsciiDoc when those matter.
+            Maximum forge interop (GitHub README, CommonMark/GFM). Weak standardized story for tabs/TOC/admonitions.
             """
             extension ".md"
             suggestedName "README"
@@ -61,6 +74,12 @@ Opening paragraph.
 
 Opening paragraph.
 """
+            inventedYear 2004
+            lastUpdated "2019"
+            homepage "https://commonmark.org/"
+            repo "https://github.com/commonmark/commonmark-spec"
+            spec "https://spec.commonmark.org/"
+            vitality "mature"
             creatable true
         }
 
@@ -69,15 +88,88 @@ Opening paragraph.
             label "MDX"
             role "React docs pipelines only"
             description """
-            Use MDX only when the docs site is a React/MDX pipeline and you intentionally embed JSX components.
-            Do not choose MDX for general project prose—prefer CentrMark directives or AsciiDoc macros instead.
+            Use only when the docs site is a React/MDX pipeline and you intentionally embed JSX.
             """
             extension ".mdx"
             suggestedName "page"
-            template """# Title
+            inventedYear 2018
+            lastUpdated "2025"
+            homepage "https://mdxjs.com/"
+            repo "https://github.com/mdx-js/mdx"
+            spec "https://mdxjs.com/"
+            vitality "legacy"
+            creatable true
+        }
 
-Opening paragraph.
-"""
+        type {
+            id "djot"
+            label "Djot"
+            role "Principled lightweight markup (Pandoc lineage)"
+            description """
+            John MacFarlane’s Djot aims for an unambiguous lightweight markup with a clear AST—useful when Markdown ambiguity hurts.
+            """
+            extension ".dj"
+            suggestedName "README"
+            inventedYear 2022
+            lastUpdated "2025"
+            homepage "https://djot.net/"
+            repo "https://github.com/jgm/djot"
+            spec "https://htmlpreview.github.io/?https://github.com/jgm/djot/blob/master/doc/syntax.html"
+            vitality "current"
+            creatable true
+        }
+
+        type {
+            id "rst"
+            label "reStructuredText"
+            role "Sphinx / Python docs ecosystem"
+            description """
+            Prefer when the project already publishes with Sphinx. Heavier than Markdown; strong cross-refs in Python land.
+            """
+            extension ".rst"
+            suggestedName "README"
+            inventedYear 2002
+            lastUpdated "2024"
+            homepage "https://docutils.sourceforge.io/rst.html"
+            repo "https://sourceforge.net/p/docutils/code/"
+            spec "https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html"
+            vitality "mature"
+            creatable true
+        }
+
+        type {
+            id "orgmode"
+            label "Org Mode"
+            role "Emacs literate notes and agendas"
+            description """
+            Prefer inside Emacs/Org workflows. Not a general forge README default.
+            """
+            extension ".org"
+            suggestedName "notes"
+            inventedYear 2003
+            lastUpdated "2024"
+            homepage "https://orgmode.org/"
+            repo "https://git.savannah.gnu.org/cgit/emacs/org-mode.git"
+            spec "https://orgmode.org/worg/dev/org-syntax.html"
+            vitality "mature"
+            creatable true
+        }
+
+        type {
+            id "typst"
+            label "Typst"
+            role "Modern typesetting for papers and polished docs"
+            description """
+            LaTeX-like output with a friendlier scripting story. Prefer for papers/handouts; not a GitHub README default.
+            """
+            extension ".typ"
+            suggestedName "doc"
+            inventedYear 2023
+            lastUpdated "2026"
+            homepage "https://typst.app/"
+            repo "https://github.com/typst/typst"
+            spec "https://typst.app/docs/"
+            vitality "current"
             creatable true
         }
     }
@@ -85,16 +177,19 @@ Opening paragraph.
     classification {
         id "config"
         label "Configuration"
-        summary "Structured data humans or tools edit: settings, manifests, schemas."
+        summary "Structured data humans or tools edit: settings, manifests, env-shaped files."
 
         type {
             id "json"
             label "JSON"
             role "Ubiquitous interchange (lineage anchor)"
-            description """
-            Plain JSON is the industry default for machine interchange. Prefer it when a tool requires strict JSON.
-            For human-edited Dev-Centr-owned config, prefer SDLang; when stuck in the JSON family, prefer JSON5.
-            """
+            description "Plain JSON when a tool requires strict JSON. Prefer SDLang for DevCentr-owned human config; JSON5 when stuck in the JSON family."
+            inventedYear 2001
+            lastUpdated "2017"
+            homepage "https://www.json.org/"
+            spec "https://www.rfc-editor.org/rfc/rfc8259"
+            repo "https://github.com/json-schema-org"
+            vitality "reference"
             creatable false
         }
 
@@ -103,9 +198,7 @@ Opening paragraph.
             label "SDLang"
             role "Human-edited config when DevCentr owns the parser"
             description """
-            Prefer .sdl for settings and catalogs DevCentr controls (advisor catalogs, recognizer profiles, .devcentr.sdl).
-            Comments, native types, and low punctuation noise beat JSON/JSON5 for hand editing.
-            KDL is a modern node-based successor narrative; stay on SDLang while sdlang-d and existing catalogs remain the stack.
+            Prefer .sdl for DevCentr-owned settings and catalogs. KDL is the modern successor narrative; stay on SDLang while sdlang-d remains the stack.
             """
             extension ".sdl"
             suggestedName "config"
@@ -114,6 +207,12 @@ settings {
     // key "value"
 }
 """
+            inventedYear 2005
+            lastUpdated "2017"
+            homepage "https://sdlang.org/"
+            repo "https://github.com/dlang-community/SDLang-D"
+            spec "https://github.com/dlang-community/SDLang-D/wiki/Language-Guide"
+            vitality "mature"
             creatable true
         }
 
@@ -122,34 +221,107 @@ settings {
             label "KDL"
             role "Modern node-based document language"
             description """
-            KDL improves on SDLang with a strict unambiguous grammar, /- node comments, and parenthetical type annotations.
-            Choose KDL when the consuming toolchain has a solid KDL implementation and you are not bound to DevCentr’s SDLang parsers.
-            For DevCentr-owned files, keep SDLang until the product migrates.
+            Strict unambiguous grammar, /- node comments, type annotations. Prefer when the consumer speaks KDL and DevCentr’s SDLang parsers are not required.
             """
             extension ".kdl"
             suggestedName "config"
-            template """// Project settings
-settings {
-    // key "value"
-}
-"""
+            inventedYear 2021
+            lastUpdated "2024-12"
+            homepage "https://kdl.dev/"
+            repo "https://github.com/kdl-org/kdl"
+            spec "https://kdl.dev/spec/"
+            vitality "current"
             creatable true
         }
 
         type {
             id "json5"
             label "JSON5"
-            role "JSON family with comments when tools require JSON"
-            description """
-            Use JSON5 (or JSON) when a tool or API strictly requires the JSON model (package.json, editor settings, many CI configs).
-            Prefer SDLang when you control the parser.
-            """
+            role "JSON family with comments"
+            description "Use when tools require JSON-shaped files but humans edit them."
             extension ".json5"
             suggestedName "config"
-            template """{
-  // key: "value"
-}
-"""
+            inventedYear 2012
+            lastUpdated "2024"
+            homepage "https://json5.org/"
+            repo "https://github.com/json5/json5"
+            spec "https://spec.json5.org/"
+            vitality "mature"
+            creatable true
+        }
+
+        type {
+            id "toml"
+            label "TOML"
+            role "Obvious key-value config (Cargo, many CLIs)"
+            description "Good for flat-to-moderate nesting. Prefer over YAML when you want less surprising parsing."
+            extension ".toml"
+            suggestedName "config"
+            inventedYear 2013
+            lastUpdated "2023"
+            homepage "https://toml.io/"
+            repo "https://github.com/toml-lang/toml"
+            spec "https://toml.io/en/v1.0.0"
+            vitality "mature"
+            creatable true
+        }
+
+        type {
+            id "yaml"
+            label "YAML"
+            role "CI and Kubernetes-shaped documents"
+            description "Ubiquitous in CI/CD and k8s. Footguns abound—prefer TOML/SDLang/KDL for app settings you control."
+            extension ".yaml"
+            suggestedName "config"
+            inventedYear 2001
+            lastUpdated "2021"
+            homepage "https://yaml.org/"
+            repo "https://github.com/yaml/yaml-spec"
+            spec "https://yaml.org/spec/1.2.2/"
+            vitality "legacy"
+            creatable true
+        }
+
+        type {
+            id "xml"
+            label "XML"
+            role "Enterprise / legacy structured markup"
+            description "Still required by many enterprise and build tools. Prefer JSON/KDL for new human-edited config."
+            extension ".xml"
+            suggestedName "config"
+            inventedYear 1998
+            lastUpdated "2008"
+            homepage "https://www.w3.org/XML/"
+            spec "https://www.w3.org/TR/xml/"
+            vitality "legacy"
+            creatable true
+        }
+
+        type {
+            id "ini"
+            label "INI"
+            role "Minimal sectioned key-value files"
+            description "Simple and portable; limited nesting. Fine for tiny tool configs."
+            extension ".ini"
+            suggestedName "config"
+            inventedYear 1985
+            lastUpdated "2020"
+            vitality "legacy"
+            creatable true
+        }
+
+        type {
+            id "dotenv"
+            label "Dotenv"
+            role "Process environment key=value files"
+            description "Local secrets and env overrides. Do not commit secrets; pair with DevCentr Secrets Manager."
+            extension ".env"
+            suggestedName "local"
+            inventedYear 2012
+            lastUpdated "2024"
+            homepage "https://github.com/motdotla/dotenv"
+            repo "https://github.com/motdotla/dotenv"
+            vitality "mature"
             creatable true
         }
 
@@ -162,130 +334,222 @@ settings {
                 id "pkl"
                 label "Pkl"
                 role "OO config with classes and codegen"
-                description """
-                Apple Pkl embeds classes, inheritance, and functions; compiles down to JSON/YAML for consumers.
-                Pick when you need validated, programmable modules and multi-language codegen.
-                """
                 extension ".pkl"
                 suggestedName "config"
+                inventedYear 2024
+                lastUpdated "2026"
+                homepage "https://pkl-lang.org/"
+                repo "https://github.com/apple/pkl"
+                spec "https://pkl-lang.org/main/current/language-reference/index.html"
+                vitality "current"
                 creatable true
+                description "Apple Pkl embeds classes and functions; often emits JSON/YAML for consumers."
             }
-
             type {
                 id "cue"
                 label "CUE"
                 role "Types-as-values unification"
-                description """
-                CUE treats types as values with a non-Turing-complete lattice for deterministic validation.
-                Pick when large configs must unify and constrain without becoming a full program.
-                """
                 extension ".cue"
                 suggestedName "config"
+                inventedYear 2018
+                lastUpdated "2025"
+                homepage "https://cuelang.org/"
+                repo "https://github.com/cue-lang/cue"
+                spec "https://cuelang.org/docs/"
+                vitality "current"
                 creatable true
+                description "Non-Turing-complete constrained config; strong for large unified data."
             }
-
             type {
                 id "nickel"
                 label "Nickel"
                 role "Functional config with contracts"
-                description """
-                Nickel uses gradual typing and contracts for structured configuration with runtime assertions.
-                Pick when you want functional composition with enforceable contracts.
-                """
                 extension ".ncl"
                 suggestedName "config"
+                inventedYear 2021
+                lastUpdated "2025"
+                homepage "https://nickel-lang.org/"
+                repo "https://github.com/tweag/nickel"
+                vitality "current"
                 creatable true
+                description "Gradual typing and contracts for structured configuration."
             }
-
             type {
                 id "kcl"
                 label "KCL"
                 role "Cloud-native constrained config"
-                description """
-                KCL (CNCF) focuses on immutability, schemas, and assertion-based constraints for infrastructure at scale.
-                Pick for large cloud-native configuration surfaces.
-                """
                 extension ".k"
                 suggestedName "config"
+                inventedYear 2022
+                lastUpdated "2025"
+                homepage "https://kcl-lang.io/"
+                repo "https://github.com/kcl-lang/kcl"
+                vitality "current"
                 creatable true
+                description "CNCF-oriented schemas and assertions for infrastructure at scale."
+            }
+            type {
+                id "dhall"
+                label "Dhall"
+                role "Non-Turing-complete programmable config"
+                extension ".dhall"
+                suggestedName "config"
+                inventedYear 2016
+                lastUpdated "2024"
+                homepage "https://dhall-lang.org/"
+                repo "https://github.com/dhall-lang/dhall-lang"
+                spec "https://docs.dhall-lang.org/"
+                vitality "mature"
+                creatable true
+                description "Importable, typed configuration that cannot loop forever."
             }
         }
 
         type {
             id "ergonomic-serialization"
             label "Ergonomic / LLM serialization"
-            role "Human or token-optimized text encodings of structured data"
+            role "Human or token-optimized text encodings"
 
             type {
                 id "toon"
                 label "TOON"
                 role "Token-oriented object notation for LLM payloads"
-                description """
-                TOON reduces braces and repeated keys with tabular schema headers for LLM context windows.
-                Pick when the primary consumer is an LLM pipeline and token density matters more than universal tooling.
-                """
                 extension ".toon"
                 suggestedName "payload"
+                inventedYear 2025
+                lastUpdated "2026"
+                vitality "current"
                 creatable true
+                description "Tabular/token-dense encoding for LLM context windows."
             }
         }
 
         type {
             id "binary-wire"
             label "Binary / zero-copy"
-            role "Machine-first encodings when humans do not edit the file"
+            role "Machine-first encodings"
 
             type {
                 id "capnp"
                 label "Cap'n Proto"
                 role "Zero-copy schemaed messages"
-                description """
-                Cap'n Proto lays out data like in-memory structures—no parse step to traverse.
-                Pick for high-throughput RPC or storage where schemas are owned by your stack.
-                """
                 extension ".capnp"
                 suggestedName "schema"
+                inventedYear 2013
+                lastUpdated "2025"
+                homepage "https://capnproto.org/"
+                repo "https://github.com/capnproto/capnproto"
+                spec "https://capnproto.org/encoding.html"
+                vitality "mature"
                 creatable true
+                description "Schema language + zero-copy runtime layout."
             }
-
             type {
                 id "flatbuffers"
                 label "FlatBuffers"
                 role "Zero-copy with wide language bindings"
-                description """
-                FlatBuffers similarly avoids deserialization copies; strong mobile and game ecosystems.
-                Pick when you need zero-copy with established FlatBuffers toolchains.
-                """
                 extension ".fbs"
                 suggestedName "schema"
+                inventedYear 2014
+                lastUpdated "2025"
+                homepage "https://flatbuffers.dev/"
+                repo "https://github.com/google/flatbuffers"
+                spec "https://flatbuffers.dev/flatbuffers_guide_writing_schema.html"
+                vitality "mature"
                 creatable true
+                description "Zero-copy serialization popular in games and mobile."
             }
-
             type {
                 id "cbor"
                 label "CBOR"
                 role "Binary JSON data model"
-                description """
-                CBOR is a concise binary encoding of the JSON data model (RFC 8949).
-                Pick for compact interchange that still maps cleanly to JSON semantics.
-                """
-                extension ".cbor"
-                suggestedName "data"
+                inventedYear 2013
+                lastUpdated "2020"
+                homepage "https://cbor.io/"
+                spec "https://www.rfc-editor.org/rfc/rfc8949"
+                vitality "reference"
                 creatable false
+                description "Concise Binary Object Representation (RFC 8949)."
             }
-
             type {
                 id "msgpack"
                 label "MessagePack"
                 role "Compact binary maps and arrays"
-                description """
-                MessagePack encodes dynamic maps/arrays with typed byte prefixes.
-                Pick as a drop-in binary companion to JSON-like payloads.
-                """
-                extension ".msgpack"
-                suggestedName "data"
+                inventedYear 2008
+                lastUpdated "2023"
+                homepage "https://msgpack.org/"
+                repo "https://github.com/msgpack/msgpack"
+                spec "https://github.com/msgpack/msgpack/blob/master/spec.md"
+                vitality "reference"
                 creatable false
+                description "Binary companion to JSON-like payloads."
             }
+        }
+    }
+
+    classification {
+        id "schema"
+        label "Schema / API contract"
+        summary "Interface and data-shape definitions consumed by codegen and validators."
+
+        type {
+            id "json-schema"
+            label "JSON Schema"
+            role "Validate JSON-shaped documents"
+            extension ".schema.json"
+            suggestedName "schema"
+            inventedYear 2010
+            lastUpdated "2022"
+            homepage "https://json-schema.org/"
+            repo "https://github.com/json-schema-org/json-schema-spec"
+            spec "https://json-schema.org/specification"
+            vitality "mature"
+            creatable true
+            description "Declarative schemas for JSON instance documents."
+        }
+        type {
+            id "openapi"
+            label "OpenAPI"
+            role "HTTP API description"
+            extension ".yaml"
+            suggestedName "openapi"
+            inventedYear 2011
+            lastUpdated "2021"
+            homepage "https://www.openapis.org/"
+            repo "https://github.com/OAI/OpenAPI-Specification"
+            spec "https://spec.openapis.org/oas/latest.html"
+            vitality "mature"
+            creatable true
+            description "Industry standard for describing HTTP APIs (formerly Swagger)."
+        }
+        type {
+            id "protobuf"
+            label "Protocol Buffers"
+            role "IDL for gRPC and binary messages"
+            extension ".proto"
+            suggestedName "messages"
+            inventedYear 2008
+            lastUpdated "2025"
+            homepage "https://protobuf.dev/"
+            repo "https://github.com/protocolbuffers/protobuf"
+            spec "https://protobuf.dev/programming-guides/proto3/"
+            vitality "mature"
+            creatable true
+            description "Language-neutral IDL and binary encoding."
+        }
+        type {
+            id "avro"
+            label "Apache Avro"
+            role "Schemaed data for Hadoop/streaming"
+            extension ".avsc"
+            suggestedName "schema"
+            inventedYear 2009
+            lastUpdated "2024"
+            homepage "https://avro.apache.org/"
+            repo "https://github.com/apache/avro"
+            vitality "mature"
+            creatable true
+            description "Compact binary with embedded or separate schemas."
         }
     }
 
@@ -298,37 +562,65 @@ settings {
             id "d"
             label "D"
             role "D source module"
-            description "Stub .d module for D projects."
             extension ".d"
             suggestedName "app"
+            inventedYear 2001
+            lastUpdated "2026"
+            homepage "https://dlang.org/"
+            repo "https://github.com/dlang/dmd"
+            vitality "mature"
+            creatable true
             template """module app;
 
 void main()
 {
 }
 """
-            creatable true
+            description "Stub .d module for D projects."
         }
-
         type {
             id "typescript"
             label "TypeScript"
-            role "TypeScript source"
-            description "Stub .ts file for TypeScript/Node projects."
+            role "Typed JavaScript"
             extension ".ts"
             suggestedName "index"
+            inventedYear 2012
+            lastUpdated "2026"
+            homepage "https://www.typescriptlang.org/"
+            repo "https://github.com/microsoft/TypeScript"
+            spec "https://www.typescriptlang.org/docs/handbook/intro.html"
+            vitality "current"
+            creatable true
             template """export {};
 """
-            creatable true
+            description "Stub .ts file for TypeScript/Node projects."
         }
-
+        type {
+            id "javascript"
+            label "JavaScript"
+            role "ECMAScript source"
+            extension ".js"
+            suggestedName "index"
+            inventedYear 1995
+            lastUpdated "2025"
+            homepage "https://ecma-international.org/publications-and-standards/standards/ecma-262/"
+            spec "https://tc39.es/ecma262/"
+            vitality "mature"
+            creatable true
+            description "Plain JS when TypeScript is not in play."
+        }
         type {
             id "python"
             label "Python"
             role "Python source"
-            description "Stub .py file for Python projects."
             extension ".py"
             suggestedName "main"
+            inventedYear 1991
+            lastUpdated "2025"
+            homepage "https://www.python.org/"
+            repo "https://github.com/python/cpython"
+            vitality "mature"
+            creatable true
             template """def main() -> None:
     pass
 
@@ -336,7 +628,117 @@ void main()
 if __name__ == "__main__":
     main()
 """
+            description "Stub .py file for Python projects."
+        }
+        type {
+            id "rust"
+            label "Rust"
+            role "Rust source"
+            extension ".rs"
+            suggestedName "main"
+            inventedYear 2010
+            lastUpdated "2025"
+            homepage "https://www.rust-lang.org/"
+            repo "https://github.com/rust-lang/rust"
+            vitality "current"
             creatable true
+            template """fn main() {}
+"""
+            description "Stub .rs file."
+        }
+        type {
+            id "go"
+            label "Go"
+            role "Go source"
+            extension ".go"
+            suggestedName "main"
+            inventedYear 2009
+            lastUpdated "2025"
+            homepage "https://go.dev/"
+            repo "https://github.com/golang/go"
+            vitality "mature"
+            creatable true
+            template """package main
+
+func main() {}
+"""
+            description "Stub .go file."
+        }
+        type {
+            id "c"
+            label "C"
+            role "C source"
+            extension ".c"
+            suggestedName "main"
+            inventedYear 1972
+            lastUpdated "2024"
+            homepage "https://www.open-std.org/jtc1/sc22/wg14/"
+            vitality "mature"
+            creatable true
+            template """int main(void) { return 0; }
+"""
+            description "Stub .c file."
+        }
+        type {
+            id "cpp"
+            label "C++"
+            role "C++ source"
+            extension ".cpp"
+            suggestedName "main"
+            inventedYear 1985
+            lastUpdated "2024"
+            homepage "https://isocpp.org/"
+            vitality "mature"
+            creatable true
+            template """int main() { return 0; }
+"""
+            description "Stub .cpp file."
+        }
+    }
+
+    classification {
+        id "data"
+        label "Tabular / data files"
+        summary "Spreadsheets-as-text and simple datasets (not full databases)."
+
+        type {
+            id "csv"
+            label "CSV"
+            role "Comma-separated values"
+            extension ".csv"
+            suggestedName "data"
+            inventedYear 1972
+            lastUpdated "2005"
+            spec "https://www.rfc-editor.org/rfc/rfc4180"
+            vitality "mature"
+            creatable true
+            description "Interoperable tabular export; RFC 4180 is the common baseline."
+        }
+        type {
+            id "tsv"
+            label "TSV"
+            role "Tab-separated values"
+            extension ".tsv"
+            suggestedName "data"
+            inventedYear 1972
+            lastUpdated "2020"
+            vitality "mature"
+            creatable true
+            description "Prefer when fields contain commas."
+        }
+        type {
+            id "jsonl"
+            label "JSON Lines"
+            role "Newline-delimited JSON records"
+            extension ".jsonl"
+            suggestedName "records"
+            inventedYear 2013
+            lastUpdated "2023"
+            homepage "https://jsonlines.org/"
+            spec "https://jsonlines.org/"
+            vitality "mature"
+            creatable true
+            description "Streaming-friendly logs and datasets of JSON objects."
         }
     }
 
@@ -352,93 +754,51 @@ if __name__ == "__main__":
             description "A plain .txt file with no markup or schema."
             extension ".txt"
             suggestedName "notes"
+            inventedYear 1970
+            lastUpdated "2026"
+            vitality "mature"
             creatable true
         }
     }
 
     lineage {
-        scope "config"
-        edge {
-            from "json"
-            to "json5"
-            kind "evolves"
-            note "Comments and trailing commas without leaving the JSON model."
-        }
-        edge {
-            from "json"
-            to "sdlang"
-            kind "evolves"
-            note "Human-edited config: comments, native types, less punctuation."
-        }
-        edge {
-            from "sdlang"
-            to "kdl"
-            kind "supersedes"
-            note "Modern successor: unambiguous grammar, /- node comments, type annotations."
-        }
-        edge {
-            from "json"
-            to "toon"
-            kind "specializes"
-            note "Token-dense tabular form for LLM payloads."
-        }
-        edge {
-            from "json"
-            to "cbor"
-            kind "specializes"
-            note "Binary JSON data model."
-        }
-        edge {
-            from "json"
-            to "msgpack"
-            kind "specializes"
-            note "Compact binary maps and arrays."
-        }
-        edge {
-            from "json"
-            to "pkl"
-            kind "specializes"
-            note "Programmable OO config that can emit JSON."
-        }
-        edge {
-            from "json"
-            to "cue"
-            kind "specializes"
-            note "Constrained unification over JSON-like data."
-        }
-        edge {
-            from "json"
-            to "capnp"
-            kind "specializes"
-            note "Zero-copy schemaed binary instead of text JSON."
-        }
-        edge {
-            from "json"
-            to "flatbuffers"
-            kind "specializes"
-            note "Zero-copy schemas with wide language bindings."
-        }
+        scope "docs"
+        edge { from "markdown" to "mdx" kind "specializes" note "JSX in docs; React pipelines only." }
+        edge { from "markdown" to "centrmark" kind "evolves" note "Directive AST without pulling JS into prose." }
+        edge { from "markdown" to "djot" kind "evolves" note "Unambiguous lightweight markup from Pandoc’s author." }
+        edge { from "asciidoc" to "centrmark" kind "evolves" note "Keep Antora publishing; migrate authoring over time." }
+        edge { from "rst" to "markdown" kind "dialect" note "Sphinx vs forge-README worlds." }
+        edge { from "markdown" to "typst" kind "specializes" note "Typeset papers; not a README replacement." }
     }
 
     lineage {
-        scope "docs"
-        edge {
-            from "markdown"
-            to "mdx"
-            kind "specializes"
-            note "JSX in docs; React pipelines only."
-        }
-        edge {
-            from "markdown"
-            to "centrmark"
-            kind "evolves"
-            note "Directive AST without pulling JS into prose."
-        }
-        edge {
-            from "asciidoc"
-            to "centrmark"
-            kind "evolves"
-            note "Keep Antora publishing; migrate authoring over time."
-        }
+        scope "config"
+        edge { from "json" to "json5" kind "evolves" note "Comments and trailing commas." }
+        edge { from "json" to "sdlang" kind "evolves" note "Human-edited config with native types." }
+        edge { from "sdlang" to "kdl" kind "supersedes" note "Modern successor grammar and /- comments." }
+        edge { from "json" to "toml" kind "evolves" note "Obvious key-value with typed literals." }
+        edge { from "json" to "yaml" kind "evolves" note "Indentation-driven documents; many footguns." }
+        edge { from "xml" to "json" kind "evolves" note "Lighter interchange for many APIs." }
+        edge { from "ini" to "toml" kind "evolves" note "Richer types and nesting than classic INI." }
+        edge { from "json" to "toon" kind "specializes" note "Token-dense LLM payloads." }
+        edge { from "json" to "cbor" kind "specializes" note "Binary JSON data model." }
+        edge { from "json" to "msgpack" kind "specializes" note "Compact binary maps and arrays." }
+        edge { from "json" to "pkl" kind "specializes" note "Programmable OO config that can emit JSON." }
+        edge { from "json" to "cue" kind "specializes" note "Constrained unification." }
+        edge { from "json" to "capnp" kind "specializes" note "Zero-copy schemaed binary." }
+        edge { from "json" to "flatbuffers" kind "specializes" note "Zero-copy with wide bindings." }
+        edge { from "cue" to "dhall" kind "dialect" note "Sibling non-Turing-complete config languages." }
+    }
+
+    lineage {
+        scope "schema"
+        edge { from "json-schema" to "openapi" kind "specializes" note "HTTP APIs on a JSON Schema-shaped foundation." }
+        edge { from "protobuf" to "avro" kind "dialect" note "Sibling IDL/binary schema ecosystems." }
+    }
+
+    lineage {
+        scope "data"
+        edge { from "csv" to "tsv" kind "dialect" note "Same tabular idea; different delimiter." }
+        edge { from "csv" to "jsonl" kind "specializes" note "One JSON object per line for streams." }
     }
 }

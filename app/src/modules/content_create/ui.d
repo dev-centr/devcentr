@@ -6,34 +6,83 @@ import dlangui.widgets.popup : PopupAlign;
 import modules.content_create.create : createContentStub;
 import modules.content_create.loader : loadContentTypesCatalog;
 import modules.content_create.model;
+import modules.infra.ui : openUrlInBrowser;
 import std.conv : to;
-import std.string : replace;
+import std.string : replace, strip;
 
-private dstring indentLabel(const ContentTypeListItem item)
+private dstring indentSpaces(int depth)
 {
     dstring prefix;
-    foreach (i; 0 .. item.depth)
+    foreach (i; 0 .. depth)
         prefix ~= "  "d;
-    dstring line = prefix ~ to!dstring(item.label);
-    if (item.edgeKind.length)
-        line ~= to!dstring("  [" ~ item.edgeKind ~ "]");
+    return prefix;
+}
+
+private dstring jobTreeLabel(const ContentTypeListItem item)
+{
+    dstring line = indentSpaces(item.depth) ~ to!dstring(item.label);
+    if (item.inventedYear > 0)
+        line ~= to!dstring("  (" ~ to!string(item.inventedYear) ~ ")");
     if (!item.creatable)
         line ~= "  (ref)"d;
     return line;
 }
 
-/// Show subtype picker; on Create writes stub. Returns true if created.
+private Widget makeLed(string vitality)
+{
+    auto led = new Widget("vitalityLed");
+    led.minWidth(12).maxWidth(12).minHeight(12).maxHeight(12);
+    led.layoutWidth(12).layoutHeight(12);
+    led.backgroundColor(vitalityLedColor(vitality));
+    led.margins(Rect(0, 2, 6, 2));
+    return led;
+}
+
+private void addDetailField(VerticalLayout detail, string title, string value)
+{
+    if (value.length == 0)
+        return;
+    auto row = new HorizontalLayout();
+    row.layoutWidth(FILL_PARENT).margins(Rect(0, 2, 0, 0));
+    auto t = new TextWidget(null, to!dstring(title ~ ": "));
+    t.fontSize(8).fontWeight(700).textColor(0xAAAAAA);
+    row.addChild(t);
+    auto v = new TextWidget(null, to!dstring(value));
+    v.fontSize(8).textColor(0xCCCCCC);
+    row.addChild(v);
+    detail.addChild(row);
+}
+
+private void addLinkRow(VerticalLayout detail, string title, string url)
+{
+    if (url.length == 0)
+        return;
+    auto row = new HorizontalLayout();
+    row.layoutWidth(FILL_PARENT).margins(Rect(0, 2, 0, 0));
+    auto t = new TextWidget(null, to!dstring(title ~ ": "));
+    t.fontSize(8).fontWeight(700).textColor(0xAAAAAA);
+    row.addChild(t);
+    auto btn = new Button(null, to!dstring(url));
+    btn.fontSize(8);
+    string captured = url;
+    btn.click = delegate(Widget w) {
+        openUrlInBrowser(captured);
+        return true;
+    };
+    row.addChild(btn);
+    detail.addChild(row);
+}
+
 void showContentSubtypeDialog(Window parent, string repoPath, ContentTypesCatalog catalog,
     ContentClassification classification)
 {
     auto dlg = new Dialog(UIString.fromRaw(to!dstring("Create — " ~ classification.label)), parent,
         DialogFlag.Popup | DialogFlag.Resizable);
-    dlg.minWidth(780).minHeight(480);
+    dlg.minWidth(860).minHeight(520);
 
     auto root = new HorizontalLayout();
     root.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT).padding(12);
 
-    // Left: job tree
     auto leftCol = new VerticalLayout();
     leftCol.layoutWidth(280).layoutHeight(FILL_PARENT);
     leftCol.addChild(new TextWidget(null, "By job / role"d).fontSize(10).fontWeight(700));
@@ -44,18 +93,25 @@ void showContentSubtypeDialog(Window parent, string repoPath, ContentTypesCatalo
     leftCol.addChild(jobList);
     root.addChild(leftCol);
 
-    // Right: lineage (top) + detail (bottom)
     auto rightCol = new VerticalLayout();
     rightCol.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT);
 
     auto lineageWrap = new VerticalLayout();
-    lineageWrap.layoutWidth(FILL_PARENT).layoutHeight(180);
-    lineageWrap.addChild(new TextWidget(null, "Lineage (evolution)"d).fontSize(10).fontWeight(700));
-    auto lineageList = new ListWidget("contentLineageTree");
-    lineageList.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT);
-    auto lineageAdapter = new StringListAdapter();
-    lineageList.ownAdapter = lineageAdapter;
-    lineageWrap.addChild(lineageList);
+    lineageWrap.layoutWidth(FILL_PARENT).layoutHeight(200);
+    auto lineageHead = new HorizontalLayout();
+    lineageHead.layoutWidth(FILL_PARENT);
+    lineageHead.addChild(new TextWidget(null, "Lineage (evolution)"d).fontSize(10).fontWeight(700));
+    auto legend = new TextWidget(null, "  LED: green=current  blue=mature  amber=legacy  red=outdated"d);
+    legend.fontSize(7).textColor(0x888888);
+    lineageHead.addChild(legend);
+    lineageWrap.addChild(lineageHead);
+
+    auto lineageScroll = new ScrollWidget("contentLineageScroll");
+    lineageScroll.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT);
+    auto lineageRows = new VerticalLayout();
+    lineageRows.layoutWidth(FILL_PARENT).padding(4);
+    lineageScroll.contentWidget = lineageRows;
+    lineageWrap.addChild(lineageScroll);
     rightCol.addChild(lineageWrap);
 
     auto detailScroll = new ScrollWidget();
@@ -80,7 +136,7 @@ void showContentSubtypeDialog(Window parent, string repoPath, ContentTypesCatalo
     ContentTypeListItem[] jobItems;
     buildJobTreeItems(classification.types, 0, jobItems);
     foreach (ref it; jobItems)
-        jobAdapter.add(indentLabel(it));
+        jobAdapter.add(jobTreeLabel(it));
 
     auto lin = findLineage(catalog, classification.id);
     bool hasLineage = lin !is null && lin.edges.length > 0;
@@ -89,27 +145,6 @@ void showContentSubtypeDialog(Window parent, string repoPath, ContentTypesCatalo
 
     ContentTypeListItem[] lineageItems;
     string selectedId = "";
-
-    void refreshLineage(string focus)
-    {
-        lineageAdapter.clear();
-        lineageItems = [];
-        if (!hasLineage)
-            return;
-        buildLineageItems(lin, &classification, focus, lineageItems);
-        foreach (ref it; lineageItems)
-        {
-            auto line = indentLabel(it);
-            if (it.edgeNote.length)
-            {
-                auto note = it.edgeNote;
-                if (note.length > 72)
-                    note = note[0 .. 69] ~ "...";
-                line ~= to!dstring(" — " ~ note);
-            }
-            lineageAdapter.add(line);
-        }
-    }
 
     void refreshDetail()
     {
@@ -131,63 +166,121 @@ void showContentSubtypeDialog(Window parent, string repoPath, ContentTypesCatalo
             btnCreate.enabled = false;
             return;
         }
+
+        auto titleRow = new HorizontalLayout();
+        titleRow.layoutWidth(FILL_PARENT);
+        titleRow.addChild(makeLed(node.vitality));
         auto head = new TextWidget(null, to!dstring(node.label));
         head.fontSize(13).fontWeight(800);
-        detail.addChild(head);
+        titleRow.addChild(head);
+        auto vit = new TextWidget(null, to!dstring("  [" ~ vitalityLabel(node.vitality) ~ "]"));
+        vit.fontSize(8).textColor(vitalityLedColor(node.vitality));
+        titleRow.addChild(vit);
+        detail.addChild(titleRow);
+
         if (node.role.length)
         {
-            auto role = new TextWidget(null, to!dstring(node.role));
+            auto role = new TextWidget(null, to!dstring(node.role.strip()));
             role.fontSize(9).textColor(0x88AA88).margins(Rect(0, 4, 0, 8));
             detail.addChild(role);
         }
-        if (node.extension.length)
-        {
-            auto ext = new TextWidget(null, to!dstring("Extension: " ~ node.extension));
-            ext.fontSize(8).textColor(0xAAAAAA);
-            detail.addChild(ext);
-        }
+
+        auto metaHead = new TextWidget(null, "Facts"d);
+        metaHead.fontSize(10).fontWeight(700).margins(Rect(0, 4, 0, 2));
+        detail.addChild(metaHead);
+
+        if (node.inventedYear > 0)
+            addDetailField(detail, "Invented", to!string(node.inventedYear));
+        addDetailField(detail, "Last updated", node.lastUpdated);
+        addDetailField(detail, "Extension", node.extension);
+        addDetailField(detail, "Vitality", vitalityLabel(node.vitality));
+        addLinkRow(detail, "Homepage", node.homepage);
+        addLinkRow(detail, "Repository", node.repoUrl);
+        addLinkRow(detail, "Specification", node.specUrl);
+
         if (node.description.length)
         {
             auto descHead = new TextWidget(null, "Description"d);
-            descHead.fontSize(10).fontWeight(700).margins(Rect(0, 8, 0, 4));
+            descHead.fontSize(10).fontWeight(700).margins(Rect(0, 10, 0, 4));
             detail.addChild(descHead);
-            auto desc = new TextWidget(null, to!dstring(node.description.replace("\r\n", "\n")));
+            auto desc = new TextWidget(null, to!dstring(node.description.replace("\r\n", "\n").strip()));
             desc.fontSize(9).textColor(0xCCCCCC);
             detail.addChild(desc);
         }
         if (!node.creatable)
         {
-            auto warn = new TextWidget(null, "This entry is a lineage reference only and cannot be created as a stub."d);
+            auto warn = new TextWidget(null, "Lineage / reference entry — cannot create a stub from this node."d);
             warn.fontSize(9).textColor(0xCC8888).margins(Rect(0, 10, 0, 0));
             detail.addChild(warn);
         }
         btnCreate.enabled = node.creatable && node.extension.length > 0;
     }
 
-    void selectType(string id)
+    void refreshLineage(string focus)
+    {
+        lineageRows.removeAllChildren();
+        lineageItems = [];
+        if (!hasLineage)
+            return;
+        buildLineageItems(lin, &classification, focus, lineageItems);
+        foreach (ref it; lineageItems)
+        {
+            auto row = new HorizontalLayout();
+            row.layoutWidth(FILL_PARENT).margins(Rect(0, 1, 0, 1));
+            row.padding(Rect(cast(int)(it.depth * 12), 2, 4, 2));
+            if (it.typeId == selectedId)
+                row.backgroundColor(0x333344);
+
+            row.addChild(makeLed(it.vitality));
+
+            dstring yearText = it.inventedYear > 0 ? to!dstring(to!string(it.inventedYear)) : "—"d;
+            auto yearBox = new TextWidget(null, yearText);
+            yearBox.minWidth(40).fontSize(8).fontWeight(700).textColor(0xCCCCCC);
+            yearBox.margins(Rect(0, 0, 6, 0));
+            row.addChild(yearBox);
+
+            dstring label = to!dstring(it.label);
+            if (it.edgeKind.length)
+                label ~= to!dstring("  [" ~ it.edgeKind ~ "]");
+
+            string capturedId = it.typeId;
+            auto pick = new Button(null, label);
+            pick.fontSize(9);
+            pick.click = delegate(Widget w) {
+                selectedId = capturedId;
+                foreach (i, ref jt; jobItems)
+                {
+                    if (jt.typeId == capturedId)
+                    {
+                        jobList.selectedItemIndex = cast(int)i;
+                        break;
+                    }
+                }
+                refreshLineage(capturedId);
+                refreshDetail();
+                return true;
+            };
+            row.addChild(pick);
+
+            if (it.edgeNote.length)
+            {
+                auto note = it.edgeNote;
+                if (note.length > 40)
+                    note = note[0 .. 37] ~ "...";
+                auto noteW = new TextWidget(null, to!dstring("  — " ~ note));
+                noteW.fontSize(7).textColor(0x888888);
+                row.addChild(noteW);
+            }
+
+            lineageRows.addChild(row);
+        }
+    }
+
+    void selectFromJob(string id)
     {
         selectedId = id;
-        // sync job list selection
-        foreach (i, ref it; jobItems)
-        {
-            if (it.typeId == id)
-            {
-                jobList.selectedItemIndex = cast(int)i;
-                break;
-            }
-        }
         if (hasLineage)
-        {
             refreshLineage(id);
-            foreach (i, ref it; lineageItems)
-            {
-                if (it.typeId == id)
-                {
-                    lineageList.selectedItemIndex = cast(int)i;
-                    break;
-                }
-            }
-        }
         refreshDetail();
     }
 
@@ -196,13 +289,7 @@ void showContentSubtypeDialog(Window parent, string repoPath, ContentTypesCatalo
 
     jobList.itemClick = delegate(Widget source, int itemIndex) {
         if (itemIndex >= 0 && itemIndex < cast(int)jobItems.length)
-            selectType(jobItems[itemIndex].typeId);
-        return true;
-    };
-
-    lineageList.itemClick = delegate(Widget source, int itemIndex) {
-        if (itemIndex >= 0 && itemIndex < cast(int)lineageItems.length)
-            selectType(lineageItems[itemIndex].typeId);
+            selectFromJob(jobItems[itemIndex].typeId);
         return true;
     };
 
@@ -228,7 +315,6 @@ void showContentSubtypeDialog(Window parent, string repoPath, ContentTypesCatalo
     dlg.show();
 }
 
-/// Handle choosing a classification: single creatable leaf → create; else dialog.
 void beginCreateForClassification(Window parent, string repoPath, ContentTypesCatalog catalog,
     string classificationId)
 {
@@ -258,7 +344,6 @@ void beginCreateForClassification(Window parent, string repoPath, ContentTypesCa
     showContentSubtypeDialog(parent, repoPath, catalog, *klass);
 }
 
-/// Popup Create… menu at point; classifications are flat (no nested submenu tree).
 void showCreateContentMenu(Window parent, Widget anchor, int x, int y, string repoPath)
 {
     auto catalog = loadContentTypesCatalog();

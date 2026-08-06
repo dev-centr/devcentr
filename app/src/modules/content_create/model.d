@@ -7,8 +7,10 @@ struct ContentTypeListItem
     string label;
     int depth;
     bool creatable;
-    string edgeNote; /// Lineage-only subtitle (empty for job tree rows).
-    string edgeKind; /// Lineage-only kind label.
+    string edgeNote;
+    string edgeKind;
+    int inventedYear; /// 0 if unknown
+    string vitality;  /// current | mature | legacy | outdated | reference
 }
 
 struct ContentTypeNode
@@ -21,6 +23,12 @@ struct ContentTypeNode
     string suggestedName;
     string templateBody;
     bool creatable;
+    int inventedYear;     /// calendar year introduced (0 = unknown)
+    string lastUpdated;   /// YYYY or YYYY-MM of last notable release/spec touch
+    string repoUrl;       /// official source repository
+    string specUrl;       /// official specification or language definition
+    string homepage;      /// project / marketing home
+    string vitality;      /// current | mature | legacy | outdated | reference
     ContentTypeNode[] children;
 }
 
@@ -42,7 +50,7 @@ struct LineageEdge
 
 struct LineageScope
 {
-    string scope; /// classification id
+    string scope;
     LineageEdge[] edges;
 }
 
@@ -51,6 +59,44 @@ struct ContentTypesCatalog
     int version_;
     ContentClassification[] classifications;
     LineageScope[] lineages;
+}
+
+/// LED / status chip colors for vitality.
+uint vitalityLedColor(string vitality)
+{
+    switch (vitality)
+    {
+    case "current":
+        return 0x22CC55; // green — prefer for new work
+    case "mature":
+        return 0x55AAEE; // blue — solid, maintained
+    case "legacy":
+        return 0xE6A817; // amber — still used; prefer successors for greenfield
+    case "outdated":
+        return 0xDD4444; // red — avoid for new work
+    case "reference":
+    default:
+        return 0x888888; // gray — lineage anchor / non-creatable ref
+    }
+}
+
+string vitalityLabel(string vitality)
+{
+    switch (vitality)
+    {
+    case "current":
+        return "current";
+    case "mature":
+        return "mature";
+    case "legacy":
+        return "legacy";
+    case "outdated":
+        return "outdated";
+    case "reference":
+        return "reference";
+    default:
+        return vitality.length ? vitality : "unknown";
+    }
 }
 
 ContentClassification* findClassification(ref ContentTypesCatalog cat, string id)
@@ -89,38 +135,41 @@ ContentTypeNode* findTypeInClassification(ref ContentClassification c, string id
     return findTypeInTree(c.types, id);
 }
 
-string labelForType(ContentClassification* klass, string id)
+ContentTypeNode* findTypePtr(ContentClassification* klass, string id)
 {
     if (klass is null)
+        return null;
+    return findTypeInTree(klass.types, id);
+}
+
+string labelForType(ContentClassification* klass, string id)
+{
+    auto n = findTypePtr(klass, id);
+    if (n is null)
         return id;
-    ContentTypeNode[] stack = klass.types.dup;
-    while (stack.length)
-    {
-        auto n = stack[0];
-        stack = stack[1 .. $];
-        if (n.id == id)
-            return n.label.length ? n.label : id;
-        foreach (ch; n.children)
-            stack ~= ch;
-    }
-    return id;
+    return n.label.length ? n.label : id;
 }
 
 bool creatableForType(ContentClassification* klass, string id)
 {
-    if (klass is null)
-        return false;
-    ContentTypeNode[] stack = klass.types.dup;
-    while (stack.length)
-    {
-        auto n = stack[0];
-        stack = stack[1 .. $];
-        if (n.id == id)
-            return n.creatable;
-        foreach (ch; n.children)
-            stack ~= ch;
-    }
-    return false;
+    auto n = findTypePtr(klass, id);
+    return n !is null && n.creatable;
+}
+
+int inventedYearForType(ContentClassification* klass, string id)
+{
+    auto n = findTypePtr(klass, id);
+    return n is null ? 0 : n.inventedYear;
+}
+
+string vitalityForType(ContentClassification* klass, string id)
+{
+    auto n = findTypePtr(klass, id);
+    if (n is null)
+        return "reference";
+    if (n.vitality.length)
+        return n.vitality;
+    return n.creatable ? "mature" : "reference";
 }
 
 void buildJobTreeItems(ContentTypeNode[] nodes, int depth, ref ContentTypeListItem[] items)
@@ -132,13 +181,14 @@ void buildJobTreeItems(ContentTypeNode[] nodes, int depth, ref ContentTypeListIt
         item.label = n.label;
         item.depth = depth;
         item.creatable = n.creatable;
+        item.inventedYear = n.inventedYear;
+        item.vitality = n.vitality.length ? n.vitality : (n.creatable ? "mature" : "reference");
         items ~= item;
         if (n.children.length)
             buildJobTreeItems(n.children, depth + 1, items);
     }
 }
 
-/// Creatable leaves (no children, creatable, has extension).
 ContentTypeNode[] creatableLeaves(ContentClassification c)
 {
     ContentTypeNode[] all;
@@ -160,7 +210,6 @@ LineageScope* findLineage(ref ContentTypesCatalog cat, string scope)
     return null;
 }
 
-/// Indented lineage DAG list; optional focus restricts to connected component.
 void buildLineageItems(LineageScope* lin, ContentClassification* klass,
     string focusId, ref ContentTypeListItem[] items)
 {
@@ -226,6 +275,8 @@ void buildLineageItems(LineageScope* lin, ContentClassification* klass,
         item.edgeKind = kind;
         item.edgeNote = note;
         item.creatable = creatableForType(klass, id);
+        item.inventedYear = inventedYearForType(klass, id);
+        item.vitality = vitalityForType(klass, id);
         items ~= item;
         foreach (ref e; lin.edges)
         {

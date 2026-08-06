@@ -96,7 +96,7 @@ Product behavior: xref:../components/ecosystem-management.adoc[Ecosystem Managem
 == Content create types
 
 * **Location (app):** `app/src/modules/content_create/content-types.sdl`
-* **Purpose:** Top-level asset classifications (docs, config, code, plaintext), nested subtype trees, stub templates, and orthogonal **lineage** graphs (evolution / supersession / specialization) for the Create… dialog.
+* **Purpose:** Top-level asset classifications (docs, config, schema, code, data, plaintext), nested subtype trees, stub templates, metadata (invented year, last updated, homepage/repo/spec URLs, vitality), and orthogonal **lineage** graphs for the Create… dialog.
 * **Used by:** Repository browser right-click *Create…* (`modules.content_create`).
 * **Spec:** xref:../components/content-create.adoc[Content Create]
 
