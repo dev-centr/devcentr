@@ -1,5 +1,6 @@
 // Node.js ecosystem: runtimes and frameworks for installation workflow.
 // See docs: specifications/reference/definition-files.adoc
+// Package-manager narrative: general-knowledge explanation/infrastructure/npm-package-managers.adoc
 node {
     unifiedControlPlane {
         status "community"
@@ -9,8 +10,43 @@ node {
     }
     runtime { id "node"; name "Node.js"; }
     runtime { id "bun"; name "Bun"; }
-    packageManager { id "pnpm"; name "pnpm"; }
-    packageManager { id "yarn"; name "Yarn"; }
+
+    packageManager {
+        id "pnpm"
+        name "pnpm"
+        status "preferred"
+        homepage "https://pnpm.io/"
+        notes "Preferred Node package manager in Dev-Centr shops: content-addressable store, strict node_modules, strong monorepo story."
+    }
+    packageManager {
+        id "bun"
+        name "Bun"
+        status "active"
+        homepage "https://bun.sh/"
+        notes "Practical OSS alternative when you want a fast install/runtime path. Runtime + package manager; Zig core with ongoing Rust migration for parts of the stack. Good enough for many greenfield Node-shaped projects."
+    }
+    packageManager {
+        id "yarn"
+        name "Yarn"
+        status "active"
+        homepage "https://yarnpkg.com/"
+        notes "Still common in existing repos; prefer pnpm for new Dev-Centr work unless the repo is already Yarn-native."
+    }
+    packageManager {
+        id "npm"
+        name "npm"
+        status "bundled"
+        homepage "https://www.npmjs.com/"
+        notes "Bundled with Node.js. Fine for one-off scripts; prefer pnpm (or Bun) for day-to-day project installs."
+    }
+    packageManager {
+        id "orogene"
+        name "Orogene"
+        status "closed-aspirational"
+        homepage "https://orogene.dev/"
+        notes "Once and future king of fast, ergonomic node_modules installs. Versions ≤0.3.34 were Apache-2.0; later development is closed-source with paid licenses. Keep in the catalog as inspiration—if Orogene re-open-sources, re-evaluate as a first-class preferred candidate; until then Bun (and pnpm) cover the OSS need."
+    }
+
     framework { id "next"; name "Next.js"; }
     framework { id "vite"; name "Vite"; }
 }

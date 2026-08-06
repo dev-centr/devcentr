@@ -48,7 +48,8 @@ Keep MCP/skills setup data in the JSON5 profiles. Keep control-plane shopping, t
 == Language ecosystems
 
 * **Location (app):** `app/src/modules/languages/<ecosystem>.sdl` (e.g. `node.sdl`, `flutter.sdl`, `python.sdl`)
-* **Purpose:** Runtimes and frameworks for that ecosystem (e.g. Node.js, pnpm, Next.js; Flutter SDK, FVM; Python, Poetry, FastAPI). Used when installing or bootstrapping **project technologies** into a repo, and by per-ecosystem management modules.
+* **Purpose:** Runtimes and frameworks for that ecosystem (e.g. Node.js, pnpm, Bun, Next.js; Flutter SDK, FVM; Python, Poetry, FastAPI). Used when installing or bootstrapping **project technologies** into a repo, and by per-ecosystem management modules.
+* **Package manager fields:** `id`, `name`, optional `status` (`preferred`, `active`, `bundled`, `closed-aspirational`, …), `notes`, `homepage`. Node’s catalog includes **Orogene** as closed-aspirational inspiration and **Bun** as a practical OSS alternative; narrative: xref:general-knowledge:explanation/infrastructure/npm-package-managers.adoc[npm package managers].
 * **Used by:** Installation workflow when the user chooses to add a language or framework to a repository; ecosystem management UI for versions, health summary, and Toolchain Management / control-plane advisories.
 
 Frameworks are split by ecosystem so that editing one language does not touch others or the services list. This keeps file operations and ownership clear.

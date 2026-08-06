@@ -2,6 +2,12 @@
 
 This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
 
+== 2026-08-06 – Node package managers: Bun + Orogene
+
+* `languages/node.sdl`: package managers now include pnpm (preferred), Bun, Yarn, npm, and **Orogene** (`closed-aspirational`); optional `status` / `notes` / `homepage` fields.
+* Ecosystem loader/UI surfaces package-manager notes; definition-files + project-vision updated.
+* Companion: general-knowledge xref:general-knowledge:explanation/infrastructure/npm-package-managers.adoc[npm package managers].
+
 == 2026-08-06 – Content Create (SDL classifications + lineage)
 
 * Spec: xref:specifications:components/content-create.adoc[Content Create] — repo right-click Create…, dual nav (job tree + evolution lineage), stub create.

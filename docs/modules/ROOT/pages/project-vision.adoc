@@ -32,13 +32,14 @@ graph TD
     VM --> RT["Language Runtime (e.g. Node.js, Flutter SDK)"]
     RT --> WRAP["Manager Wrapper (e.g. Corepack)"]
     RT --> NPM["Bundled Manager (e.g. npm)"]
-    WRAP --> PM["External Package Manager (e.g. pnpm, yarn)"]
+    WRAP --> PM["External Package Manager (e.g. pnpm, yarn, Bun)"]
     PM --> DEP["Project Dependencies (Libraries)"]
     NPM --> DEP
     DEP --> APP["Application Codebase"]
     SYS --> B_RT["Independent Runtime/PM (e.g. Bun)"]
     B_RT --> DEP
     TCP --> HEALTH["Health, repair, upgrade, rollback"]
+    ORO_NOTE["Orogene: closed-aspirational north star"] -.-> PM
 ----
 
 === Management Tool Hierarchy (Specific)
@@ -61,7 +62,11 @@ graph TD
     NPM --> NEXT
     NEXT --> LIBS["Libraries / React"]
     LIBS --> APP["Project Components"]
+    ORO["Orogene (closed-aspirational)"] -.-> BUN
+    ORO -.-> PNPM
 ----
+
+Package-manager policy (pnpm preferred, Bun as practical OSS alternative, Orogene as once-and-future inspiration): xref:general-knowledge:explanation/infrastructure/npm-package-managers.adoc[npm package managers].
 
 The app should contain models or diagrams of the different facets of software project management:
 

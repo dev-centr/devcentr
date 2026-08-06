@@ -104,6 +104,9 @@ EcosystemDefinition loadEcosystemFromSdl(string path, string ecosystemId)
             EcosystemPackageManager p;
             p.id = tagStr(rt, "id");
             p.name = tagStr(rt, "name");
+            p.status = tagStr(rt, "status");
+            p.notes = tagStr(rt, "notes");
+            p.homepage = tagStr(rt, "homepage");
             def.packageManagers ~= p;
         }
         else if (rt.name == "framework")

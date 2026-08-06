@@ -95,6 +95,27 @@ class EcosystemManagerPanel : VerticalLayout
             }
             addChild(rtBox);
         }
+
+        if (def.packageManagers.length > 0)
+        {
+            auto pmBox = new VerticalLayout();
+            pmBox.layoutWidth(FILL_PARENT).margins(Rect(0, 12, 0, 0)).padding(8).backgroundColor(Style.bg);
+            pmBox.addChild(new TextWidget(null, "Package managers"d).fontSize(11).fontWeight(700).textColor(Style.accent));
+            foreach (pm; def.packageManagers)
+            {
+                string label = pm.name.length > 0 ? pm.name : pm.id;
+                if (pm.status.length)
+                    label ~= " [" ~ pm.status ~ "]";
+                pmBox.addChild(new TextWidget(null, to!dstring("• " ~ label))
+                    .fontSize(10).textColor(Style.body));
+                if (pm.notes.length)
+                {
+                    pmBox.addChild(new TextWidget(null, to!dstring("  " ~ pm.notes))
+                        .fontSize(8).textColor(Style.muted).margins(Rect(8, 0, 0, 4)));
+                }
+            }
+            addChild(pmBox);
+        }
     }
 }
 

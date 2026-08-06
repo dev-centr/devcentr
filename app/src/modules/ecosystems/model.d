@@ -26,6 +26,9 @@ struct EcosystemPackageManager
 {
     string id;
     string name;
+    string status;   /// preferred | active | bundled | closed-aspirational | …
+    string notes;
+    string homepage;
 }
 
 struct EcosystemFramework
