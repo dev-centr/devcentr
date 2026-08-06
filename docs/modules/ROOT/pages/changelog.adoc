@@ -2,6 +2,19 @@
 
 This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
 
+== 2026-08-06 – SDLang kept; KDL greenfield; reject XDL
+
+* Spec decision table: xref:specifications:sdl.adoc#decision-sdlang-vs-kdl-vs-extended-sdl[SDL Preference].
+* Content Create: tighter SDLang/KDL roles; `xdl` reference-only (not creatable); lineage edge SDLang → XDL marked avoid.
+* Companion GK page updated; agent-rules config line aligned.
+
+== 2026-08-06 – File-manager menus: Win11-first + Linux
+
+* Explorer: prefer Windows 11 `IExplorerCommand` sparse package; classic HKCU cascade only when modern unavailable.
+* Linux: DES-EMA under `file-manager/actions` plus Dolphin / Nemo / Thunar / Nautilus adapters from one action list.
+* Appearance → Install file-manager menu; status shows active backend.
+* Spec: xref:specifications:components/explorer-shell-integration.adoc[Explorer Shell Integration].
+
 == 2026-08-06 – Ecosystem filters + Explorer DevCentr shell
 
 * Content Create: ecosystem tag chips (inferred from project / CLI `--tags`); filter job tree + lineage.

@@ -64,11 +64,47 @@ Use these to learn the language and to avoid confusion with libSDL/gaming hits:
 * **D implementation (used in Dev Center):** https://code.dlang.org/packages/sdlang-d[sdlang-d on DUB] — D library; HOWTO and API links in the package description.
 * **Source repos:** https://github.com/dlang-community/SDLang-D[SDLang-D (D)], https://github.com/ikayzo/SDL[SDL (Java)], https://github.com/ikayzo/SDL.rb[SDL.rb (Ruby)], https://github.com/ellipticbit/SDLangNET[SDLangNET (.NET)].
 
-== Relation to KDL
+[#decision-sdlang-vs-kdl-vs-extended-sdl]
+== Decision: SDLang vs KDL vs Extended SDL
 
-**KDL** (KDL Document Language) is a modern node-based format in the same family as SDLang. It emphasizes a strict unambiguous grammar, `/-` node commenting, and parenthetical type annotations such as `(u64)123`. Many treat it as a successor narrative to SDLang for greenfield human-readable documents.
+Dev-Centr needs fall into two buckets:
 
-DevCentr still **prefers SDLang** for settings and catalogs it owns (`sdlang-d`, existing `.sdl` profiles, Toolchain Advisor / Content Create definitions). Choose KDL when the consuming toolchain has first-class KDL support and the file is not parsed by DevCentr’s SDLang stack.
+[cols="1,2,1"]
+|===
+| Need | Examples today / soon | Format
+
+| **Owned catalogs and settings** (D parsers already wired)
+| Content Create `content-types.sdl`, Toolchain Advisor `advisor.sdl`, recognizer profiles, `.devcentr.sdl`, CentrMark frontmatter/properties, prohelp, repo-get `vcs-profiles.sdl`
+| **SDLang (`.sdl`)** — keep
+
+| **Greenfield / cross-language / external consumers**
+| Shared configs with Rust/JS/Python tools, public package examples, LLM-facing node documents, anything not loaded by `sdlang-d`
+| **KDL (`.kdl`)** — prefer
+
+| **Extended SDL / XDL**
+| `newsdlang` XDL dialect
+| **Do not adopt**
+|===
+
+=== Why not migrate DevCentr off SDLang yet
+
+* Dozens of committed `.sdl` sources and `sdlang-d` call sites; migrating is a product project, not a format preference tweak.
+* SDLang already fits human-edited catalogs (comments, nesting, low punctuation).
+* Grammar edge cases in classic SDLang rarely bite the shallow tag trees DevCentr authors today.
+
+=== Why KDL for greenfield outside that surface
+
+* Actively maintained, unambiguous v1/v2 specs; multi-language implementations.
+* Clearer `/-` slashdash comments and `(type)` annotations than SDLang’s native-literal zoo.
+* D implementation: https://github.com/dlang-supplemental/kdl-d[`kdl` / kdl-d] (DUB package `kdl`).
+
+=== Why not Extended SDL (XDL)
+
+*XDL* is an SDLang extension sketched in https://code.dlang.org/packages/newsdlang[`newsdlang`]. As of evaluation (2026-08): the published `XDLspecs.md` is still a stub (`TODO`), the package marks itself unfinished (unstable floats, incomplete datetime), and **advertised KDL compatibility was explicitly dropped**. That path neither preserves SDLang stability nor delivers KDL’s ecosystem. Prefer classic SDLang in-stack, or KDL out-of-stack—not a third dialect.
+
+=== Relation to KDL (summary)
+
+**KDL** is the modern successor *narrative* to SDLang. DevCentr **keeps SDLang** for files it parses with `sdlang-d`. Choose **KDL** when the consumer is not that stack (or when starting a new cross-language document format). Do not invent or depend on XDL for org policy.
 
 For the wider map (JSON → SDLang/KDL → programmable config → binary), see xref:general-knowledge:explanation/documentation/structured-data-formats.adoc[Structured data formats]. For creating stubs from the repo browser, see xref:components/content-create.adoc[Content Create].
 

@@ -196,9 +196,9 @@ Opening paragraph.
         type {
             id "sdlang"
             label "SDLang"
-            role "Human-edited config when DevCentr owns the parser"
+            role "DevCentr-owned human config (default in-stack)"
             description """
-            Prefer .sdl for DevCentr-owned settings and catalogs. KDL is the modern successor narrative; stay on SDLang while sdlang-d remains the stack.
+            Prefer .sdl for catalogs and settings DevCentr parses with sdlang-d. Do not migrate those files to KDL or XDL without a deliberate stack change. KDL is for greenfield outside this parser surface.
             """
             extension ".sdl"
             suggestedName "config"
@@ -219,12 +219,17 @@ settings {
         type {
             id "kdl"
             label "KDL"
-            role "Modern node-based document language"
+            role "Greenfield / cross-language node documents"
             description """
-            Strict unambiguous grammar, /- node comments, type annotations. Prefer when the consumer speaks KDL and DevCentr’s SDLang parsers are not required.
+            Modern successor to SDLang: strict grammar, /- comments, (type) annotations. Prefer for new configs not loaded by DevCentr’s sdlang-d stack. D: dlang-supplemental/kdl-d (DUB package kdl). Not a drop-in replace for existing .sdl catalogs.
             """
             extension ".kdl"
             suggestedName "config"
+            template """// Project settings
+settings {
+    // key "value"
+}
+"""
             inventedYear 2021
             lastUpdated "2024-12"
             homepage "https://kdl.dev/"
@@ -232,6 +237,23 @@ settings {
             spec "https://kdl.dev/spec/"
             vitality "current"
             creatable true
+        }
+
+        type {
+            id "xdl"
+            label "Extended SDL (XDL)"
+            role "Unfinished SDLang extension — do not adopt"
+            description """
+            XDL in newsdlang is not a Dev-Centr path: specs unfinished, implementation immature, KDL compatibility dropped. Prefer classic SDLang in-stack or KDL out-of-stack.
+            """
+            extension ".xdl"
+            suggestedName "config"
+            inventedYear 2024
+            lastUpdated "2026-06"
+            homepage "https://code.dlang.org/packages/newsdlang"
+            repo "https://github.com/ZILtoid1991/newsdlang"
+            vitality "legacy"
+            creatable false
         }
 
         type {
@@ -810,7 +832,8 @@ func main() {}
         scope "config"
         edge { from "json" to "json5" kind "evolves" note "Comments and trailing commas." }
         edge { from "json" to "sdlang" kind "evolves" note "Human-edited config with native types." }
-        edge { from "sdlang" to "kdl" kind "supersedes" note "Modern successor grammar and /- comments." }
+        edge { from "sdlang" to "kdl" kind "supersedes" note "Modern successor grammar and /- comments; DevCentr keeps .sdl in-stack." }
+        edge { from "sdlang" to "xdl" kind "specializes" note "Extended SDL attempt; avoid — unfinished, not org policy." }
         edge { from "json" to "toml" kind "evolves" note "Obvious key-value with typed literals." }
         edge { from "json" to "yaml" kind "evolves" note "Indentation-driven documents; many footguns." }
         edge { from "xml" to "json" kind "evolves" note "Lighter interchange for many APIs." }
