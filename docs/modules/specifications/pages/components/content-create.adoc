@@ -11,8 +11,17 @@ The Content Create flow lets users add a new project asset from a repository con
 
 == Entry points
 
-* **Repository browser:** Right-click a repository row → *Create…* → flat classification submenu.
-* **Future:** Same dialog from an in-repo file tree when that browser exists.
+* **Repository browser:** Right-click a repository row → *Create…* → flat classification submenu (ecosystem tags inferred from the project).
+* **Windows Explorer:** Cascading *DevCentr* menu → *New File…* / *New Project…* / *Open folder* (see xref:explorer-shell-integration.adoc[Explorer Shell Integration]).
+* **CLI:** `dev-center.exe --mode=new-file --path=<dir> [--tags=general,java]` (also `new-project`, `open`).
+
+== Ecosystem filters
+
+Each catalog type carries one or more `ecosystem` tags (`general`, `js`, `jvm`, `java`, `dotnet`, `python`, `rust`, `go`, `d`, `cpp`, `docs`, `devops`, `data`, …). The subtype dialog shows **toggle chips** for the active tag universe.
+
+* **Show rule:** A type is visible if **any** selected chip intersects its ecosystems (OR). Missing ecosystems on a type ≡ `general`.
+* **Inference:** `inferEcosystemTags(path)` maps project-map stacks and file heuristics (`package.json`, `pom.xml`, …) onto tags; always includes `general`. If nothing is detected, chips default to `{general}`.
+* **CLI / API:** `CreateContentOptions.initialTags` and `--tags=` populate chips; users can still toggle when `allowTagEdit` is true.
 
 == Flow
 
@@ -113,6 +122,9 @@ See xref:reference/definition-files.adoc[Definition Files] for ownership relativ
 
 | `vitality`
 | `current` \| `mature` \| `legacy` \| `outdated` \| `reference` — drives the LED color and “outdated?” cue.
+
+| `ecosystem`
+| One or more filter tags (e.g. `ecosystem "general" "jvm" "java"`). Used by the chip strip.
 |===
 
 === Lineage edge kinds

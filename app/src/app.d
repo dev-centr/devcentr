@@ -36,6 +36,7 @@ import modules.repo_tools.repo_terminal_widget : RepoTerminalWidget;
 import modules.services.ai_config_dialog : showAIConfigDialog;
 import modules.appearance.settings_dialog : showAppearanceSettingsDialog;
 import modules.content_create.ui : showCreateContentMenu;
+import modules.content_create.model : CreateContentOptions;
 import modules.vcs.vcs_profiles : loadProfilesJson, getProviderForHost, hasOrgProfileSupport, orgProfilePublicUrl, orgProfileMemberUrl, orgProfilePublicRepoUrl, orgProfilePrivateRepoUrl, VCSProviderProfile;
 import std.json : JSONValue;
 import std.stdio;
@@ -69,6 +70,7 @@ class DevCenterApp {
     string selectedRepoPath;  /// Currently selected repo
     string selectedHost;      /// When owner/org selected
     string selectedOwner;     /// When org selected (for profile panel)
+    string pendingOpenPath;   /// From --mode=open --path=…
     enum BrowserItemType { host, owner, repo }
     struct BrowserItem { BrowserItemType type; string host; string owner; RepoNode repo; }
     BrowserItem[] browserItems; /// Maps list index to item type
@@ -198,7 +200,9 @@ class DevCenterApp {
                     selectedOwner = bi.owner;
                     selectedRepoPath = bi.repo.fullPath;
                     refreshToolsPanel();
-                    showCreateContentMenu(window, listRepos, event.x, event.y, selectedRepoPath);
+                    CreateContentOptions opts;
+                    opts.repoPath = selectedRepoPath;
+                    showCreateContentMenu(window, listRepos, event.x, event.y, opts);
                     return true;
                 }
                 return false;
@@ -850,7 +854,27 @@ variable "example" {
 }
 
 extern (C) int UIAppMain(string[] args) {
+    import modules.content_create.launch : parseLaunchArgs, runSpecializedMode;
+
+    auto la = parseLaunchArgs(args);
+    if (la.mode == "new-file" || la.mode == "new-project")
+    {
+        if (la.path.length == 0)
+            la.path = getcwd();
+        runSpecializedMode(la);
+        return Platform.instance.enterMessageLoop();
+    }
+
     auto app = new DevCenterApp();
+    if (la.mode == "open" && la.path.length)
+        app.pendingOpenPath = la.path;
     app.createUI();
+    if (app.pendingOpenPath.length)
+    {
+        app.selectedRepoPath = app.pendingOpenPath;
+        // Ensure list is populated then try to highlight
+        app.refreshRepoList();
+        app.refreshToolsPanel();
+    }
     return Platform.instance.enterMessageLoop();
 }

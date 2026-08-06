@@ -2,10 +2,11 @@ module modules.content_create.loader;
 
 import modules.content_create.model;
 import sdlang;
+import std.algorithm : canFind;
 import std.conv : to;
 import std.file : exists, getcwd, readText, thisExePath;
 import std.path : buildPath, dirName;
-import std.string : strip;
+import std.string : strip, toLower;
 
 private string tagStr(Tag t, string name)
 {
@@ -21,6 +22,50 @@ private string tagStr(Tag t, string name)
         catch (Exception)
             return "";
     }
+}
+
+private string[] tagStrList(Tag t, string name)
+{
+    string[] result;
+    foreach (child; t.tags)
+    {
+        if (child.name != name)
+            continue;
+        foreach (v; child.values)
+        {
+            try
+                result ~= v.get!string;
+            catch (Exception)
+            {
+                try
+                    result ~= to!string(v.get!long);
+                catch (Exception)
+                {
+                }
+            }
+        }
+    }
+    // also allow single ecosystem "a" "b" on one tag
+    auto x = t.getTag(name);
+    if (x !is null)
+    {
+        foreach (v; x.values)
+        {
+            string s;
+            try
+                s = v.get!string;
+            catch (Exception)
+            {
+                try
+                    s = to!string(v.get!long);
+                catch (Exception)
+                    continue;
+            }
+            if (s.length && !result.canFind(s))
+                result ~= s;
+        }
+    }
+    return result;
 }
 
 private bool tagBool(Tag t, string name, bool defaultValue)
@@ -72,6 +117,62 @@ string resolveContentTypesSdlPath()
     return candidates[0];
 }
 
+/// Default ecosystems when SDL omits them (by type id, then classification).
+string[] defaultEcosystemsFor(string typeId, string classificationId, string[] parentEco)
+{
+    string id = typeId.toLower();
+    switch (id)
+    {
+    case "typescript", "javascript", "mdx", "toon":
+        return ["general", "js"];
+    case "java":
+        return ["general", "jvm", "java"];
+    case "csharp", "cs":
+        return ["general", "dotnet"];
+    case "python":
+        return ["general", "python"];
+    case "rust":
+        return ["general", "rust"];
+    case "go":
+        return ["general", "go"];
+    case "d":
+        return ["general", "d"];
+    case "c", "cpp":
+        return ["general", "cpp"];
+    case "openapi", "protobuf", "json-schema", "avro", "yaml", "dotenv":
+        return ["general", "devops"];
+    case "csv", "tsv", "jsonl":
+        return ["general", "data"];
+    case "centrmark", "asciidoc", "markdown", "djot", "rst", "orgmode", "typst":
+        return ["general", "docs"];
+    default:
+        break;
+    }
+    if (parentEco.length)
+        return parentEco.dup;
+    switch (classificationId)
+    {
+    case "docs":
+        return ["general", "docs"];
+    case "data":
+        return ["general", "data"];
+    case "schema":
+        return ["general", "devops"];
+    case "code":
+        return ["general"];
+    default:
+        return ["general"];
+    }
+}
+
+private void applyEcosystems(ref ContentTypeNode n, string classificationId, string[] parentEco)
+{
+    if (n.ecosystems.length == 0)
+        n.ecosystems = defaultEcosystemsFor(n.id, classificationId, parentEco);
+    foreach (ref ch; n.children)
+        applyEcosystems(ch, classificationId, n.ecosystems);
+}
+
 private ContentTypeNode parseType(Tag t)
 {
     ContentTypeNode n;
@@ -92,6 +193,7 @@ private ContentTypeNode parseType(Tag t)
         n.specUrl = tagStr(t, "specUrl");
     n.homepage = tagStr(t, "homepage");
     n.vitality = tagStr(t, "vitality");
+    n.ecosystems = tagStrList(t, "ecosystem");
     bool hasCreatable = t.getTag("creatable") !is null;
     if (hasCreatable)
         n.creatable = tagBool(t, "creatable", true);
@@ -121,6 +223,8 @@ private ContentClassification parseClassification(Tag t)
         if (child.name == "type")
             c.types ~= parseType(child);
     }
+    foreach (ref n; c.types)
+        applyEcosystems(n, c.id, null);
     return c;
 }
 
@@ -157,7 +261,6 @@ ContentTypesCatalog loadContentTypesCatalog(string path = "")
     auto ct = root.getTag("contentTypes");
     if (ct is null)
     {
-        // allow root to be contentTypes itself
         if (root.name == "contentTypes")
             ct = root;
         else

@@ -2,6 +2,13 @@
 
 This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
 
+== 2026-08-06 – Ecosystem filters + Explorer DevCentr shell
+
+* Content Create: ecosystem tag chips (inferred from project / CLI `--tags`); filter job tree + lineage.
+* CLI modes: `--mode=new-file|new-project|open --path=…`.
+* Lightweight New Project dialog; HKCU cascading Explorer menu (Appearance → Install).
+* Specs: Content Create filters; xref:specifications:components/explorer-shell-integration.adoc[Explorer Shell Integration].
+
 == 2026-08-06 – Content Create lineage LEDs and richer type facts
 
 * Lineage rows: invented year + vitality LED (current/mature/legacy/outdated/reference).

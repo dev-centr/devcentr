@@ -9,8 +9,18 @@ struct ContentTypeListItem
     bool creatable;
     string edgeNote;
     string edgeKind;
-    int inventedYear; /// 0 if unknown
-    string vitality;  /// current | mature | legacy | outdated | reference
+    int inventedYear;
+    string vitality;
+    string[] ecosystems;
+}
+
+struct CreateContentOptions
+{
+    string repoPath;
+    string[] initialTags; /// from CLI or inference; empty → infer
+    bool allowTagEdit = true;
+    string classificationId; /// when opening past the classification menu
+    string tagSourceHint; /// "inferred" | "default" | "cli"
 }
 
 struct ContentTypeNode
@@ -29,6 +39,7 @@ struct ContentTypeNode
     string specUrl;       /// official specification or language definition
     string homepage;      /// project / marketing home
     string vitality;      /// current | mature | legacy | outdated | reference
+    string[] ecosystems;  /// filter tags: general, js, jvm, java, …
     ContentTypeNode[] children;
 }
 
@@ -183,10 +194,59 @@ void buildJobTreeItems(ContentTypeNode[] nodes, int depth, ref ContentTypeListIt
         item.creatable = n.creatable;
         item.inventedYear = n.inventedYear;
         item.vitality = n.vitality.length ? n.vitality : (n.creatable ? "mature" : "reference");
+        item.ecosystems = n.ecosystems;
         items ~= item;
         if (n.children.length)
             buildJobTreeItems(n.children, depth + 1, items);
     }
+}
+
+bool typeMatchesTags(const ref ContentTypeNode n, const string[] selectedTags)
+{
+    if (selectedTags.length == 0)
+        return true;
+    auto eco = n.ecosystems;
+    if (eco.length == 0)
+        eco = ["general"];
+    foreach (t; selectedTags)
+    {
+        foreach (e; eco)
+            if (e == t)
+                return true;
+    }
+    return false;
+}
+
+bool itemMatchesTags(const ContentTypeListItem item, ContentClassification* klass, const string[] selectedTags)
+{
+    if (klass is null)
+        return true;
+    auto n = findTypePtr(klass, item.typeId);
+    if (n is null)
+    {
+        foreach (t; selectedTags)
+            if (t == "general")
+                return true;
+        return selectedTags.length == 0;
+    }
+    return typeMatchesTags(*n, selectedTags);
+}
+
+/// Filter job tree: keep nodes that match OR have a matching descendant.
+ContentTypeNode[] filterTypeTree(ContentTypeNode[] nodes, const string[] selectedTags)
+{
+    ContentTypeNode[] outNodes;
+    foreach (n; nodes)
+    {
+        auto kids = filterTypeTree(n.children, selectedTags);
+        bool selfMatch = typeMatchesTags(n, selectedTags);
+        if (selfMatch || kids.length > 0)
+        {
+            n.children = kids;
+            outNodes ~= n;
+        }
+    }
+    return outNodes;
 }
 
 ContentTypeNode[] creatableLeaves(ContentClassification c)
@@ -200,6 +260,25 @@ ContentTypeNode[] creatableLeaves(ContentClassification c)
             leaves ~= n;
     }
     return leaves;
+}
+
+ContentTypeNode[] creatableLeavesFiltered(ContentClassification c, const string[] selectedTags)
+{
+    ContentTypeNode[] leaves;
+    foreach (ref n; creatableLeaves(c))
+    {
+        if (typeMatchesTags(n, selectedTags))
+            leaves ~= n;
+    }
+    return leaves;
+}
+
+string[] ecosystemsForType(ContentClassification* klass, string id)
+{
+    auto n = findTypePtr(klass, id);
+    if (n is null || n.ecosystems.length == 0)
+        return ["general"];
+    return n.ecosystems;
 }
 
 LineageScope* findLineage(ref ContentTypesCatalog cat, string scope)
@@ -277,6 +356,7 @@ void buildLineageItems(LineageScope* lin, ContentClassification* klass,
         item.creatable = creatableForType(klass, id);
         item.inventedYear = inventedYearForType(klass, id);
         item.vitality = vitalityForType(klass, id);
+        item.ecosystems = ecosystemsForType(klass, id);
         items ~= item;
         foreach (ref e; lin.edges)
         {

@@ -3,6 +3,7 @@ module modules.appearance.settings_dialog;
 import dlangui;
 import dlangui.dialogs.dialog : Dialog, DialogFlag;
 import modules.appearance.settings;
+import std.conv : to;
 
 /// Appearance preferences: code / terminal monospace font and env-refresh behavior.
 void showAppearanceSettingsDialog(Window parent, string dataRoot,
@@ -80,6 +81,38 @@ void showAppearanceSettingsDialog(Window parent, string dataRoot,
     content.addChild(new TextWidget(null,
         UIString.fromRaw("When unchecked, Refresh fills the command preview so you can learn the shell-specific recipe. Prefer OpenShellOrg env-refresh when installed."d))
         .fontSize(9).textColor(0x888888).margins(Rect(0, 0, 0, 12)));
+
+    content.addChild(new TextWidget(null, UIString.fromRaw("Windows Explorer"d))
+        .fontSize(10).fontWeight(700).margins(Rect(0, 4, 0, 6)));
+    content.addChild(new TextWidget(null,
+        UIString.fromRaw("Cascading DevCentr menu on folders: New File…, New Project…, Open folder in DevCentr."d))
+        .fontSize(9).textColor(0xAAAAAA).margins(Rect(0, 0, 0, 6)));
+
+    import modules.shell_integration.explorer_menu : installExplorerMenu, uninstallExplorerMenu, explorerMenuInstalled;
+    auto explorerStatus = new TextWidget(null,
+        UIString.fromRaw(explorerMenuInstalled() ? "Status: installed"d : "Status: not installed"d));
+    explorerStatus.fontSize(8).textColor(0x888888).margins(Rect(0, 0, 0, 6));
+    content.addChild(explorerStatus);
+
+    auto explorerRow = new HorizontalLayout();
+    explorerRow.layoutWidth(FILL_PARENT).margins(Rect(0, 0, 0, 12));
+    auto btnInstallExplorer = new Button(null, UIString.fromRaw("Install Explorer menu"d));
+    btnInstallExplorer.click = delegate(Widget w) {
+        auto msg = installExplorerMenu();
+        explorerStatus.text = UIString.fromRaw(explorerMenuInstalled() ? "Status: installed"d : "Status: not installed"d);
+        parent.showMessageBox(UIString.fromRaw("Explorer integration"d), UIString.fromRaw(to!dstring(msg)));
+        return true;
+    };
+    auto btnRemoveExplorer = new Button(null, UIString.fromRaw("Remove"d));
+    btnRemoveExplorer.click = delegate(Widget w) {
+        auto msg = uninstallExplorerMenu();
+        explorerStatus.text = UIString.fromRaw(explorerMenuInstalled() ? "Status: installed"d : "Status: not installed"d);
+        parent.showMessageBox(UIString.fromRaw("Explorer integration"d), UIString.fromRaw(to!dstring(msg)));
+        return true;
+    };
+    explorerRow.addChild(btnInstallExplorer);
+    explorerRow.addChild(btnRemoveExplorer);
+    content.addChild(explorerRow);
 
     auto row = new HorizontalLayout();
     row.layoutWidth(FILL_PARENT);

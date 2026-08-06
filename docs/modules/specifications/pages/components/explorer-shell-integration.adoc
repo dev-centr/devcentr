@@ -1,0 +1,37 @@
+= Explorer Shell Integration
+:description: Cascading DevCentr context menu in Windows File Explorer for New File, New Project, and Open folder.
+
+== Purpose
+
+Expose DevCentr create/open flows from Windows File Explorer without a COM `IExplorerCommand` DLL. A single cascading **DevCentr** entry on folders (and folder background) keeps the context menu compact.
+
+== Menu shape
+
+```
+DevCentr
+  ├─ New File…
+  ├─ New Project…
+  └─ Open folder in DevCentr
+```
+
+== Registration
+
+* **Scope:** Current user only (`HKCU\Software\Classes\Directory\shell\DevCentr` and `Directory\Background\shell\DevCentr`).
+* **Mechanism:** Empty `SubCommands` value + nested `shell\…\command` keys (Windows cascading menu).
+* **Installer:** `modules.shell_integration.explorer_menu` — `installExplorerMenu` / `uninstallExplorerMenu`.
+* **UI:** Appearance dialog → Windows Explorer → Install / Remove.
+
+Commands invoke the DevCentr executable:
+
+* `--mode=new-file --path="%V"`
+* `--mode=new-project --path="%V"`
+* `--mode=open --path="%V"`
+
+== Deferred
+
+* ShellNew “New → …” templates (less flexible for tags/path).
+* COM / sparse package `IExplorerCommand` for richer UI.
+
+== Related
+
+* xref:content-create.adoc[Content Create] — New File dialog, ecosystem filters, CLI modes.

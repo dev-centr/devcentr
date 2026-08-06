@@ -694,6 +694,41 @@ func main() {}
 """
             description "Stub .cpp file."
         }
+        type {
+            id "java"
+            label "Java"
+            role "Java source"
+            extension ".java"
+            suggestedName "Main"
+            inventedYear 1995
+            lastUpdated "2025"
+            homepage "https://openjdk.org/"
+            ecosystem "general" "jvm" "java"
+            vitality "mature"
+            creatable true
+            template """public class Main {
+    public static void main(String[] args) {
+    }
+}
+"""
+            description "Stub .java file."
+        }
+        type {
+            id "csharp"
+            label "C#"
+            role "C# source"
+            extension ".cs"
+            suggestedName "Program"
+            inventedYear 2000
+            lastUpdated "2025"
+            homepage "https://dotnet.microsoft.com/"
+            ecosystem "general" "dotnet"
+            vitality "mature"
+            creatable true
+            template """Console.WriteLine("Hello");
+"""
+            description "Stub .cs file."
+        }
     }
 
     classification {
