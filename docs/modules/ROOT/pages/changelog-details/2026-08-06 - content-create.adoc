@@ -1,0 +1,21 @@
+= Changelog details — Content Create flow
+
+== Summary
+
+Added an SDL-driven **Create…** path on repository right-click: flat classifications, subtype dialog with job tree + lineage panel, and stub file creation.
+
+== Spec and catalog
+
+* Spec: `docs/modules/specifications/pages/components/content-create.adoc`
+* Catalog: `app/src/modules/content_create/content-types.sdl` (docs, config, code, plaintext + lineage scopes)
+* Linked from repository-browser context menus and definition-files
+
+== App
+
+* Module `modules.content_create` — `model`, `loader`, `ui`, `create`
+* Browse Projects: right-click repo → Create… → classification; single creatable leaf skips dialog
+
+== Docs policy
+
+* `sdl.adoc` — Relation to KDL section
+* Companion articles in general-knowledge (documentation markup + structured data formats)

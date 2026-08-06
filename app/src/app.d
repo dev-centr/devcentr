@@ -35,6 +35,7 @@ import modules.cli_tools.model : CliToolsCatalog;
 import modules.repo_tools.repo_terminal_widget : RepoTerminalWidget;
 import modules.services.ai_config_dialog : showAIConfigDialog;
 import modules.appearance.settings_dialog : showAppearanceSettingsDialog;
+import modules.content_create.ui : showCreateContentMenu;
 import modules.vcs.vcs_profiles : loadProfilesJson, getProviderForHost, hasOrgProfileSupport, orgProfilePublicUrl, orgProfileMemberUrl, orgProfilePublicRepoUrl, orgProfilePrivateRepoUrl, VCSProviderProfile;
 import std.json : JSONValue;
 import std.stdio;
@@ -183,6 +184,24 @@ class DevCenterApp {
                     refreshToolsPanel();
                 }
                 return true;
+            };
+            listRepos.mouseEvent = delegate(Widget source, MouseEvent event) {
+                if (event.action == MouseAction.ButtonDown && event.button == MouseButton.Right) {
+                    // Align selection with click when possible (ListWidget updates selection on press).
+                    auto idx = listRepos.selectedItemIndex;
+                    if (idx < 0 || idx >= cast(int)browserItems.length)
+                        return false;
+                    auto bi = browserItems[idx];
+                    if (bi.type != BrowserItemType.repo)
+                        return false;
+                    selectedHost = bi.host;
+                    selectedOwner = bi.owner;
+                    selectedRepoPath = bi.repo.fullPath;
+                    refreshToolsPanel();
+                    showCreateContentMenu(window, listRepos, event.x, event.y, selectedRepoPath);
+                    return true;
+                }
+                return false;
             };
         }
 

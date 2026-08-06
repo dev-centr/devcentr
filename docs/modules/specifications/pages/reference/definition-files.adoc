@@ -92,6 +92,15 @@ flutter {
 Philosophy: xref:general-knowledge:explanation/infrastructure/toolchain-management.adoc[Toolchain Management Pattern].
 Product behavior: xref:../components/ecosystem-management.adoc[Ecosystem Management].
 
+== Content create types
+
+* **Location (app):** `app/src/modules/content_create/content-types.sdl`
+* **Purpose:** Top-level asset classifications (docs, config, code, plaintext), nested subtype trees, stub templates, and orthogonal **lineage** graphs (evolution / supersession / specialization) for the Create… dialog.
+* **Used by:** Repository browser right-click *Create…* (`modules.content_create`).
+* **Spec:** xref:../components/content-create.adoc[Content Create]
+
+Do not mix content-type advice into language-ecosystem or services SDL files. Job trees and lineage edges stay in this catalog so the create UI can load one file.
+
 == Relation to installation workflow
 
 * **Org node:** Can offer IaC setup (e.g. create or link an infrastructure repo, install OpenTofu). Uses service definitions (e.g. OpenTofu) and the IaC docs.

@@ -64,6 +64,14 @@ Use these to learn the language and to avoid confusion with libSDL/gaming hits:
 * **D implementation (used in Dev Center):** https://code.dlang.org/packages/sdlang-d[sdlang-d on DUB] — D library; HOWTO and API links in the package description.
 * **Source repos:** https://github.com/dlang-community/SDLang-D[SDLang-D (D)], https://github.com/ikayzo/SDL[SDL (Java)], https://github.com/ikayzo/SDL.rb[SDL.rb (Ruby)], https://github.com/ellipticbit/SDLangNET[SDLangNET (.NET)].
 
+== Relation to KDL
+
+**KDL** (KDL Document Language) is a modern node-based format in the same family as SDLang. It emphasizes a strict unambiguous grammar, `/-` node commenting, and parenthetical type annotations such as `(u64)123`. Many treat it as a successor narrative to SDLang for greenfield human-readable documents.
+
+DevCentr still **prefers SDLang** for settings and catalogs it owns (`sdlang-d`, existing `.sdl` profiles, Toolchain Advisor / Content Create definitions). Choose KDL when the consuming toolchain has first-class KDL support and the file is not parsed by DevCentr’s SDLang stack.
+
+For the wider map (JSON → SDLang/KDL → programmable config → binary), see xref:general-knowledge:explanation/documentation/structured-data-formats.adoc[Structured data formats]. For creating stubs from the repo browser, see xref:components/content-create.adoc[Content Create].
+
 == Relation to JSON5
 
 When a tool or platform does not support SDL (e.g. npm, VS Code, many CI configs), use JSON5 over plain JSON so that comments and trailing commas are allowed. See xref:json5.adoc[JSON5 Endorsement] for that policy. For Dev-Centr-owned config (e.g. recognizer profiles), we use SDL where possible and document both formats in this specification set.

@@ -1,0 +1,131 @@
+= Content Create
+
+The Content Create flow lets users add a new project asset from a repository context menu. Classifications and subtypes load from an SDL catalog. The subtype dialog uses dual navigation: a job/role tree on the left and an orthogonal evolution lineage on the top-right.
+
+== Purpose
+
+* **Fast first cut:** Right-click a repository → *Create…* → choose a large classification only (Documentation, Configuration, Code, Plain text). Do not bury the user in a giant nested submenu.
+* **Informed second cut:** When a classification has more than one creatable type, open a dialog that explains each type’s role before writing a stub file.
+* **Dual axes:** Separate *what the asset is for* (job tree) from *how dialects evolved or specialized* (lineage graph), so successor formats like SDLang → KDL stay comparable without forcing evolution into the job hierarchy.
+* **Data-driven:** Labels, descriptions, extensions, templates, and lineage edges live in SDL so advice can ship without rewriting UI code.
+
+== Entry points
+
+* **Repository browser:** Right-click a repository row → *Create…* → flat classification submenu.
+* **Future:** Same dialog from an in-repo file tree when that browser exists.
+
+== Flow
+
+. User right-clicks a repository and opens *Create…*.
+. DevCentr shows only top-level `classification` entries from the catalog (tooltip = `summary` when present).
+. If the chosen classification has exactly one **creatable** leaf type, create that stub immediately (no dialog).
+. Otherwise open the subtype dialog.
+. User selects a creatable type (left tree or lineage), confirms *Create*, and DevCentr writes a stub file under the repository root then opens it in a detected editor when possible.
+
+== Dual navigation (subtype dialog)
+
+[cols="1,2,2"]
+|===
+| Region | Models | Behavior
+
+| **Left — job / role tree**
+| Nested `type` nodes under the classification (purpose buckets)
+| Primary hierarchy. Indent with a `ListWidget`. Selecting a node updates detail and highlights the same id in lineage when present.
+
+| **Top-right — lineage**
+| Orthogonal `lineage` edges scoped to this classification (`evolves`, `supersedes`, `specializes`, `dialect`)
+| Secondary navigation when the job tree fails to disambiguate. Clickable DAG/list subset (not a freeform canvas in this pass). Selecting a node syncs the left tree and detail. Hide this pane when the scope has no edges.
+
+| **Bottom-right — detail**
+| `label`, `role`, `description` for the current selection
+| Scrollable copy. *Create* enabled only when the selection is creatable (`creatable` true and an `extension` is set). *Cancel* dismisses.
+|===
+
+Layout sketch:
+
+----
+┌──────────────┬─────────────────────────────┐
+│ Job / role   │ Lineage (evolution)         │
+│ type tree    │ clickable graph subset      │
+│              ├─────────────────────────────┤
+│              │ Role + description          │
+│              │ [Create] [Cancel]           │
+└──────────────┴─────────────────────────────┘
+----
+
+== Catalog (source of truth)
+
+* **Location:** `app/src/modules/content_create/content-types.sdl`
+* **Root tag:** `contentTypes`
+* **Loader:** `modules.content_create.loader` (sdlang-d)
+
+See xref:reference/definition-files.adoc[Definition Files] for ownership relative to services and language ecosystems.
+
+=== Classification and type fields
+
+[cols="1,2"]
+|===
+| Field | Meaning
+
+| `id`
+| Stable identifier (referenced by lineage edges).
+
+| `label`
+| Human-facing name in menus and lists.
+
+| `summary`
+| Classification-only short blurb (menu tooltip).
+
+| `role`
+| One-line job statement for the detail pane.
+
+| `description`
+| Longer advisory copy (must stay aligned with general-knowledge comparison articles).
+
+| `extension`
+| File extension including the dot (e.g. `.cmk`, `.sdl`). Required for creatable leaves.
+
+| `suggestedName`
+| Default basename without extension (e.g. `README`, `notes`).
+
+| `template`
+| Optional stub body written into the new file.
+
+| `creatable`
+| When `false`, the node is an anchor for lineage only (e.g. plain JSON). Default `true` for leaves with an extension; folders without extension are not creatable.
+|===
+
+=== Lineage edge kinds
+
+[cols="1,2"]
+|===
+| Kind | Meaning
+
+| `evolves`
+| Incremental successor that stays in the same problem space.
+
+| `supersedes`
+| Stronger “prefer the newer form” narrative (e.g. SDLang → KDL as modern grammar).
+
+| `specializes`
+| Hyperspecialization for a narrower job (LLM tokens, zero-copy binary, JSX docs).
+
+| `dialect`
+| Sibling dialect relationship without clear succession.
+|===
+
+Each `lineage` block has `scope` equal to a classification `id`. Edges use `from`, `to`, `kind`, and optional `note`. The UI shows the subgraph for the open classification, optionally focused on the connected component of the current selection.
+
+== Create behavior
+
+* Write UTF-8 stub at `{repoRoot}/{suggestedName}{extension}` (prompt or auto-suffix if the path exists).
+* Use `template` when present; otherwise an empty file or a minimal heading derived from `label`.
+* Open with the first detected editor from `editor_detector` when available; otherwise leave the file on disk and notify the user.
+* Do not scaffold full Pkl/CUE/Cap’n Proto projects in this pass—stub only.
+
+== Related docs
+
+* Product policy for human config: xref:sdl.adoc[SDL Preference]
+* Markup comparison: xref:general-knowledge:explanation/documentation/documentation-markup-comparison.adoc[Documentation markup comparison]
+* Data formats and paradigms: xref:general-knowledge:explanation/documentation/structured-data-formats.adoc[Structured data formats]
+* Repository context menus: xref:components/repository-browser.adoc[Repository Browser]

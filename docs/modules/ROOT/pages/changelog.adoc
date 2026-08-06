@@ -2,6 +2,13 @@
 
 This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
 
+== 2026-08-06 – Content Create (SDL classifications + lineage)
+
+* Spec: xref:specifications:components/content-create.adoc[Content Create] — repo right-click Create…, dual nav (job tree + evolution lineage), stub create.
+* SDL catalog: `app/src/modules/content_create/content-types.sdl`; loader/UI under `modules.content_create`.
+* Repository browser context menu + definition-files updated; `sdl.adoc` notes KDL relation.
+* See xref:ROOT:changelog-details/2026-08-06 - content-create.adoc[Detailed changelog].
+
 == 2026-08-03 – Centr Source License family (CSL) + ANL
 
 * Relicensed project to *CSL-1.0-BCI* (substance of prior custom source-available license, named family).

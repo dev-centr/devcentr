@@ -120,6 +120,7 @@ The repository browser exposes context menus on hosts, owners, and repositories:
 ** Open in text editor (VS Code, Cursor, etc).
 ** Open Git viewer (built-in Git viewer or external Git GUIs).
 ** Manage IaC (open the Infra page scoped to this repo).
+** *Create…* — flat classification menu (Documentation, Configuration, Code, Plain text, …) then subtype dialog or immediate stub create. See xref:components/content-create.adoc[Content Create].
 
 Right-clicking a repository row also offers a *Transfer repository* action when the user drags the repository to a different owner or provider in the tree. This opens a confirmation dialog that shows:
 
