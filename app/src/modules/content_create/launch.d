@@ -12,7 +12,7 @@ import std.string : strip;
 
 struct LaunchArgs
 {
-    string mode; /// new-file | new-project | open | ""
+    string mode; /// new-file | new-project | new-installer | inplace-path | open | ""
     string path;
     string[] tags;
 }
@@ -43,8 +43,23 @@ LaunchArgs parseLaunchArgs(string[] args)
 /// Host window for specialized create modes (Explorer / CLI).
 void runSpecializedMode(LaunchArgs la)
 {
+    import modules.content_create.installer_create : showNewInstallerDialog, runInPlacePath;
+
+    if (la.mode == "inplace-path")
+    {
+        // Minimal host for message box
+        auto win = Platform.instance.createWindow("DevCentr — Install in-place"d, null, WindowFlag.Resizable, 480, 200);
+        win.mainWidget = new VerticalLayout();
+        win.show();
+        runInPlacePath(win, la.path);
+        return;
+    }
+
+    auto title = la.mode == "new-project" ? "DevCentr — New Project"
+        : la.mode == "new-installer" ? "DevCentr — New Installer Project"
+        : "DevCentr — New File";
     auto win = Platform.instance.createWindow(
-        to!dstring(la.mode == "new-project" ? "DevCentr — New Project" : "DevCentr — New File"),
+        to!dstring(title),
         null,
         WindowFlag.Resizable,
         640, 480);
@@ -59,6 +74,10 @@ void runSpecializedMode(LaunchArgs la)
     if (la.mode == "new-project")
     {
         showNewProjectDialog(win, la.path, la.tags);
+    }
+    else if (la.mode == "new-installer")
+    {
+        showNewInstallerDialog(win, la.path);
     }
     else
     {

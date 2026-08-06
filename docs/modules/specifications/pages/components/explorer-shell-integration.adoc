@@ -1,9 +1,9 @@
 = Explorer Shell Integration
-:description: Cascading DevCentr context menu in Windows File Explorer for New File, New Project, and Open folder.
+:description: DevCentr context menu in Windows File Explorer (modern Win11 first) and Linux file managers.
 
 == Purpose
 
-Expose DevCentr create/open flows from Windows File Explorer without a COM `IExplorerCommand` DLL. A single cascading **DevCentr** entry on folders (and folder background) keeps the context menu compact.
+Expose DevCentr create/open flows from the OS file manager. On Windows 11, prefer the compact modern menu via `IExplorerCommand` and a sparse package. Fall back to a classic HKCU cascading menu when modern registration is unavailable (older OS, missing DLL, unsigned package). On Linux, emit DES-EMA files plus adapters for Dolphin, Nemo, Thunar, and Nautilus.
 
 == Menu shape
 
@@ -11,27 +11,53 @@ Expose DevCentr create/open flows from Windows File Explorer without a COM `IExp
 DevCentr
   ├─ New File…
   ├─ New Project…
+  ├─ New Installer Project…
+  ├─ Install in-place (add to PATH)
   └─ Open folder in DevCentr
 ```
 
-== Registration
+Installer actions require `easy-installer` on PATH (https://github.com/dev-centr/easy-installer).
 
-* **Scope:** Current user only (`HKCU\Software\Classes\Directory\shell\DevCentr` and `Directory\Background\shell\DevCentr`).
-* **Mechanism:** Empty `SubCommands` value + nested `shell\…\command` keys (Windows cascading menu).
-* **Installer:** `modules.shell_integration.explorer_menu` — `installExplorerMenu` / `uninstallExplorerMenu`.
-* **UI:** Appearance dialog → Windows Explorer → Install / Remove.
+== Windows — modern (preferred)
 
-Commands invoke the DevCentr executable:
+* **Mechanism:** COM DLL implementing `IExplorerCommand` (`app/shell/explorer_command/`) registered with `windows.fileExplorerContextMenus` in a sparse `AppxManifest.xml`.
+* **Item types:** `Directory` and `Directory\Background`.
+* **Identity:** package name `DevCentr.ShellExtension`, publisher `CN=DevCentr Local`.
+* **Build:** `pwsh app/shell/explorer_command/build.ps1` (MSVC). See `app/shell/README.adoc`.
+* **Installer:** tries modern first when OS build ≥ 22000 and the host DLL is present.
 
-* `--mode=new-file --path="%V"`
-* `--mode=new-project --path="%V"`
-* `--mode=open --path="%V"`
+== Windows — classic (fallback)
 
-== Deferred
+* **Scope:** Current user (`HKCU\Software\Classes\Directory\shell\DevCentr` and `Directory\Background\shell\DevCentr`).
+* **Mechanism:** Empty `SubCommands` + nested `shell\…\command` keys (cascading menu; under **Show more options** on Windows 11).
 
-* ShellNew “New → …” templates (less flexible for tags/path).
-* COM / sparse package `IExplorerCommand` for richer UI.
+== Linux
+
+Canonical actions live in `modules.shell_integration.actions`. Install writes:
+
+* **DES-EMA** — `~/.local/share/file-manager/actions/devcentr-*.desktop` (shared lookup path; consumers rare today — see HCI Nerdz *File manager actions*)
+* **Dolphin** — service menus under `kio/servicemenus` and `kservices6/ServiceMenus`
+* **Nemo** — `~/.local/share/nemo/actions/*.nemo_action`
+* **Thunar** — marked block in `~/.config/Thunar/uca.xml`
+* **Nautilus** — scripts under `nautilus/scripts/DevCentr/`
+
+== Commands
+
+All backends invoke the DevCentr executable:
+
+* `--mode=new-file --path=…`
+* `--mode=new-project --path=…`
+* `--mode=new-installer --path=…`
+* `--mode=inplace-path --path=…`
+* `--mode=open --path=…`
+
+== Installer API
+
+* Module: `modules.shell_integration.explorer_menu`
+* `installExplorerMenu` / `uninstallExplorerMenu` / `explorerMenuBackend` / `explorerMenuStatusText`
+* **UI:** Appearance → File manager menu → Install / Remove
 
 == Related
 
-* xref:content-create.adoc[Content Create] — New File dialog, ecosystem filters, CLI modes.
+* xref:content-create.adoc[Content Create] — New File dialog, ecosystem filters, CLI modes
+* link:https://hci-nerdz.github.io/docs/hci-nerdz/latest/file-manager-actions.html[HCI Nerdz — File manager actions] (DES-EMA revival)

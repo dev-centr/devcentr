@@ -300,6 +300,25 @@ Widget createRepoToolbar(Window parentWindow, string repoPath, TemplateInstaller
         return true;
     };
     btnsArea.addChild(btnAI);
+
+    Button btnInPlace = new Button("btnInPlacePath", UIString.fromRaw("Install in-place PATH"d));
+    btnInPlace.styleId = "BUTTON_TRANSPARENT";
+    btnInPlace.textColor = 0xFFAA00;
+    btnInPlace.click = delegate(Widget w) {
+        import modules.content_create.installer_create : runInPlacePath;
+        runInPlacePath(parentWindow, repoPath);
+        return true;
+    };
+    btnsArea.addChild(btnInPlace);
+
+    Button btnNewInstaller = new Button("btnNewInstaller", UIString.fromRaw("New Installer"d));
+    btnNewInstaller.styleId = "BUTTON_TRANSPARENT";
+    btnNewInstaller.click = delegate(Widget w) {
+        import modules.content_create.installer_create : showNewInstallerDialog;
+        showNewInstallerDialog(parentWindow, repoPath);
+        return true;
+    };
+    btnsArea.addChild(btnNewInstaller);
     
     workspaceBlock.addChild(wkspNote);
     workspaceBlock.addChild(btnsArea);

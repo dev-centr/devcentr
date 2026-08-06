@@ -857,7 +857,8 @@ extern (C) int UIAppMain(string[] args) {
     import modules.content_create.launch : parseLaunchArgs, runSpecializedMode;
 
     auto la = parseLaunchArgs(args);
-    if (la.mode == "new-file" || la.mode == "new-project")
+    if (la.mode == "new-file" || la.mode == "new-project"
+        || la.mode == "new-installer" || la.mode == "inplace-path")
     {
         if (la.path.length == 0)
             la.path = getcwd();

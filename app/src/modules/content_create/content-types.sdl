@@ -800,6 +800,45 @@ func main() {}
     }
 
     classification {
+        id "packaging"
+        label "Packaging / installers"
+        summary "Installer projects and distribution manifests (easy-installer)."
+
+        type {
+            id "installer-project"
+            label "Installer Project"
+            role "easy-installer KDL project"
+            description """
+            Creates installer.kdl for https://github.com/dev-centr/easy-installer.
+            Build with plugins (portable-zip, nsis, inno, msi, msix, appimage).
+            Prefer running: easy-installer new-project .
+            """
+            extension ".kdl"
+            suggestedName "installer"
+            template """installer {
+    name "MyApp"
+    version "1.0.0"
+    id "com.example.myapp"
+    publisher "Example"
+    description ""
+    plugin "portable-zip"
+    add-to-path false
+    files {
+        file "*"
+    }
+}
+"""
+            inventedYear 2026
+            lastUpdated "2026"
+            homepage "https://github.com/dev-centr/easy-installer"
+            repo "https://github.com/dev-centr/easy-installer"
+            vitality "current"
+            creatable true
+            ecosystems "general" "windows" "linux" "macos"
+        }
+    }
+
+    classification {
         id "plaintext"
         label "Plain text"
         summary "Unstructured notes without a markup or data language."

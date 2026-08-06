@@ -2,6 +2,13 @@
 
 This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
 
+== 2026-08-06 – Easy installer + Install in-place PATH
+
+* New File catalog: Packaging → Installer Project (`installer.kdl`).
+* Toolbar: **Install in-place PATH** and **New Installer** (calls `easy-installer`).
+* Explorer/CLI modes: `--mode=new-installer`, `--mode=inplace-path`.
+* Spec: xref:specifications:components/explorer-shell-integration.adoc[Explorer Shell Integration].
+
 == 2026-08-06 – SDLang kept; KDL greenfield; reject XDL
 
 * Spec decision table: xref:specifications:sdl.adoc#decision-sdlang-vs-kdl-vs-extended-sdl[SDL Preference].
