@@ -1,12 +1,39 @@
+ifndef::env-github[:icons: font]
+:toc: preamble
+:toclevels: 2
+:sectanchors:
+
+ifndef::env-github[]
+image:https://img.shields.io/github/contributors/dev-centr/devcentr.svg?style=for-the-badge[Contributors,link=https://github.com/dev-centr/devcentr/graphs/contributors]
+image:https://img.shields.io/github/forks/dev-centr/devcentr.svg?style=for-the-badge[Forks,link=https://github.com/dev-centr/devcentr/network/members]
+image:https://img.shields.io/github/stars/dev-centr/devcentr.svg?style=for-the-badge[Stars,link=https://github.com/dev-centr/devcentr/stargazers]
+image:https://img.shields.io/github/issues/dev-centr/devcentr.svg?style=for-the-badge[Issues,link=https://github.com/dev-centr/devcentr/issues]
+image:https://img.shields.io/github/license/dev-centr/devcentr.svg?style=for-the-badge[License,link=https://github.com/dev-centr/devcentr/blob/main/LICENSE]
+endif::[]
+
+ifdef::env-github[]
+image:https://img.shields.io/github/contributors/dev-centr/devcentr.svg?style=for-the-badge[Contributors]
+image:https://img.shields.io/github/forks/dev-centr/devcentr.svg?style=for-the-badge[Forks]
+image:https://img.shields.io/github/stars/dev-centr/devcentr.svg?style=for-the-badge[Stars]
+image:https://img.shields.io/github/issues/dev-centr/devcentr.svg?style=for-the-badge[Issues]
+image:https://img.shields.io/github/license/dev-centr/devcentr.svg?style=for-the-badge[License]
+endif::[]
+
 = DevCentr DOS (Development Orchestration Suite)
 
-link:https://devcentr.org[image:https://img.shields.io/badge/site-devcentr.org-2ea043?style=flat[devcentr.org]] link:https://docs.devcentr.org[image:https://img.shields.io/badge/docs-docs.devcentr.org-0066cc?style=flat[docs]]
+A developer center app for configuring dev machines and managing software projects.
+
+link:https://docs.devcentr.org[Explore the docs] ·
+link:https://github.com/dev-centr/devcentr/issues[Report Bug] ·
+link:https://github.com/dev-centr/devcentr/issues[Request Feature]
 
 **TL;DR:** DevCentr is an app to manage software development on Windows, macOS, and Linux+GNU.
 
 DevCentr is a **Development Orchestration Suite (DOS)**—a platform (collection of apps and services) that sits a layer above the code to manage the complexity of the modern developer's world. By treating development as an integrated ecosystem rather than just a hodgepodge of siloed tools, DevCentr provides an integrated workspace and infrastructure environment designed for the future of engineering.
 
-== 🛰️ The DOS Vision
+== About The Project
+
+=== The DOS Vision
 
 While traditional IDEs focus on the editor, DevCentr focuses on the **Orchestration** of the entire lifecycle. As a DOS, it is designed for:
 
@@ -18,7 +45,7 @@ DevCentr is an open, extension-based platform for pure human development and eme
 
 xref:ROOT:ide-history.adoc[This tool is what an IDE should have been in the first place.]
 
-== 🚀 Capabilities
+=== Capabilities
 
 DevCentr's environment management can install, configure, manage, and visually model environments including:
 * System shell environments
@@ -26,13 +53,13 @@ DevCentr's environment management can install, configure, manage, and visually m
 * Developer toolchains (Node.js, Python, D, etc.)
 * Virtual environments (Docker, venv, pnpm)
 
-=== 🛠️ Core Functions
+==== Core Functions
 * **Installation:** Automated setup of developer tools.
 * **Configuration:** Reproducible configuration management.
 * **Management:** Lifecycle control of multiple project environments.
 * **Visualization:** Visual modeling of local project architectures.
 
-== 📂 Repository & VCS Management
+=== Repository & VCS Management
 
 Managed, browse, and sync local and remote codebases while connecting to various versioning systems and hosting providers:
 
@@ -51,7 +78,7 @@ Managed, browse, and sync local and remote codebases while connecting to various
 
 DevCentr maintains a community-driven list of common self-hosted repository providers at link:https://github.com/dev-centr/repository-providers[repository-providers].
 
-== 🏗️ Structure
+=== Structure
 * **App:** Located in `/app`
 * **Docs:** Centralized in `/docs` (built with Antora)
 * **Supporting Ecosystem:** Includes a suite of ancillary builders, optimized libraries, and infrastructure templates.
@@ -59,11 +86,21 @@ DevCentr maintains a community-driven list of common self-hosted repository prov
 
 Site: link:https://devcentr.org[devcentr.org] — Docs: link:https://docs.devcentr.org[docs.devcentr.org]
 
-== Changelog
+== Built With
+
+* link:https://dlang.org/[D] — application core
+* link:https://antora.org/[Antora] — documentation
+* link:https://pnpm.io/[pnpm] — tooling scripts
+
+== Getting Started
+
+See link:https://docs.devcentr.org[docs.devcentr.org] for install and setup guides.
+
+== Usage
 
 Changelogs are recorded to the docs in xref:ROOT:changelog.adoc[Changelog]. Viewable on the site at link:https://docs.devcentr.org/changelog.html[Changelog].
 
-== AI Local Docs
+=== AI Local Docs
 
 If you use AI tools on this repo, do not trust model memory for D or library APIs when precision matters.
 
@@ -76,18 +113,25 @@ Prefer repo-local library docs and source clones for version-sensitive work:
 
 For DevCentr, local indexed docs are usually better than web search for `std`, `dlangui`, and `sdlang-d`, because AI agents can search the exact checked-out sources inside the repo tree. Use web search only as a fallback when the local docs are missing or obviously stale.
 
-== License
-
-See link:LICENSE[LICENSE] (**CSL-1.0-BCI**). Family overview: xref:publishing:licensing.adoc[Licensing].
-
 == Contributing
 
 See link:CONTRIBUTING.md[CONTRIBUTING.md].
 
+== License
+
+See link:LICENSE[LICENSE] (**CSL-1.0-BCI**). Family overview: xref:publishing:licensing.adoc[Licensing].
+
+== Contact
+
+DevCentr.org — support@devcentr.org
+
+* Project: https://github.com/dev-centr/devcentr
+* Site: https://devcentr.org
+
+== Acknowledgments
+
+This project is the brain child of Ryan Johnson, a computer scientist and UX visionary based in the greater Memphis, Tennessee area.
+
 == Code of Conduct
 
 Eh, don't destroy things. Disagreements are fine.
-
-== Credit
-
-This project is the brain child of Ryan Johnson, a computer scientist and UX visionary based in the greater Memphis, Tennessee area.
