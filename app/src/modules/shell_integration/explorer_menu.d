@@ -1,99 +1,114 @@
 module modules.shell_integration.explorer_menu;
 
 import std.array : join;
-import std.file : thisExePath;
-import std.process : executeShell;
-import std.string : replace;
 
-version (Windows)
+/// Backend currently providing file-manager integration.
+enum FileManagerBackend
 {
-    private string regQuote(string s)
+    none,
+    modern, /// Windows 11 IExplorerCommand sparse package
+    classic, /// HKCU cascading shell verbs
+    linux, /// DES-EMA + per-FM adapters
+}
+
+/// Human-readable status for Appearance UI.
+string explorerMenuStatusText()
+{
+    final switch (explorerMenuBackend())
     {
-        return s.replace("\"", "\\\"");
-    }
-
-    private string cascadeRoot(string classKey)
-    {
-        return `HKCU\Software\Classes\` ~ classKey ~ `\shell\DevCentr`;
-    }
-
-    /// Install cascading DevCentr menu on Directory and Directory\Background.
-    string installExplorerMenu()
-    {
-        auto exe = thisExePath();
-        string[] classKeys = [`Directory`, `Directory\Background`];
-        string[] errors;
-        foreach (ck; classKeys)
-        {
-            auto root = cascadeRoot(ck);
-            auto pathArg = `"%V"`;
-
-            void run(string cmd)
-            {
-                auto r = executeShell(cmd);
-                if (r.status != 0)
-                    errors ~= cmd ~ " → " ~ r.output;
-            }
-
-            run(`reg add "` ~ root ~ `" /v MUIVerb /d "DevCentr" /f`);
-            run(`reg add "` ~ root ~ `" /v SubCommands /d "" /f`);
-            run(`reg add "` ~ root ~ `" /v Icon /d "` ~ regQuote(exe) ~ `" /f`);
-
-            auto nf = root ~ `\shell\01newfile`;
-            run(`reg add "` ~ nf ~ `" /ve /d "New File…" /f`);
-            run(`reg add "` ~ nf ~ `\command" /ve /d "\"` ~ regQuote(exe)
-                ~ `\" --mode=new-file --path=` ~ pathArg ~ `" /f`);
-
-            auto np = root ~ `\shell\02newproject`;
-            run(`reg add "` ~ np ~ `" /ve /d "New Project…" /f`);
-            run(`reg add "` ~ np ~ `\command" /ve /d "\"` ~ regQuote(exe)
-                ~ `\" --mode=new-project --path=` ~ pathArg ~ `" /f`);
-
-            auto op = root ~ `\shell\03open`;
-            run(`reg add "` ~ op ~ `" /ve /d "Open folder in DevCentr" /f`);
-            run(`reg add "` ~ op ~ `\command" /ve /d "\"` ~ regQuote(exe)
-                ~ `\" --mode=open --path=` ~ pathArg ~ `" /f`);
-        }
-        if (errors.length)
-            return "Installed with warnings:\n" ~ errors.join("\n");
-        return "Explorer DevCentr menu installed for folders (current user). Open a new Explorer window to see it.";
-    }
-
-    string uninstallExplorerMenu()
-    {
-        string[] errors;
-        foreach (ck; [`Directory`, `Directory\Background`])
-        {
-            auto root = cascadeRoot(ck);
-            auto r = executeShell(`reg delete "` ~ root ~ `" /f`);
-            if (r.status != 0 && r.output.length)
-                errors ~= r.output;
-        }
-        if (errors.length)
-            return "Removed with messages:\n" ~ errors.join("\n");
-        return "Explorer DevCentr menu removed.";
-    }
-
-    bool explorerMenuInstalled()
-    {
-        auto r = executeShell(`reg query "HKCU\Software\Classes\Directory\shell\DevCentr" /v MUIVerb`);
-        return r.status == 0;
+    case FileManagerBackend.modern:
+        return "Status: installed (modern Win11 menu)";
+    case FileManagerBackend.classic:
+        return "Status: installed (classic cascading menu)";
+    case FileManagerBackend.linux:
+        return "Status: installed (Linux file-manager actions)";
+    case FileManagerBackend.none:
+        return "Status: not installed";
     }
 }
-else
+
+FileManagerBackend explorerMenuBackend()
 {
-    string installExplorerMenu()
+    version (Windows)
     {
-        return "Explorer integration is Windows-only.";
+        import modules.shell_integration.modern_package : modernPackageRegistered;
+        import modules.shell_integration.classic_registry : classicExplorerMenuInstalled;
+        if (modernPackageRegistered())
+            return FileManagerBackend.modern;
+        if (classicExplorerMenuInstalled())
+            return FileManagerBackend.classic;
+        return FileManagerBackend.none;
     }
+    else version (linux)
+    {
+        import modules.shell_integration.linux_file_managers : linuxFileManagerMenusInstalled;
+        return linuxFileManagerMenusInstalled()
+            ? FileManagerBackend.linux
+            : FileManagerBackend.none;
+    }
+    else
+        return FileManagerBackend.none;
+}
 
-    string uninstallExplorerMenu()
-    {
-        return "Explorer integration is Windows-only.";
-    }
+bool explorerMenuInstalled()
+{
+    return explorerMenuBackend() != FileManagerBackend.none;
+}
 
-    bool explorerMenuInstalled()
+/// Prefer modern Win11 menu; fall back to classic HKCU; on Linux emit FM adapters + DES-EMA.
+string installExplorerMenu()
+{
+    version (Windows)
     {
-        return false;
+        import modules.shell_integration.modern_package : installModernExplorerMenu, isWindows11OrNewer,
+            modernDllPresent, shellAssetsRoot, modernPackageRegistered;
+        import modules.shell_integration.classic_registry : installClassicExplorerMenu;
+
+        string[] notes;
+        if (isWindows11OrNewer() && modernDllPresent(shellAssetsRoot()))
+        {
+            auto modernMsg = installModernExplorerMenu();
+            notes ~= modernMsg;
+            if (modernPackageRegistered())
+                return notes.join("\n");
+            notes ~= "Modern registration did not stick; installing classic fallback.";
+        }
+        else if (isWindows11OrNewer())
+        {
+            notes ~= "Modern host DLL not built yet (see app/shell/README.adoc); using classic menu.";
+        }
+        else
+        {
+            notes ~= "OS is not Windows 11+; using classic cascading menu.";
+        }
+        notes ~= installClassicExplorerMenu();
+        return notes.join("\n");
     }
+    else version (linux)
+    {
+        import modules.shell_integration.linux_file_managers : installLinuxFileManagerMenus;
+        return installLinuxFileManagerMenus();
+    }
+    else
+        return "File-manager integration is supported on Windows and Linux only.";
+}
+
+string uninstallExplorerMenu()
+{
+    version (Windows)
+    {
+        import modules.shell_integration.modern_package : uninstallModernExplorerMenu;
+        import modules.shell_integration.classic_registry : uninstallClassicExplorerMenu;
+        string[] notes;
+        notes ~= uninstallModernExplorerMenu();
+        notes ~= uninstallClassicExplorerMenu();
+        return notes.join("\n");
+    }
+    else version (linux)
+    {
+        import modules.shell_integration.linux_file_managers : uninstallLinuxFileManagerMenus;
+        return uninstallLinuxFileManagerMenus();
+    }
+    else
+        return "File-manager integration is supported on Windows and Linux only.";
 }

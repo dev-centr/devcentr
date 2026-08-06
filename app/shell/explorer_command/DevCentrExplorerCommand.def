@@ -1,0 +1,4 @@
+LIBRARY DevCentrExplorerCommand
+EXPORTS
+    DllCanUnloadNow PRIVATE
+    DllGetClassObject PRIVATE

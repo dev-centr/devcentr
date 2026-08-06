@@ -1,0 +1,35 @@
+= DevCentr shell integration (Windows)
+:description: Sparse package + IExplorerCommand host for Windows 11 File Explorer menus.
+
+== Layout
+
+* `explorer_command/` — C++ `IExplorerCommand` COM DLL (`DevCentrExplorerCommand.dll`)
+* `sparse-package/AppxManifest.xml` — identity + `windows.fileExplorerContextMenus` registration
+
+== Build the DLL
+
+Requires Visual Studio Build Tools (MSVC x64):
+
+[source,powershell]
+----
+pwsh ./explorer_command/build.ps1
+----
+
+Output: `explorer_command/build/DevCentrExplorerCommand.dll`
+
+== Signing / Developer Mode
+
+Sparse package registration typically needs a trusted publisher certificate or Developer Mode.
+
+Local development recipe:
+
+. Create a self-signed cert (`CN=DevCentr Local`) matching `AppxManifest.xml` `Publisher`
+. Sign the package/manifest per Microsoft sparse-package guidance
+. Enable Developer Mode if using unsigned register workflows your OS allows
+. Appearance → **Install file-manager menu** copies the DLL + manifest beside the exe and runs `Add-AppxPackage -Register -ExternalLocation …`
+
+If modern registration fails (missing DLL, cert, OS < Win11), the installer falls back to the classic HKCU cascading menu.
+
+== CLSIDs
+
+Root command: `{C0DEC411-7E11-4D00-9A55-001122334455}` — must match the C++ source and manifest.
