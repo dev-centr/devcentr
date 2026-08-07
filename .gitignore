@@ -9,6 +9,7 @@ docs/site/node_modules/
 # Build artifacts
 **/dist/
 **/build/
+app/shell/explorer_command/build/
 **/.git/
 **/__pycache__/
 **/*.pyc

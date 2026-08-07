@@ -71,7 +71,7 @@ Type=Menu
 Name=DevCentr
 Tooltip=Create or open with DevCentr
 Icon=folder
-ItemsList=devcentr-new-file;devcentr-new-project;devcentr-new-installer;devcentr-inplace-path;devcentr-open;
+ItemsList=devcentr-new-file;devcentr-new-project;devcentr-new-installer;devcentr-emit-ci;devcentr-inplace-path;devcentr-open;
 `);
 
     foreach (a; fmActions)
@@ -124,7 +124,7 @@ string installDolphinServiceMenu()
 Type=Service
 ServiceTypes=KonqPopupMenu/Plugin
 MimeType=inode/directory;
-Actions=NewFile;NewProject;NewInstaller;InPlacePath;Open;
+Actions=NewFile;NewProject;NewInstaller;EmitCi;InPlacePath;Open;
 X-KDE-Priority=TopLevel
 X-KDE-Submenu=DevCentr
 
@@ -139,6 +139,10 @@ Exec=` ~ execFor("new-project") ~ `
 [Desktop Action NewInstaller]
 Name=New Installer Project…
 Exec=` ~ execFor("new-installer") ~ `
+
+[Desktop Action EmitCi]
+Name=New Installer CI pipeline…
+Exec=` ~ execFor("emit-ci") ~ `
 
 [Desktop Action InPlacePath]
 Name=Install in-place (add to PATH)

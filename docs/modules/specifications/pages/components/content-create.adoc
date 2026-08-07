@@ -12,8 +12,8 @@ The Content Create flow lets users add a new project asset from a repository con
 == Entry points
 
 * **Repository browser:** Right-click a repository row → *Create…* → flat classification submenu (ecosystem tags inferred from the project).
-* **Windows Explorer:** Cascading *DevCentr* menu → *New File…* / *New Project…* / *Open folder* (see xref:explorer-shell-integration.adoc[Explorer Shell Integration]).
-* **CLI:** `dev-center.exe --mode=new-file --path=<dir> [--tags=general,java]` (also `new-project`, `open`).
+* **File manager:** *DevCentr* menu → *New File…* / *New Project…* / *Open folder* — Win11 modern menu preferred, classic/Linux adapters as fallback (see xref:explorer-shell-integration.adoc[Explorer Shell Integration]).
+* **CLI:** `dev-center.exe --mode=new-file --path=<dir> [--tags=general,java]` (also `new-project`, `new-installer`, `emit-ci`, `inplace-path`, `open`).
 
 == Ecosystem filters
 

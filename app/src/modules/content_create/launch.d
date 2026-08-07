@@ -12,7 +12,7 @@ import std.string : strip;
 
 struct LaunchArgs
 {
-    string mode; /// new-file | new-project | new-installer | inplace-path | open | ""
+    string mode; /// new-file | new-project | new-installer | emit-ci | inplace-path | open | ""
     string path;
     string[] tags;
 }
@@ -56,6 +56,7 @@ void runSpecializedMode(LaunchArgs la)
     }
 
     auto title = la.mode == "new-project" ? "DevCentr — New Project"
+        : la.mode == "emit-ci" ? "DevCentr — New Installer CI pipeline"
         : la.mode == "new-installer" ? "DevCentr — New Installer Project"
         : "DevCentr — New File";
     auto win = Platform.instance.createWindow(
@@ -75,9 +76,9 @@ void runSpecializedMode(LaunchArgs la)
     {
         showNewProjectDialog(win, la.path, la.tags);
     }
-    else if (la.mode == "new-installer")
+    else if (la.mode == "new-installer" || la.mode == "emit-ci")
     {
-        showNewInstallerDialog(win, la.path);
+        showNewInstallerDialog(win, la.path, la.mode == "emit-ci");
     }
     else
     {

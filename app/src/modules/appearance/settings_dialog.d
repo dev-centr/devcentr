@@ -85,7 +85,7 @@ void showAppearanceSettingsDialog(Window parent, string dataRoot,
     content.addChild(new TextWidget(null, UIString.fromRaw("File manager menu"d))
         .fontSize(10).fontWeight(700).margins(Rect(0, 4, 0, 6)));
     content.addChild(new TextWidget(null,
-        UIString.fromRaw("DevCentr on folders: New File…, New Project…, New Installer…, Install in-place PATH, Open. Win11 prefers the modern menu; classic or Linux adapters when needed."d))
+        UIString.fromRaw("DevCentr on folders: New File…, New Project…, New Installer…, New Installer CI pipeline…, Install in-place PATH, Open. Win11 prefers the modern menu; classic or Linux adapters when needed."d))
         .fontSize(9).textColor(0xAAAAAA).margins(Rect(0, 0, 0, 6)));
 
     import modules.shell_integration.explorer_menu : installExplorerMenu, uninstallExplorerMenu,

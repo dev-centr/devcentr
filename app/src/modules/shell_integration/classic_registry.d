@@ -54,12 +54,17 @@ string installClassicExplorerMenu()
         run(`reg add "` ~ ni ~ `\command" /ve /d "\"` ~ regQuote(exe)
             ~ `\" --mode=new-installer --path=` ~ pathArg ~ `" /f`);
 
-        auto ip = root ~ `\shell\04inplacepath`;
+        auto ci = root ~ `\shell\04emitci`;
+        run(`reg add "` ~ ci ~ `" /ve /d "New Installer CI pipeline…" /f`);
+        run(`reg add "` ~ ci ~ `\command" /ve /d "\"` ~ regQuote(exe)
+            ~ `\" --mode=emit-ci --path=` ~ pathArg ~ `" /f`);
+
+        auto ip = root ~ `\shell\05inplacepath`;
         run(`reg add "` ~ ip ~ `" /ve /d "Install in-place (add to PATH)" /f`);
         run(`reg add "` ~ ip ~ `\command" /ve /d "\"` ~ regQuote(exe)
             ~ `\" --mode=inplace-path --path=` ~ pathArg ~ `" /f`);
 
-        auto op = root ~ `\shell\05open`;
+        auto op = root ~ `\shell\06open`;
         run(`reg add "` ~ op ~ `" /ve /d "Open folder in DevCentr" /f`);
         run(`reg add "` ~ op ~ `\command" /ve /d "\"` ~ regQuote(exe)
             ~ `\" --mode=open --path=` ~ pathArg ~ `" /f`);

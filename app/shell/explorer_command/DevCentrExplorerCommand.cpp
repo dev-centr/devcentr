@@ -30,7 +30,7 @@ static HINSTANCE g_hInst = nullptr;
 static void ModuleAddRef() { InterlockedIncrement(&g_moduleLocks); }
 static void ModuleRelease() { InterlockedDecrement(&g_moduleLocks); }
 
-enum class ModeKind { NewFile, NewProject, NewInstaller, InPlacePath, Open };
+enum class ModeKind { NewFile, NewProject, NewInstaller, EmitCi, InPlacePath, Open };
 
 static std::wstring ModuleDirectory()
 {
@@ -103,6 +103,7 @@ static HRESULT LaunchMode(ModeKind mode, IShellItemArray* items)
     case ModeKind::NewFile: modeFlag = L"new-file"; break;
     case ModeKind::NewProject: modeFlag = L"new-project"; break;
     case ModeKind::NewInstaller: modeFlag = L"new-installer"; break;
+    case ModeKind::EmitCi: modeFlag = L"emit-ci"; break;
     case ModeKind::InPlacePath: modeFlag = L"inplace-path"; break;
     case ModeKind::Open: modeFlag = L"open"; break;
     }
@@ -252,7 +253,7 @@ public:
     {
         if (!rgelt) return E_POINTER;
         ULONG got = 0;
-        while (got < celt && m_index < 5)
+        while (got < celt && m_index < 6)
         {
             IExplorerCommand* cmd = nullptr;
             switch (m_index)
@@ -260,8 +261,9 @@ public:
             case 0: cmd = new (std::nothrow) SubCommand(ModeKind::NewFile, L"New File…"); break;
             case 1: cmd = new (std::nothrow) SubCommand(ModeKind::NewProject, L"New Project…"); break;
             case 2: cmd = new (std::nothrow) SubCommand(ModeKind::NewInstaller, L"New Installer Project…"); break;
-            case 3: cmd = new (std::nothrow) SubCommand(ModeKind::InPlacePath, L"Install in-place (add to PATH)"); break;
-            case 4: cmd = new (std::nothrow) SubCommand(ModeKind::Open, L"Open folder in DevCentr"); break;
+            case 3: cmd = new (std::nothrow) SubCommand(ModeKind::EmitCi, L"New Installer CI pipeline…"); break;
+            case 4: cmd = new (std::nothrow) SubCommand(ModeKind::InPlacePath, L"Install in-place (add to PATH)"); break;
+            case 5: cmd = new (std::nothrow) SubCommand(ModeKind::Open, L"Open folder in DevCentr"); break;
             }
             ++m_index;
             if (!cmd) return E_OUTOFMEMORY;
@@ -273,8 +275,8 @@ public:
 
     IFACEMETHODIMP Skip(ULONG celt) override
     {
-        m_index = (m_index + celt > 5) ? 5 : m_index + celt;
-        return (m_index < 5) ? S_OK : S_FALSE;
+        m_index = (m_index + celt > 6) ? 6 : m_index + celt;
+        return (m_index < 6) ? S_OK : S_FALSE;
     }
 
     IFACEMETHODIMP Reset() override

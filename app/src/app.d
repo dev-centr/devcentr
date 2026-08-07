@@ -858,7 +858,7 @@ extern (C) int UIAppMain(string[] args) {
 
     auto la = parseLaunchArgs(args);
     if (la.mode == "new-file" || la.mode == "new-project"
-        || la.mode == "new-installer" || la.mode == "inplace-path")
+        || la.mode == "new-installer" || la.mode == "emit-ci" || la.mode == "inplace-path")
     {
         if (la.path.length == 0)
             la.path = getcwd();

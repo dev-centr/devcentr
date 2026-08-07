@@ -44,30 +44,78 @@ string runEasyInstaller(string[] args)
     return r.output.length ? r.output : "OK";
 }
 
-void showNewInstallerDialog(Window parent, string folderPath)
+private immutable string[] ciRunnerIds = [
+    "github-actions",
+    "gitlab-ci",
+    "azure-pipelines",
+    "jenkins",
+    "circleci",
+    "bitbucket-pipelines",
+];
+
+/// New Installer dialog. `preferCi` pre-selects CI pipeline only (Explorer `--mode=emit-ci`).
+void showNewInstallerDialog(Window parent, string folderPath, bool preferCi = false)
 {
     auto dlg = new Dialog(UIString.fromRaw("New Installer Project"d), parent,
-        DialogFlag.Modal | DialogFlag.Resizable, 480, 220);
+        DialogFlag.Modal | DialogFlag.Resizable, 520, 340);
     auto root = new VerticalLayout();
     root.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT).padding(12);
     root.addChild(new TextWidget(null,
-        UIString.fromRaw("Creates installer.kdl via easy-installer (portable-zip default)."d))
+        UIString.fromRaw("Package builds locally; CI pipeline only writes workflow files + CI-INSTALLER.adoc."d))
         .fontSize(9).textColor(0xAAAAAA));
     root.addChild(new TextWidget(null, to!dstring("Folder: " ~ folderPath))
         .fontSize(8).textColor(0x888888).margins(Rect(0, 8, 0, 8)));
 
+    root.addChild(new TextWidget(null, "Intent:"d).fontSize(9).fontWeight(700));
+    auto rbPackage = new RadioButton("intent_package", UIString.fromRaw("Package (installer.kdl + local build)"d));
+    auto rbCi = new RadioButton("intent_ci", UIString.fromRaw("CI pipeline only (emit workflows)"d));
+    if (preferCi)
+        rbCi.checked = true;
+    else
+        rbPackage.checked = true;
+    root.addChild(rbPackage);
+    root.addChild(rbCi);
+
     auto pluginEdit = new EditLine("plugin");
     pluginEdit.text = "portable-zip"d;
-    root.addChild(new TextWidget(null, "Plugin id:"d).fontSize(9));
+    root.addChild(new TextWidget(null, "Plugin id:"d).fontSize(9).margins(Rect(0, 8, 0, 0)));
     root.addChild(pluginEdit);
 
+    root.addChild(new TextWidget(null, "CI runner:"d).fontSize(9).margins(Rect(0, 8, 0, 0)));
+    dstring[] runnerLabels;
+    foreach (id; ciRunnerIds)
+        runnerLabels ~= to!dstring(id);
+    auto runnerCombo = new ComboBox("ci_runner", runnerLabels);
+    runnerCombo.layoutWidth(FILL_PARENT);
+    runnerCombo.selectedItemIndex = 0;
+    root.addChild(runnerCombo);
+
     auto row = new HorizontalLayout();
+    row.margins(Rect(0, 12, 0, 0));
     auto ok = new Button(null, "Create"d);
     ok.click = delegate(Widget w) {
         auto plugin = to!string(pluginEdit.text).strip;
         if (!plugin.length)
             plugin = "portable-zip";
-        auto msg = runEasyInstaller(["new-project", folderPath, "--plugin=" ~ plugin]);
+        auto runnerIdx = runnerCombo.selectedItemIndex;
+        if (runnerIdx < 0 || runnerIdx >= cast(int) ciRunnerIds.length)
+            runnerIdx = 0;
+        auto runner = ciRunnerIds[runnerIdx];
+
+        string msg;
+        if (rbCi.checked)
+        {
+            msg = runEasyInstaller([
+                "new-project", folderPath,
+                "--plugin=" ~ plugin,
+                "--intent=ci-pipeline",
+                "--runner=" ~ runner,
+            ]);
+        }
+        else
+        {
+            msg = runEasyInstaller(["new-project", folderPath, "--plugin=" ~ plugin]);
+        }
         parent.showMessageBox(UIString.fromRaw("Installer Project"d), UIString.fromRaw(to!dstring(msg)));
         dlg.close(null);
         return true;

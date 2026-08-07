@@ -12,11 +12,13 @@ DevCentr
   ├─ New File…
   ├─ New Project…
   ├─ New Installer Project…
+  ├─ New Installer CI pipeline…
   ├─ Install in-place (add to PATH)
   └─ Open folder in DevCentr
 ```
 
 Installer actions require `easy-installer` on PATH (https://github.com/dev-centr/easy-installer).
+CI pipeline mode scaffolds `ci-runner.sdl` and emits workflows only (no local package build).
 
 == Windows — modern (preferred)
 
@@ -48,6 +50,7 @@ All backends invoke the DevCentr executable:
 * `--mode=new-file --path=…`
 * `--mode=new-project --path=…`
 * `--mode=new-installer --path=…`
+* `--mode=emit-ci --path=…`
 * `--mode=inplace-path --path=…`
 * `--mode=open --path=…`
 
