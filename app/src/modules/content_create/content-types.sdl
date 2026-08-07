@@ -802,16 +802,16 @@ func main() {}
     classification {
         id "packaging"
         label "Packaging / installers"
-        summary "Installer projects and distribution manifests (easy-installer)."
+        summary "Installer projects and distribution manifests (Ibex)."
 
         type {
             id "installer-project"
             label "Installer Project"
-            role "easy-installer KDL project"
+            role "Ibex KDL project"
             description """
-            Creates installer.kdl for https://github.com/dev-centr/easy-installer.
+            Creates installer.kdl for Ibex (https://github.com/dev-centr/easy-installer).
             Build with plugins (portable-zip, nsis, inno, msi, msix, appimage).
-            Prefer running: easy-installer new-project .
+            Prefer running: ibex new-project .
             """
             extension ".kdl"
             suggestedName "installer"

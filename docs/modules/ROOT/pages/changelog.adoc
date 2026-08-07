@@ -2,6 +2,12 @@
 
 This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
 
+== 2026-08-06 – Ibex (Easy Installer rename)
+
+* Resolve `ibex` on PATH (fallback `easy-installer`).
+* New Installer dialog branded for Ibex; content-types text updated.
+* winget / brew / scoop: `DevCentr.Ibex` / `dev-centr/tap/ibex`.
+
 == 2026-08-06 – Installer CI pipeline emit
 
 * New Installer dialog: **Package** vs **CI pipeline only** + runner dropdown.

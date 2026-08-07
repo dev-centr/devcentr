@@ -7,15 +7,20 @@ import std.file : exists;
 import std.process : executeShell;
 import std.string : strip, splitLines;
 
-/// Resolve easy-installer on PATH or common sibling location.
+/// Resolve Ibex (Install Builder EXtension) on PATH or common sibling location.
+/// Transitional: also accepts legacy `easy-installer` binary name.
 string findEasyInstaller()
 {
     version (Windows)
     {
-        auto r = executeShell(`where easy-installer 2>NUL`);
-        if (r.status == 0 && r.output.strip.length)
-            return r.output.splitLines[0].strip;
+        foreach (name; ["ibex", "easy-installer"])
+        {
+            auto r = executeShell(`where ` ~ name ~ ` 2>NUL`);
+            if (r.status == 0 && r.output.strip.length)
+                return r.output.splitLines[0].strip;
+        }
         foreach (c; [
+            `C:\code\github.com\dev-centr\easy-installer\ibex.exe`,
             `C:\code\github.com\dev-centr\easy-installer\easy-installer.exe`,
         ])
             if (exists(c))
@@ -23,9 +28,12 @@ string findEasyInstaller()
     }
     else
     {
-        auto r = executeShell(`command -v easy-installer`);
-        if (r.status == 0 && r.output.strip.length)
-            return r.output.splitLines[0].strip;
+        foreach (name; ["ibex", "easy-installer"])
+        {
+            auto r = executeShell(`command -v ` ~ name);
+            if (r.status == 0 && r.output.strip.length)
+                return r.output.splitLines[0].strip;
+        }
     }
     return "";
 }
@@ -34,7 +42,7 @@ string runEasyInstaller(string[] args)
 {
     auto exe = findEasyInstaller();
     if (!exe.length)
-        return "easy-installer not found on PATH. Install from https://github.com/dev-centr/easy-installer/releases";
+        return "Ibex (ibex) not found on PATH. Install from https://github.com/dev-centr/easy-installer/releases or winget install DevCentr.Ibex";
     string cmd = `"` ~ exe ~ `"`;
     foreach (a; args)
         cmd ~= ` "` ~ a ~ `"`;
@@ -56,12 +64,12 @@ private immutable string[] ciRunnerIds = [
 /// New Installer dialog. `preferCi` pre-selects CI pipeline only (Explorer `--mode=emit-ci`).
 void showNewInstallerDialog(Window parent, string folderPath, bool preferCi = false)
 {
-    auto dlg = new Dialog(UIString.fromRaw("New Installer Project"d), parent,
+    auto dlg = new Dialog(UIString.fromRaw("New Installer Project (Ibex)"d), parent,
         DialogFlag.Modal | DialogFlag.Resizable, 520, 340);
     auto root = new VerticalLayout();
     root.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT).padding(12);
     root.addChild(new TextWidget(null,
-        UIString.fromRaw("Package builds locally; CI pipeline only writes workflow files + CI-INSTALLER.adoc."d))
+        UIString.fromRaw("Ibex: Package builds locally; CI pipeline only writes workflow files + CI-INSTALLER.adoc."d))
         .fontSize(9).textColor(0xAAAAAA));
     root.addChild(new TextWidget(null, to!dstring("Folder: " ~ folderPath))
         .fontSize(8).textColor(0x888888).margins(Rect(0, 8, 0, 8)));
