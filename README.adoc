@@ -3,21 +3,13 @@ ifndef::env-github[:icons: font]
 :toclevels: 2
 :sectanchors:
 
-ifndef::env-github[]
+[[readme-top]]
+
 image:https://img.shields.io/github/contributors/dev-centr/devcentr.svg?style=for-the-badge[Contributors,link=https://github.com/dev-centr/devcentr/graphs/contributors]
 image:https://img.shields.io/github/forks/dev-centr/devcentr.svg?style=for-the-badge[Forks,link=https://github.com/dev-centr/devcentr/network/members]
 image:https://img.shields.io/github/stars/dev-centr/devcentr.svg?style=for-the-badge[Stars,link=https://github.com/dev-centr/devcentr/stargazers]
 image:https://img.shields.io/github/issues/dev-centr/devcentr.svg?style=for-the-badge[Issues,link=https://github.com/dev-centr/devcentr/issues]
 image:https://img.shields.io/github/license/dev-centr/devcentr.svg?style=for-the-badge[License,link=https://github.com/dev-centr/devcentr/blob/main/LICENSE]
-endif::[]
-
-ifdef::env-github[]
-image:https://img.shields.io/github/contributors/dev-centr/devcentr.svg?style=for-the-badge[Contributors]
-image:https://img.shields.io/github/forks/dev-centr/devcentr.svg?style=for-the-badge[Forks]
-image:https://img.shields.io/github/stars/dev-centr/devcentr.svg?style=for-the-badge[Stars]
-image:https://img.shields.io/github/issues/dev-centr/devcentr.svg?style=for-the-badge[Issues]
-image:https://img.shields.io/github/license/dev-centr/devcentr.svg?style=for-the-badge[License]
-endif::[]
 
 = DevCentr DOS (Development Orchestration Suite)
 
@@ -87,11 +79,22 @@ DevCentr maintains a community-driven list of common self-hosted repository prov
 
 Site: link:https://devcentr.org[devcentr.org] — Docs: link:https://docs.devcentr.org[docs.devcentr.org]
 
+++++
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+++++
+
 == Built With
 
-* link:https://dlang.org/[D] — application core
-* link:https://antora.org/[Antora] — documentation
-* link:https://pnpm.io/[pnpm] — tooling scripts
+* App core
+** link:https://dlang.org/[image:https://img.shields.io/badge/D-B03931?style=for-the-badge&logo=d&logoColor=white[D]]
+* Docs
+** link:https://antora.org/[image:https://img.shields.io/badge/Antora-4A4A55?style=for-the-badge&logo=asciidoctor&logoColor=white[Antora]]
+* Tooling
+** link:https://pnpm.io/[image:https://img.shields.io/badge/pnpm-F69220?style=for-the-badge&logo=pnpm&logoColor=white[pnpm]]
+
+++++
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+++++
 
 == Getting Started
 
@@ -118,6 +121,18 @@ For DevCentr, local indexed docs are usually better than web search for `std`, `
 
 See link:CONTRIBUTING.md[CONTRIBUTING.md].
 
+=== Top contributors
+
+++++
+<a href="https://github.com/dev-centr/devcentr/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=dev-centr/devcentr" alt="contributors" />
+</a>
+++++
+
+++++
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+++++
+
 == License
 
 See link:LICENSE[LICENSE] (**CSL-1.0-BCI**). Family overview: xref:publishing:licensing.adoc[Licensing].
@@ -128,6 +143,10 @@ DevCentr.org — support@devcentr.org
 
 * Project: https://github.com/dev-centr/devcentr
 * Site: https://devcentr.org
+
+++++
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+++++
 
 == Acknowledgments
 
