@@ -6,12 +6,15 @@ DevCentr is an organization dedicated to fundamentally improving developer produ
 
 Our flagship project, **DevCentr**, is a **Development Orchestration Suite (DOS)**—a platform sitting a layer above the code to manage the complexity of the modern developer's world. By treating development as an integrated ecosystem rather than just a series of text files, DevCentr provides an integrated workspace and infrastructure environment designed for the future of engineering.
 
+The public category is **DOS**. A casual mental model is *Dev OS* (orchestration of the environment around development)—useful for association, not for marketing headlines. **DevOps** is one facet of the suite: CI/CD, infrastructure, and traditional ops where they sit on the path. We allude to DevOps in literature to widen that concept over time; we do not brand the whole product as a DevOps GUI.
+
 While traditional IDEs focus on the editor, DevCentr focuses on the **Orchestration** of the entire development lifecycle:
 
 *   **Ecosystem Management:** Author and version your entire environment—shells, toolchains, and infrastructure—as first-class citizens. For shells, we standardize on link:https://www.nushell.sh/[Nushell] across Windows, macOS, and Linux (structured pipelines; see xref:general-knowledge:explanation/infrastructure/nushell.adoc[Why We Recommend Nushell]). For toolchains, we endorse xref:general-knowledge:explanation/infrastructure/toolchain-management.adoc[Toolchain Management]: the ecosystem’s main entrypoint must own install, version pinning, health, repair, and upgrade—shipping a xref:general-knowledge:explanation/infrastructure/toolchain-control-plane.adoc[Toolchain Control Plane] rather than leaving newcomers to discover tribal version managers.
 *   **Visual DevEx:** A "Live Blueprint" approach that visually models project architecture, moving beyond simple file trees into system design.
 *   **AI Vibe-Coding Synergy:** A hub that provides the deep contextual metadata necessary for human-in-the-loop AI coding to be truly effective.
 *   **Literate Programming First:** Promoting an architecture where documentation is the primary source, and code is an extracted artifact. We endorse **Synchronous Literate Programming (SLP)** to eliminate the gap between narrative and execution.
+*   **DevOps (one facet):** Pipelines, infrastructure, and delivery ops as part of the path—not the definition of the product.
 
 It should help new developers and experienced developers set up a new machine for development purposes and provide in depth information about any actions it performs, the environmental changes it makes, and the purposes of the tools it installs.
 

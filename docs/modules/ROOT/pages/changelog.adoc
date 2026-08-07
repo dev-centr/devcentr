@@ -2,6 +2,12 @@
 
 This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
 
+== 2026-08-06 – DOS category: DevOps as one facet
+
+* Public category stays **Development Orchestration Suite (DOS)**; *Dev OS* is a quiet mental model only.
+* **DevOps** documented as one facet (CI/CD / infra / traditional ops)—not the whole product.
+* Vision, capabilities, and docs index updated accordingly.
+
 == 2026-08-06 – Ibex (Easy Installer rename)
 
 * Resolve `ibex` on PATH (fallback `easy-installer`).

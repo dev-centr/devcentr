@@ -12,10 +12,10 @@ DevCentr is a developer tooling application that provides:
 * Environment management
 * Project modeling and visualization
 * Repository management and connections
-* CI/CD workflow management
+* CI/CD and traditional DevOps workflows (one facet of the suite—not the whole product)
 * Central secrets registry (xref:secrets-manager:index.adoc[Secrets Manager]) for .env-aware key storage and optional injection
 
-We have coined a new term for our kind of software: we call this a Development Orchestration Suite (DOS).
+We call this kind of software a **Development Orchestration Suite (DOS)**. If you need a casual mental model, think of a *Dev OS*—we do not lead with that label; DOS is the public category. **DevOps** is one facet of the suite (pipelines, infra, ops) alongside environment orchestration, visual DevEx, and AI context.
 
 == Templates & Standardization
 

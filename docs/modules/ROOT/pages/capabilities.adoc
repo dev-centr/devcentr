@@ -2,6 +2,8 @@
 
 DevCentr is a **Development Orchestration Suite (DOS)**—an ecosystem-centric platform for managing the entire development lifecycle. This page outlines the specific technical capabilities and supported systems.
 
+The public category is **DOS**. *Dev OS* is only a quiet mental model (association, not a headline). **DevOps** is one facet of the suite—CI/CD, infrastructure, and traditional ops—alongside environment orchestration, visualization, and AI workflow support.
+
 == 🚀 Environment Orchestration
 
 DevCentr manages the "gravity" of your development world by automating the installation and configuration of:
@@ -11,6 +13,14 @@ DevCentr manages the "gravity" of your development world by automating the insta
 *   **Global Tooling:** Installing system-wide developer tools.
 *   **Language Toolchains:** Managing versions and environments for Node.js, Python, D, and more.
 *   **Containerization:** Native integration with Docker and other virtualized environments.
+
+== DevOps (one facet)
+
+Traditional DevOps capabilities sit inside the DOS—they do not define it:
+
+*   **CI/CD workflow management:** Author, inspect, and connect pipelines and delivery configs as part of the project path.
+*   **Infrastructure and ops context:** Surfaces and workflows for infra-adjacent work where the suite covers it.
+*   **Literature:** We use “DevOps” in docs and essays both for these concrete features and, carefully, to widen how the public thinks about ops around development—without calling the whole product a DevOps GUI.
 
 == AI workflow orchestration (spec / registry)
 
@@ -27,6 +37,7 @@ DevCentr configures and hands off to external agents; it does not replace agent 
 *   **Configuration:** Enforcing reproducible, version-controlled settings across your machine.
 *   **Management:** Active lifecycle monitoring of running services and tools.
 *   **Visualization:** Graphical modeling of project architecture and dependencies.
+*   **DevOps:** Pipelines and traditional ops as one facet of the path.
 
 == 📂 VCS & Repository Support
 
