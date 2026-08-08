@@ -1,0 +1,39 @@
+= `.dev` file extension — product intent (uncommitted)
+:description: Reserved branding notes for a future Dev-Centr `.dev` format; not a shipped product.
+
+Status:: **Intent only.** No format, media type, or Windows association yet.
+Audience:: Org product thinking. Lives in `devcentr/notes/` until we decide public vs org-private docs.
+Date:: 2026-08-08
+
+== Context
+
+Dev-C++ (Bloodshed / Orwell / Embarcadero) uses `.dev` as an INI-style **project** file (`[Project]`, `[UnitN]`, compiler flags). It is niche and aging. Other rare claimants (legacy Windows device blobs, e-Sword devotionals) do not block a branded reuse. The `.dev` *TLD* is unrelated.
+
+Dev-C++ itself has no unique IDE capabilities worth protecting; its historical value was “MinGW + GDB on Windows without MSVC.”
+
+== Decisions so far
+
+* **Do not** burn `.dev` on ordinary app preferences (`.sdl` / `.kdl` / `.json5` already cover that; see also `.devcentr.sdl`).
+* **Do not** use double-extension passthrough (`foo.py.dev`) as an OS routing layer — renames fight every other tool; Windows “Open with” / shell verbs / protocol handlers are the right open-routing tools.
+* **Do** keep the extension reserved for a possible **standalone** root/workspace/scene document later (polyglot identity, scriptbook entry, agent/env contract) — TBD.
+* If/when a format exists: require a **magic header** that cannot be confused with Dev-C++ INI (`[Project]` / `FileName=`).
+* IANA vendor media type only after a real format exists (`application/vnd.devcentr.dev+…` sketch).
+
+== Rejected / deferred ideas
+
+| Idea | Verdict |
+|---|---|
+| Meta-format / passthrough after a normal filename | Rejected as product strategy |
+| DevCentr as global open intermediary that “recruits” other apps for icons | Overkill; open vs icon are already separate shell jobs |
+| Association icon-hijack defense | Valuable — but belongs in **Switchyard** (sibling app), not in `.dev` |
+
+== Open questions
+
+* Exact job of a root `.dev` file (workspace identity vs runnable scene vs agent contract).
+* Fixed name (`devcentr.dev`) vs free-form `*.dev`.
+* Where this note graduates when public vs org-private docs are sorted (Antora? `.github-private`?).
+
+== Related
+
+* Switchyard (`dev-centr/switchyard`) — Windows association snapshot / icon lock / route intelligence (not `.dev`).
+* Structured data policy — SDLang in-stack, KDL greenfield (`general-knowledge` structured-data-formats).

@@ -1,0 +1,100 @@
+= Content-aware file association broker (Windows musing)
+:description: Idea for a Microsoft-facing OS layer that routes open/icon/thumbnail by file content, not only by extension.
+:status: musing — not a product commitment; candidate for a later Microsoft conversation
+
+Audience:: Dev-Centr product / platform thinking (`devcentr/notes/`). Not Antora-published unless we decide to promote it.
+Date:: 2026-08-08
+Related:: Switchyard (local product; roles: file router / app broker); `.dev` extension intent note.
+
+== Thesis
+
+Windows file associations are primarily **extension → ProgID** (plus UserChoice). That is too coarse for how files actually work. Many formats share an extension while differing in **magic**, **version**, or **codec**. Apps break the social contract (“this opens `.foo`”) when they claim the type but only handle a subset. A proper OS layer should allow **content-aware routing**: peek enough of the file (or a declared probe) to pick open / preview / thumbnail / edit handlers independently — instead of minting `.foo2` every time the format evolves.
+
+== What exists today (sketch)
+
+Windows already has pieces that *touch* content without composing into a broker:
+
+* Static association: extension, ProgID, `DefaultIcon`, verbs.
+* UserChoice (per-user default open).
+* Thumbnail / preview handlers (`IThumbnailProvider`, preview handlers) that *can* fail or succeed per file — but the **default open app** is not chosen by the same logic.
+* Property / filter stacks (IFilter, property handlers) for search — not “who should open this.”
+* Soft conventions: browsers and media stacks sniff MIME/magic; Explorer mostly does not re-broker open on sniff failure.
+
+So the gap is not “no one ever peeks at bytes.” The gap is **no first-class, policy-driven association broker** between Shell services and app-provided handlers.
+
+== Desired layer
+
+Insert a **content-aware association broker** between Shell intents (open, icon, thumbnail, preview, maybe print) and app-registered handlers.
+
+Responsibilities:
+
+1. **Probe** — ordered, bounded peeks: magic bytes, box/atom headers (ISO BMFF), RIFF/FOURCC, ZIP central-dir hints, declared “format version” fields, optional app-supplied probe COM/API with strict quotas (CPU, I/O, timeout, sandbox).
+2. **Match** — map probe results to **capability claims**, not just extensions. Example claims: `image/png`, `video/mp4; codecs=av01`, `office-openxml; version=…`, `dev-c++-project-ini` vs `application/vnd.devcentr.dev`.
+3. **Route per intent** — open may prefer App A; thumbnail may prefer App B; icon may stay branded to App C. Failure of one intent must not force a global type hijack.
+4. **Fallback chain** — if the default open app’s probe or open fails (unsupported codec), try the next capable handler without training users to “Open with…” archaeology.
+5. **Policy** — user and enterprise pins (“always VLC for AV1-in-MP4”), reputation, and “don’t run probes on untrusted zones” knobs.
+
+This is the OS analogue of “don’t invent `.docx2` — sniff and dispatch.”
+
+== Motivating cases
+
+[cols="1,2"]
+|===
+| Case | Broker behavior
+
+| Shared extension, different magic
+| `.dev` Dev-C++ INI vs a future branded workspace document — first-line / magic decides handler; both can coexist.
+
+| Container ≠ codec
+| `.mp4` / `.mkv` / `.webm`: thumbnailer that understands the codec renders; open goes to the player that advertised support; broken players are skipped in the chain.
+
+| Format version drift
+| Office-ish or CAD files where extension stayed stable but payload version advanced — probe selects the app build that can load it.
+
+| Aggressive installers
+| An app may register as *a* handler for `.docx` without becoming the sole DefaultIcon owner; broker + separate icon track reduce “LibreOffice painted Explorer” outcomes.
+|===
+
+== Overhead and safety (must be designed in)
+
+Content routing is not free. A serious proposal should assume:
+
+* **Budgets** — max bytes read (e.g. first 64 KiB + optional tail for some formats), wall-clock timeout, no network in default probes.
+* **Caching** — probe results keyed by path + size + mtime (or hash of head); invalidate on change; Explorer must not re-probe every paint.
+* **Trust** — zone/Mark-of-the-Web aware; optional “fast path = extension only” for cold network shares; admin disable of third-party probes.
+* **Determinism** — same file → same route unless policy changed; debuggable “why this app?” UI (essential for support).
+* **DoS** — malicious files that explode parsers; probes run out-of-proc, job-limited, killable (same class as thumbnail hosts today).
+
+If those constraints are unmet, extension-only mapping remains the rational default. The argument is not “always sniff.” It is “**sniff when registered capability claims diverge**,” with a fast path otherwise.
+
+== Why Microsoft should own the seam
+
+If only ISVs invent wrappers (local switchyards, custom shell extensions), users get N incomplete brokers and more association wars. The Shell already owns the verb dispatch surface; extending it with a **capability + probe registry** is an OS-shaped problem:
+
+* Stable API for declaring `handles(extension, content-features[])` per intent.
+* Consistent security and performance envelope.
+* One place for enterprise policy and accessibility/telemetry.
+
+ISVs (including Dev-Centr’s Switchyard) can still snapshot/lock associations and experiment — but they cannot ethically become the global open proxy for the whole machine without OS cooperation.
+
+== Non-goals
+
+* Replacing file extensions in UX (users still see `.mp4`).
+* Requiring every app to ship a probe (claim “extension-only” remains valid).
+* Solving DRM or codec licensing politics — only routing among already-installed capable handlers.
+
+== Possible ask to Microsoft (later)
+
+A short design discussion or feedback ticket shaped like:
+
+____
+Consider a Shell association broker that selects open / thumbnail / preview handlers using bounded content probes and capability claims, with caching, trust boundaries, and per-intent fallback — so shared extensions and codec/version drift do not require new extensions or permanent DefaultIcon hijacks.
+____
+
+Artifacts that would help a later pitch: one-pager, sequence diagram (Explorer → Broker → Probe → Handler), and two concrete Win32/WinRT API sketches (registration + query).
+
+== Local stance
+
+* **Agree** the layer should have been considered; limited sniffing elsewhere proves peeks are feasible when budgeted.
+* Dev-Centr does **not** wait on Microsoft to ship Switchyard-class guarding (icons/open tracks as they exist today).
+* This note is a **platform musing**, not a commitment to build a full content broker ourselves.
