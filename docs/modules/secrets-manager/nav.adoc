@@ -15,6 +15,7 @@
 * xref:how-to/docker-integration.adoc[Docker and Docker Secrets]
 
 .Explanation
+* xref:explanation/api-key-vs-token.adoc[API key vs token]
 * xref:explanation/standalone-vs-integrated.adoc[Standalone vs Integrated]
 * xref:explanation/encryption-modes.adoc[Encryption and Plaintext Mode]
 * xref:explanation/backend-providers.adoc[Back-end Providers (Bitwarden and Others)]

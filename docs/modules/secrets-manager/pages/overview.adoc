@@ -3,7 +3,7 @@
 
 == Purpose
 
-The Secrets Manager provides a **central registry** for API keys, tokens, passwords, and other sensitive values used in development. It is designed to:
+The Secrets Manager provides a **central registry** for API keys, scoped API keys (vendor PATs), access tokens, refresh tokens, passwords, and other sensitive values used in development. Kinds follow xref:explanation/api-key-vs-token.adoc[API key vs token]—do not store a long-lived dashboard secret as a "token" just because a vendor UI did. It is designed to:
 
 * Make it easy to **recognize** that you can move from ad-hoc `.env` files to a single, queryable store.
 * Support **copying** secrets from the registry into a project's `.env` (or `.env.<environment>`) when you want file-based config.

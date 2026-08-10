@@ -2,6 +2,10 @@
 
 This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
 
+== 2026-08-09 – API key vs token (Secrets Manager)
+
+* Explanation xref:secrets-manager:explanation/api-key-vs-token.adoc[API key vs token] — forced kinds (pi_key, scoped_api_key, ccess_token, efresh_token); index/overview vocabulary lock; cross-links general-knowledge and News.
+* See xref:changelog-details/2026-08-09 - api-key-vs-token.adoc[Detailed changelog].
 == 2026-08-06 – DOS category: DevOps as one facet
 
 * Public category stays **Development Orchestration Suite (DOS)**; *Dev OS* is a quiet mental model only.

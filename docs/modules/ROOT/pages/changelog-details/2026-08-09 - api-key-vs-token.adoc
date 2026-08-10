@@ -1,0 +1,6 @@
+= 2026-08-09 — API key vs token (Secrets Manager)
+
+Added Secrets Manager explanation for forced credential kinds (`api_key`,
+`scoped_api_key`, `access_token`, `refresh_token`) so product UI and agents do not
+copy vendor "token" labels onto long-lived keys. Cross-linked general-knowledge
+and the DevCentr News post.

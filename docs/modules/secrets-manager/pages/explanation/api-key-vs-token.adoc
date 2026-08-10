@@ -1,0 +1,61 @@
+= API key vs token
+:navtitle: API key vs token
+:description: Secrets Manager vocabulary—API keys, scoped keys/PATs, and true access tokens—so UI and agents stop copying vendor mislabels.
+
+Secrets Manager stores strings.
+Humans and agents still have to *type* those strings correctly.
+This page is mandatory vocabulary for the product: **label by architecture, not by the vendor's Generate button.**
+
+Canonical essay (org docs): xref:general-knowledge:explanation/infrastructure/api-key-vs-token.adoc[API key vs token].
+Public narrative: link:https://devcentr.org/news/2026-08-09-api-keys-wearing-token-costumes[When API keys wear token costumes].
+
+== Forced types in Secrets Manager
+
+When registering or displaying a secret, use one of these kinds (UI, profiles, and agent prompts must not invent softer synonyms):
+
+[cols="1,2,2"]
+|===
+| Kind | Meaning | Typical UI / env habit
+
+| `api_key`
+| Long-lived secret that identifies an **application or project** (billing, quotas, "which app called"). May be unscoped or scoped.
+| `*_API_KEY`, provider "API key" fields
+
+| `scoped_api_key`
+| Long-lived secret with explicit capability / resource limits. Vendor may say "token" or "PAT"—we still store it as a scoped API key.
+| GitHub/GitLab PAT, "API access token" that never auto-expires
+
+| `access_token`
+| Short-lived credential from an auth handshake (OAuth/OIDC/session). Identifies a **user or session** and expires by design.
+| OAuth bearer after login; not a dashboard forever-string
+
+| `refresh_token`
+| Credential used only to mint new access tokens—not for ordinary API calls.
+| OAuth refresh material in vault custom fields
+|===
+
+Legacy vendor labels may appear in **notes** or **source URL** fields for searchability.
+They must not replace the kind.
+
+== Decision rule (product copy)
+
+Before any label says "token":
+
+1. Did a protocol handshake mint it, or did a human copy it from a settings page?
+2. Does it die on a timer without human revocation?
+3. Does authorization attach to a user/session subject, or only to a project identity?
+
+Dashboard paste + manual revoke → `api_key` or `scoped_api_key`.
+Handshake mint + TTL → `access_token` (and `refresh_token` when applicable).
+
+== Why Secrets Manager cares
+
+* **Search and profiles.** Provider templates should suggest `STRIPE_API_KEY`, not random `STRIPE_TOKEN`, unless the vendor's *true* access-token field is what you store.
+* **Rotation playbooks.** Keys and scoped keys are rotated in dashboards; access tokens are refreshed by protocol. Mixing the words hides which playbook applies.
+* **Agent safety.** Agents that treat every Bearer string as ephemeral will under-rotate keys; agents that treat every "token" as forever will over-store live session material.
+
+== Related
+
+* xref:overview.adoc[Overview]
+* xref:reference/provider-tool-profiles.adoc[Provider and Tool Profiles]
+* xref:explanation/backend-providers.adoc[Back-end Providers]

@@ -1,7 +1,9 @@
 = Secrets Manager
 :navtitle: Secrets Manager
 
-The Secrets Manager is a central registry for API keys, tokens, and other sensitive values used across your development projects. It helps you move from scattered, plaintext `.env` files and `.gitignore` hacks to a single, searchable store that can feed into `.env` files or inject directly into your development process.
+The Secrets Manager is a central registry for API keys, scoped keys (including vendor "PATs"), true access tokens, and other sensitive values used across your development projects. It helps you move from scattered, plaintext `.env` files and `.gitignore` hacks to a single, searchable store that can feed into `.env` files or inject directly into your development process.
+
+**Vocabulary lock:** label secrets by architecture, not by the vendor Generate button. See xref:explanation/api-key-vs-token.adoc[API key vs token] before inventing types or env names.
 
 == Why a secrets manager?
 
@@ -21,6 +23,7 @@ The Secrets Manager is a central registry for API keys, tokens, and other sensit
 
 == Documentation map
 
+* xref:explanation/api-key-vs-token.adoc[API key vs token] — Forced kinds: `api_key`, `scoped_api_key`, `access_token`, `refresh_token`.
 * xref:overview.adoc[Overview] — Purpose, scope, and high-level workflow.
 * xref:architecture.adoc[Architecture] — Standalone process, database ownership, and how DevCentr talks to the manager.
 * xref:reference/env-patterns.adoc[.env Usage Patterns] — How the manager recognizes and works with `.env` files.
