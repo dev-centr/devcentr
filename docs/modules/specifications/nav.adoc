@@ -35,6 +35,8 @@
 * xref:features/local-mod-management.adoc[Local Mod Management]
 * xref:features/document-preview-navigation.adoc[Document Preview Navigation]
 * xref:features/dynamic-agent-preamble.adoc[Dynamic Agent Preamble]
+* xref:features/synchronous-literate-programming.adoc[Synchronous Literate Programming]
+* xref:features/scriptbook-system-playbooks.adoc[Scriptbook]
 * xref:reference/definition-files.adoc[Definition Files (Services and Languages)]
 * xref:templates-schema.adoc[Templates Repository Schema]
 * xref:prohelp.adoc[Prohelp CLI Specification]

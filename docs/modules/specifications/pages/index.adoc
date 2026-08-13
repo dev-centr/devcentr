@@ -33,6 +33,7 @@ This section contains technical specifications for Dev Center components and fea
 * xref:features/text-editor-separate-process.adoc[Text Editor Separate Process] - Separate process text editor design philosophy
 * xref:features/document-preview-navigation.adoc[Document Preview Navigation] - Browser-like navigation (Back, Forward, Refresh) for AsciiDoc and Markdown previewers
 * xref:features/synchronous-literate-programming.adoc[Synchronous Literate Programming] - Synchronous bi-directional Literate Programming for document-first architecture
+* xref:features/scriptbook-system-playbooks.adoc[Scriptbook] - Playable CentrMark documents (intents, not shell translation)
 
 == Specification Format
 
