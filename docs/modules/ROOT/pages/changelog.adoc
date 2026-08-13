@@ -9,6 +9,13 @@ This changelog records notable changes to the DevCentr application and its docum
 * Host Awareness: bake OS probes in CI; do not ask the engine what OS you are at run time.
 * See xref:changelog-details/2026-08-13 - abstract-playbooks-playtime.adoc[Detailed changelog].
 
+== 2026-08-13 -- Abstract playbooks (PlayTime)
+
+* Illustrated model: intents, not shell translation. CentrMark / PlayTime / Scriptbook layers. Host Awareness bake loop.
+* Spec xref:specifications:features/scriptbook-system-playbooks.adoc[Scriptbook] wired into nav. Encyclopedia xref:general-knowledge::explanation/infrastructure/abstract-playbooks.adoc[Abstract playbooks].
+* Essay: link:https://devcentr.org/news/2026-08-13-intents-not-shell-translation[Intents, not shell translation].
+* See xref:changelog-details/2026-08-13 - abstract-playbooks.adoc[Detailed changelog].
+
 == 2026-08-09 – API key vs token (Secrets Manager)
 
 * Explanation xref:secrets-manager:explanation/api-key-vs-token.adoc[API key vs token] — forced kinds (`api_key`, `scoped_api_key`, `access_token`, `refresh_token`); index/overview vocabulary lock; cross-links general-knowledge and News.

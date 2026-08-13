@@ -1,0 +1,6 @@
+= 2026-08-13 -- Abstract playbooks (PlayTime)
+
+Documented the Scriptbook / PlayTime / Equivalence Engine model: author intents,
+bind at play time, do not hot-replace bash into PowerShell. Added figures and
+cross-links to general-knowledge, the Scriptbook Antora component, and the
+DevCentr News essay.

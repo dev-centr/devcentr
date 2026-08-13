@@ -33,6 +33,8 @@ We propose implementing a **Replay Index** for repository-based LP documents.
 * Versions of code blocks are tracked (via `evolution` properties).
 * Users can use a "Scrubber UI" to watch the construction of a module, seeing exactly how a simple idea transformed into a robust implementation.
 
+Runnable **playbooks** (install/setup on a machine) are a different track: xref:features/scriptbook-system-playbooks.adoc[Scriptbook]. Do not confuse `::: tangle` with `::: playbook`. Illustrated model: xref:general-knowledge::explanation/infrastructure/abstract-playbooks.adoc[Abstract playbooks].
+
 == 3. Implementation Plan for Dev-Centr
 
 1. **Core Parser Integration**: Update the Dev-Centr core to support `.cmk` parsing via a unified AST.
