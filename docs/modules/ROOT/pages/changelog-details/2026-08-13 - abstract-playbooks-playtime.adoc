@@ -1,0 +1,8 @@
+= 2026-08-13 — Abstract playbooks (PlayTime)
+
+Wrote the Scriptbook / PlayTime / CentrMark split and Host Awareness model
+so one playbook can name an intent (`cli.install`) and run on every OS.
+The Equivalence Engine stays a catalog (format and runtime are columns).
+PlayTime learns the host from a baked probe cascade, then binds.
+Humans stay at the intent layer; when the world changes, only the bottom
+catalog row moves.

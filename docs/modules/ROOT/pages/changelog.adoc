@@ -2,6 +2,13 @@
 
 This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
 
+== 2026-08-13 – Abstract playbooks (PlayTime)
+
+* Spec: CentrMark is markup, PlayTime is the engine, Scriptbook is the app.
+* Intent steps bind through the Equivalence Engine (`cli.install`). Not bash-to-PowerShell translation.
+* Host Awareness: bake OS probes in CI; do not ask the engine what OS you are at run time.
+* See xref:changelog-details/2026-08-13 - abstract-playbooks-playtime.adoc[Detailed changelog].
+
 == 2026-08-09 – API key vs token (Secrets Manager)
 
 * Explanation xref:secrets-manager:explanation/api-key-vs-token.adoc[API key vs token] — forced kinds (`api_key`, `scoped_api_key`, `access_token`, `refresh_token`); index/overview vocabulary lock; cross-links general-knowledge and News.

@@ -35,7 +35,10 @@ Contexts mirror filesystem equivalence layout: `windows/winget`, `macos/homebrew
 Each context declares:
 
 * `mutable` — `false` for Nix and Guix (immutable); `true` for winget/brew/apt
-* `detect` — command DevCentr runs to see if the context applies
+* `format` — installer kind (`winget`, `deb`, `nix`, …). A column, not a `--to` path segment
+* `detect` — command DevCentr may run; PlayTime prefers PATH lookup over `where` vs `which`
+
+List every compatible method: `equivalence-engine --domain cli --list gh`. Pick one with `--to windows/winget`. Never `--to windows/pwsh/msi`.
 
 When **Prefer immutable installs** is enabled (default), resolution prefers Nix/Guix methods before winget/brew/apt.
 

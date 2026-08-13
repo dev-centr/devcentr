@@ -1,12 +1,48 @@
 = Feature: Scriptbook (runnable script documents)
 :navtitle: Scriptbook
-:description: CentrMark playbooks with sidecar run output — distinct from Synchronous Literate Programming.
+:description: CentrMark playbooks with sidecar run output -- distinct from Synchronous Literate Programming.
+
+Write this so someone with no background can follow.
 
 == Objective
 
 Ship **Scriptbook**: documents authored in CentrMark (`.cmk`) that can be **played** on a developer machine (install steps, DNS checks, setup recipes). Run output lives in **sidecars**; the source document is never rewritten.
 
 Upstream: link:https://github.com/dev-centr/scriptbook[dev-centr/scriptbook].
+
+Illustrated model::
+xref:general-knowledge::explanation/infrastructure/abstract-playbooks.adoc[Abstract playbooks]
+
+Essay::
+link:https://devcentr.org/news/2026-08-13-intents-not-shell-translation[Intents, not shell translation]
+
+== Three layers (not SLP, not shell translation)
+
+.Cookbook, kitchen, waiter
+image::playtime-layers.svg[alt="Three layers: CentrMark the book, PlayTime the stage, Scriptbook the app"]
+
+[cols="1,2", options="header"]
+|===
+| Name | Job
+
+| **CentrMark** (`.cmk`)
+| Markup only. No exec. No Equivalence Engine.
+
+| **PlayTime**
+| Engine in the Scriptbook library. Detect host, bind intents, run commands, write sidecars.
+
+| **Scriptbook**
+| App (`scriptbook` CLI today; DevCentr GUI later). Opens the book and drives PlayTime.
+|===
+
+This is **not** Synchronous Literate Programming (that is `::: tangle` / source sync).
+
+This is **not** a bash-to-PowerShell rewriter. Author an intent (`cli.install` + tool id). PlayTime asks the Equivalence Engine for a command that fits this computer. Portable glue may stay as a Nushell cell.
+
+.Do not put a bash script through a blender
+image::playtime-wrong-translator.svg[alt="A Linux apt script enters a hot-replace grinder and comes out as broken Windows commands"]
+
+Details: xref:scriptbook::playtime.adoc[PlayTime] · xref:scriptbook::host-awareness.adoc[Host Awareness] · GitHub `spec/` until the hub deploy lands.
 
 == Not SLP
 
@@ -36,7 +72,16 @@ See also xref:features/synchronous-literate-programming.adoc[Synchronous Literat
 * Library for future DevCentr GUI player
 * Example: GitHub Pages + Cloudflare HTTPS dance (with general-knowledge Nu checker)
 
+== Intent playbooks (v0.2)
+
+* `::: step [intent="cli.install" tool="gh"]` — same file on Windows and Linux
+* Host Awareness snapshot first (PlayTime). Then Equivalence Engine bind. Never the reverse.
+* CLI: `--format`, `--catalog`, `--answers` (no TUI wizard yet)
+* `::: choose` / `when-answer` / `when-context` for method branching
+* GUI player is still later — do not reimplement exec in the docs UI
+
 == DevCentr integration (later)
 
 * Open `.cmk` playbooks in-app; stream step progress; weave sidecar results beside narrative
-* Prefer Scriptbook library over reimplementing exec in the docs UI
+* Prefer PlayTime (Scriptbook library) over reimplementing exec in the docs UI
+* Questionnaire UX belongs in the app; ranking methods belongs in the Equivalence Engine
