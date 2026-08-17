@@ -89,6 +89,9 @@ if (Test-Path -LiteralPath $portableReadme) {
 if (Test-Path -LiteralPath $zipPath) { Remove-Item -LiteralPath $zipPath -Force }
 Compress-Archive -Path (Join-Path $portableFolder "*") -DestinationPath $zipPath -CompressionLevel Optimal
 
+Write-Host "Payload:"
+Get-ChildItem -LiteralPath $payload | Format-Table Name, Length -AutoSize | Out-String | Write-Host
+
 $makensis = @(
     "$env:ProgramFiles\NSIS\makensis.exe",
     "${env:ProgramFiles(x86)}\NSIS\makensis.exe"
@@ -101,9 +104,10 @@ if (-not $makensis) {
     throw "makensis not found. Install NSIS (choco install nsis)."
 }
 
-$payloadArg = Slant ((Resolve-Path $payload).Path)
-$outArg = Slant $setupPath
+$payloadArg = (Resolve-Path $payload).Path
+$outArg = $setupPath
 $nsiArg = (Resolve-Path $NsiPath).Path
+Write-Host "makensis PAYLOAD_DIR=$payloadArg OUT_FILE=$outArg"
 & $makensis `
     "/DPAYLOAD_DIR=$payloadArg" `
     "/DOUT_FILE=$outArg" `

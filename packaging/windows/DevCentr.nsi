@@ -38,9 +38,9 @@ ShowInstDetails show
 
 Section "Install"
   SetOutPath "$INSTDIR"
-  File "${PAYLOAD_DIR}/DevCentr.exe"
-  File "${PAYLOAD_DIR}/libfreetype-6.dll"
-  File /nonfatal "${PAYLOAD_DIR}/LICENSE"
+  File "${PAYLOAD_DIR}\DevCentr.exe"
+  File "${PAYLOAD_DIR}\libfreetype-6.dll"
+  File /nonfatal "${PAYLOAD_DIR}\LICENSE"
 
   CreateDirectory "$SMPROGRAMS\${PRODUCT_NAME}"
   CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\DevCentr.exe"

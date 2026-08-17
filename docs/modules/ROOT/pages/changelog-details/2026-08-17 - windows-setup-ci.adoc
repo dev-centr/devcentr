@@ -17,8 +17,8 @@ The zip stays `DevCentr-windows-x64.zip` so older links still fetch a portable t
 
 [source,bash]
 ----
-git tag v0.1.1
-git push origin v0.1.1
+git tag v0.1.2
+git push origin v0.1.2
 ----
 
 Then wait for **Release / Windows x64 installer** and confirm the setup EXE is attached.
