@@ -1,0 +1,4 @@
+= UniConfig launch from Open With
+:description: DevCentr detects uniconfig on PATH and offers it in the editor selector.
+
+The suite stays a client of the standalone app. No second dlangui settings toolkit inside the DevCentr process. `uniConfigOnPath` uses `where`/`which`. Failure to spawn is silent to the popup (the binary simply does not appear if missing).

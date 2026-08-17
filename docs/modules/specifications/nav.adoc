@@ -11,6 +11,7 @@
 * xref:components/repository-browser-terminal.adoc[Repository Browser Terminal]
 * xref:components/appearance.adoc[Appearance (code font)]
 * xref:components/repository-tools-registry.adoc[Repository Tools Registry]
+* xref:components/uniconfig.adoc[UniConfig Config Panel]
 * xref:components/repository-provider-registry.adoc[Repository Provider Registry]
 * xref:components/git-viewer.adoc[Git Viewer]
 * xref:components/gitignore-viewer.adoc[Gitignore Viewer]

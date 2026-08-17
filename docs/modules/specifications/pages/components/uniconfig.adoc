@@ -1,0 +1,11 @@
+= UniConfig Config Panel
+:description: DevCentr launches the standalone UniConfig binary for schema-driven config files instead of embedding dlangui twice.
+:navtitle: UniConfig
+
+DevCentr does **not** vendor a second copy of the panel. `uniconfig-core` is the reusable D library. The GUI is the standalone `uniconfig` executable.
+
+When `uniconfig` is on PATH, the repository "Open With" editor menu offers **UniConfig Config Panel**. `modules.uniconfig.launch` detects the binary and `spawnProcess(["uniconfig", path])`.
+
+Config-like names: `.json`, `.yml`, `.yaml`, `.toml`, `.ini`, `.cfg`, `.sdl`, `.tfvars`, `.gitconfig`, `dub.sdl`, `.editorconfig`.
+
+Outside DevCentr, people run the same binary. Docs: xref:uniconfig:ROOT:index.adoc[UniConfig].

@@ -2,6 +2,12 @@
 
 This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
 
+== 2026-08-17 – UniConfig launch
+
+* Spec: xref:specifications:components/uniconfig.adoc[UniConfig Config Panel] — spawn standalone `uniconfig` from Open With when the binary is on PATH.
+* Implementation: `modules.uniconfig.launch`.
+* See xref:changelog-details/2026-08-17 - uniconfig-launch.adoc[Detailed changelog].
+
 == 2026-08-17 – Windows setup EXE + portable zip in CI
 
 * GitHub Actions `Release` compiles Windows x64 and attaches `DevCentr-windows-x64-setup.exe` (NSIS, per-user), the existing zip as **portable only**, and an MSI from msi-generator when that step succeeds.

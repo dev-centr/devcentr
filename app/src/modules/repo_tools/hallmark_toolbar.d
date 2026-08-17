@@ -103,7 +103,11 @@ void showEditorSelectorDialog(Window parentWindow, string targetPath)
         auto action = new Action(to!int(100+i), UIString.fromRaw(to!dstring(ed.name)));
         menuRoot.add(action);
     }
-    
+
+    import modules.uniconfig.launch : uniConfigOnPath, openWithUniConfig;
+    if (uniConfigOnPath())
+        menuRoot.add(new Action(998, UIString.fromRaw("UniConfig Config Panel"d)));
+
     // Add the "Register Fork (+)" option
     menuRoot.add(new Action(999, UIString.fromRaw("Register custom fork..."d)));
     
@@ -111,6 +115,11 @@ void showEditorSelectorDialog(Window parentWindow, string targetPath)
     menu.menuItemAction = delegate(const Action a) {
         if (a.id >= 100 && a.id < 100 + availableEditors.length) {
             openPathWithEditor(availableEditors[a.id - 100], targetPath);
+            return true;
+        }
+        if (a.id == 998)
+        {
+            openWithUniConfig(targetPath);
             return true;
         }
         return false;
