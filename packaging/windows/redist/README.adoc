@@ -1,0 +1,5 @@
+= Windows redistributables
+
+`libfreetype-6.dll` sits next to `DevCentr.exe` because dlangui loads FreeType at runtime.
+
+This is the same binary shipped in the v0.1.0 portable zip. FreeType is FTL or GPLv2; see https://freetype.org/license.html

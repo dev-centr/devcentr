@@ -4,6 +4,12 @@
 
 This page records significant documentation and project activity. New entries are added at the top. For release history and versioned changelogs, see the repository tags and release notes when available.
 
+== 2026
+
+=== August
+
+* **Windows installer CI** — Tag builds emit `DevCentr-windows-x64-setup.exe` (NSIS), keep the zip as portable, and call msi-generator for an MSI when that tool builds. See xref:changelog-details/2026-08-17 - windows-setup-ci.adoc[changelog] and `CI-INSTALLER.adoc`.
+
 == 2025
 
 === March

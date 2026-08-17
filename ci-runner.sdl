@@ -1,0 +1,9 @@
+ciRunner {
+    runner "github-actions"
+    plugin "nsis"
+    on tags "v*"
+    windows true
+    ibex "0.2.0"
+    msiGenerator "0.2.0"
+    uploadRelease true
+}

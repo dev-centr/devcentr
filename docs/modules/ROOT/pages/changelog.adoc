@@ -2,6 +2,12 @@
 
 This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
 
+== 2026-08-17 – Windows setup EXE + portable zip in CI
+
+* GitHub Actions `Release` compiles Windows x64 and attaches `DevCentr-windows-x64-setup.exe` (NSIS, per-user), the existing zip as **portable only**, and an MSI from msi-generator when that step succeeds.
+* Website downloads should use the setup EXE; the zip is not the installer.
+* See xref:changelog-details/2026-08-17 - windows-setup-ci.adoc[Detailed changelog].
+
 == 2026-08-17 – First public binary (v0.1.0)
 
 * Tagged `v0.1.0` with a portable Windows x64 zip (`DevCentr-windows-x64.zip`).

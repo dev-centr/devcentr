@@ -1,0 +1,22 @@
+installer {
+    name "DevCentr"
+    version "0.1.0"
+    id "org.devcentr.DevCentr"
+    publisher "DevCentr.org"
+    description "Development Orchestration Suite"
+    plugin "nsis"
+    exe "dist/payload/DevCentr.exe"
+    add-to-path false
+    extras {
+        installDir "$LOCALAPPDATA\\Programs\\DevCentr"
+        outFile "DevCentr-windows-x64-setup.exe"
+        productCode "{C0DD4421-D590-471A-B708-0BCA094867CA}"
+        requestExecutionLevel "user"
+        upgradeCode "{82432E2B-9B94-4F7A-BF1A-CD6D9EEB81D1}"
+    }
+    files {
+        file "dist/payload/DevCentr.exe"
+        file "dist/payload/libfreetype-6.dll"
+        file "dist/payload/LICENSE"
+    }
+}

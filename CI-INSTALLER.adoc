@@ -1,0 +1,66 @@
+= CI installer pipeline
+:description: How Windows setup.exe, portable zip, and MSI are produced for DevCentr releases.
+
+DevCentr’s consumer download is the **NSIS setup EXE**. The zip is **portable only**. `msi-generator` also emits an MSI when that step succeeds.
+
+Generic `ibex emit-ci` only runs `ibex build` — it does not compile this D app — so packaging lives in `.github/workflows/release.yml` plus `scripts/package-windows.ps1`. `installer.kdl` and `ci-runner.sdl` remain the Ibex product pins.
+
+== Files
+
+* `.github/workflows/release.yml`
+* `scripts/package-windows.ps1`
+* `packaging/windows/DevCentr.nsi`
+* `packaging/windows/redist/libfreetype-6.dll`
+* `installer.kdl`
+* `ci-runner.sdl`
+
+== Enable the runner
+
+Commit the workflow. GitHub Actions is on by default for this repo. `GITHUB_TOKEN` is enough for `softprops/action-gh-release`.
+
+== Tags and triggers
+
+* Push a tag matching `v*` (`git tag v0.1.1 && git push origin v0.1.1`).
+* Or **Actions → Release → Run workflow** (artifacts only; no GitHub Release unless the run is a tag).
+
+== Artifacts
+
+[cols="1,2"]
+|===
+| File | Role
+
+| `DevCentr-windows-x64-setup.exe`
+| Per-user wizard (Start Menu + Add/Remove Programs). Website primary download.
+
+| `DevCentr-windows-x64.zip`
+| Portable `DevCentr.exe` + FreeType. Not the installer.
+
+| `DevCentr-windows-x64.msi`
+| Windows Installer database from msi-generator v0.2 (unsigned; limited UI until execute-sequence tables land).
+
+| `SHA256SUMS`
+| SHA-256 of the files above.
+|===
+
+== Pins
+
+* NSIS via Chocolatey on `windows-latest`
+* msi-generator git tag `v0.2.0` (see `ci-runner.sdl`)
+* Ibex `0.2.0` documented for local experiments (`ibex build` is not the CI compile path)
+
+== Local smoke test
+
+. `cd app && dub build --build=release`
+. Install NSIS so `makensis` exists
+. From the repo root:
+
+[source,powershell]
+----
+./scripts/package-windows.ps1 -Version 0.1.1
+----
+
+== Related
+
+* https://github.com/dev-centr/easy-installer[Ibex / easy-installer]
+* https://github.com/dev-centr/msi-generator[msi-generator]
+* https://docs.devcentr.org/general-knowledge/latest/how-to/automated-releases.html[Automated releases]

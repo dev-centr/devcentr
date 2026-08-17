@@ -1,0 +1,24 @@
+= 2026-08-17 — Windows setup EXE + portable zip in CI
+
+== Problem
+
+v0.1.0 shipped only `DevCentr-windows-x64.zip`. Installer formats existed as **tools** (Ibex, msi-generator) but DevCentr’s own release never built them. The product site treated that zip as the download.
+
+== What shipped
+
+* `.github/workflows/release.yml` — on `v*` tags (or workflow_dispatch): LDC release build, NSIS, optional msi-generator, upload to the GitHub Release.
+* `packaging/windows/DevCentr.nsi` — per-user wizard (`%LOCALAPPDATA%\Programs\DevCentr`), Start Menu, Add/Remove Programs.
+* `scripts/package-windows.ps1` — payload (`DevCentr.exe` + FreeType + LICENSE), setup EXE, portable zip, MSI spec, `SHA256SUMS`.
+* `installer.kdl` / `ci-runner.sdl` / `CI-INSTALLER.adoc` — Ibex pins; CI compiles the D app first instead of a bare `ibex build`.
+
+The zip stays `DevCentr-windows-x64.zip` so older links still fetch a portable tree. It is labeled portable, not the primary installer.
+
+== How to cut a release
+
+[source,bash]
+----
+git tag v0.1.1
+git push origin v0.1.1
+----
+
+Then wait for **Release / Windows x64 installer** and confirm the setup EXE is attached.

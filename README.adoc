@@ -120,6 +120,10 @@ Site: link:https://devcentr.org[devcentr.org] — Docs: link:https://docs.devcen
 
 == Getting Started
 
+**Windows x64:** download the installer `DevCentr-windows-x64-setup.exe` from link:https://github.com/dev-centr/devcentr/releases/latest[the latest GitHub release] (or from link:https://devcentr.app[devcentr.app]). The zip on that release is a **portable** build only (`DevCentr.exe` + FreeType), not the installer.
+
+Tagged `v*` builds are produced by CI (`.github/workflows/release.yml`). See `CI-INSTALLER.adoc`.
+
 See link:https://docs.devcentr.org[docs.devcentr.org] for install and setup guides.
 
 == Usage
