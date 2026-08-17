@@ -1,0 +1,14 @@
+= 2026-08-17 — project-map via DUB registry
+
+== Problem
+
+`dub` resolved `project-map` as a path dependency at `openshellorg/project-map/lib`. Nested `lib/dub.json` was removed when the recipe moved to the repo root, so DevCenter would not fetch or build against a clone that had only the library sources.
+
+== Fix
+
+* Pin `"project-map": "~>0.1.3"` (https://code.dlang.org/packages/project-map). The package is already registered; versions appear from SemVer tags, not from a local path.
+* Align `"arsd-official": "~>11.5.3"` with dlangui (and existing `dub.selections.json`).
+* Look up `profiles/stacks` under the DUB cache, `PROJECT_MAP_PROFILES`, and hive fallbacks (`CODE_ROOT` / `%code%` / `C:\code` / `Z:\code`) instead of hard-coding a sibling folder.
+* Rename `LineageScope.scope` / `findLineage`’s parameter to `scopeId` so LDC can compile the catalog (SDL still uses the `scope` tag).
+
+Do not reintroduce `path:` for this library. Use `dub add-local` only when iterating on an unpublished project-map change.

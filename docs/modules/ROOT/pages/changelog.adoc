@@ -2,6 +2,19 @@
 
 This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
 
+== 2026-08-17 – First public binary (v0.1.0)
+
+* Tagged `v0.1.0` with a portable Windows x64 zip (`DevCentr-windows-x64.zip`).
+* See xref:changelog-details/2026-08-17 - project-map-dub-registry.adoc[DUB project-map pin] shipped in the same cut.
+
+== 2026-08-17 – project-map via DUB registry
+
+* Depend on registry `project-map` `~>0.1.3` instead of a local `openshellorg/project-map/lib` path (that subfolder has no DUB recipe).
+* Restore `arsd-official` to `~>11.5.3` to match dlangui.
+* Resolve stack profiles from the DUB package cache, then hive clones.
+* Rename `LineageScope.scope` to `scopeId` so the catalog compiles on current LDC (`scope` is a keyword).
+* See xref:changelog-details/2026-08-17 - project-map-dub-registry.adoc[Detailed changelog].
+
 == 2026-08-13 – Abstract playbooks (PlayTime)
 
 * Spec: CentrMark is markup, PlayTime is the engine, Scriptbook is the app.

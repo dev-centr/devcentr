@@ -10,6 +10,7 @@ import modules.repo_tools.git_gui_dialog;
 import modules.repo_tools.git_viewers;
 import modules.repo_tools.hallmark_toolbar;
 import modules.project_recognizer.recognizer;
+import modules.project_recognizer.profiles_dir;
 import modules.system_overview.tool_manager;
 import modules.system_overview.widgets;
 import modules.workflow_templates_store.browser;
@@ -123,15 +124,8 @@ class DevCenterApp {
         // Target current directory
         string projectRoot = getcwd();
 
-        // Load recognizer rules from openshellorg/project-map profiles (stacks)
-        string profilesDir = buildPath(codeRoot, "github.com", "openshellorg", "project-map", "profiles", "stacks");
-        if (!exists(profilesDir))
-        {
-            // Fallback: relative to this app when developing inside the monorepo layout
-            profilesDir = absolutePath(buildPath(dirName(projectRoot), "..", "..", "openshellorg", "project-map", "profiles", "stacks"));
-        }
-        if (!exists(profilesDir))
-            profilesDir = buildPath(projectRoot, "src", "modules", "project-recognizer", "profiles");
+        // Load recognizer rules from the DUB project-map package (profiles/stacks)
+        string profilesDir = findProjectMapStacksDir();
 
         ViewOptions recogOpts;
         recogOpts.cacheRoot = buildPath(".dev-center", "cache", "recognizer");
@@ -140,7 +134,7 @@ class DevCenterApp {
         recogOpts.includeRoles = false;
 
         ProjectRecognizer recognizer;
-        if (exists(profilesDir)) {
+        if (profilesDir.length && exists(profilesDir)) {
              recognizer = ProjectRecognizer.fromProfilesDir(profilesDir, recogOpts);
         } else {
              recognizer = new ProjectRecognizer([RecognitionRule("Generic", "General project", "", [], [], [], [], [])], recogOpts);

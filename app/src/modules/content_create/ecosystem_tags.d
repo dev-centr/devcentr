@@ -1,10 +1,11 @@
 module modules.content_create.ecosystem_tags;
 
 import modules.project_recognizer.recognizer;
+import modules.project_recognizer.profiles_dir;
 import std.algorithm : canFind, sort, uniq;
 import std.array : array;
-import std.file : exists, getcwd, thisExePath;
-import std.path : absolutePath, buildPath, dirName;
+import std.file : exists;
+import std.path : buildPath;
 import std.string : toLower;
 
 /// Stable vocabulary for Create… filter chips.
@@ -120,20 +121,10 @@ string[] inferEcosystemTags(string repoPath, string[] stackNames = null)
         if (repoPath.length && exists(repoPath))
         {
             ViewOptions recogOpts;
-            string[] profileCandidates = [
-                buildPath(getcwd(), "..", "..", "openshellorg", "project-map", "profiles", "stacks"),
-                buildPath(dirName(thisExePath()), "..", "..", "openshellorg", "project-map", "profiles", "stacks"),
-            ];
             ProjectRecognizer recognizer;
-            foreach (pd; profileCandidates)
-            {
-                auto abs = absolutePath(pd);
-                if (exists(abs))
-                {
-                    recognizer = ProjectRecognizer.fromProfilesDir(abs, recogOpts);
-                    break;
-                }
-            }
+            auto fromDub = findProjectMapStacksDir();
+            if (fromDub.length)
+                recognizer = ProjectRecognizer.fromProfilesDir(fromDub, recogOpts);
             if (recognizer is null)
                 recognizer = new ProjectRecognizer(
                     [RecognitionRule("Generic", "General project", "", [], [], [], [], [])], recogOpts);
