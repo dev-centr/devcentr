@@ -17,6 +17,8 @@ When you open the Publishing area in DevCentr, the app loads these knowledge-bas
 * Wire up automated builds and uploads in CI.
 * Decide which registries (npm, PyPI, crates.io, Winget, Homebrew, Docker, etc.) make sense for your project.
 
+Experimental **one-file** binary distribution (APE / native-slice pack + Binary Tailor) is documented in xref:general-knowledge:explanation/architecture/polyglot-distribution.adoc[Polyglot distribution] — not a replacement for the registry OIDC path below.
+
 == PackageHub
 
 `packagehub` is a DevCentr project focused on improving how software is published and released.
