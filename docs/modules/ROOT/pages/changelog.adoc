@@ -2,10 +2,11 @@
 
 This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
 
-== 2026-08-18 – Appearance: Scriptbook font installs
+== 2026-08-18 – Appearance: font preview + Scriptbook install
 
-* Spec xref:specifications:components/appearance.adoc[Appearance (code font)]: Cascadia Mono / JetBrains Mono still the radios; install via Scriptbook `examples/fonts/install-*.cmk` and `equivalence-rules-cli` tool ids; preview spec (editable code) not shipped in the dialog this pass.
-* See xref:changelog-details/2026-08-18 - appearance-font-lock.adoc[Detailed changelog].
+* Appearance dialog: editable monospace preview (pangram + D sample) for Cascadia Mono / JetBrains Mono; warns when the face is missing; **Install selected font** spawns Scriptbook when on PATH (`modules.appearance.font_install`).
+* Spec xref:specifications:components/appearance.adoc[Appearance (code font)] updated; playbooks unchanged in `scriptbook/examples/fonts/`.
+* See xref:changelog-details/2026-08-18 - appearance-font-preview.adoc[Detailed changelog].
 
 == 2026-08-17 – UniConfig launch
 

@@ -23,7 +23,9 @@ Do **not** default to Cascadia *Code* (ligatures) for DevCentr terminals. Mono i
 
 . Open **Appearance** in the top bar.
 . Pick Cascadia Mono or JetBrains Mono.
-. Optionally set **repository terminal** shell preference (`auto` prefers Nushell when `nu` is on `PATH`) and **Env refresh: inject and run**.
+. Preview the face in the editable sample below the radios; type to judge legibility (`0O`, `1lI`, short D snippet).
+. If the face is missing, Appearance warns you and offers **Install selected font** when `scriptbook` is on `PATH` (runs the matching `examples/fonts/install-*.cmk` playbook against `equivalence-rules-cli`).
+. Optionally set **repository terminal** shell preference (`auto` prefers Nushell when `nu` is on `PATH`) and **Env refresh: inject and run`.
 . Save. Stored in `~/.dev-center/ui-settings.json` as `codeFontFace`, `terminalShell`, and `envRefreshAutoRun`.
 
 New terminal command blocks pick up the face immediately. Reopen panels that were already open if they still show the old face. The Auto-run checkbox on the terminal env chrome also persists `envRefreshAutoRun`.
@@ -47,20 +49,15 @@ Do not paste a host-specific `winget` line into this spec. PlayTime binds `cli.i
 
 Further first-class monos (Fira Code, Iosevka, Monaspace, JetBrains Mono Nerd Font) have playbooks in the same folder. They are **not** Appearance radios yet.
 
-*Today:* the human runs `scriptbook run … --catalog …/equivalence-rules-cli/catalog/tools.sdl`.
-*Next:* Appearance **Install** when `scriptbook` is on PATH (same "binary on PATH" pattern as UniConfig). Do not reimplement exec in the dialog.
+*Today:* Appearance **Install selected font** when `scriptbook` is on PATH — spawns `scriptbook run … --catalog …/equivalence-rules-cli/catalog/tools.sdl` with a platform `--format` (`choco` on Windows, `brew` on macOS, `nix` when available). Playbook and catalog resolve from the code hive or cached equivalence-rules-cli under `~/.dev-center`. Button disabled with tooltip when `scriptbook` or paths are missing.
 
-Member wiring and **preview spec** (editable code sample, not a pangram bitmap): team-docs `how-to/font-lock.adoc` on team.docs.devcentr.org.
+== Preview
 
-== Preview (spec, not shipped)
+The Appearance dialog includes an **editable** monospace preview wearing the selected face:
 
-The Appearance dialog does not yet preview the face.
-
-When it does:
-
-* The preview is an **editable** monospace field wearing the selected face (pangram + a short D sample). Typing updates immediately.
-* Cascadia Mono preview forces ligatures off.
-* If the face is missing, say so and point at the Scriptbook playbook. Do not render Consolas and label it JetBrains Mono.
+* Pangram line plus a short D sample (from team-docs font-lock). Typing updates immediately; radio changes re-apply the face.
+* If the face is not installed, a warning appears. Do not treat Consolas fallback as a preview of JetBrains Mono.
+* Ligature toggle is deferred (Cascadia Mono preview stays ligature-off by family choice).
 
 A full font-manager module (project Fontsource lock, OFL in-tree, web-use cards) is later. DevCentr is the first client of that library -- not a Suitcase clone.
 

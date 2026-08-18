@@ -2,6 +2,8 @@ module modules.appearance.settings_dialog;
 
 import dlangui;
 import dlangui.dialogs.dialog : Dialog, DialogFlag;
+import modules.appearance.font_install;
+import modules.appearance.fonts;
 import modules.appearance.settings;
 import std.conv : to;
 
@@ -13,7 +15,7 @@ void showAppearanceSettingsDialog(Window parent, string dataRoot,
 
     auto dlg = new Dialog(UIString.fromRaw("Appearance"d), parent,
         DialogFlag.Popup | DialogFlag.Resizable);
-    dlg.minWidth(520).minHeight(360);
+    dlg.minWidth(560).minHeight(520);
 
     auto content = new VerticalLayout();
     content.layoutWidth(FILL_PARENT).padding(15);
@@ -38,9 +40,72 @@ void showAppearanceSettingsDialog(Window parent, string dataRoot,
     content.addChild(rbCascadia);
     content.addChild(rbJetBrains);
 
+    auto fontStatus = new TextWidget(null, UIString.fromRaw(""d));
+    fontStatus.fontSize(9).textColor(0xCC8844).margins(Rect(0, 8, 0, 4));
+    content.addChild(fontStatus);
+
+    content.addChild(new TextWidget(null, UIString.fromRaw("Preview"d))
+        .fontSize(10).fontWeight(700).margins(Rect(0, 4, 0, 4)));
+
+    auto preview = new EditBox("font_preview", to!dstring(defaultFontPreviewText()));
+    preview.layoutWidth(FILL_PARENT).layoutHeight(140);
+    preview.backgroundColor = 0x1B1B1B;
+    content.addChild(preview);
+
+    auto installRow = new HorizontalLayout();
+    installRow.layoutWidth(FILL_PARENT).margins(Rect(0, 8, 0, 12));
+    auto btnInstallFont = new Button(null, UIString.fromRaw("Install selected font"d));
+    installRow.addChild(btnInstallFont);
+    content.addChild(installRow);
+
+    void refreshFontPreview()
+    {
+        string face = rbJetBrains.checked ? CODE_FONT_JETBRAINS_MONO : CODE_FONT_CASCADIA_MONO;
+        applyPreviewCodeFont(preview, face);
+        if (isCodeFontInstalled(face))
+        {
+            fontStatus.text = UIString.fromRaw(to!dstring(face ~ " is installed on this system."));
+            fontStatus.textColor(0x66AA66);
+        }
+        else
+        {
+            fontStatus.text = UIString.fromRaw(to!dstring(
+                face ~ " is not installed — preview may fall back to another mono. Use Install or run the Scriptbook playbook."));
+            fontStatus.textColor(0xCC8844);
+        }
+
+        auto hint = fontInstallAvailabilityHint(face, dataRoot);
+        btnInstallFont.enabled = scriptbookOnPath() && hint.length == 0;
+        if (!scriptbookOnPath())
+            btnInstallFont.tooltipText = UIString.fromRaw(
+                "Install scriptbook and add it to PATH to run font playbooks from Appearance."d);
+        else if (hint.length)
+            btnInstallFont.tooltipText = UIString.fromRaw(to!dstring(hint));
+        else
+            btnInstallFont.tooltipText = UIString.fromRaw(""d);
+
+        if (dlg.window)
+            dlg.window.update(true);
+    }
+
+    rbCascadia.click = delegate(Widget w) { refreshFontPreview(); return false; };
+    rbJetBrains.click = delegate(Widget w) { refreshFontPreview(); return false; };
+
+    btnInstallFont.click = delegate(Widget w) {
+        string face = rbJetBrains.checked ? CODE_FONT_JETBRAINS_MONO : CODE_FONT_CASCADIA_MONO;
+        auto result = launchFontInstall(face, dataRoot);
+        parent.showMessageBox(
+            UIString.fromRaw(result.ok ? "Font install"d : "Install unavailable"d),
+            UIString.fromRaw(to!dstring(result.message)));
+        refreshFontPreview();
+        return true;
+    };
+
+    refreshFontPreview();
+
     content.addChild(new TextWidget(null,
-        UIString.fromRaw("Install the font on your OS if glyphs fall back to Consolas/Courier. New terminal blocks pick up the choice immediately; reopen open panels if needed."d))
-        .fontSize(9).textColor(0x888888).margins(Rect(0, 12, 0, 12)));
+        UIString.fromRaw("New terminal blocks pick up the choice immediately; reopen open panels if needed."d))
+        .fontSize(9).textColor(0x888888).margins(Rect(0, 0, 0, 12)));
 
     content.addChild(new TextWidget(null, UIString.fromRaw("Repository terminal"d))
         .fontSize(10).fontWeight(700).margins(Rect(0, 4, 0, 6)));
