@@ -30,6 +30,40 @@ New terminal command blocks pick up the face immediately. Reopen panels that wer
 
 Fallbacks if the chosen face is missing: the other recommended mono, then Consolas, then Courier New.
 
+== Install (Scriptbook)
+
+Do not paste a host-specific `winget` line into this spec. PlayTime binds `cli.install` from `equivalence-rules-cli`.
+
+[cols="1,2",options="header"]
+|===
+| Face | Playbook in `dev-centr/scriptbook`
+
+| Cascadia Mono
+| `examples/fonts/install-cascadia-mono.cmk` (tool id `cascadia-mono`)
+
+| JetBrains Mono
+| `examples/fonts/install-jetbrains-mono.cmk` (tool id `jetbrains-mono`)
+|===
+
+Further first-class monos (Fira Code, Iosevka, Monaspace, JetBrains Mono Nerd Font) have playbooks in the same folder. They are **not** Appearance radios yet.
+
+*Today:* the human runs `scriptbook run … --catalog …/equivalence-rules-cli/catalog/tools.sdl`.
+*Next:* Appearance **Install** when `scriptbook` is on PATH (same "binary on PATH" pattern as UniConfig). Do not reimplement exec in the dialog.
+
+Member wiring and **preview spec** (editable code sample, not a pangram bitmap): team-docs `how-to/font-lock.adoc` on team.docs.devcentr.org.
+
+== Preview (spec, not shipped)
+
+The Appearance dialog does not yet preview the face.
+
+When it does:
+
+* The preview is an **editable** monospace field wearing the selected face (pangram + a short D sample). Typing updates immediately.
+* Cascadia Mono preview forces ligatures off.
+* If the face is missing, say so and point at the Scriptbook playbook. Do not render Consolas and label it JetBrains Mono.
+
+A full font-manager module (project Fontsource lock, OFL in-tree, web-use cards) is later. DevCentr is the first client of that library -- not a Suitcase clone.
+
 == Outside DevCentr
 
 Strong recommendation for editors and terminal hosts used with Dev-Centr workflows:

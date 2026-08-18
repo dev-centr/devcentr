@@ -1,0 +1,6 @@
+= 2026-08-18 -- Appearance font lock
+
+* Appearance spec points at Scriptbook intent playbooks for Cascadia Mono and JetBrains Mono (`scriptbook/examples/fonts/`), catalog ids in `equivalence-rules-cli`.
+* Further monos (Fira Code, Iosevka, Monaspace, Nerd Fonts JetBrains Mono) have playbooks but are not Appearance radios yet.
+* Preview: specified as an editable code field wearing the face; not implemented in `settings_dialog.d` this pass.
+* Next hook: Install when `scriptbook` is on PATH -- do not reimplement exec in the dialog.
