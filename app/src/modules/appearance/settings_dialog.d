@@ -6,6 +6,71 @@ import modules.appearance.font_install;
 import modules.appearance.fonts;
 import modules.appearance.settings;
 import std.conv : to;
+import std.process : Pid, tryWait;
+
+private final class FontInstallWatcher : Widget
+{
+    Pid _pid = Pid.init;
+    ulong _timerId;
+    void delegate(bool success) _onDone;
+
+    this()
+    {
+        super(null);
+        visibility = Visibility.Gone;
+    }
+
+    void watch(Pid pid, void delegate(bool success) onDone)
+    {
+        _pid = pid;
+        _onDone = onDone;
+        if (_timerId)
+            cancelTimer(_timerId);
+        _timerId = setTimer(500);
+    }
+
+    override bool onTimer(ulong id)
+    {
+        if (id != _timerId || _pid is Pid.init)
+            return false;
+
+        auto result = tryWait(_pid);
+        if (!result.terminated)
+            return true;
+
+        cancelTimer(_timerId);
+        _timerId = 0;
+        _pid = Pid.init;
+        if (_onDone !is null)
+            _onDone(result.status == 0);
+        return false;
+    }
+}
+
+private string selectedCodeFontFace(RadioButton rbCascadia, RadioButton rbJetBrains,
+    RadioButton rbFira, RadioButton rbIosevka, RadioButton rbMonaspace)
+{
+    if (rbJetBrains.checked)
+        return CODE_FONT_JETBRAINS_MONO;
+    if (rbFira.checked)
+        return CODE_FONT_FIRA_CODE;
+    if (rbIosevka.checked)
+        return CODE_FONT_IOSEVKA;
+    if (rbMonaspace.checked)
+        return CODE_FONT_MONASPACE;
+    return CODE_FONT_CASCADIA_MONO;
+}
+
+private void setCodeFontRadio(string face, RadioButton rbCascadia, RadioButton rbJetBrains,
+    RadioButton rbFira, RadioButton rbIosevka, RadioButton rbMonaspace)
+{
+    face = normalizeCodeFontFace(face);
+    rbCascadia.checked = face == CODE_FONT_CASCADIA_MONO;
+    rbJetBrains.checked = face == CODE_FONT_JETBRAINS_MONO;
+    rbFira.checked = face == CODE_FONT_FIRA_CODE;
+    rbIosevka.checked = face == CODE_FONT_IOSEVKA;
+    rbMonaspace.checked = face == CODE_FONT_MONASPACE;
+}
 
 /// Appearance preferences: code / terminal monospace font and env-refresh behavior.
 void showAppearanceSettingsDialog(Window parent, string dataRoot,
@@ -15,13 +80,13 @@ void showAppearanceSettingsDialog(Window parent, string dataRoot,
 
     auto dlg = new Dialog(UIString.fromRaw("Appearance"d), parent,
         DialogFlag.Popup | DialogFlag.Resizable);
-    dlg.minWidth(560).minHeight(520);
+    dlg.minWidth(560).minHeight(580);
 
     auto content = new VerticalLayout();
     content.layoutWidth(FILL_PARENT).padding(15);
 
     content.addChild(new TextWidget(null,
-        UIString.fromRaw("Code and terminal font. Cascadia Mono is the default (no ligatures — better for tables and grids). JetBrains Mono is the other supported choice."d))
+        UIString.fromRaw("Code and terminal font. Cascadia Mono is the default (no ligatures — better for tables and grids). Fira Code and Monaspace are ligature-capable cuts; the preview toggle only affects the ligature demo line."d))
         .fontSize(9).textColor(0xAAAAAA).margins(Rect(0, 0, 0, 12)));
 
     content.addChild(new TextWidget(null, UIString.fromRaw("Monospace font"d))
@@ -31,14 +96,20 @@ void showAppearanceSettingsDialog(Window parent, string dataRoot,
         UIString.fromRaw("Cascadia Mono (recommended default)"d));
     auto rbJetBrains = new RadioButton("font_jetbrains",
         UIString.fromRaw("JetBrains Mono"d));
+    auto rbFira = new RadioButton("font_fira",
+        UIString.fromRaw("Fira Code"d));
+    auto rbIosevka = new RadioButton("font_iosevka",
+        UIString.fromRaw("Iosevka"d));
+    auto rbMonaspace = new RadioButton("font_monaspace",
+        UIString.fromRaw("GitHub Monaspace (Neon)"d));
 
-    if (current.codeFontFace == CODE_FONT_JETBRAINS_MONO)
-        rbJetBrains.checked = true;
-    else
-        rbCascadia.checked = true;
+    setCodeFontRadio(current.codeFontFace, rbCascadia, rbJetBrains, rbFira, rbIosevka, rbMonaspace);
 
     content.addChild(rbCascadia);
     content.addChild(rbJetBrains);
+    content.addChild(rbFira);
+    content.addChild(rbIosevka);
+    content.addChild(rbMonaspace);
 
     auto fontStatus = new TextWidget(null, UIString.fromRaw(""d));
     fontStatus.fontSize(9).textColor(0xCC8844).margins(Rect(0, 8, 0, 4));
@@ -48,9 +119,27 @@ void showAppearanceSettingsDialog(Window parent, string dataRoot,
         .fontSize(10).fontWeight(700).margins(Rect(0, 4, 0, 4)));
 
     auto preview = new EditBox("font_preview", to!dstring(defaultFontPreviewText()));
-    preview.layoutWidth(FILL_PARENT).layoutHeight(140);
+    preview.layoutWidth(FILL_PARENT).layoutHeight(120);
     preview.backgroundColor = 0x1B1B1B;
     content.addChild(preview);
+
+    auto cbLigatures = new CheckBox("font_ligatures",
+        UIString.fromRaw("Show ligature demo line in preview"d));
+    cbLigatures.checked = current.codeFontLigatures;
+    cbLigatures.margins(Rect(0, 6, 0, 2));
+    content.addChild(cbLigatures);
+
+    auto ligaturePreview = new EditBox("font_ligature_preview",
+        to!dstring(FONT_PREVIEW_LIGATURES));
+    ligaturePreview.layoutWidth(FILL_PARENT).layoutHeight(28);
+    ligaturePreview.backgroundColor = 0x1B1B1B;
+    ligaturePreview.readOnly = true;
+    content.addChild(ligaturePreview);
+
+    auto ligatureNote = new TextWidget(null,
+        UIString.fromRaw("dlangui does not enable OpenType ligatures — characters render separately. Terminal and editor ligatures follow OS/editor settings."d));
+    ligatureNote.fontSize(8).textColor(0x888888).margins(Rect(0, 2, 0, 4));
+    content.addChild(ligatureNote);
 
     auto installRow = new HorizontalLayout();
     installRow.layoutWidth(FILL_PARENT).margins(Rect(0, 8, 0, 12));
@@ -58,10 +147,19 @@ void showAppearanceSettingsDialog(Window parent, string dataRoot,
     installRow.addChild(btnInstallFont);
     content.addChild(installRow);
 
+    auto installWatcher = new FontInstallWatcher();
+    content.addChild(installWatcher);
+
     void refreshFontPreview()
     {
-        string face = rbJetBrains.checked ? CODE_FONT_JETBRAINS_MONO : CODE_FONT_CASCADIA_MONO;
+        string face = selectedCodeFontFace(rbCascadia, rbJetBrains, rbFira, rbIosevka, rbMonaspace);
         applyPreviewCodeFont(preview, face);
+        applyPreviewCodeFont(ligaturePreview, face);
+
+        bool showLigatures = cbLigatures.checked;
+        ligaturePreview.visibility = showLigatures ? Visibility.Visible : Visibility.Gone;
+        ligatureNote.visibility = showLigatures ? Visibility.Visible : Visibility.Gone;
+
         if (isCodeFontInstalled(face))
         {
             fontStatus.text = UIString.fromRaw(to!dstring(face ~ " is installed on this system."));
@@ -88,19 +186,45 @@ void showAppearanceSettingsDialog(Window parent, string dataRoot,
             dlg.window.update(true);
     }
 
-    rbCascadia.click = delegate(Widget w) { refreshFontPreview(); return false; };
-    rbJetBrains.click = delegate(Widget w) { refreshFontPreview(); return false; };
+    bool onFontRadioClick(Widget w)
+    {
+        refreshFontPreview();
+        return false;
+    }
+
+    rbCascadia.click = &onFontRadioClick;
+    rbJetBrains.click = &onFontRadioClick;
+    rbFira.click = &onFontRadioClick;
+    rbIosevka.click = &onFontRadioClick;
+    rbMonaspace.click = &onFontRadioClick;
+
+    cbLigatures.click = delegate(Widget w) {
+        refreshFontPreview();
+        return false;
+    };
 
     btnInstallFont.click = delegate(Widget w) {
-        string face = rbJetBrains.checked ? CODE_FONT_JETBRAINS_MONO : CODE_FONT_CASCADIA_MONO;
+        string face = selectedCodeFontFace(rbCascadia, rbJetBrains, rbFira, rbIosevka, rbMonaspace);
         auto result = launchFontInstall(face, dataRoot);
         parent.showMessageBox(
             UIString.fromRaw(result.ok ? "Font install"d : "Install unavailable"d),
             UIString.fromRaw(to!dstring(result.message)));
-        refreshFontPreview();
+        if (result.ok && result.pid !is Pid.init)
+        {
+            installWatcher.watch(result.pid, delegate(bool success) {
+                refreshCodeFontCache();
+                refreshFontPreview();
+            });
+        }
+        else
+        {
+            refreshCodeFontCache();
+            refreshFontPreview();
+        }
         return true;
     };
 
+    refreshCodeFontCache();
     refreshFontPreview();
 
     content.addChild(new TextWidget(null,
@@ -189,9 +313,8 @@ void showAppearanceSettingsDialog(Window parent, string dataRoot,
     auto btnSave = new Button(null, UIString.fromRaw("Save"d));
     btnSave.click = delegate(Widget w) {
         AppearanceSettings s = loadAppearanceSettings(dataRoot);
-        s.codeFontFace = rbJetBrains.checked
-            ? CODE_FONT_JETBRAINS_MONO
-            : CODE_FONT_CASCADIA_MONO;
+        s.codeFontFace = selectedCodeFontFace(rbCascadia, rbJetBrains, rbFira, rbIosevka, rbMonaspace);
+        s.codeFontLigatures = cbLigatures.checked;
         s.envRefreshAutoRun = cbAutoRun.checked;
         auto idx = shellCombo.selectedItemIndex;
         if (idx >= 0 && idx < cast(int) shellItems.length)

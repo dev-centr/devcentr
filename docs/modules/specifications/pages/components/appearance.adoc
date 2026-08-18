@@ -1,6 +1,6 @@
 = Appearance (code font)
 :navtitle: Appearance
-:description: DevCentr code/terminal font preference — Cascadia Mono default, JetBrains Mono optional.
+:description: DevCentr code/terminal font preference — Cascadia Mono default, five supported monos, ligature preview toggle.
 
 DevCentr uses a dedicated **monospace** face for the integrated terminal and other code panels. UI chrome stays on the normal UI font.
 
@@ -15,6 +15,15 @@ DevCentr uses a dedicated **monospace** face for the integrated terminal and oth
 
 | link:https://www.jetbrains.com/lp/mono/[**JetBrains Mono**]
 | Supported alternate. Good coding face; ligatures optional at the OS/editor level, but DevCentr asks for the Mono family name as installed.
+
+| link:https://github.com/tonsky/FiraCode[**Fira Code**]
+| Ligature-first coding mono. Not the terminal default; available when you want ligatures in editor workflows outside table-heavy panels.
+
+| link:https://typeof.net/Iosevka/[**Iosevka**]
+| Parametric high-density mono. Supported alternate for users who prefer Iosevka's width/spacing model.
+
+| link:https://monaspace.githubnext.com/[**GitHub Monaspace**] (Neon)
+| GitHub Next superfamily; Appearance stores **Monaspace Neon** as the primary cut. Install may register Argon, Radon, Krypton, or Xenon — any Monaspace variant counts as installed.
 |===
 
 Do **not** default to Cascadia *Code* (ligatures) for DevCentr terminals. Mono is the recommendation.
@@ -22,15 +31,16 @@ Do **not** default to Cascadia *Code* (ligatures) for DevCentr terminals. Mono i
 == In the app
 
 . Open **Appearance** in the top bar.
-. Pick Cascadia Mono or JetBrains Mono.
+. Pick one of the five monospace faces above.
 . Preview the face in the editable sample below the radios; type to judge legibility (`0O`, `1lI`, short D snippet).
-. If the face is missing, Appearance warns you and offers **Install selected font** when `scriptbook` is on `PATH` (runs the matching `examples/fonts/install-*.cmk` playbook against `equivalence-rules-cli`).
-. Optionally set **repository terminal** shell preference (`auto` prefers Nushell when `nu` is on `PATH`) and **Env refresh: inject and run`.
-. Save. Stored in `~/.dev-center/ui-settings.json` as `codeFontFace`, `terminalShell`, and `envRefreshAutoRun`.
+. Toggle **Show ligature demo line** to show or hide `!= === -> |>` under the main preview. dlangui does not enable OpenType ligatures — the toggle is preview-only; terminal and editor ligatures follow OS/editor settings. Persisted as `codeFontLigatures` in `ui-settings.json`.
+. If the face is missing, Appearance warns you and offers **Install selected font** when `scriptbook` is on `PATH` (runs the matching `examples/fonts/install-*.cmk` playbook against `equivalence-rules-cli`). Preview and install status refresh when the Scriptbook process finishes — no need to close the dialog.
+. Optionally set **repository terminal** shell preference (`auto` prefers Nushell when `nu` is on `PATH`) and **Env refresh: inject and run**.
+. Save. Stored in `~/.dev-center/ui-settings.json` as `codeFontFace`, `codeFontLigatures`, `terminalShell`, and `envRefreshAutoRun`.
 
 New terminal command blocks pick up the face immediately. Reopen panels that were already open if they still show the old face. The Auto-run checkbox on the terminal env chrome also persists `envRefreshAutoRun`.
 
-Fallbacks if the chosen face is missing: the other recommended mono, then Consolas, then Courier New.
+Fallbacks if the chosen face is missing: the other recommended monos, then Consolas, then Courier New.
 
 == Install (Scriptbook)
 
@@ -45,19 +55,28 @@ Do not paste a host-specific `winget` line into this spec. PlayTime binds `cli.i
 
 | JetBrains Mono
 | `examples/fonts/install-jetbrains-mono.cmk` (tool id `jetbrains-mono`)
+
+| Fira Code
+| `examples/fonts/install-fira-code.cmk` (tool id `fira-code`)
+
+| Iosevka
+| `examples/fonts/install-iosevka.cmk` (tool id `iosevka`)
+
+| GitHub Monaspace
+| `examples/fonts/install-monaspace.cmk` (tool id `monaspace`)
 |===
 
-Further first-class monos (Fira Code, Iosevka, Monaspace, JetBrains Mono Nerd Font) have playbooks in the same folder. They are **not** Appearance radios yet.
+JetBrains Mono Nerd Font (glyph layer) has a playbook in the same folder but is **not** an Appearance radio — Nerd Fonts patches are a separate layer.
 
-*Today:* Appearance **Install selected font** when `scriptbook` is on PATH — spawns `scriptbook run … --catalog …/equivalence-rules-cli/catalog/tools.sdl` with a platform `--format` (`choco` on Windows, `brew` on macOS, `nix` when available). Playbook and catalog resolve from the code hive or cached equivalence-rules-cli under `~/.dev-center`. Button disabled with tooltip when `scriptbook` or paths are missing.
+*Today:* Appearance **Install selected font** when `scriptbook` is on PATH — spawns `scriptbook run … --catalog …/equivalence-rules-cli/catalog/tools.sdl` with a platform `--format` (`choco` on Windows, `brew` on macOS, `nix` when available). Playbook and catalog resolve from the code hive or cached equivalence-rules-cli under `~/.dev-center`. Button disabled with tooltip when `scriptbook` or paths are missing. After install completes, Appearance re-enumerates OS fonts and refreshes preview/status in place.
 
 == Preview
 
 The Appearance dialog includes an **editable** monospace preview wearing the selected face:
 
 * Pangram line plus a short D sample (from team-docs font-lock). Typing updates immediately; radio changes re-apply the face.
+* Optional ligature demo line (`!= === -> |>`) controlled by **Show ligature demo line**. Cascadia Mono stays ligature-off by family choice; Fira Code and Monaspace are ligature-capable cuts but the preview still renders separate glyphs unless the host stack enables features elsewhere.
 * If the face is not installed, a warning appears. Do not treat Consolas fallback as a preview of JetBrains Mono.
-* Ligature toggle is deferred (Cascadia Mono preview stays ligature-off by family choice).
 
 A full font-manager module (project Fontsource lock, OFL in-tree, web-use cards) is later. DevCentr is the first client of that library -- not a Suitcase clone.
 

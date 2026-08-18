@@ -1,0 +1,9 @@
+= 2026-08-18 -- Appearance font deferred items
+
+* `settings.d`: five allowed code faces (`Fira Code`, `Iosevka`, `Monaspace Neon`); `codeFontLigatures` persisted in `ui-settings.json`.
+* `settings_dialog.d`: five font radios; ligature demo line + toggle; `FontInstallWatcher` polls Scriptbook exit and refreshes preview in place.
+* `fonts.d`: `refreshCodeFontCache()` re-enumerates Win32 fonts; Monaspace variant install detection; `FONT_PREVIEW_LIGATURES`.
+* `font_install.d`: playbook mapping for Fira Code, Iosevka, Monaspace; `launchFontInstall` returns spawned `Pid`.
+* Spec xref:specifications:components/appearance.adoc[Appearance (code font)] — five radios, ligature preview, live refresh after install.
+
+Still deferred: full font-manager module, Fontsource npm web font UI, Nerd Fonts as Appearance radio, proprietary picker.

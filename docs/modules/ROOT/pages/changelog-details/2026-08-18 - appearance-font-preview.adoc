@@ -3,4 +3,4 @@
 * `settings_dialog.d`: editable preview pane wearing the selected mono; install status warning when the OS lacks the face.
 * `font_install.d`: spawn `scriptbook run examples/fonts/install-*.cmk --catalog equivalence-rules-cli/catalog/tools.sdl` when `scriptbook` is on PATH (platform `--format`: `choco` / `brew` / `nix`).
 * `fonts.d`: `isCodeFontInstalled`, `applyPreviewCodeFont`, default pangram + D sample from font-lock spec.
-* Ligature toggle deferred; Cascadia Mono stays the no-ligature default by family name.
+* Ligature toggle deferred; Cascadia Mono stays the no-ligature default by family name. *Shipped in follow-up:* xref:changelog-details/2026-08-18 - appearance-font-deferred.adoc[2026-08-18 appearance-font-deferred].

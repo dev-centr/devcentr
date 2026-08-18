@@ -2,6 +2,14 @@
 
 This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
 
+== 2026-08-18 – Appearance: extra fonts, ligature preview, live install refresh
+
+* Appearance radios expanded to Fira Code, Iosevka, and GitHub Monaspace (Neon) alongside Cascadia Mono and JetBrains Mono.
+* Ligature demo line (`!= === -> |>`) with **Show ligature demo line** toggle; persisted as `codeFontLigatures` (preview-only — dlangui does not apply OpenType ligatures).
+* After Scriptbook font install completes, Appearance re-enumerates OS fonts and refreshes preview/status without closing the dialog.
+* Spec xref:specifications:components/appearance.adoc[Appearance (code font)] updated.
+* See xref:changelog-details/2026-08-18 - appearance-font-deferred.adoc[Detailed changelog].
+
 == 2026-08-18 – Appearance: font preview + Scriptbook install
 
 * Appearance dialog: editable monospace preview (pangram + D sample) for Cascadia Mono / JetBrains Mono; warns when the face is missing; **Install selected font** spawns Scriptbook when on PATH (`modules.appearance.font_install`).

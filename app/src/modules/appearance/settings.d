@@ -1,5 +1,6 @@
 module modules.appearance.settings;
 
+import std.algorithm : equal;
 import std.file : exists, readText, write, mkdirRecurse;
 import std.path : buildPath, dirName;
 import std.json : JSONValue, parseJSON, JSONType;
@@ -9,11 +10,17 @@ import std.string : strip, toLower;
 /// Allowed code / terminal monospace faces in DevCentr.
 enum string CODE_FONT_CASCADIA_MONO = "Cascadia Mono";
 enum string CODE_FONT_JETBRAINS_MONO = "JetBrains Mono";
+enum string CODE_FONT_FIRA_CODE = "Fira Code";
+enum string CODE_FONT_IOSEVKA = "Iosevka";
+/// Primary Monaspace cut for Appearance; other variants are install-detection fallbacks.
+enum string CODE_FONT_MONASPACE = "Monaspace Neon";
 
 struct AppearanceSettings
 {
     /// Primary monospace face for terminals and code panels. Default: Cascadia Mono.
     string codeFontFace = CODE_FONT_CASCADIA_MONO;
+    /// Preview-only ligature demo line in Appearance (dlangui does not apply OpenType features).
+    bool codeFontLigatures = false;
     /// When true, Refresh injects and runs the env refresh command without requiring Enter.
     bool envRefreshAutoRun = false;
     /// Terminal shell preference: auto | nushell | powershell | cmd | bash | zsh | fish | sh
@@ -22,13 +29,20 @@ struct AppearanceSettings
 
 bool isAllowedCodeFont(string face)
 {
-    return face == CODE_FONT_CASCADIA_MONO || face == CODE_FONT_JETBRAINS_MONO;
+    return face == CODE_FONT_CASCADIA_MONO
+        || face == CODE_FONT_JETBRAINS_MONO
+        || face == CODE_FONT_FIRA_CODE
+        || face == CODE_FONT_IOSEVKA
+        || face == CODE_FONT_MONASPACE;
 }
 
 string normalizeCodeFontFace(string face)
 {
-    if (isAllowedCodeFont(face))
-        return face;
+    auto f = face.strip;
+    if (f.equal("GitHub Monaspace"))
+        return CODE_FONT_MONASPACE;
+    if (isAllowedCodeFont(f))
+        return f;
     return CODE_FONT_CASCADIA_MONO;
 }
 
@@ -58,6 +72,12 @@ string codeFontFaceList(string primary)
     auto p = normalizeCodeFontFace(primary);
     if (p == CODE_FONT_JETBRAINS_MONO)
         return "JetBrains Mono,Cascadia Mono,Consolas,Courier New";
+    if (p == CODE_FONT_FIRA_CODE)
+        return "Fira Code,Cascadia Mono,JetBrains Mono,Consolas,Courier New";
+    if (p == CODE_FONT_IOSEVKA)
+        return "Iosevka,Iosevka Fixed,Cascadia Mono,JetBrains Mono,Consolas,Courier New";
+    if (p == CODE_FONT_MONASPACE)
+        return "Monaspace Neon,Monaspace Argon,Monaspace Radon,Monaspace Krypton,Monaspace Xenon,Cascadia Mono,JetBrains Mono,Consolas,Courier New";
     return "Cascadia Mono,JetBrains Mono,Consolas,Courier New";
 }
 
@@ -89,6 +109,10 @@ AppearanceSettings loadAppearanceSettings(string dataRoot = null)
         auto j = parseJSON(readText(path));
         if ("codeFontFace" in j && j["codeFontFace"].type == JSONType.string)
             s.codeFontFace = normalizeCodeFontFace(j["codeFontFace"].str);
+        if ("codeFontLigatures" in j && j["codeFontLigatures"].type == JSONType.true_)
+            s.codeFontLigatures = true;
+        else if ("codeFontLigatures" in j && j["codeFontLigatures"].type == JSONType.false_)
+            s.codeFontLigatures = false;
         if ("envRefreshAutoRun" in j && j["envRefreshAutoRun"].type == JSONType.true_)
             s.envRefreshAutoRun = true;
         else if ("envRefreshAutoRun" in j && j["envRefreshAutoRun"].type == JSONType.false_)
@@ -122,6 +146,7 @@ void saveAppearanceSettings(string dataRoot, AppearanceSettings s)
     }
 
     j["codeFontFace"] = JSONValue(s.codeFontFace);
+    j["codeFontLigatures"] = JSONValue(s.codeFontLigatures);
     j["envRefreshAutoRun"] = JSONValue(s.envRefreshAutoRun);
     j["terminalShell"] = JSONValue(s.terminalShell);
     write(path, j.toPrettyString());

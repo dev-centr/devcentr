@@ -9,6 +9,8 @@ import std.uni : toLower;
 enum string FONT_PREVIEW_PANGRAM =
     "0O 1lI 8B -- The quick brown fox jumps over the lazy dog.";
 
+enum string FONT_PREVIEW_LIGATURES = "!= === -> |>";
+
 enum string FONT_PREVIEW_D_SAMPLE = q{
 void main() {
     import std.stdio : writeln;
@@ -25,12 +27,8 @@ string defaultFontPreviewText()
     return FONT_PREVIEW_PANGRAM ~ "\n\n" ~ to!string(FONT_PREVIEW_D_SAMPLE);
 }
 
-/// True when the OS reports the face by name (no fallback chain).
-bool isCodeFontInstalled(string face)
+private bool isFaceListed(string face)
 {
-    if (!isAllowedCodeFont(face))
-        return false;
-
     auto faces = FontManager.instance.getFaces();
     if (faces !is null)
     {
@@ -45,7 +43,52 @@ bool isCodeFontInstalled(string face)
     return !font.isNull && font.face.toLower == face.toLower;
 }
 
-/// Apply the user's preferred code font (Cascadia Mono or JetBrains Mono) to a widget.
+private string[] monaspaceFaceVariants()
+{
+    return [
+        CODE_FONT_MONASPACE,
+        "Monaspace Argon",
+        "Monaspace Radon",
+        "Monaspace Krypton",
+        "Monaspace Xenon",
+    ];
+}
+
+/// True when the OS reports the face by name (no fallback chain).
+bool isCodeFontInstalled(string face)
+{
+    if (!isAllowedCodeFont(face))
+        return false;
+
+    if (face == CODE_FONT_MONASPACE)
+    {
+        foreach (variant; monaspaceFaceVariants())
+            if (isFaceListed(variant))
+                return true;
+        return false;
+    }
+
+    return isFaceListed(face);
+}
+
+/// Re-enumerate system fonts after an install so preview/status can update in-place.
+void refreshCodeFontCache()
+{
+    if (FontManager.instance is null)
+        return;
+
+    FontManager.instance.clearGlyphCaches();
+
+    version (Windows)
+    {
+        import dlangui.platforms.windows.win32fonts : Win32FontManager;
+        auto fm = cast(Win32FontManager) FontManager.instance;
+        if (fm !is null)
+            fm.initialize();
+    }
+}
+
+/// Apply the user's preferred code font to a widget.
 void applyCodeFont(Widget w)
 {
     if (w is null)
@@ -61,7 +104,7 @@ void applyPreviewCodeFont(Widget w, string face)
     if (w is null)
         return;
     w.fontFamily(FontFamily.MonoSpace);
-    w.fontFace(normalizeCodeFontFace(face));
+    w.fontFace(codeFontFaceList(normalizeCodeFontFace(face)));
 }
 
 /// Current primary face name (for labels / dialogs).

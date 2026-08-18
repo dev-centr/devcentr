@@ -5,7 +5,7 @@ import modules.cli_tools.cache : CliToolsCatalogCache;
 import modules.project_recognizer.profiles_dir : codeHiveRoots;
 import std.file : exists;
 import std.path : absolutePath, buildPath, dirName;
-import std.process : environment, execute, spawnProcess;
+import std.process : environment, execute, spawnProcess, Pid;
 import std.string : strip;
 
 /// True when `scriptbook` resolves on PATH.
@@ -28,10 +28,17 @@ bool scriptbookOnPath()
 /// Playbook filename for an Appearance code font face.
 string fontInstallPlaybookFile(string face)
 {
+    face = normalizeCodeFontFace(face);
     if (face == CODE_FONT_CASCADIA_MONO)
         return "install-cascadia-mono.cmk";
     if (face == CODE_FONT_JETBRAINS_MONO)
         return "install-jetbrains-mono.cmk";
+    if (face == CODE_FONT_FIRA_CODE)
+        return "install-fira-code.cmk";
+    if (face == CODE_FONT_IOSEVKA)
+        return "install-iosevka.cmk";
+    if (face == CODE_FONT_MONASPACE)
+        return "install-monaspace.cmk";
     return null;
 }
 
@@ -116,23 +123,24 @@ struct FontInstallLaunch
 {
     bool ok;
     string message;
+    Pid pid;
 }
 
 /// Spawn `scriptbook run` for the selected Appearance face. Returns a user-facing status message.
 FontInstallLaunch launchFontInstall(string face, string dataRoot)
 {
     if (!scriptbookOnPath())
-        return FontInstallLaunch(false, "scriptbook is not on PATH.");
+        return FontInstallLaunch(false, "scriptbook is not on PATH.", Pid.init);
 
     auto playbook = resolveFontPlaybookPath(face, dataRoot);
     if (playbook.length == 0)
         return FontInstallLaunch(false,
-            "Font playbook not found. Check out dev-centr/scriptbook (examples/fonts/).");
+            "Font playbook not found. Check out dev-centr/scriptbook (examples/fonts/).", Pid.init);
 
     auto catalog = resolveFontCatalogPath(dataRoot);
     if (catalog.length == 0)
         return FontInstallLaunch(false,
-            "Catalog tools.sdl not found. Sync equivalence-rules-cli or set CODE_ROOT/code hive.");
+            "Catalog tools.sdl not found. Sync equivalence-rules-cli or set CODE_ROOT/code hive.", Pid.init);
 
     string[] args = ["scriptbook", "run", playbook, "--catalog", catalog, "--yes"];
     auto format = scriptbookInstallFormat();
@@ -141,13 +149,14 @@ FontInstallLaunch launchFontInstall(string face, string dataRoot)
 
     try
     {
-        spawnProcess(args);
+        auto pid = spawnProcess(args);
         return FontInstallLaunch(true,
-            "Started Scriptbook install for " ~ face ~ ". Reopen Appearance after install to refresh the preview.");
+            "Started Scriptbook install for " ~ normalizeCodeFontFace(face)
+            ~ ". Preview refreshes when install finishes.", pid);
     }
     catch (Exception e)
     {
-        return FontInstallLaunch(false, "Could not start scriptbook: " ~ e.msg);
+        return FontInstallLaunch(false, "Could not start scriptbook: " ~ e.msg, Pid.init);
     }
 }
 
