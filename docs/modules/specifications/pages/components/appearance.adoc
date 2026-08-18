@@ -1,6 +1,6 @@
 = Appearance (code font)
 :navtitle: Appearance
-:description: DevCentr code/terminal font preference — Cascadia Mono default, five supported monos, ligature preview toggle.
+:description: DevCentr code/terminal font preference — five OS monos, Scriptbook install, and what this dialog is not.
 
 DevCentr uses a dedicated **monospace** face for the integrated terminal and other code panels. UI chrome stays on the normal UI font.
 
@@ -78,7 +78,38 @@ The Appearance dialog includes an **editable** monospace preview wearing the sel
 * Optional ligature demo line (`!= === -> |>`) controlled by **Show ligature demo line**. Cascadia Mono stays ligature-off by family choice; Fira Code and Monaspace are ligature-capable cuts but the preview still renders separate glyphs unless the host stack enables features elsewhere.
 * If the face is not installed, a warning appears. Do not treat Consolas fallback as a preview of JetBrains Mono.
 
-A full font-manager module (project Fontsource lock, OFL in-tree, web-use cards) is later. DevCentr is the first client of that library -- not a Suitcase clone.
+== What this dialog is not
+
+Appearance picks fonts for *this app's* terminal and code panels.
+That is a settings dialog, not a font manager for the operating system or for web projects.
+
+[cols="1,1,2",options="header"]
+|===
+| Thing | Status | Why not in Appearance
+
+| Full font manager app (Suitcase-style)
+| Later, separate
+| A manager for thousands of faces on the OS is a different product. We will extract a lockfile/library when we need project-wide font pins.
+
+| Fontsource npm UI
+| Later, different screen
+| Fontsource is for *web projects* (self-host woff2 in the repo). Appearance installs *OS fonts* for DevCentr.
+
+| Nerd Font as a radio next to JetBrains Mono
+| Later, separate toggle
+| Nerd Fonts patches an existing mono and adds icons; it is not a new typeface.
+
+| Proprietary / Google Sans / Netflix Sans picker
+| Never in DevCentr chrome
+| Licensed commercial faces. Documented as examples. We do not ship or scrape the files.
+
+| Real ligatures in the preview widget
+| Blocked on toolkit
+| dlangui EditBox does not apply OpenType ligatures. The checkbox only shows or hides a demo line.
+|===
+
+Roadmap (resume order): optional Nerd Font *toggle*; project Fontsource lock as its own library (DevCentr first client); clearer Install UX when Scriptbook is missing; more Windows winget catalog methods.
+Never: scraper hubs, vendoring commissioned fonts, a Suitcase clone branded as DevCentr.
 
 == Outside DevCentr
 

@@ -8,6 +8,8 @@ This page records significant documentation and project activity. New entries ar
 
 === August
 
+* **Appearance font roadmap** — Spec records why a Suitcase-style manager and Fontsource web UI are not this dialog; Todo & Roadmap has resume order. See xref:changelog-details/2026-08-18 - appearance-font-roadmap.adoc[changelog].
+
 * **Windows installer CI** — Tag builds emit `DevCentr-windows-x64-setup.exe` (NSIS), keep the zip as portable, and call msi-generator for an MSI when that tool builds. See xref:changelog-details/2026-08-17 - windows-setup-ci.adoc[changelog] and `CI-INSTALLER.adoc`.
 
 == 2025

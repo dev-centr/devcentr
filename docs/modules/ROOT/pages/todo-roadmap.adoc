@@ -54,6 +54,12 @@ This page is the **task-level** TODO and roadmap for the DevCentr app and its do
 ** [x] PlayTime intent bind for `cli.install` + sidecar resolved command (scriptbook library).
 ** [ ] DevCentr GUI player: open `.cmk`, run steps, weave sidecar output (do not rewrite source).
 ** [ ] Discover/play Scriptbooks from docs and project templates.
+* [ ] **Fonts / Appearance**
+** [x] Five OS-font radios + editable preview + Scriptbook install (Cascadia Mono default, JetBrains Mono, Fira Code, Iosevka, GitHub Monaspace). Ligature demo line is preview-only (dlangui cannot apply OpenType ligatures).
+** [ ] Optional: Nerd Font as a distinct CLI-glyphs / patch toggle (not another radio).
+** [ ] Project font lock library (Fontsource packages + OFL in-tree); DevCentr is the first client.
+** [ ] Clearer UX when Scriptbook is missing; more Windows winget methods in the catalog.
+** Never: scraper hubs, vendoring commissioned fonts, a Suitcase clone branded as DevCentr.
 * [ ] **GraphRAG Client Support**: Add support to DevCentr to connect to a standalone persistent GraphRAG D-lang indexer service. Explore Unison-lang architectural models (content-addressable immutable ASTs instead of traditional text files) to potentially augment or replace standard compilation flows.
 * [ ] **code-lens IDE integrations**
 ** [ ] Track upstream link:https://github.com/AMDphreak/code-lens[code-lens] — pedagogical lens switching (didactic, schematic, contextual, role-labeled) for code examples.
@@ -76,5 +82,6 @@ This page is the **task-level** TODO and roadmap for the DevCentr app and its do
 * **Intelligent App Interop**: Providing integrations with GraphRAG background services (D-lang) to allow semantic understanding of codebases. Long-term goals include bridging into Unison-lang style paradigms (AST hashing vs pure text logic) to radically drop build times.
 * **code-lens (IDE)**: Pedagogical lens switching in VS Code and Zed — upstream link:https://github.com/AMDphreak/code-lens[code-lens]; AI-assisted role naming for real-world code; see link:https://github.com/AMDphreak/code-lens/blob/main/docs/editor-integrations.md[editor feasibility].
 * **AI stack topology:** Layer-spine canvas + guided add (specs/SDL done; UI implementation tracked under Core app).
+* **Fonts / Appearance:** OS-font picker for *this app* is shipped (five coding monos, Scriptbook install). Project Fontsource lock and a Suitcase-style manager are later / separate -- not forgotten. Spec: xref:specifications:components/appearance.adoc[Appearance (code font)].
 * **Visual Identity:** Implement the "Castle on a Cloud" theme for cloud-deployment sub-hubs, including custom iconography and a "castle keep" management metaphor.
 

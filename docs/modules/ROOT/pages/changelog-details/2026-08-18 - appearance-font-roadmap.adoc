@@ -1,0 +1,7 @@
+= 2026-08-18 -- Appearance font roadmap
+
+Orientation for the Appearance dialog vs later font work.
+
+* Spec xref:specifications:components/appearance.adoc[Appearance (code font)] -- table: Suitcase-style manager, Fontsource npm UI, Nerd Font as a radio, proprietary picker, real OpenType ligatures in the preview. Status is later / separate / never / blocked on toolkit -- not "out of scope" as a shrug.
+* xref:todo-roadmap.adoc[Todo & Roadmap] and root `TODO.adoc` -- resume order: optional Nerd Font toggle, then project Fontsource lock as a library (DevCentr first client).
+* Member-only orientation (full table + shipped commits): team-docs *Font lock*.

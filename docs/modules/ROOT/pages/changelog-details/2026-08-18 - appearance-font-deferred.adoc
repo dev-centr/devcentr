@@ -6,4 +6,4 @@
 * `font_install.d`: playbook mapping for Fira Code, Iosevka, Monaspace; `launchFontInstall` returns spawned `Pid`.
 * Spec xref:specifications:components/appearance.adoc[Appearance (code font)] — five radios, ligature preview, live refresh after install.
 
-Still deferred: full font-manager module, Fontsource npm web font UI, Nerd Fonts as Appearance radio, proprietary picker.
+Still later / never (not forgotten): full font-manager module, Fontsource npm web font UI, Nerd Font as a *toggle* (not a radio), proprietary picker. See xref:changelog-details/2026-08-18 - appearance-font-roadmap.adoc[appearance-font-roadmap].

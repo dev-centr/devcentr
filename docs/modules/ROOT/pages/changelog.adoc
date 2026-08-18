@@ -2,6 +2,12 @@
 
 This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
 
+== 2026-08-18 – Appearance: what is in the dialog vs later
+
+* Spec records why a Suitcase-style manager, Fontsource web UI, Nerd Font radio, proprietary picker, and real OT ligatures stay out of Appearance -- later, separate, or never; not "forgot."
+* Todo & Roadmap lists resume order (optional Nerd Font toggle, then project font lock library).
+* See xref:changelog-details/2026-08-18 - appearance-font-roadmap.adoc[Detailed changelog].
+
 == 2026-08-18 – Appearance: extra fonts, ligature preview, live install refresh
 
 * Appearance radios expanded to Fira Code, Iosevka, and GitHub Monaspace (Neon) alongside Cascadia Mono and JetBrains Mono.
