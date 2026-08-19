@@ -2,6 +2,11 @@
 
 This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
 
+== 2026-08-19 – Toolchain advisor: graphics rendering docs link
+
+* Toolchain advisor recommends xref:general-knowledge:explanation/architecture/graphics-rendering-engines.adoc[Graphics rendering engines] when target is desktop or web; **Read docs** opens the hub page from ranked guidance.
+* `windows-desktop` and `web` option copy points at the same explanation; project vision links the essay.
+
 == 2026-08-18 – Appearance: what is in the dialog vs later
 
 * Spec records why a Suitcase-style manager, Fontsource web UI, Nerd Font radio, proprietary picker, and real OT ligatures stay out of Appearance -- later, separate, or never; not "forgot."

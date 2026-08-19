@@ -168,7 +168,10 @@ The app needs an environment navigator that models the environment hierarchy/nes
 
 === Visual Paradigm
 The Dev-Center application prioritizes a premium, high-fidelity user interface.
-Current UI implementation uses the `dlangui` library.
+Current UI implementation uses the `dlangui` library (Skia-backed immediate-mode rendering).
+
+When evaluating **future UI stacks** or **cross-platform desktop shells**, see xref:general-knowledge:explanation/architecture/graphics-rendering-engines.adoc[Graphics rendering engines] in general-knowledge — framework comparison, large-document patterns, and post-Skia pipelines (Graphite, Impeller, Vello).
+Essay: link:https://devcentr.org/news/2026-08-19-after-skia-where-rendering-is-headed[After Skia: where rendering is headed].
 
 === Logical vs Optical Pixels
 [IMPORTANT]

@@ -261,6 +261,17 @@ class OptionContextPanel : ScrollWidget
         auto summary = new TextWidget(null, to!dstring(best.summary));
         summary.fontSize(9).textColor(0xCCCCCC).margins(Rect(0, 4, 0, 0));
         _content.addChild(summary);
+
+        if (best.docs.length > 0)
+        {
+            auto btnDocs = new Button(null, "Read docs"d);
+            btnDocs.margins(Rect(0, 8, 0, 0));
+            btnDocs.click = delegate(Widget w) {
+                openUrlInBrowser(best.docs);
+                return true;
+            };
+            _content.addChild(btnDocs);
+        }
     }
 }
 

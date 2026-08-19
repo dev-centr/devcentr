@@ -111,7 +111,10 @@ toolchainAdvisor {
                 id "windows-desktop"
                 label "Windows desktop app (Win32 / WinUI)"
                 era "modern"
-                overview "GUI or desktop binaries using Win32, WinUI 3, or similar Windows-only APIs."
+                overview """
+                GUI or desktop binaries using Win32, WinUI 3, or cross-platform UI stacks (Avalonia, Qt, Flutter, Electron/Tauri).
+                Rendering choice matters for dense, long-lived clients — see docs.devcentr.org general-knowledge explanation/architecture/graphics-rendering-engines.
+                """
             }
             option {
                 id "windows-console"
@@ -129,7 +132,9 @@ toolchainAdvisor {
                 id "web"
                 label "Web (browser)"
                 era "modern"
-                overview "Runtime in the browser; host OS matters less than Node/runtime in CI."
+                overview """
+                Runtime in the browser; host OS matters less than Node/runtime in CI. Electron and Chromium shells share DOM/V8 limits for huge in-app documents — see graphics-rendering-engines in general-knowledge docs.
+                """
             }
         }
 
@@ -375,6 +380,24 @@ toolchainAdvisor {
             tooling "WSL2 distro" "build-essential"
             caveats "Slow I/O on /mnt/c/" "GUI needs WSLg or X server"
             docs "https://docs.devcentr.org/devcentr/latest/secrets-manager/explanation/connecting-to-wsl.html"
+        }
+
+        recommendation {
+            id "desktop-rendering-engines"
+            title "Pick a UI stack with rendering headroom"
+            summary """
+            Electron and Chromium excel at ecosystem reach; native stacks (Avalonia, Qt, Flutter, GPUI) avoid DOM/V8 overhead for dense, long-lived UIs.
+            Read the rendering-engine landscape and what comes after Skia before committing to a shell.
+            """
+            match {
+                target "windows-desktop" "web"
+                language "dotnet" "node" "cpp" "rust" "other"
+                toolchain "auto"
+                execution "auto" "native-host" "container" "ci-only"
+            }
+            tooling "Avalonia / Qt / Flutter / GPUI for retained-mode UI" "Electron or Tauri when web ecosystem dominates" "Viewport virtualization + off-heap history for large documents"
+            caveats "Renderer choice does not replace virtualization for multi-GB client documents" "Impeller is Flutter-specific; Vello/wgpu is the cross-platform compute-first bet"
+            docs "https://docs.devcentr.org/general-knowledge/latest/explanation/architecture/graphics-rendering-engines.html"
         }
 
         recommendation {
