@@ -1,0 +1,40 @@
+// Docker - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "docker"
+    name "Docker"
+    stackRef "Docker"
+    profileVersion "0.1.0"
+
+    summary "Images and containers; Dockerfile; compose."
+
+    layout zone {
+        id "project-root"
+        title "Docker context"
+        order 1
+        memoryBin "Dockerfile; .dockerignore"
+        anchorFiles "Dockerfile" "compose.yaml"
+    }
+
+    grammar {
+        id "primary"
+        shape "docker build / docker compose"
+        scriptSource "Dockerfile / compose services"
+        notes "Build context is a directory — surface it."
+    }
+
+    preset {
+        id "build"
+        label "build"
+        command "docker build -t {image} ."
+        cwd "project-root"
+    }
+    preset {
+        id "compose-up"
+        label "compose-up"
+        command "docker compose up"
+        cwd "project-root"
+    }
+    extract {
+        manifest "Dockerfile"
+    }
+}

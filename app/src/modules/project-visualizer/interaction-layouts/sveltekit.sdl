@@ -1,0 +1,41 @@
+// SvelteKit - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "sveltekit"
+    name "SvelteKit"
+    stackRef "SvelteKit"
+    profileVersion "0.1.0"
+    parentTool "svelte"
+
+    summary "Svelte app framework; src/routes; Vite-powered."
+
+    layout zone {
+        id "routes"
+        title "Kit routes"
+        order 1
+        memoryBin "src/routes; svelte.config.js"
+        anchorFiles "svelte.config.js" "src/routes" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "{pm} run dev"
+        scriptSource "package.json scripts"
+        notes "Stay at package root."
+    }
+
+    preset {
+        id "dev"
+        label "dev"
+        command "pnpm run dev"
+        cwd "routes"
+    }
+    preset {
+        id "build"
+        label "build"
+        command "pnpm run build"
+        cwd "routes"
+    }
+    extract {
+        manifest "package.json" fields "scripts"
+    }
+}

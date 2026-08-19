@@ -1,0 +1,35 @@
+// Ember - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "ember"
+    name "Ember"
+    stackRef "Ember"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Ambitious framework; ember-cli."
+
+    layout zone {
+        id "app"
+        title "Ember app"
+        order 1
+        memoryBin "app/; ember-cli-build.js"
+        anchorFiles "ember-cli-build.js" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "ember serve"
+        scriptSource "ember-cli"
+        notes "ember-cli is the control plane."
+    }
+
+    preset {
+        id "serve"
+        label "serve"
+        command "pnpm run start"
+        cwd "app"
+    }
+    extract {
+        manifest "package.json" fields "devDependencies.ember-cli" "scripts"
+    }
+}

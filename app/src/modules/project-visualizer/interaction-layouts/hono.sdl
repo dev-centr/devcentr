@@ -1,0 +1,35 @@
+// Hono - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "hono"
+    name "Hono"
+    stackRef "Hono"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Small multi-runtime web framework."
+
+    layout zone {
+        id "app"
+        title "Hono app"
+        order 1
+        memoryBin "src/index; wrangler.toml on Cloudflare"
+        anchorFiles "package.json" "wrangler.toml"
+    }
+
+    grammar {
+        id "primary"
+        shape "{pm} run dev"
+        scriptSource "package.json scripts"
+        notes "Host runtime owns the process."
+    }
+
+    preset {
+        id "dev"
+        label "dev"
+        command "pnpm run dev"
+        cwd "app"
+    }
+    extract {
+        manifest "package.json" fields "dependencies.hono" "scripts"
+    }
+}

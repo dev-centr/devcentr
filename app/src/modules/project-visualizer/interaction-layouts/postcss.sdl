@@ -1,0 +1,35 @@
+// PostCSS - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "postcss"
+    name "PostCSS"
+    stackRef "Node.js"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "CSS transform pipeline; postcss.config."
+
+    layout zone {
+        id "config"
+        title "PostCSS"
+        order 1
+        memoryBin "postcss.config"
+        anchorFiles "postcss.config.js" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "postcss {input} -o {output}"
+        scriptSource "postcss.config plus scripts"
+        notes "Usually embedded in Vite/Next."
+    }
+
+    preset {
+        id "build"
+        label "build"
+        command "pnpm run build"
+        cwd "config"
+    }
+    extract {
+        manifest "postcss.config.js"
+    }
+}

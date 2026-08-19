@@ -1,0 +1,35 @@
+// esbuild - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "esbuild"
+    name "esbuild"
+    stackRef "esbuild"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Extremely fast bundler/transpiler."
+
+    layout zone {
+        id "config"
+        title "esbuild entry"
+        order 1
+        memoryBin "build script or config"
+        anchorFiles "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "esbuild {entry}"
+        scriptSource "package.json scripts"
+        notes "Frequently wrapped by Vite."
+    }
+
+    preset {
+        id "build"
+        label "build"
+        command "pnpm run build"
+        cwd "config"
+    }
+    extract {
+        manifest "package.json" fields "devDependencies.esbuild" "scripts"
+    }
+}

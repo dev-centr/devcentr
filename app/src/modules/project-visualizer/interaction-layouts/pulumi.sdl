@@ -1,0 +1,40 @@
+// Pulumi - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "pulumi"
+    name "Pulumi"
+    stackRef "Pulumi"
+    profileVersion "0.1.0"
+
+    summary "IaC in general languages; Pulumi.yaml; stack select."
+
+    layout zone {
+        id "project-root"
+        title "Pulumi project"
+        order 1
+        memoryBin "Pulumi.yaml; stack configs"
+        anchorFiles "Pulumi.yaml"
+    }
+
+    grammar {
+        id "primary"
+        shape "pulumi up / pulumi stack select {name}"
+        scriptSource "Pulumi.yaml plus program"
+        notes "Stack name is the environment standing position."
+    }
+
+    preset {
+        id "preview"
+        label "preview"
+        command "pulumi preview"
+        cwd "project-root"
+    }
+    preset {
+        id "up"
+        label "up"
+        command "pulumi up"
+        cwd "project-root"
+    }
+    extract {
+        manifest "Pulumi.yaml" fields "name" "runtime"
+    }
+}

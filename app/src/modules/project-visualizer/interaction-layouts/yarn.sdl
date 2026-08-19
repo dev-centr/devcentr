@@ -1,0 +1,41 @@
+// Yarn - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "yarn"
+    name "Yarn"
+    stackRef "Node.js"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Yarn Classic or Berry; workspaces via yarn workspace from repo root."
+
+    layout zone {
+        id "project-root"
+        title "Project root"
+        order 1
+        memoryBin "yarn.lock and optional .yarnrc.yml"
+        anchorFiles "package.json" "yarn.lock" ".yarnrc.yml"
+    }
+
+    grammar {
+        id "primary"
+        shape "yarn workspace {name} run {script}"
+        scriptSource "package.json scripts"
+        notes "yarn workspace routes monorepos without cd."
+    }
+
+    preset {
+        id "install"
+        label "install"
+        command "yarn install"
+        cwd "project-root"
+    }
+    preset {
+        id "dev"
+        label "dev"
+        command "yarn run dev"
+        cwd "project-root"
+    }
+    extract {
+        manifest "package.json" fields "scripts" "name" "workspaces"
+    }
+}

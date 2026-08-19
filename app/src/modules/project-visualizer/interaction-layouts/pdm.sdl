@@ -1,0 +1,41 @@
+// PDM - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "pdm"
+    name "PDM"
+    stackRef "Python"
+    profileVersion "0.1.0"
+    parentTool "python"
+
+    summary "Modern pyproject PM; pdm run."
+
+    layout zone {
+        id "project-root"
+        title "PDM project"
+        order 1
+        memoryBin "pyproject.toml; pdm.lock"
+        anchorFiles "pyproject.toml" "pdm.lock"
+    }
+
+    grammar {
+        id "primary"
+        shape "pdm run {cmd}"
+        scriptSource "pyproject scripts"
+        notes "pdm run from project root."
+    }
+
+    preset {
+        id "install"
+        label "install"
+        command "pdm install"
+        cwd "project-root"
+    }
+    preset {
+        id "run"
+        label "run"
+        command "pdm run {script}"
+        cwd "project-root"
+    }
+    extract {
+        manifest "pyproject.toml" fields "project"
+    }
+}

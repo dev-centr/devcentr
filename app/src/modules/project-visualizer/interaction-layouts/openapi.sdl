@@ -1,0 +1,34 @@
+// OpenAPI - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "openapi"
+    name "OpenAPI"
+    stackRef "API"
+    profileVersion "0.1.0"
+
+    summary "API contract; openapi.yaml; generators."
+
+    layout zone {
+        id "spec"
+        title "OpenAPI spec"
+        order 1
+        memoryBin "openapi.yaml / swagger.json"
+        anchorFiles "openapi.yaml" "swagger.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "openapi-generator-cli"
+        scriptSource "OpenAPI document"
+        notes "Spec file is the standing artifact."
+    }
+
+    preset {
+        id "lint"
+        label "lint"
+        command "echo openapi.yaml"
+        cwd "spec"
+    }
+    extract {
+        manifest "openapi.yaml"
+    }
+}

@@ -1,0 +1,40 @@
+// OpenTofu - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "opentofu"
+    name "OpenTofu"
+    stackRef "OpenTofu"
+    profileVersion "0.1.0"
+
+    summary "Open Terraform fork; tofu CLI."
+
+    layout zone {
+        id "module-root"
+        title "OpenTofu root"
+        order 1
+        memoryBin "*.tf; lockfile"
+        anchorFiles "main.tf" ".terraform.lock.hcl"
+    }
+
+    grammar {
+        id "primary"
+        shape "tofu {cmd} -chdir={path}"
+        scriptSource ".tf configuration"
+        notes "Compatible workflow with terraform -chdir."
+    }
+
+    preset {
+        id "init"
+        label "init"
+        command "tofu init"
+        cwd "module-root"
+    }
+    preset {
+        id "plan"
+        label "plan"
+        command "tofu plan"
+        cwd "module-root"
+    }
+    extract {
+        manifest "main.tf"
+    }
+}

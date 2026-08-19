@@ -1,0 +1,34 @@
+// moonrepo - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "moonrepo"
+    name "moonrepo"
+    stackRef "moonrepo"
+    profileVersion "0.1.0"
+
+    summary "Polyglot monorepo tool; .moon/workspace.yml."
+
+    layout zone {
+        id "workspace-root"
+        title "moon workspace"
+        order 1
+        memoryBin ".moon/; moon.yml per project"
+        anchorFiles ".moon/workspace.yml"
+    }
+
+    grammar {
+        id "primary"
+        shape "moon run {project}:{task}"
+        scriptSource "moon.yml tasks"
+        notes "moon run from workspace root."
+    }
+
+    preset {
+        id "run"
+        label "run"
+        command "moon run {projectName}:{task}"
+        cwd "workspace-root"
+    }
+    extract {
+        manifest ".moon/workspace.yml" fields "projects"
+    }
+}

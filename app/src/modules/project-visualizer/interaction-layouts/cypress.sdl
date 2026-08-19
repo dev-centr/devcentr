@@ -1,0 +1,41 @@
+// Cypress - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "cypress"
+    name "Cypress"
+    stackRef "Node.js"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "E2E runner; cypress.config."
+
+    layout zone {
+        id "e2e"
+        title "Cypress"
+        order 1
+        memoryBin "cypress.config; cypress/e2e"
+        anchorFiles "cypress.config.ts" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "cypress run / cypress open"
+        scriptSource "cypress.config"
+        notes "open vs run is interactive vs headless."
+    }
+
+    preset {
+        id "run"
+        label "run"
+        command "pnpm exec cypress run"
+        cwd "e2e"
+    }
+    preset {
+        id "open"
+        label "open"
+        command "pnpm exec cypress open"
+        cwd "e2e"
+    }
+    extract {
+        manifest "cypress.config.ts"
+    }
+}

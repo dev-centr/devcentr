@@ -1,0 +1,35 @@
+// Sequelize - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "sequelize"
+    name "Sequelize"
+    stackRef "Sequelize"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Node ORM; .sequelizerc; sequelize-cli."
+
+    layout zone {
+        id "db"
+        title "Sequelize"
+        order 1
+        memoryBin "models/; migrations/; .sequelizerc"
+        anchorFiles ".sequelizerc" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "sequelize-cli {cmd}"
+        scriptSource ".sequelizerc paths"
+        notes "Config file locates migrations without cd."
+    }
+
+    preset {
+        id "migrate"
+        label "migrate"
+        command "pnpm exec sequelize-cli db:migrate"
+        cwd "db"
+    }
+    extract {
+        manifest ".sequelizerc"
+    }
+}

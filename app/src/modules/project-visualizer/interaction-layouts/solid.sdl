@@ -1,0 +1,47 @@
+// SolidJS / SolidStart — reactive UI; SolidStart adds Vinxi-based full-stack routing.
+interactionLayout {
+    id "solid"
+    name "SolidJS"
+    stackRef "Node.js"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Fine-grained reactivity; SolidStart (when present) is the full-stack app shell over Solid."
+
+    dependsOn "node"
+    controls "node"
+
+    layout zone {
+        id "solid-app"
+        title "Solid app"
+        order 1
+        memoryBin "src/ routes and components; @solidjs/router when SPA"
+        anchorFiles "src/app.tsx" "src/routes" "app.config.ts"
+    }
+    layout zone {
+        id "solidstart"
+        title "SolidStart (if detected)"
+        order 2
+        memoryBin "Vinxi app.config.ts; file-based routes under src/routes"
+        anchorFiles "app.config.ts" "src/entry-client.tsx" "src/entry-server.tsx"
+    }
+
+    grammar {
+        id "dev"
+        shape "<pm> run dev  →  vinxi dev | solid-start dev (project-dependent)"
+        scriptSource "package.json scripts.dev"
+        notes "Script string varies by template; read scripts.dev before assuming CLI name."
+    }
+
+    preset {
+        id "dev-filtered"
+        label "Solid dev (monorepo)"
+        command "pnpm --filter {packageName} dev"
+        cwd "workspace-root"
+        requires "monorepo" "packageName"
+    }
+
+    extract {
+        manifest "package.json" fields "scripts" "dependencies.solid-js" "dependencies.@solidjs/start"
+    }
+}

@@ -1,0 +1,41 @@
+// Buf - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "buf"
+    name "Buf"
+    stackRef "API"
+    profileVersion "0.1.0"
+    parentTool "protobuf"
+
+    summary "Protobuf toolchain; buf.yaml."
+
+    layout zone {
+        id "proto"
+        title "Buf workspace"
+        order 1
+        memoryBin "buf.yaml; buf.gen.yaml"
+        anchorFiles "buf.yaml" "buf.lock"
+    }
+
+    grammar {
+        id "primary"
+        shape "buf {cmd}"
+        scriptSource "buf.yaml"
+        notes "Stay at buf workspace root."
+    }
+
+    preset {
+        id "lint"
+        label "lint"
+        command "buf lint"
+        cwd "proto"
+    }
+    preset {
+        id "generate"
+        label "generate"
+        command "buf generate"
+        cwd "proto"
+    }
+    extract {
+        manifest "buf.yaml"
+    }
+}

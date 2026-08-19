@@ -1,0 +1,35 @@
+// VitePress - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "vitepress"
+    name "VitePress"
+    stackRef "Node.js"
+    profileVersion "0.1.0"
+    parentTool "vite"
+
+    summary "Vite-powered docs; .vitepress/config."
+
+    layout zone {
+        id "docs"
+        title "VitePress"
+        order 1
+        memoryBin ".vitepress/; docs markdown"
+        anchorFiles ".vitepress/config.ts" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "vitepress dev / build"
+        scriptSource "package.json scripts"
+        notes "Docs root may differ from repo root."
+    }
+
+    preset {
+        id "dev"
+        label "dev"
+        command "pnpm exec vitepress dev"
+        cwd "docs"
+    }
+    extract {
+        manifest "package.json" fields "devDependencies.vitepress" "scripts"
+    }
+}

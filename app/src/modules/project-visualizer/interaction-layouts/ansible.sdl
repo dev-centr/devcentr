@@ -1,0 +1,34 @@
+// Ansible - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "ansible"
+    name "Ansible"
+    stackRef "Ansible"
+    profileVersion "0.1.0"
+
+    summary "Config management; playbooks; inventory."
+
+    layout zone {
+        id "playbook-root"
+        title "Playbook root"
+        order 1
+        memoryBin "playbook.yml; inventory; ansible.cfg"
+        anchorFiles "ansible.cfg" "playbook.yml" "inventory"
+    }
+
+    grammar {
+        id "primary"
+        shape "ansible-playbook -i {inventory} {playbook}"
+        scriptSource "playbooks plus inventory"
+        notes "Inventory is as important as the playbook."
+    }
+
+    preset {
+        id "run"
+        label "run"
+        command "ansible-playbook -i inventory playbook.yml"
+        cwd "playbook-root"
+    }
+    extract {
+        manifest "ansible.cfg"
+    }
+}

@@ -1,0 +1,35 @@
+// SQLx - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "sqlx"
+    name "SQLx"
+    stackRef "Rust"
+    profileVersion "0.1.0"
+    parentTool "rust"
+
+    summary "Async SQL; sqlx-cli migrate; DATABASE_URL."
+
+    layout zone {
+        id "db"
+        title "SQLx"
+        order 1
+        memoryBin "migrations/; sqlx offline data"
+        anchorFiles "Cargo.toml" ".env"
+    }
+
+    grammar {
+        id "primary"
+        shape "sqlx migrate run"
+        scriptSource "migrations folder"
+        notes "Offline mode uses .sqlx cache."
+    }
+
+    preset {
+        id "migrate"
+        label "migrate"
+        command "sqlx migrate run"
+        cwd "db"
+    }
+    extract {
+        manifest "Cargo.toml" fields "dependencies.sqlx"
+    }
+}

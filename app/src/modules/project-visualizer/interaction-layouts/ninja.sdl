@@ -1,0 +1,35 @@
+// Ninja - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "ninja"
+    name "Ninja"
+    stackRef "C++"
+    profileVersion "0.1.0"
+    parentTool "cmake"
+
+    summary "Fast build executor; build.ninja."
+
+    layout zone {
+        id "build"
+        title "Ninja build dir"
+        order 1
+        memoryBin "build.ninja"
+        anchorFiles "build.ninja"
+    }
+
+    grammar {
+        id "primary"
+        shape "ninja -C {build}"
+        scriptSource "build.ninja"
+        notes "Almost always -C into build dir."
+    }
+
+    preset {
+        id "build"
+        label "build"
+        command "ninja -C build"
+        cwd "build"
+    }
+    extract {
+        manifest "build.ninja"
+    }
+}

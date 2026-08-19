@@ -1,0 +1,34 @@
+// Stripe CLI - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "stripe-cli"
+    name "Stripe CLI"
+    stackRef "Stripe"
+    profileVersion "0.1.0"
+
+    summary "Payments tooling; stripe listen; webhooks."
+
+    layout zone {
+        id "project-root"
+        title "Stripe"
+        order 1
+        memoryBin "webhook endpoint; API keys in env"
+        anchorFiles ".env"
+    }
+
+    grammar {
+        id "primary"
+        shape "stripe listen --forward-to {url}"
+        scriptSource "env plus dashboard"
+        notes "Local listen bridges to app port."
+    }
+
+    preset {
+        id "listen"
+        label "listen"
+        command "stripe listen --forward-to localhost:3000/api/webhooks/stripe"
+        cwd "project-root"
+    }
+    extract {
+        manifest ".env" fields "STRIPE_SECRET_KEY"
+    }
+}

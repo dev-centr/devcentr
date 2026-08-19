@@ -1,0 +1,41 @@
+// MkDocs - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "mkdocs"
+    name "MkDocs"
+    stackRef "Python"
+    profileVersion "0.1.0"
+    parentTool "python"
+
+    summary "Python docs; mkdocs.yml."
+
+    layout zone {
+        id "docs"
+        title "MkDocs"
+        order 1
+        memoryBin "mkdocs.yml; docs/"
+        anchorFiles "mkdocs.yml"
+    }
+
+    grammar {
+        id "primary"
+        shape "mkdocs serve / mkdocs build"
+        scriptSource "mkdocs.yml"
+        notes "Run from mkdocs.yml directory."
+    }
+
+    preset {
+        id "serve"
+        label "serve"
+        command "mkdocs serve"
+        cwd "docs"
+    }
+    preset {
+        id "build"
+        label "build"
+        command "mkdocs build"
+        cwd "docs"
+    }
+    extract {
+        manifest "mkdocs.yml" fields "site_name"
+    }
+}

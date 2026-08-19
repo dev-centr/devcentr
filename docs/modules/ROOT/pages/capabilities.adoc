@@ -36,7 +36,7 @@ DevCentr configures and hands off to external agents; it does not replace agent 
 *   **Installation:** One-touch setup for complex developer environments.
 *   **Configuration:** Enforcing reproducible, version-controlled settings across your machine.
 *   **Management:** Active lifecycle monitoring of running services and tools.
-*   **Visualization:** Graphical modeling of project architecture and dependencies.
+*   **Visualization:** Graphical modeling of project architecture and dependencies — xref:specifications:components/project-visualizer.adoc[Project Visualizer] (Live Blueprint): dependency and control trees, SDL interaction layout profiles, root-first command routing from the repo root.
 *   **DevOps:** Pipelines and traditional ops as one facet of the path.
 
 == 📂 VCS & Repository Support

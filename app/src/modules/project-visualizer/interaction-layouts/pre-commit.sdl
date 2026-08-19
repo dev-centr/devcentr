@@ -1,0 +1,34 @@
+// pre-commit - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "pre-commit"
+    name "pre-commit"
+    stackRef "Python"
+    profileVersion "0.1.0"
+
+    summary "Git hook framework; .pre-commit-config.yaml."
+
+    layout zone {
+        id "repo-root"
+        title "pre-commit"
+        order 1
+        memoryBin ".pre-commit-config.yaml"
+        anchorFiles ".pre-commit-config.yaml"
+    }
+
+    grammar {
+        id "primary"
+        shape "pre-commit run --all-files"
+        scriptSource "hook repos in config"
+        notes "Install hooks once; run from repo root."
+    }
+
+    preset {
+        id "run"
+        label "run"
+        command "pre-commit run --all-files"
+        cwd "repo-root"
+    }
+    extract {
+        manifest ".pre-commit-config.yaml" fields "repos"
+    }
+}

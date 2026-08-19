@@ -1,0 +1,34 @@
+// Julia - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "julia"
+    name "Julia"
+    stackRef "Julia"
+    profileVersion "0.1.0"
+
+    summary "Scientific computing; Project.toml; --project."
+
+    layout zone {
+        id "project-root"
+        title "Julia project"
+        order 1
+        memoryBin "Project.toml; Manifest.toml"
+        anchorFiles "Project.toml" "Manifest.toml"
+    }
+
+    grammar {
+        id "primary"
+        shape "julia --project=."
+        scriptSource "Project.toml deps"
+        notes "--project selects env without activate dance."
+    }
+
+    preset {
+        id "status"
+        label "status"
+        command "julia --project=. -e "using Pkg; Pkg.status()""
+        cwd "project-root"
+    }
+    extract {
+        manifest "Project.toml" fields "name" "deps"
+    }
+}

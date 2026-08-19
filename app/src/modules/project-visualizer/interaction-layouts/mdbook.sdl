@@ -1,0 +1,40 @@
+// mdBook - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "mdbook"
+    name "mdBook"
+    stackRef "Rust"
+    profileVersion "0.1.0"
+
+    summary "Rust book generator; book.toml."
+
+    layout zone {
+        id "book"
+        title "mdBook"
+        order 1
+        memoryBin "book.toml; src/"
+        anchorFiles "book.toml"
+    }
+
+    grammar {
+        id "primary"
+        shape "mdbook serve / mdbook build"
+        scriptSource "book.toml"
+        notes "Run from directory with book.toml."
+    }
+
+    preset {
+        id "serve"
+        label "serve"
+        command "mdbook serve"
+        cwd "book"
+    }
+    preset {
+        id "build"
+        label "build"
+        command "mdbook build"
+        cwd "book"
+    }
+    extract {
+        manifest "book.toml" fields "book"
+    }
+}

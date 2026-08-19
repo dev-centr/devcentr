@@ -1,0 +1,35 @@
+// Sphinx - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "sphinx"
+    name "Sphinx"
+    stackRef "Python"
+    profileVersion "0.1.0"
+    parentTool "python"
+
+    summary "Docs generator; conf.py; make html."
+
+    layout zone {
+        id "docs"
+        title "Sphinx docs"
+        order 1
+        memoryBin "docs/conf.py; Makefile"
+        anchorFiles "conf.py" "Makefile"
+    }
+
+    grammar {
+        id "primary"
+        shape "sphinx-build -b html {src} {out}"
+        scriptSource "Makefile / tox"
+        notes "Prefer make -C docs from repo root."
+    }
+
+    preset {
+        id "html"
+        label "html"
+        command "make -C docs html"
+        cwd "docs"
+    }
+    extract {
+        manifest "docs/conf.py"
+    }
+}

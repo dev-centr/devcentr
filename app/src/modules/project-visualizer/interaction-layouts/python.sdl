@@ -1,0 +1,34 @@
+// Python - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "python"
+    name "Python"
+    stackRef "Python"
+    profileVersion "0.1.0"
+
+    summary "Language runtime; venv isolation; pyproject.toml."
+
+    layout zone {
+        id "project-root"
+        title "Python project"
+        order 1
+        memoryBin "pyproject.toml or requirements.txt; .venv"
+        anchorFiles "pyproject.toml" "requirements.txt" ".python-version"
+    }
+
+    grammar {
+        id "primary"
+        shape "python -m {module}"
+        scriptSource "pyproject / tool"
+        notes "Prefer python -m over bare scripts."
+    }
+
+    preset {
+        id "version"
+        label "version"
+        command "python --version"
+        cwd "project-root"
+    }
+    extract {
+        manifest "pyproject.toml" fields "project"
+    }
+}

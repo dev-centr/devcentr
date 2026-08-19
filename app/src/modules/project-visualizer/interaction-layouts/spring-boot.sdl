@@ -1,0 +1,35 @@
+// Spring Boot - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "spring-boot"
+    name "Spring Boot"
+    stackRef "Java"
+    profileVersion "0.1.0"
+    parentTool "maven"
+
+    summary "App framework; spring-boot:run or bootRun."
+
+    layout zone {
+        id "app"
+        title "Spring Boot app"
+        order 1
+        memoryBin "application.yml; SpringBootApplication"
+        anchorFiles "pom.xml" "application.yml"
+    }
+
+    grammar {
+        id "primary"
+        shape "mvn spring-boot:run"
+        scriptSource "plugin goals"
+        notes "Build tool owns process; Spring owns DI."
+    }
+
+    preset {
+        id "run"
+        label "run"
+        command "mvn spring-boot:run"
+        cwd "app"
+    }
+    extract {
+        manifest "pom.xml" fields "dependencies"
+    }
+}

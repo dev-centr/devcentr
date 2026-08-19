@@ -1,0 +1,35 @@
+// Symfony - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "symfony"
+    name "Symfony"
+    stackRef "Symfony"
+    profileVersion "0.1.0"
+    parentTool "composer"
+
+    summary "PHP framework; bin/console; Flex recipes."
+
+    layout zone {
+        id "app"
+        title "Symfony app"
+        order 1
+        memoryBin "bin/console; config/"
+        anchorFiles "bin/console" "composer.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "php bin/console {cmd}"
+        scriptSource "console commands"
+        notes "bin/console is the control CLI."
+    }
+
+    preset {
+        id "about"
+        label "about"
+        command "php bin/console about"
+        cwd "app"
+    }
+    extract {
+        manifest "composer.json" fields "require"
+    }
+}

@@ -1,0 +1,43 @@
+// Node.js runtime — ecosystem root for JS/TS projects.
+// Spec: docs/.../components/project-visualizer.adoc
+interactionLayout {
+    id "node"
+    name "Node.js"
+    stackRef "Node.js"
+    profileVersion "0.1.0"
+
+    summary "JavaScript runtime on your PATH; package.json is the project contract; Corepack can pin pnpm/yarn."
+
+    layout zone {
+        id "runtime"
+        title "Runtime"
+        order 1
+        memoryBin "node binary and NODE_* env; version from nvm/fnm/mise or system install"
+        anchorFiles ".nvmrc" ".node-version" "package.json"
+    }
+    layout zone {
+        id "project-root"
+        title "Project root"
+        order 2
+        memoryBin "Single-package repos: all scripts run here"
+        anchorFiles "package.json" "package-lock.json"
+    }
+
+    grammar {
+        id "run-via-npm-family"
+        shape "<pm> run <script>"
+        scriptSource "package.json → scripts.<script>"
+        notes "Node does not define dev/build; the package manager runs scripts declared in package.json."
+    }
+
+    preset {
+        id "check-version"
+        label "Node version"
+        command "node --version"
+        cwd "project-root"
+    }
+
+    extract {
+        manifest "package.json" fields "engines.node" "scripts"
+    }
+}

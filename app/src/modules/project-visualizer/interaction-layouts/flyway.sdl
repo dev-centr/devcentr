@@ -1,0 +1,34 @@
+// Flyway - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "flyway"
+    name "Flyway"
+    stackRef "SQL"
+    profileVersion "0.1.0"
+
+    summary "DB migrations; flyway.conf."
+
+    layout zone {
+        id "migrations"
+        title "Flyway"
+        order 1
+        memoryBin "sql/; flyway.conf"
+        anchorFiles "flyway.conf"
+    }
+
+    grammar {
+        id "primary"
+        shape "flyway migrate"
+        scriptSource "flyway locations"
+        notes "Config points at SQL locations."
+    }
+
+    preset {
+        id "migrate"
+        label "migrate"
+        command "flyway migrate"
+        cwd "migrations"
+    }
+    extract {
+        manifest "flyway.conf"
+    }
+}

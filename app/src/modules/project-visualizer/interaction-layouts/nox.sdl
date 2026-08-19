@@ -1,0 +1,35 @@
+// Nox - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "nox"
+    name "Nox"
+    stackRef "Python"
+    profileVersion "0.1.0"
+    parentTool "python"
+
+    summary "Python-file test sessions; noxfile.py."
+
+    layout zone {
+        id "project-root"
+        title "Nox root"
+        order 1
+        memoryBin "noxfile.py sessions"
+        anchorFiles "noxfile.py"
+    }
+
+    grammar {
+        id "primary"
+        shape "nox -s {session}"
+        scriptSource "noxfile.py sessions"
+        notes "-s selects session."
+    }
+
+    preset {
+        id "run"
+        label "run"
+        command "nox"
+        cwd "project-root"
+    }
+    extract {
+        manifest "noxfile.py"
+    }
+}

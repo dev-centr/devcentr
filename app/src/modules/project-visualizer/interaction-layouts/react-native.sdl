@@ -1,0 +1,41 @@
+// React Native - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "react-native"
+    name "React Native"
+    stackRef "React Native"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Mobile React; Metro; android/ios trees."
+
+    layout zone {
+        id "project-root"
+        title "RN app"
+        order 1
+        memoryBin "package.json; android/; ios/; metro"
+        anchorFiles "package.json" "metro.config.js" "app.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "react-native run-android or {pm} run ios"
+        scriptSource "package.json scripts"
+        notes "Native dirs are controlled by RN CLI / Expo."
+    }
+
+    preset {
+        id "start"
+        label "start"
+        command "pnpm start"
+        cwd "project-root"
+    }
+    preset {
+        id "android"
+        label "android"
+        command "pnpm run android"
+        cwd "project-root"
+    }
+    extract {
+        manifest "package.json" fields "dependencies.react-native" "scripts"
+    }
+}

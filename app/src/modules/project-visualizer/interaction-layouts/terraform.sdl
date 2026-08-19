@@ -1,0 +1,46 @@
+// Terraform - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "terraform"
+    name "Terraform"
+    stackRef "Terraform"
+    profileVersion "0.1.0"
+
+    summary "IaC; .tf files; -chdir."
+
+    layout zone {
+        id "module-root"
+        title "Terraform root"
+        order 1
+        memoryBin "*.tf; .terraform.lock.hcl"
+        anchorFiles "main.tf" "providers.tf" ".terraform.lock.hcl"
+    }
+
+    grammar {
+        id "primary"
+        shape "terraform {cmd} -chdir={path}"
+        scriptSource ".tf configuration"
+        notes "-chdir selects root without cd."
+    }
+
+    preset {
+        id "init"
+        label "init"
+        command "terraform init"
+        cwd "module-root"
+    }
+    preset {
+        id "plan"
+        label "plan"
+        command "terraform plan"
+        cwd "module-root"
+    }
+    preset {
+        id "apply"
+        label "apply"
+        command "terraform apply"
+        cwd "module-root"
+    }
+    extract {
+        manifest "main.tf"
+    }
+}

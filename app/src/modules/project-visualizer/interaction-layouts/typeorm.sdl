@@ -1,0 +1,35 @@
+// TypeORM - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "typeorm"
+    name "TypeORM"
+    stackRef "TypeORM"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "ORM; data-source.ts; typeorm migration:run."
+
+    layout zone {
+        id "db"
+        title "TypeORM"
+        order 1
+        memoryBin "data-source; entities"
+        anchorFiles "data-source.ts" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "typeorm {cmd} -d {dataSource}"
+        scriptSource "DataSource config"
+        notes "-d points at data source file."
+    }
+
+    preset {
+        id "migration"
+        label "migration"
+        command "pnpm exec typeorm migration:run -d ./data-source.ts"
+        cwd "db"
+    }
+    extract {
+        manifest "package.json" fields "dependencies.typeorm"
+    }
+}

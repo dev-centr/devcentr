@@ -1,0 +1,41 @@
+// Tauri - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "tauri"
+    name "Tauri"
+    stackRef "Tauri"
+    profileVersion "0.1.0"
+    parentTool "rust"
+
+    summary "Rust core plus webview shell."
+
+    layout zone {
+        id "src-tauri"
+        title "Tauri backend"
+        order 1
+        memoryBin "src-tauri/; frontend separate"
+        anchorFiles "src-tauri/tauri.conf.json" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "cargo tauri {cmd} or {pm} run tauri"
+        scriptSource "package.json plus Cargo"
+        notes "Stay at repo root when scripts wrap tauri."
+    }
+
+    preset {
+        id "dev"
+        label "dev"
+        command "pnpm run tauri dev"
+        cwd "src-tauri"
+    }
+    preset {
+        id "build"
+        label "build"
+        command "pnpm run tauri build"
+        cwd "src-tauri"
+    }
+    extract {
+        manifest "src-tauri/tauri.conf.json" fields "productName"
+    }
+}

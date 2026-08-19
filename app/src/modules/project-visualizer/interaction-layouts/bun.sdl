@@ -1,0 +1,41 @@
+// Bun - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "bun"
+    name "Bun"
+    stackRef "Node.js"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Runtime plus package manager; bun install / bun run."
+
+    layout zone {
+        id "project-root"
+        title "Project root"
+        order 1
+        memoryBin "bun.lockb; package.json scripts"
+        anchorFiles "package.json" "bun.lockb" "bunfig.toml"
+    }
+
+    grammar {
+        id "primary"
+        shape "bun run {script}"
+        scriptSource "package.json scripts"
+        notes "bun may invoke known scripts without run."
+    }
+
+    preset {
+        id "install"
+        label "install"
+        command "bun install"
+        cwd "project-root"
+    }
+    preset {
+        id "dev"
+        label "dev"
+        command "bun run dev"
+        cwd "project-root"
+    }
+    extract {
+        manifest "package.json" fields "scripts"
+    }
+}

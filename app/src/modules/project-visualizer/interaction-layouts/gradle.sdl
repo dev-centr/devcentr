@@ -1,0 +1,40 @@
+// Gradle - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "gradle"
+    name "Gradle"
+    stackRef "Java"
+    profileVersion "0.1.0"
+
+    summary "settings.gradle plus build.gradle; :module:task."
+
+    layout zone {
+        id "project-root"
+        title "Gradle root"
+        order 1
+        memoryBin "settings.gradle; build.gradle"
+        anchorFiles "settings.gradle.kts" "build.gradle.kts"
+    }
+
+    grammar {
+        id "primary"
+        shape "./gradlew :module:task"
+        scriptSource "Gradle task graph"
+        notes ":module:task from root — do not cd into modules."
+    }
+
+    preset {
+        id "build"
+        label "build"
+        command "./gradlew build"
+        cwd "project-root"
+    }
+    preset {
+        id "test"
+        label "test"
+        command "./gradlew test"
+        cwd "project-root"
+    }
+    extract {
+        manifest "settings.gradle.kts" fields "include"
+    }
+}

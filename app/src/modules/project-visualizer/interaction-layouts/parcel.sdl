@@ -1,0 +1,35 @@
+// Parcel - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "parcel"
+    name "Parcel"
+    stackRef "Parcel"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Zero-config bundler."
+
+    layout zone {
+        id "project-root"
+        title "Parcel root"
+        order 1
+        memoryBin "parcel entry HTML/TS"
+        anchorFiles "package.json" ".parcelrc"
+    }
+
+    grammar {
+        id "primary"
+        shape "parcel {entry}"
+        scriptSource "package.json scripts"
+        notes "parcel serve from package root."
+    }
+
+    preset {
+        id "serve"
+        label "serve"
+        command "pnpm run start"
+        cwd "project-root"
+    }
+    extract {
+        manifest "package.json" fields "devDependencies.parcel" "scripts"
+    }
+}

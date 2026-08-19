@@ -1,0 +1,167 @@
+= Project Visualizer
+:navtitle: Project Visualizer
+:description: Live Blueprint renderer for project architecture — dependency and control trees, tool interaction mental models, and root-first command routing at the point of use.
+
+The **Project Visualizer** is DevCentr's renderer for the **Live Blueprint**: a pannable, interactive map of a repository that answers *what this project is*, *what controls what*, and *which command to run from here* — without making the user `cd` through tribal knowledge or decode tutorial incantations.
+
+It sits on top of xref:project-recognizer.adoc[Project Recognizer] (stack detection via `project-map`) and xref:dependency-modeler.adoc[Dependency Modeler] (intra- and inter-project graphs). Recognition alone lists stacks; the visualizer **teaches the mental model** and **routes actions** from the repo root.
+
+== Mission
+
+Tools ship binaries and `--help` text. They rarely ship **interaction mental models**: where you stand when you run a command, which file defines a script name, how a monorepo routes `dev` to the right package, or how a meta-framework *controls* a library it depends on (Next.js → React).
+
+DevCentr treats that gap as a **first-class product problem**, not documentation debt:
+
+* **At the point of interaction** — when you open a project in DevCentr, the visualizer shows the control tree, command grammar, and suggested invocations for *this repo*, rooted where you already are (workspace root by default).
+* **Accessible without archaeology** — no hunting through README fragments, copied Stack Overflow one-liners, or `--help` output that lists flags but not *why* `--filter` exists.
+* **Curated + live** — human-authored SDL **interaction layout profiles** supply the teaching spine; repo scanners overlay instance facts (script keys, workspace members, detected stacks).
+* **Root-first by default** — monorepo workflows surface `--filter` / `-C` (and equivalents) before suggesting nested-`cd` paths. See xref:general-knowledge:reference/pnpm-run-routing.adoc[pnpm run routing] as the first worked example.
+
+The visualizer is the **cognitive projection** for *project internals* — analogous to xref:role-topology-composer.adoc[Role Topology Composer] for layered AI stacks, but scoped to dependency/control structure and dev-tool command routing inside a codebase.
+
+== Scope
+
+[cols="1,2", options="header"]
+|===
+| In scope | Out of scope (attach elsewhere)
+
+| Dependency graph (libraries, packages, modules)
+| Replacing the IDE editor or terminal emulator
+
+| **Control graph** (framework controls runtime/library usage — Next.js over React)
+| Full CI log viewer (link out)
+
+| **Interaction layout profiles** (SDL → UI zones, command chips, grammar explainer)
+| Inventing fake layers for cross-cutting concerns (env vars, secrets → Secrets Manager)
+
+| Root-first command presets from detected workspace shape
+| Running arbitrary shell without user consent
+
+| Drill-down from project → package → script → config file
+| Parsing every language's import graph on day one
+|===
+
+== Two graphs (required)
+
+xref:ROOT:project-vision.adoc[Project vision] already requires both:
+
+* **Dependency tree** — what depends on what (npm packages, Cargo crates, Dub packages, …).
+* **Control tree** — what *orchestrates* or *owns the workflow* over something it depends on (Next.js over React; pnpm over per-package `package.json` scripts in a workspace).
+
+The visualizer renders both; toggling or layering them is a UI concern. Profiles declare `controls` / `dependsOn` edges for the control slice.
+
+== Interaction layout profiles (SDL)
+
+**Location (app):** `app/src/modules/project-visualizer/interaction-layouts/*.sdl`
+
+**Schema doc:** `app/src/modules/project-visualizer/interaction-layouts/README.adoc`
+
+Each profile describes:
+
+* **Layout zones** — regions of the Live Blueprint UI (workspace root, packages, config files, scripts panel). Mapped to canvas nodes, inspector tabs, or action strips.
+* **Command grammar** — token-by-token meaning (`run`, script name, `--filter`, `-C`, …).
+* **Routed commands** — copy/run presets with `cwd` and routing flags filled from detection.
+* **Evidence** — links to `project-map` stack ids and anchor files for highlighting.
+* **Extract hints** — optional machine-readable notes for repo parsers (which manifests to read).
+
+Initial catalog: **Node.js**, **npm**, **pnpm**, **Vite**, **Next.js**, **Solid / SolidStart**, **Dub**, **Rust / Cargo** (starters) plus **141** additional tools from [`interaction-layouts/_catalog.tsv`](../../../../app/src/modules/project-visualizer/interaction-layouts/_catalog.tsv) — bundlers, monorepo orchestrators, Python/ JVM / .NET stacks, containers, IaC, CI, ORMs, test runners, and common deploy CLIs (**149** profiles total). Stack detection joins via `project-map` profiles including **Vite** and **pnpm workspace** (`~>0.1.4`).
+
+Profiles are **not** the same as:
+
+* `languages/*.sdl` — install/ecosystem catalog for Toolchain Management.
+* `project-map/profiles/stacks/*.sdl` — *detection* only (is this repo Next.js?).
+
+== Data pipeline (how we would do this)
+
+[source,text]
+----
+Curated SDL profiles (mental models + UI layout)
+        │
+        ├── project-map scan → which stacks / file roles match
+        │
+        ├── Repo extractors → instance overlay (scripts, workspace members, versions)
+        │
+        └── Merged ProjectBlueprint JSON → Project Visualizer UI
+----
+
+=== Layer 1 — Curated profiles (source of truth for teaching)
+
+Maintainers author `.sdl` files. These encode what tutorials omit: command shape, default cwd, monorepo routing, control vs dependency edges, and which UI zone each concept occupies.
+
+**Why not `--help` alone?** Help documents flags for a binary already on your PATH. It does not explain workspace membership, that `dev` lives in a nested `package.json`, or that your shell is standing in the wrong package. Help is a supplement, not the spine.
+
+**Why not only parse upstream source?** Possible for *maintainers* refreshing profiles (see Layer 3), but upstream code describes implementation, not the user's standing position. Node's source does not tell you that pnpm `-C` is "as-if cd". Next's docs are scattered; `package.json` scripts are per-repo instance data, not tool grammar.
+
+=== Layer 2 — Repo extractors (instance overlay)
+
+After detection, lightweight parsers attach **this repo's** facts to the profile:
+
+[cols="1,2"]
+|===
+| Tool | Typical extraction
+
+| pnpm / npm / Node
+| `package.json` scripts; `pnpm-workspace.yaml` packages; lockfile presence; root vs nested packages
+
+| Vite / Next / Solid
+| Framework config files; dev script command string; app dir
+
+| Dub
+| `dub.sdl` / `dub.json` targets; configurations; dependency paths
+
+| Rust
+| `Cargo.toml` workspace members; `[bin]` / `[lib]`; `cargo` metadata
+|===
+
+Extractors **validate and populate** profile vacancies (e.g. list actual script keys). They do not replace the profile's grammar explanation.
+
+=== Layer 3 — Maintainer harvest (optional, offline)
+
+For profile authors, not runtime UX:
+
+* CLI `--help` / man pages → flag inventory.
+* Upstream repo docs → link targets in profile `docRef` fields.
+* Static analysis of CLI entrypoints (pnpm, cargo, dub) → confirm subcommand names when refreshing a profile version.
+
+Ship curated profiles in DevCentr releases; run harvest in CI or on demand when bumping `profileVersion`.
+
+== UI mapping (SDL → widgets)
+
+[cols="1,2", options="header"]
+|===
+| SDL construct | UI behavior
+
+| `layout zone`
+| Canvas region or inspector section; ordered; optional `anchorFiles` highlight in file tree
+
+| `command grammar`
+| Expandable "why this token" panel; links script names to `package.json` when extracted
+
+| `command preset`
+| Chip or button: copy to clipboard, optional "run in repo terminal" (repository browser)
+
+| `routing flag`
+| Inline callout when workspace detected (`--filter site-nextjs` vs bare `pnpm dev`)
+
+| `controls` / `dependsOn`
+| Control-tree edges (solid vs dashed in dependency view)
+
+| `stackRef`
+| Join to `project-map` stack id for icon and parent card
+|===
+
+== Related components
+
+* xref:project-recognizer.adoc[Project Recognizer] — stack detection; feeds `stackRef` matching.
+* xref:dependency-modeler.adoc[Dependency Modeler] — module and external dependency graphs.
+* xref:role-topology-composer.adoc[Role Topology Composer] — layered *environment* stacks (AI, toolchains); orthogonal to per-repo blueprint.
+* xref:../reference/definition-files.adoc#interaction-layout-profiles[Definition files — interaction layout profiles]
+* xref:general-knowledge:reference/pnpm-run-routing.adoc[pnpm run routing] — reference prose for Node monorepos (linked from pnpm profile).
+
+== Implementation status
+
+* [ ] SDL loader + merge with `ProjectScan` JSON
+* [ ] Canvas renderer (dependency + control toggles)
+* [ ] Repo extractors for Node/pnpm workspace
+* [ ] Project Analysis page → entry into visualizer (today: stack list only)
+* [x] Initial interaction layout profile catalog (8 starters + 141 generated = 149 total; `_catalog.tsv` + `_generate-from-tsv.ps1`)

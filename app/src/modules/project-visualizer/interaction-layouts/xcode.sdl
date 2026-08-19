@@ -1,0 +1,32 @@
+// Xcode - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "xcode"
+    name "Xcode"
+    stackRef "Swift"
+    profileVersion "0.1.0"
+    parentTool "swift"
+
+    summary "Apple IDE/build; .xcodeproj; xcodebuild."
+
+    layout zone {
+        id "project"
+        title "Xcode project"
+        order 1
+        memoryBin "*.xcodeproj; schemes"
+        anchorFiles ".git"
+    }
+
+    grammar {
+        id "primary"
+        shape "xcodebuild -scheme {name}"
+        scriptSource "shared schemes"
+        notes "Scheme/destination are the standing selectors."
+    }
+
+    preset {
+        id "build"
+        label "build"
+        command "xcodebuild -scheme {scheme} build"
+        cwd "project"
+    }
+}

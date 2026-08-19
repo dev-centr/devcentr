@@ -1,0 +1,34 @@
+// CocoaPods - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "cocoapods"
+    name "CocoaPods"
+    stackRef "Swift"
+    profileVersion "0.1.0"
+
+    summary "iOS deps; Podfile; pod install."
+
+    layout zone {
+        id "project"
+        title "CocoaPods"
+        order 1
+        memoryBin "Podfile; *.xcworkspace"
+        anchorFiles "Podfile" "Podfile.lock"
+    }
+
+    grammar {
+        id "primary"
+        shape "pod install"
+        scriptSource "Podfile"
+        notes "Opens .xcworkspace after install — not .xcodeproj."
+    }
+
+    preset {
+        id "install"
+        label "install"
+        command "pod install"
+        cwd "project"
+    }
+    extract {
+        manifest "Podfile"
+    }
+}

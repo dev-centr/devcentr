@@ -1,0 +1,41 @@
+// Turborepo - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "turborepo"
+    name "Turborepo"
+    stackRef "Turborepo"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Monorepo task runner; turbo.json; --filter."
+
+    layout zone {
+        id "workspace-root"
+        title "Turbo root"
+        order 1
+        memoryBin "turbo.json; package graph"
+        anchorFiles "turbo.json" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "turbo run {task} --filter={pkg}"
+        scriptSource "turbo pipeline plus package scripts"
+        notes "Always from workspace root; --filter replaces cd."
+    }
+
+    preset {
+        id "build"
+        label "build"
+        command "turbo run build"
+        cwd "workspace-root"
+    }
+    preset {
+        id "dev"
+        label "dev"
+        command "turbo run dev --filter={packageName}"
+        cwd "workspace-root"
+    }
+    extract {
+        manifest "turbo.json" fields "tasks"
+    }
+}

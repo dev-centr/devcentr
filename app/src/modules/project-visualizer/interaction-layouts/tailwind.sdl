@@ -1,0 +1,35 @@
+// Tailwind CSS - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "tailwind"
+    name "Tailwind CSS"
+    stackRef "Node.js"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Utility CSS; tailwind.config; PostCSS pipeline."
+
+    layout zone {
+        id "config"
+        title "Tailwind"
+        order 1
+        memoryBin "tailwind.config; globals.css"
+        anchorFiles "tailwind.config.ts" "postcss.config.js"
+    }
+
+    grammar {
+        id "primary"
+        shape "via PostCSS / Vite"
+        scriptSource "tailwind config plus build tool"
+        notes "Almost always driven by Vite/Next — not a standalone server."
+    }
+
+    preset {
+        id "build"
+        label "build"
+        command "pnpm run build"
+        cwd "config"
+    }
+    extract {
+        manifest "package.json" fields "devDependencies.tailwindcss"
+    }
+}

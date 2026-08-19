@@ -1,0 +1,40 @@
+// Zig - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "zig"
+    name "Zig"
+    stackRef "Zig"
+    profileVersion "0.1.0"
+
+    summary "Language plus build; build.zig."
+
+    layout zone {
+        id "project-root"
+        title "Zig project"
+        order 1
+        memoryBin "build.zig; build.zig.zon"
+        anchorFiles "build.zig" "build.zig.zon"
+    }
+
+    grammar {
+        id "primary"
+        shape "zig build {step}"
+        scriptSource "build.zig steps"
+        notes "Steps are named in build.zig."
+    }
+
+    preset {
+        id "build"
+        label "build"
+        command "zig build"
+        cwd "project-root"
+    }
+    preset {
+        id "test"
+        label "test"
+        command "zig build test"
+        cwd "project-root"
+    }
+    extract {
+        manifest "build.zig"
+    }
+}

@@ -1,0 +1,41 @@
+// Supabase CLI - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "supabase"
+    name "Supabase CLI"
+    stackRef "Supabase"
+    profileVersion "0.1.0"
+    parentTool "docker"
+
+    summary "Local BaaS; supabase/config.toml."
+
+    layout zone {
+        id "project-root"
+        title "Supabase"
+        order 1
+        memoryBin "supabase/; config.toml"
+        anchorFiles "supabase/config.toml"
+    }
+
+    grammar {
+        id "primary"
+        shape "supabase {cmd}"
+        scriptSource "supabase config"
+        notes "Docker required for local stack."
+    }
+
+    preset {
+        id "start"
+        label "start"
+        command "supabase start"
+        cwd "project-root"
+    }
+    preset {
+        id "db-reset"
+        label "db-reset"
+        command "supabase db reset"
+        cwd "project-root"
+    }
+    extract {
+        manifest "supabase/config.toml"
+    }
+}

@@ -1,0 +1,34 @@
+// Mill - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "mill"
+    name "Mill"
+    stackRef "Scala"
+    profileVersion "0.1.0"
+
+    summary "Scala/Java build; build.sc."
+
+    layout zone {
+        id "project-root"
+        title "Mill"
+        order 1
+        memoryBin "build.sc"
+        anchorFiles "build.sc"
+    }
+
+    grammar {
+        id "primary"
+        shape "./mill {module}.{task}"
+        scriptSource "build.sc modules"
+        notes "Module.task from root."
+    }
+
+    preset {
+        id "compile"
+        label "compile"
+        command "./mill __.compile"
+        cwd "project-root"
+    }
+    extract {
+        manifest "build.sc"
+    }
+}

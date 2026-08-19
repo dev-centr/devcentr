@@ -1,0 +1,31 @@
+// gcloud - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "gcloud"
+    name "gcloud"
+    stackRef "GCP"
+    profileVersion "0.1.0"
+
+    summary "Google Cloud CLI; configurations; project set."
+
+    layout zone {
+        id "config"
+        title "gcloud config"
+        order 1
+        memoryBin "active configuration; project id"
+        anchorFiles ".git"
+    }
+
+    grammar {
+        id "primary"
+        shape "gcloud {group} {cmd} --project {id}"
+        scriptSource "gcloud config"
+        notes "Project/config are standing position."
+    }
+
+    preset {
+        id "config"
+        label "config"
+        command "gcloud config list"
+        cwd "config"
+    }
+}

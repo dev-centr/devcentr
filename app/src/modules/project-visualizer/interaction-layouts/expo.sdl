@@ -1,0 +1,35 @@
+// Expo - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "expo"
+    name "Expo"
+    stackRef "Expo"
+    profileVersion "0.1.0"
+    parentTool "react-native"
+
+    summary "RN toolchain; app.json; expo start."
+
+    layout zone {
+        id "project-root"
+        title "Expo app"
+        order 1
+        memoryBin "app.json; expo"
+        anchorFiles "app.json" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "npx expo start"
+        scriptSource "package.json scripts"
+        notes "Expo controls native project generation."
+    }
+
+    preset {
+        id "start"
+        label "start"
+        command "pnpm exec expo start"
+        cwd "project-root"
+    }
+    extract {
+        manifest "app.json" fields "expo"
+    }
+}

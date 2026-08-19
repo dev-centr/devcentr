@@ -1,0 +1,35 @@
+// tox - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "tox"
+    name "tox"
+    stackRef "Python"
+    profileVersion "0.1.0"
+    parentTool "python"
+
+    summary "Multi-env test matrix; tox.ini."
+
+    layout zone {
+        id "project-root"
+        title "tox root"
+        order 1
+        memoryBin "tox.ini envs"
+        anchorFiles "tox.ini"
+    }
+
+    grammar {
+        id "primary"
+        shape "tox -e {env}"
+        scriptSource "tox.ini envlist"
+        notes "-e selects env without activating manually."
+    }
+
+    preset {
+        id "run"
+        label "run"
+        command "tox"
+        cwd "project-root"
+    }
+    extract {
+        manifest "tox.ini" fields "envlist"
+    }
+}

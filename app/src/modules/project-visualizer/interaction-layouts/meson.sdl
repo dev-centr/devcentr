@@ -1,0 +1,40 @@
+// Meson - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "meson"
+    name "Meson"
+    stackRef "C++"
+    profileVersion "0.1.0"
+
+    summary "Build system; meson.build; meson setup."
+
+    layout zone {
+        id "source-root"
+        title "Meson source"
+        order 1
+        memoryBin "meson.build; builddir"
+        anchorFiles "meson.build"
+    }
+
+    grammar {
+        id "primary"
+        shape "meson setup {builddir} then meson compile -C {builddir}"
+        scriptSource "meson.build"
+        notes "setup then compile -C."
+    }
+
+    preset {
+        id "setup"
+        label "setup"
+        command "meson setup build"
+        cwd "source-root"
+    }
+    preset {
+        id "compile"
+        label "compile"
+        command "meson compile -C build"
+        cwd "source-root"
+    }
+    extract {
+        manifest "meson.build"
+    }
+}

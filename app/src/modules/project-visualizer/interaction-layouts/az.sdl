@@ -1,0 +1,31 @@
+// Azure CLI - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "az"
+    name "Azure CLI"
+    stackRef "Azure"
+    profileVersion "0.1.0"
+
+    summary "az CLI; subscriptions; resource groups."
+
+    layout zone {
+        id "config"
+        title "Azure CLI"
+        order 1
+        memoryBin "subscription; default RG"
+        anchorFiles ".git"
+    }
+
+    grammar {
+        id "primary"
+        shape "az {group} {cmd}"
+        scriptSource "az account"
+        notes "Subscription is standing position."
+    }
+
+    preset {
+        id "account"
+        label "account"
+        command "az account show"
+        cwd "config"
+    }
+}

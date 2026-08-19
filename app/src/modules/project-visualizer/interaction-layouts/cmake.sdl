@@ -1,0 +1,40 @@
+// CMake - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "cmake"
+    name "CMake"
+    stackRef "C++"
+    profileVersion "0.1.0"
+
+    summary "Native build meta; CMakeLists.txt; -S -B."
+
+    layout zone {
+        id "source-root"
+        title "CMake source"
+        order 1
+        memoryBin "CMakeLists.txt; build/ tree"
+        anchorFiles "CMakeLists.txt"
+    }
+
+    grammar {
+        id "primary"
+        shape "cmake -S {src} -B {build}"
+        scriptSource "CMakeLists.txt"
+        notes "Never in-source build; -B is the standing build dir."
+    }
+
+    preset {
+        id "configure"
+        label "configure"
+        command "cmake -S . -B build"
+        cwd "source-root"
+    }
+    preset {
+        id "build"
+        label "build"
+        command "cmake --build build"
+        cwd "source-root"
+    }
+    extract {
+        manifest "CMakeLists.txt"
+    }
+}

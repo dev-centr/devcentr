@@ -1,0 +1,35 @@
+// Storybook - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "storybook"
+    name "Storybook"
+    stackRef "Node.js"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "UI workshop; .storybook/."
+
+    layout zone {
+        id "storybook"
+        title "Storybook"
+        order 1
+        memoryBin ".storybook; stories files"
+        anchorFiles ".storybook/main.ts" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "storybook dev"
+        scriptSource "package.json scripts"
+        notes "Separate process from app dev server."
+    }
+
+    preset {
+        id "dev"
+        label "dev"
+        command "pnpm run storybook"
+        cwd "storybook"
+    }
+    extract {
+        manifest "package.json" fields "scripts.storybook"
+    }
+}

@@ -1,0 +1,35 @@
+// Remix - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "remix"
+    name "Remix"
+    stackRef "Remix"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Web framework on React Router."
+
+    layout zone {
+        id "app"
+        title "Remix app"
+        order 1
+        memoryBin "app/routes"
+        anchorFiles "app/routes" "vite.config.ts" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "{pm} run dev"
+        scriptSource "package.json scripts"
+        notes "Remix controls React routing."
+    }
+
+    preset {
+        id "dev"
+        label "dev"
+        command "pnpm run dev"
+        cwd "app"
+    }
+    extract {
+        manifest "package.json" fields "scripts"
+    }
+}

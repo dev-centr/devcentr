@@ -1,0 +1,35 @@
+// FastAPI - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "fastapi"
+    name "FastAPI"
+    stackRef "FastAPI"
+    profileVersion "0.1.0"
+    parentTool "python"
+
+    summary "ASGI API framework; uvicorn owns the process."
+
+    layout zone {
+        id "app"
+        title "FastAPI app"
+        order 1
+        memoryBin "main:app; uvicorn command"
+        anchorFiles "main.py" "pyproject.toml"
+    }
+
+    grammar {
+        id "primary"
+        shape "uvicorn {module}:app --reload"
+        scriptSource "ASGI entry string"
+        notes "Uvicorn controls the process; FastAPI is the app object."
+    }
+
+    preset {
+        id "dev"
+        label "dev"
+        command "uvicorn main:app --reload"
+        cwd "app"
+    }
+    extract {
+        manifest "pyproject.toml" fields "project.dependencies"
+    }
+}

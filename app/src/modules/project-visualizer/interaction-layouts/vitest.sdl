@@ -1,0 +1,41 @@
+// Vitest - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "vitest"
+    name "Vitest"
+    stackRef "Node.js"
+    profileVersion "0.1.0"
+    parentTool "vite"
+
+    summary "Vite-native test runner."
+
+    layout zone {
+        id "tests"
+        title "Vitest"
+        order 1
+        memoryBin "vitest.config; shared Vite config"
+        anchorFiles "vitest.config.ts" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "vitest run"
+        scriptSource "package.json scripts"
+        notes "Often same config root as Vite."
+    }
+
+    preset {
+        id "test"
+        label "test"
+        command "pnpm exec vitest"
+        cwd "tests"
+    }
+    preset {
+        id "run"
+        label "run"
+        command "pnpm exec vitest run"
+        cwd "tests"
+    }
+    extract {
+        manifest "package.json" fields "devDependencies.vitest" "scripts"
+    }
+}

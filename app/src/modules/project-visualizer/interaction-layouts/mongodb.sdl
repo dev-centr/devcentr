@@ -1,0 +1,34 @@
+// MongoDB - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "mongodb"
+    name "MongoDB"
+    stackRef "MongoDB"
+    profileVersion "0.1.0"
+
+    summary "Document DB; mongosh; often Compose."
+
+    layout zone {
+        id "db"
+        title "MongoDB"
+        order 1
+        memoryBin "connection string; compose"
+        anchorFiles ".env" "compose.yaml"
+    }
+
+    grammar {
+        id "primary"
+        shape "mongosh {uri}"
+        scriptSource "MONGODB_URI"
+        notes "URI is the standing position."
+    }
+
+    preset {
+        id "shell"
+        label "shell"
+        command "mongosh"
+        cwd "db"
+    }
+    extract {
+        manifest ".env" fields "MONGODB_URI"
+    }
+}

@@ -1,0 +1,41 @@
+// Hatch - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "hatch"
+    name "Hatch"
+    stackRef "Python"
+    profileVersion "0.1.0"
+    parentTool "python"
+
+    summary "Env plus packaging; hatch run env:script."
+
+    layout zone {
+        id "project-root"
+        title "Hatch project"
+        order 1
+        memoryBin "pyproject.toml envs"
+        anchorFiles "pyproject.toml" "hatch.toml"
+    }
+
+    grammar {
+        id "primary"
+        shape "hatch run {env}:{script}"
+        scriptSource "tool.hatch"
+        notes "Env name is part of the command grammar."
+    }
+
+    preset {
+        id "run"
+        label "run"
+        command "hatch run {script}"
+        cwd "project-root"
+    }
+    preset {
+        id "test"
+        label "test"
+        command "hatch test"
+        cwd "project-root"
+    }
+    extract {
+        manifest "pyproject.toml" fields "tool.hatch"
+    }
+}

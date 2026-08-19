@@ -1,0 +1,41 @@
+// Ruby on Rails - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "rails"
+    name "Ruby on Rails"
+    stackRef "Rails"
+    profileVersion "0.1.0"
+    parentTool "bundler"
+
+    summary "Full-stack Ruby; bin/rails."
+
+    layout zone {
+        id "app"
+        title "Rails app"
+        order 1
+        memoryBin "bin/rails; app/; config/"
+        anchorFiles "bin/rails" "Gemfile"
+    }
+
+    grammar {
+        id "primary"
+        shape "bin/rails {cmd}"
+        scriptSource "rails commands"
+        notes "Prefer bin/rails over rails from PATH."
+    }
+
+    preset {
+        id "server"
+        label "server"
+        command "bin/rails server"
+        cwd "app"
+    }
+    preset {
+        id "console"
+        label "console"
+        command "bin/rails console"
+        cwd "app"
+    }
+    extract {
+        manifest "Gemfile"
+    }
+}

@@ -1,0 +1,35 @@
+// GoReleaser - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "goreleaser"
+    name "GoReleaser"
+    stackRef "Go"
+    profileVersion "0.1.0"
+    parentTool "go"
+
+    summary "Release automation; .goreleaser.yaml."
+
+    layout zone {
+        id "module-root"
+        title "Release config"
+        order 1
+        memoryBin ".goreleaser.yaml"
+        anchorFiles ".goreleaser.yaml"
+    }
+
+    grammar {
+        id "primary"
+        shape "goreleaser release --snapshot"
+        scriptSource ".goreleaser.yaml"
+        notes "Run from module root."
+    }
+
+    preset {
+        id "snapshot"
+        label "snapshot"
+        command "goreleaser release --snapshot --clean"
+        cwd "module-root"
+    }
+    extract {
+        manifest ".goreleaser.yaml"
+    }
+}

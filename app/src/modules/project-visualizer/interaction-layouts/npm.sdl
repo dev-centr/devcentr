@@ -1,0 +1,45 @@
+// npm — bundled Node package manager.
+interactionLayout {
+    id "npm"
+    name "npm"
+    stackRef "Node.js"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Bundled with Node; flat node_modules hoisting; fine for single-package repos and one-off scripts."
+
+    controls "node"
+
+    layout zone {
+        id "project-root"
+        title "Project root"
+        order 1
+        memoryBin "npm install and npm run use this directory's package.json"
+        anchorFiles "package.json" "package-lock.json"
+    }
+
+    grammar {
+        id "run-script"
+        shape "npm run <script> [-- args]"
+        scriptSource "package.json → scripts.<script>"
+        notes "npm run is explicit; npm start maps to scripts.start without run."
+    }
+
+    preset {
+        id "install"
+        label "Install"
+        command "npm install"
+        cwd "project-root"
+    }
+    preset {
+        id "run-dev"
+        label "Run dev script"
+        command "npm run dev"
+        cwd "project-root"
+        requires "script:dev"
+    }
+
+    extract {
+        manifest "package.json" fields "scripts" "name"
+    }
+}

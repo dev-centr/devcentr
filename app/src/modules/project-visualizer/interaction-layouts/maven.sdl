@@ -1,0 +1,40 @@
+// Maven - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "maven"
+    name "Maven"
+    stackRef "Java"
+    profileVersion "0.1.0"
+
+    summary "pom.xml reactor; -pl -am for modules."
+
+    layout zone {
+        id "reactor-root"
+        title "Maven reactor"
+        order 1
+        memoryBin "pom.xml; multi-module children"
+        anchorFiles "pom.xml"
+    }
+
+    grammar {
+        id "primary"
+        shape "mvn {goals} -pl {module} -am"
+        scriptSource "pom.xml modules"
+        notes "Always from reactor root; -pl selects module."
+    }
+
+    preset {
+        id "package"
+        label "package"
+        command "mvn -q package"
+        cwd "reactor-root"
+    }
+    preset {
+        id "test"
+        label "test"
+        command "mvn test"
+        cwd "reactor-root"
+    }
+    extract {
+        manifest "pom.xml" fields "modules" "artifactId"
+    }
+}

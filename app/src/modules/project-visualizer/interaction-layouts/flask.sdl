@@ -1,0 +1,35 @@
+// Flask - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "flask"
+    name "Flask"
+    stackRef "Flask"
+    profileVersion "0.1.0"
+    parentTool "python"
+
+    summary "Microframework; flask CLI via FLASK_APP."
+
+    layout zone {
+        id "app"
+        title "Flask app"
+        order 1
+        memoryBin "app factory / FLASK_APP entry"
+        anchorFiles "app.py" "wsgi.py"
+    }
+
+    grammar {
+        id "primary"
+        shape "flask --app {module} run"
+        scriptSource "FLASK_APP / flask CLI"
+        notes "FLASK_APP is part of the mental model."
+    }
+
+    preset {
+        id "run"
+        label "run"
+        command "flask --app app run --debug"
+        cwd "app"
+    }
+    extract {
+        manifest "pyproject.toml" fields "project.scripts"
+    }
+}

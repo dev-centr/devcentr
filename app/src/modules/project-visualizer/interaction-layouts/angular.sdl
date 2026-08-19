@@ -1,0 +1,41 @@
+// Angular - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "angular"
+    name "Angular"
+    stackRef "Angular"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Full framework; angular.json workspace; ng CLI."
+
+    layout zone {
+        id "workspace"
+        title "Angular workspace"
+        order 1
+        memoryBin "angular.json projects"
+        anchorFiles "angular.json" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "ng serve {project}"
+        scriptSource "angular.json projects"
+        notes "Select project by name — do not cd into apps."
+    }
+
+    preset {
+        id "serve"
+        label "serve"
+        command "ng serve"
+        cwd "workspace"
+    }
+    preset {
+        id "build"
+        label "build"
+        command "ng build"
+        cwd "workspace"
+    }
+    extract {
+        manifest "angular.json" fields "projects"
+    }
+}

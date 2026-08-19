@@ -1,0 +1,41 @@
+// Drizzle - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "drizzle"
+    name "Drizzle"
+    stackRef "Drizzle"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "TS ORM; drizzle.config; drizzle-kit."
+
+    layout zone {
+        id "db"
+        title "Drizzle schema"
+        order 1
+        memoryBin "drizzle.config.ts; schema ts"
+        anchorFiles "drizzle.config.ts" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "drizzle-kit {cmd}"
+        scriptSource "drizzle.config plus scripts"
+        notes "drizzle-kit push/migrate from package root."
+    }
+
+    preset {
+        id "generate"
+        label "generate"
+        command "pnpm exec drizzle-kit generate"
+        cwd "db"
+    }
+    preset {
+        id "push"
+        label "push"
+        command "pnpm exec drizzle-kit push"
+        cwd "db"
+    }
+    extract {
+        manifest "drizzle.config.ts"
+    }
+}

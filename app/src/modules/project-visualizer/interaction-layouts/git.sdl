@@ -1,0 +1,40 @@
+// Git - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "git"
+    name "Git"
+    stackRef "Git"
+    profileVersion "0.1.0"
+
+    summary "VCS; .git; standing branch/remote."
+
+    layout zone {
+        id "repo-root"
+        title "Git repo"
+        order 1
+        memoryBin ".git; branch; remotes"
+        anchorFiles ".git"
+    }
+
+    grammar {
+        id "primary"
+        shape "git {cmd}"
+        scriptSource "repo state"
+        notes "Repo root is default standing position."
+    }
+
+    preset {
+        id "status"
+        label "status"
+        command "git status -sb"
+        cwd "repo-root"
+    }
+    preset {
+        id "fetch"
+        label "fetch"
+        command "git fetch"
+        cwd "repo-root"
+    }
+    extract {
+        manifest ".git/config"
+    }
+}

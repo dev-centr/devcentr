@@ -1,0 +1,35 @@
+// GraphQL - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "graphql"
+    name "GraphQL"
+    stackRef "GraphQL"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Schema-first APIs; codegen config."
+
+    layout zone {
+        id "schema"
+        title "GraphQL schema"
+        order 1
+        memoryBin "schema.graphql; codegen"
+        anchorFiles "schema.graphql" "codegen.ts"
+    }
+
+    grammar {
+        id "primary"
+        shape "graphql-codegen"
+        scriptSource "codegen config plus server"
+        notes "Codegen is a build step — surface schema path."
+    }
+
+    preset {
+        id "codegen"
+        label "codegen"
+        command "pnpm exec graphql-codegen"
+        cwd "schema"
+    }
+    extract {
+        manifest "codegen.ts"
+    }
+}

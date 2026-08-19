@@ -1,0 +1,40 @@
+// Composer - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "composer"
+    name "Composer"
+    stackRef "PHP"
+    profileVersion "0.1.0"
+
+    summary "PHP dependency manager; composer.json scripts."
+
+    layout zone {
+        id "project-root"
+        title "Composer root"
+        order 1
+        memoryBin "composer.json; vendor/"
+        anchorFiles "composer.json" "composer.lock"
+    }
+
+    grammar {
+        id "primary"
+        shape "composer {script}"
+        scriptSource "composer.json scripts"
+        notes "Script names are Composer scripts, not shell files."
+    }
+
+    preset {
+        id "install"
+        label "install"
+        command "composer install"
+        cwd "project-root"
+    }
+    preset {
+        id "test"
+        label "test"
+        command "composer test"
+        cwd "project-root"
+    }
+    extract {
+        manifest "composer.json" fields "scripts" "require"
+    }
+}

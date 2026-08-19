@@ -1,0 +1,40 @@
+// Scala / sbt - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "scala"
+    name "Scala / sbt"
+    stackRef "Scala"
+    profileVersion "0.1.0"
+
+    summary "sbt; build.sbt; sbt compile/test."
+
+    layout zone {
+        id "project-root"
+        title "sbt project"
+        order 1
+        memoryBin "build.sbt; project/"
+        anchorFiles "build.sbt" "project/build.properties"
+    }
+
+    grammar {
+        id "primary"
+        shape "sbt {task}"
+        scriptSource "build.sbt settings"
+        notes "sbt from project root."
+    }
+
+    preset {
+        id "compile"
+        label "compile"
+        command "sbt compile"
+        cwd "project-root"
+    }
+    preset {
+        id "test"
+        label "test"
+        command "sbt test"
+        cwd "project-root"
+    }
+    extract {
+        manifest "build.sbt"
+    }
+}

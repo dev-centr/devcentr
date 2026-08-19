@@ -1,0 +1,34 @@
+// CircleCI - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "circleci"
+    name "CircleCI"
+    stackRef "CI"
+    profileVersion "0.1.0"
+
+    summary "CI; .circleci/config.yml."
+
+    layout zone {
+        id "ci"
+        title "CircleCI"
+        order 1
+        memoryBin ".circleci/config.yml"
+        anchorFiles ".circleci/config.yml"
+    }
+
+    grammar {
+        id "primary"
+        shape "circleci config validate"
+        scriptSource "config.yml"
+        notes "Workflows/jobs mental model."
+    }
+
+    preset {
+        id "validate"
+        label "validate"
+        command "circleci config validate"
+        cwd "ci"
+    }
+    extract {
+        manifest ".circleci/config.yml" fields "workflows"
+    }
+}

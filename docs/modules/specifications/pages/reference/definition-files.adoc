@@ -102,6 +102,16 @@ Product behavior: xref:../components/ecosystem-management.adoc[Ecosystem Managem
 
 Do not mix content-type advice into language-ecosystem or services SDL files. Job trees and lineage edges stay in this catalog so the create UI can load one file.
 
+[[interaction-layout-profiles]]
+== Interaction layout profiles
+
+* **Location (app):** `app/src/modules/project-visualizer/interaction-layouts/*.sdl`
+* **Schema:** `app/src/modules/project-visualizer/interaction-layouts/README.adoc`
+* **Purpose:** Human-authored **mental models** for dev tools — UI layout zones, command grammar (where each token comes from), root-first routing flags (`--filter`, `-C`, `cargo -p`, …), and copy/run presets. Consumed by xref:../components/project-visualizer.adoc[Project Visualizer]; overlaid with repo-specific facts from extractors (script keys, workspace members).
+* **Initial catalog:** node, npm, pnpm, vite, next, solid, dub, rust (hand-maintained) plus **141** generated stubs from `interaction-layouts/_catalog.tsv` (**149** total). Regenerate: `_generate-from-tsv.ps1`.
+* **Not the same as:** `languages/*.sdl` (install/toolchain catalog) or `project-map` stack profiles (detection only).
+* **Reference prose example:** xref:general-knowledge:reference/pnpm-run-routing.adoc[pnpm run routing].
+
 == Relation to installation workflow
 
 * **Org node:** Can offer IaC setup (e.g. create or link an infrastructure repo, install OpenTofu). Uses service definitions (e.g. OpenTofu) and the IaC docs.

@@ -1,0 +1,41 @@
+// Webpack - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "webpack"
+    name "Webpack"
+    stackRef "Webpack"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Module bundler; webpack.config."
+
+    layout zone {
+        id "config"
+        title "Webpack config"
+        order 1
+        memoryBin "webpack.config; entry/output"
+        anchorFiles "webpack.config.js" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "webpack serve"
+        scriptSource "package.json scripts"
+        notes "Prefer local webpack via scripts."
+    }
+
+    preset {
+        id "serve"
+        label "serve"
+        command "pnpm run start"
+        cwd "config"
+    }
+    preset {
+        id "build"
+        label "build"
+        command "pnpm run build"
+        cwd "config"
+    }
+    extract {
+        manifest "package.json" fields "devDependencies.webpack" "scripts"
+    }
+}

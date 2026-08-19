@@ -1,0 +1,41 @@
+// Django - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "django"
+    name "Django"
+    stackRef "Django"
+    profileVersion "0.1.0"
+    parentTool "python"
+
+    summary "Batteries-included web; manage.py is the control CLI."
+
+    layout zone {
+        id "project"
+        title "Django project"
+        order 1
+        memoryBin "manage.py; settings module"
+        anchorFiles "manage.py" "pyproject.toml"
+    }
+
+    grammar {
+        id "primary"
+        shape "python manage.py {cmd}"
+        scriptSource "manage.py subcommands"
+        notes "Always from directory containing manage.py."
+    }
+
+    preset {
+        id "runserver"
+        label "runserver"
+        command "python manage.py runserver"
+        cwd "project"
+    }
+    preset {
+        id "migrate"
+        label "migrate"
+        command "python manage.py migrate"
+        cwd "project"
+    }
+    extract {
+        manifest "manage.py"
+    }
+}

@@ -1,0 +1,41 @@
+// Vercel CLI - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "vercel"
+    name "Vercel CLI"
+    stackRef "Node.js"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Deploy Next/frontends; vercel.json."
+
+    layout zone {
+        id "project-root"
+        title "Vercel project"
+        order 1
+        memoryBin "vercel.json; .vercel"
+        anchorFiles "vercel.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "vercel deploy --prod --scope {team}"
+        scriptSource "vercel project link"
+        notes "--scope selects team; Root Directory is a Vercel setting."
+    }
+
+    preset {
+        id "dev"
+        label "dev"
+        command "pnpm exec vercel dev"
+        cwd "project-root"
+    }
+    preset {
+        id "deploy"
+        label "deploy"
+        command "pnpm exec vercel deploy"
+        cwd "project-root"
+    }
+    extract {
+        manifest "vercel.json"
+    }
+}

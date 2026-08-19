@@ -1,0 +1,41 @@
+// Docusaurus - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "docusaurus"
+    name "Docusaurus"
+    stackRef "Node.js"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "React docs; docusaurus.config."
+
+    layout zone {
+        id "website"
+        title "Docusaurus"
+        order 1
+        memoryBin "docusaurus.config; docs/"
+        anchorFiles "docusaurus.config.ts" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "docusaurus start / build"
+        scriptSource "package.json scripts"
+        notes "Classic website/ package layout."
+    }
+
+    preset {
+        id "start"
+        label "start"
+        command "pnpm start"
+        cwd "website"
+    }
+    preset {
+        id "build"
+        label "build"
+        command "pnpm run build"
+        cwd "website"
+    }
+    extract {
+        manifest "package.json" fields "dependencies.@docusaurus/core" "scripts"
+    }
+}

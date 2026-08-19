@@ -1,0 +1,40 @@
+// Protocol Buffers - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "protobuf"
+    name "Protocol Buffers"
+    stackRef "API"
+    profileVersion "0.1.0"
+
+    summary "IDL plus codegen; .proto; buf or protoc."
+
+    layout zone {
+        id "proto"
+        title "Protobuf"
+        order 1
+        memoryBin "*.proto; buf.yaml"
+        anchorFiles "buf.yaml" "buf.gen.yaml"
+    }
+
+    grammar {
+        id "primary"
+        shape "buf generate / protoc"
+        scriptSource "buf.yaml modules"
+        notes "buf.yaml workspace root."
+    }
+
+    preset {
+        id "generate"
+        label "generate"
+        command "buf generate"
+        cwd "proto"
+    }
+    preset {
+        id "lint"
+        label "lint"
+        command "buf lint"
+        cwd "proto"
+    }
+    extract {
+        manifest "buf.yaml"
+    }
+}

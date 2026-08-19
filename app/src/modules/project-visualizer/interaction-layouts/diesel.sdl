@@ -1,0 +1,35 @@
+// Diesel - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "diesel"
+    name "Diesel"
+    stackRef "Rust"
+    profileVersion "0.1.0"
+    parentTool "rust"
+
+    summary "Rust ORM; diesel.toml; diesel migration run."
+
+    layout zone {
+        id "db"
+        title "Diesel"
+        order 1
+        memoryBin "diesel.toml; migrations/"
+        anchorFiles "diesel.toml" "Cargo.toml"
+    }
+
+    grammar {
+        id "primary"
+        shape "diesel migration run"
+        scriptSource "diesel.toml"
+        notes "DATABASE_URL is part of standing env."
+    }
+
+    preset {
+        id "migrate"
+        label "migrate"
+        command "diesel migration run"
+        cwd "db"
+    }
+    extract {
+        manifest "diesel.toml"
+    }
+}

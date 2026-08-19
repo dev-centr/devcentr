@@ -1,0 +1,41 @@
+// TypeScript - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "typescript"
+    name "TypeScript"
+    stackRef "TypeScript"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Typed JS; tsc / tsconfig; project references."
+
+    layout zone {
+        id "config"
+        title "tsconfig"
+        order 1
+        memoryBin "tsconfig.json project references"
+        anchorFiles "tsconfig.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "tsc -p {tsconfig}"
+        scriptSource "tsconfig plus scripts"
+        notes "Project references select packages without cd."
+    }
+
+    preset {
+        id "build"
+        label "build"
+        command "pnpm exec tsc -b"
+        cwd "config"
+    }
+    preset {
+        id "check"
+        label "check"
+        command "pnpm exec tsc --noEmit"
+        cwd "config"
+    }
+    extract {
+        manifest "tsconfig.json" fields "compilerOptions" "references"
+    }
+}

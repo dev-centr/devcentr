@@ -1,0 +1,31 @@
+// AWS CLI - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "aws-cli"
+    name "AWS CLI"
+    stackRef "AWS"
+    profileVersion "0.1.0"
+
+    summary "AWS control plane CLI; profiles; region."
+
+    layout zone {
+        id "config"
+        title "AWS config"
+        order 1
+        memoryBin "~/.aws/config; profile"
+        anchorFiles ".git"
+    }
+
+    grammar {
+        id "primary"
+        shape "aws {service} {verb} --profile {name}"
+        scriptSource "AWS profile plus region"
+        notes "Profile/region are standing position — not cwd."
+    }
+
+    preset {
+        id "whoami"
+        label "whoami"
+        command "aws sts get-caller-identity"
+        cwd "config"
+    }
+}

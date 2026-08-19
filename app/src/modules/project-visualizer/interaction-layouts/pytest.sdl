@@ -1,0 +1,35 @@
+// pytest - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "pytest"
+    name "pytest"
+    stackRef "Python"
+    profileVersion "0.1.0"
+    parentTool "python"
+
+    summary "Test runner; pytest.ini / pyproject."
+
+    layout zone {
+        id "tests"
+        title "Tests"
+        order 1
+        memoryBin "tests/; conftest.py"
+        anchorFiles "pytest.ini" "pyproject.toml" "conftest.py"
+    }
+
+    grammar {
+        id "primary"
+        shape "pytest {path}"
+        scriptSource "pytest discovery config"
+        notes "Run from project root so conftest resolves."
+    }
+
+    preset {
+        id "test"
+        label "test"
+        command "pytest"
+        cwd "tests"
+    }
+    extract {
+        manifest "pyproject.toml" fields "tool.pytest"
+    }
+}

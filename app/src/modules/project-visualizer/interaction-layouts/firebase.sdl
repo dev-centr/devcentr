@@ -1,0 +1,41 @@
+// Firebase CLI - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "firebase"
+    name "Firebase CLI"
+    stackRef "Firebase"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Google BaaS; firebase.json; emulators."
+
+    layout zone {
+        id "project-root"
+        title "Firebase"
+        order 1
+        memoryBin "firebase.json; .firebaserc"
+        anchorFiles "firebase.json" ".firebaserc"
+    }
+
+    grammar {
+        id "primary"
+        shape "firebase {cmd}"
+        scriptSource "firebase.json"
+        notes "Project id in .firebaserc."
+    }
+
+    preset {
+        id "emulators"
+        label "emulators"
+        command "pnpm exec firebase emulators:start"
+        cwd "project-root"
+    }
+    preset {
+        id "deploy"
+        label "deploy"
+        command "pnpm exec firebase deploy"
+        cwd "project-root"
+    }
+    extract {
+        manifest "firebase.json"
+    }
+}

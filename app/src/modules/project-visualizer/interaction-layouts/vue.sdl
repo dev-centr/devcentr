@@ -1,0 +1,35 @@
+// Vue - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "vue"
+    name "Vue"
+    stackRef "Vue"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Progressive framework; often Vite or Nuxt."
+
+    layout zone {
+        id "src"
+        title "Vue SFCs"
+        order 1
+        memoryBin "*.vue single-file components"
+        anchorFiles "package.json" "vite.config.ts"
+    }
+
+    grammar {
+        id "primary"
+        shape "{pm} run dev"
+        scriptSource "package.json scripts"
+        notes "create-vue plus Vite is current."
+    }
+
+    preset {
+        id "dev"
+        label "dev"
+        command "pnpm run dev"
+        cwd "src"
+    }
+    extract {
+        manifest "package.json" fields "dependencies.vue"
+    }
+}

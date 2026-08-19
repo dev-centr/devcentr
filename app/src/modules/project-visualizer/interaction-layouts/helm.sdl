@@ -1,0 +1,41 @@
+// Helm - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "helm"
+    name "Helm"
+    stackRef "Kubernetes"
+    profileVersion "0.1.0"
+    parentTool "kubernetes"
+
+    summary "K8s package manager; Chart.yaml."
+
+    layout zone {
+        id "chart"
+        title "Helm chart"
+        order 1
+        memoryBin "Chart.yaml; values.yaml; templates/"
+        anchorFiles "Chart.yaml" "values.yaml"
+    }
+
+    grammar {
+        id "primary"
+        shape "helm upgrade --install {name} {chart}"
+        scriptSource "values plus chart"
+        notes "Release name plus values file are the mental model."
+    }
+
+    preset {
+        id "template"
+        label "template"
+        command "helm template {release} ."
+        cwd "chart"
+    }
+    preset {
+        id "upgrade"
+        label "upgrade"
+        command "helm upgrade --install {release} ."
+        cwd "chart"
+    }
+    extract {
+        manifest "Chart.yaml" fields "name" "version"
+    }
+}

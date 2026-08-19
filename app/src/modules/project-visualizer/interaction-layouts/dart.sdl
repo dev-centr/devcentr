@@ -1,0 +1,40 @@
+// Dart / pub - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "dart"
+    name "Dart / pub"
+    stackRef "Dart"
+    profileVersion "0.1.0"
+
+    summary "Language plus pub; pubspec.yaml; dart run."
+
+    layout zone {
+        id "project-root"
+        title "Dart package"
+        order 1
+        memoryBin "pubspec.yaml"
+        anchorFiles "pubspec.yaml" "pubspec.lock"
+    }
+
+    grammar {
+        id "primary"
+        shape "dart run / dart test / dart pub get"
+        scriptSource "pubspec executables"
+        notes "dart pub get from package root."
+    }
+
+    preset {
+        id "get"
+        label "get"
+        command "dart pub get"
+        cwd "project-root"
+    }
+    preset {
+        id "test"
+        label "test"
+        command "dart test"
+        cwd "project-root"
+    }
+    extract {
+        manifest "pubspec.yaml" fields "name"
+    }
+}

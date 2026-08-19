@@ -1,0 +1,35 @@
+// Gatsby - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "gatsby"
+    name "Gatsby"
+    stackRef "Gatsby"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "React static site generator."
+
+    layout zone {
+        id "site"
+        title "Gatsby site"
+        order 1
+        memoryBin "gatsby-config; src/pages"
+        anchorFiles "gatsby-config.js" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "gatsby develop"
+        scriptSource "package.json scripts"
+        notes "Prefer pinned scripts over global CLI."
+    }
+
+    preset {
+        id "develop"
+        label "develop"
+        command "pnpm run develop"
+        cwd "site"
+    }
+    extract {
+        manifest "package.json" fields "dependencies.gatsby" "scripts"
+    }
+}

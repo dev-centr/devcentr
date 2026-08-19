@@ -1,0 +1,35 @@
+// Rake - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "rake"
+    name "Rake"
+    stackRef "Ruby"
+    profileVersion "0.1.0"
+    parentTool "bundler"
+
+    summary "Ruby make-like tasks; Rakefile."
+
+    layout zone {
+        id "project-root"
+        title "Rake root"
+        order 1
+        memoryBin "Rakefile; lib/tasks"
+        anchorFiles "Rakefile"
+    }
+
+    grammar {
+        id "primary"
+        shape "bundle exec rake {task}"
+        scriptSource "Rakefile tasks"
+        notes "Task names are the script equivalents."
+    }
+
+    preset {
+        id "list"
+        label "list"
+        command "bundle exec rake -T"
+        cwd "project-root"
+    }
+    extract {
+        manifest "Rakefile"
+    }
+}

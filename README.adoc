@@ -72,7 +72,7 @@ DevCentr's environment management can install, configure, manage, and visually m
 * **Installation:** Automated setup of developer tools.
 * **Configuration:** Reproducible configuration management.
 * **Management:** Lifecycle control of multiple project environments.
-* **Visualization:** Visual modeling of local project architectures.
+* **Visualization:** Visual modeling of local project architectures — Live Blueprint / Project Visualizer (dependency + control graphs, interaction mental models at the repo root).
 
 === Repository & VCS Management
 

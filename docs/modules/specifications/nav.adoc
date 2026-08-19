@@ -1,5 +1,6 @@
 * xref:index.adoc[Specifications]
 * xref:components/dependency-modeler.adoc[Dependency Modeler]
+* xref:components/project-visualizer.adoc[Project Visualizer]
 * xref:components/project-recognizer.adoc[Project Recognizer]
 * xref:components/ai-config-interface.adoc[AI Config Interface]
 * xref:components/role-topology-composer.adoc[Role Topology Composer]

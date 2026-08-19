@@ -1,0 +1,34 @@
+// PostgreSQL - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "postgres"
+    name "PostgreSQL"
+    stackRef "PostgreSQL"
+    profileVersion "0.1.0"
+
+    summary "RDBMS; psql; DATABASE_URL."
+
+    layout zone {
+        id "db"
+        title "Postgres"
+        order 1
+        memoryBin "connection URL; compose service"
+        anchorFiles ".env" "compose.yaml"
+    }
+
+    grammar {
+        id "primary"
+        shape "psql DATABASE_URL"
+        scriptSource "env / compose"
+        notes "App tools own migrations; psql is the console."
+    }
+
+    preset {
+        id "psql"
+        label "psql"
+        command "psql"
+        cwd "db"
+    }
+    extract {
+        manifest ".env" fields "DATABASE_URL"
+    }
+}

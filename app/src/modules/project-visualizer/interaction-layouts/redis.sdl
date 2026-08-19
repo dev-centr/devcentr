@@ -1,0 +1,34 @@
+// Redis - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "redis"
+    name "Redis"
+    stackRef "Redis"
+    profileVersion "0.1.0"
+
+    summary "In-memory store; redis-cli; often Compose."
+
+    layout zone {
+        id "service"
+        title "Redis"
+        order 1
+        memoryBin "redis.conf or compose service"
+        anchorFiles "redis.conf" "compose.yaml"
+    }
+
+    grammar {
+        id "primary"
+        shape "redis-cli"
+        scriptSource "connection URL / compose"
+        notes "Usually a service dependency, not a project CLI."
+    }
+
+    preset {
+        id "ping"
+        label "ping"
+        command "redis-cli ping"
+        cwd "service"
+    }
+    extract {
+        manifest "compose.yaml" fields "services"
+    }
+}

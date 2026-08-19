@@ -1,0 +1,35 @@
+// Svelte - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "svelte"
+    name "Svelte"
+    stackRef "Svelte"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Compiler UI; SvelteKit usually owns the app shell."
+
+    layout zone {
+        id "src"
+        title "Svelte components"
+        order 1
+        memoryBin "*.svelte files"
+        anchorFiles "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "{pm} run dev via Vite or Kit"
+        scriptSource "host scripts"
+        notes "Bare Svelte is a compiler."
+    }
+
+    preset {
+        id "dev"
+        label "dev"
+        command "pnpm run dev"
+        cwd "src"
+    }
+    extract {
+        manifest "package.json" fields "dependencies.svelte"
+    }
+}

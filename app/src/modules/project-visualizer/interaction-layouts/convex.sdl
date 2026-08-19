@@ -1,0 +1,41 @@
+// Convex - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "convex"
+    name "Convex"
+    stackRef "Convex"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Reactive backend; convex/; npx convex dev."
+
+    layout zone {
+        id "convex"
+        title "Convex functions"
+        order 1
+        memoryBin "convex/; schema"
+        anchorFiles "convex" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "convex dev / convex deploy"
+        scriptSource "convex functions plus scripts"
+        notes "Pair with Next/Vite frontend package."
+    }
+
+    preset {
+        id "dev"
+        label "dev"
+        command "pnpm exec convex dev"
+        cwd "convex"
+    }
+    preset {
+        id "deploy"
+        label "deploy"
+        command "pnpm exec convex deploy"
+        cwd "convex"
+    }
+    extract {
+        manifest "package.json" fields "dependencies.convex" "scripts"
+    }
+}

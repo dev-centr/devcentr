@@ -1,0 +1,41 @@
+// GitHub CLI - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "gh"
+    name "GitHub CLI"
+    stackRef "Git"
+    profileVersion "0.1.0"
+    parentTool "git"
+
+    summary "gh; PRs/issues from repo root."
+
+    layout zone {
+        id "repo-root"
+        title "GitHub remote"
+        order 1
+        memoryBin "origin; gh auth"
+        anchorFiles ".git/config"
+    }
+
+    grammar {
+        id "primary"
+        shape "gh {resource} {verb}"
+        scriptSource "GitHub API via git remote"
+        notes "Always from a git checkout with GitHub remote."
+    }
+
+    preset {
+        id "pr"
+        label "pr"
+        command "gh pr status"
+        cwd "repo-root"
+    }
+    preset {
+        id "repo"
+        label "repo"
+        command "gh repo view"
+        cwd "repo-root"
+    }
+    extract {
+        manifest ".git/config"
+    }
+}

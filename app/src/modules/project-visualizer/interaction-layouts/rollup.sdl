@@ -1,0 +1,35 @@
+// Rollup - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "rollup"
+    name "Rollup"
+    stackRef "Rollup"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "ESM-first bundler; common for libraries."
+
+    layout zone {
+        id "config"
+        title "Rollup config"
+        order 1
+        memoryBin "rollup.config"
+        anchorFiles "rollup.config.mjs" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "rollup -c"
+        scriptSource "package.json scripts"
+        notes "Often library build, not app serve."
+    }
+
+    preset {
+        id "build"
+        label "build"
+        command "pnpm run build"
+        cwd "config"
+    }
+    extract {
+        manifest "package.json" fields "devDependencies.rollup" "scripts"
+    }
+}

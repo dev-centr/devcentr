@@ -1,0 +1,35 @@
+// Kotlin - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "kotlin"
+    name "Kotlin"
+    stackRef "Kotlin"
+    profileVersion "0.1.0"
+    parentTool "gradle"
+
+    summary "Language on JVM; usually Gradle Kotlin DSL."
+
+    layout zone {
+        id "project-root"
+        title "Kotlin project"
+        order 1
+        memoryBin "build.gradle.kts; src/main/kotlin"
+        anchorFiles "build.gradle.kts" "settings.gradle.kts"
+    }
+
+    grammar {
+        id "primary"
+        shape "./gradlew {task}"
+        scriptSource "Gradle Kotlin plugin"
+        notes "kotlinc alone is rare in apps."
+    }
+
+    preset {
+        id "build"
+        label "build"
+        command "./gradlew build"
+        cwd "project-root"
+    }
+    extract {
+        manifest "build.gradle.kts"
+    }
+}

@@ -1,0 +1,41 @@
+// Biome - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "biome"
+    name "Biome"
+    stackRef "Node.js"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Lint plus format; biome.json."
+
+    layout zone {
+        id "config"
+        title "Biome"
+        order 1
+        memoryBin "biome.json"
+        anchorFiles "biome.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "biome check / biome format"
+        scriptSource "biome.json"
+        notes "Single tool replaces eslint plus prettier in many repos."
+    }
+
+    preset {
+        id "check"
+        label "check"
+        command "pnpm exec biome check ."
+        cwd "config"
+    }
+    preset {
+        id "format"
+        label "format"
+        command "pnpm exec biome format --write ."
+        cwd "config"
+    }
+    extract {
+        manifest "biome.json"
+    }
+}

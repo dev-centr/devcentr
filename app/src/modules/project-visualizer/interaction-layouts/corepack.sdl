@@ -1,0 +1,41 @@
+// Corepack - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "corepack"
+    name "Corepack"
+    stackRef "Node.js"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Pins yarn/pnpm via package.json packageManager field."
+
+    layout zone {
+        id "project-root"
+        title "Package manager pin"
+        order 1
+        memoryBin "packageManager field is the pin"
+        anchorFiles "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "corepack prepare --activate"
+        scriptSource "package.json packageManager"
+        notes "Prefer Corepack over npm -g for pnpm/yarn."
+    }
+
+    preset {
+        id "enable"
+        label "enable"
+        command "corepack enable"
+        cwd "project-root"
+    }
+    preset {
+        id "prepare"
+        label "prepare"
+        command "corepack prepare --activate"
+        cwd "project-root"
+    }
+    extract {
+        manifest "package.json" fields "packageManager"
+    }
+}

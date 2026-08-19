@@ -1,0 +1,41 @@
+// Docker Compose - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "docker-compose"
+    name "Docker Compose"
+    stackRef "Docker"
+    profileVersion "0.1.0"
+    parentTool "docker"
+
+    summary "Multi-service orchestration; compose.yaml."
+
+    layout zone {
+        id "project-root"
+        title "Compose project"
+        order 1
+        memoryBin "compose.yaml service graph"
+        anchorFiles "compose.yaml" "docker-compose.yml"
+    }
+
+    grammar {
+        id "primary"
+        shape "docker compose {cmd}"
+        scriptSource "compose services / profiles"
+        notes "Service names are the units — not directories."
+    }
+
+    preset {
+        id "up"
+        label "up"
+        command "docker compose up -d"
+        cwd "project-root"
+    }
+    preset {
+        id "logs"
+        label "logs"
+        command "docker compose logs -f"
+        cwd "project-root"
+    }
+    extract {
+        manifest "compose.yaml" fields "services"
+    }
+}

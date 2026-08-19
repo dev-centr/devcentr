@@ -1,0 +1,40 @@
+// Deno - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "deno"
+    name "Deno"
+    stackRef "Deno"
+    profileVersion "0.1.0"
+
+    summary "Secure JS/TS runtime; deno.json tasks; URL imports."
+
+    layout zone {
+        id "project-root"
+        title "Deno project"
+        order 1
+        memoryBin "deno.json tasks — not package.json scripts"
+        anchorFiles "deno.json" "deno.jsonc" "deno.lock"
+    }
+
+    grammar {
+        id "primary"
+        shape "deno task {name}"
+        scriptSource "deno.json tasks"
+        notes "Tasks live in deno.json."
+    }
+
+    preset {
+        id "task"
+        label "task"
+        command "deno task"
+        cwd "project-root"
+    }
+    preset {
+        id "run"
+        label "run"
+        command "deno run -A main.ts"
+        cwd "project-root"
+    }
+    extract {
+        manifest "deno.json" fields "tasks" "imports"
+    }
+}

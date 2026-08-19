@@ -1,0 +1,35 @@
+// Three.js - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "threejs"
+    name "Three.js"
+    stackRef "Node.js"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "3D library; usually Vite/Webpack host."
+
+    layout zone {
+        id "src"
+        title "Three.js scene"
+        order 1
+        memoryBin "scene/camera/renderer modules"
+        anchorFiles "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "{pm} run dev via host"
+        scriptSource "host scripts"
+        notes "Library only — bundler controls."
+    }
+
+    preset {
+        id "dev"
+        label "dev"
+        command "pnpm run dev"
+        cwd "src"
+    }
+    extract {
+        manifest "package.json" fields "dependencies.three"
+    }
+}

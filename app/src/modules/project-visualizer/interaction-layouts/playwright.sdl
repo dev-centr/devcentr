@@ -1,0 +1,41 @@
+// Playwright - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "playwright"
+    name "Playwright"
+    stackRef "Node.js"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "E2E browser tests; playwright.config."
+
+    layout zone {
+        id "e2e"
+        title "Playwright"
+        order 1
+        memoryBin "playwright.config; tests/"
+        anchorFiles "playwright.config.ts" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "playwright test"
+        scriptSource "playwright.config"
+        notes "Install browsers once; run from package root."
+    }
+
+    preset {
+        id "test"
+        label "test"
+        command "pnpm exec playwright test"
+        cwd "e2e"
+    }
+    preset {
+        id "ui"
+        label "ui"
+        command "pnpm exec playwright test --ui"
+        cwd "e2e"
+    }
+    extract {
+        manifest "playwright.config.ts"
+    }
+}

@@ -1,0 +1,41 @@
+// Poetry - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "poetry"
+    name "Poetry"
+    stackRef "Python"
+    profileVersion "0.1.0"
+    parentTool "python"
+
+    summary "Dependency plus packaging; poetry.lock; poetry run."
+
+    layout zone {
+        id "project-root"
+        title "Poetry project"
+        order 1
+        memoryBin "pyproject.toml; poetry.lock"
+        anchorFiles "pyproject.toml" "poetry.lock"
+    }
+
+    grammar {
+        id "primary"
+        shape "poetry run {cmd}"
+        scriptSource "pyproject scripts"
+        notes "Stay at project root; poetry env is managed."
+    }
+
+    preset {
+        id "install"
+        label "install"
+        command "poetry install"
+        cwd "project-root"
+    }
+    preset {
+        id "run"
+        label "run"
+        command "poetry run {script}"
+        cwd "project-root"
+    }
+    extract {
+        manifest "pyproject.toml" fields "tool.poetry"
+    }
+}

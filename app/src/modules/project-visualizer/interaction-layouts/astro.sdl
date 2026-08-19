@@ -1,0 +1,41 @@
+// Astro - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "astro"
+    name "Astro"
+    stackRef "Astro"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Content-focused meta-framework; islands."
+
+    layout zone {
+        id "pages"
+        title "Astro pages"
+        order 1
+        memoryBin "src/pages; astro.config"
+        anchorFiles "astro.config.mjs" "src/pages" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "astro {cmd} or {pm} run {script}"
+        scriptSource "package.json scripts"
+        notes "astro dev is the usual entry."
+    }
+
+    preset {
+        id "dev"
+        label "dev"
+        command "pnpm run dev"
+        cwd "pages"
+    }
+    preset {
+        id "build"
+        label "build"
+        command "pnpm run build"
+        cwd "pages"
+    }
+    extract {
+        manifest "package.json" fields "dependencies.astro" "scripts"
+    }
+}

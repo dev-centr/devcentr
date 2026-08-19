@@ -1,0 +1,41 @@
+// NestJS - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "nestjs"
+    name "NestJS"
+    stackRef "NestJS"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Opinionated Node framework; nest-cli.json."
+
+    layout zone {
+        id "src"
+        title "Nest modules"
+        order 1
+        memoryBin "src/; nest-cli.json"
+        anchorFiles "nest-cli.json" "package.json" "src/main.ts"
+    }
+
+    grammar {
+        id "primary"
+        shape "nest start"
+        scriptSource "nest-cli plus scripts"
+        notes "nest generate from project root."
+    }
+
+    preset {
+        id "start"
+        label "start"
+        command "pnpm run start:dev"
+        cwd "src"
+    }
+    preset {
+        id "build"
+        label "build"
+        command "pnpm run build"
+        cwd "src"
+    }
+    extract {
+        manifest "nest-cli.json" fields "sourceRoot"
+    }
+}

@@ -1,0 +1,35 @@
+// NuGet - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "nuget"
+    name "NuGet"
+    stackRef ".NET"
+    profileVersion "0.1.0"
+    parentTool "dotnet"
+
+    summary "Package feed client; usually dotnet add package."
+
+    layout zone {
+        id "project"
+        title "Package refs"
+        order 1
+        memoryBin "PackageReference; nuget.config"
+        anchorFiles "nuget.config"
+    }
+
+    grammar {
+        id "primary"
+        shape "dotnet add package {id}"
+        scriptSource "PackageReference items"
+        notes "Prefer dotnet CLI over nuget.exe."
+    }
+
+    preset {
+        id "restore"
+        label "restore"
+        command "dotnet restore"
+        cwd "project"
+    }
+    extract {
+        manifest "nuget.config"
+    }
+}

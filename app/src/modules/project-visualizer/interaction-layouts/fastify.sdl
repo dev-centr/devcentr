@@ -1,0 +1,35 @@
+// Fastify - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "fastify"
+    name "Fastify"
+    stackRef "Fastify"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "High-performance Node HTTP framework."
+
+    layout zone {
+        id "server"
+        title "Fastify server"
+        order 1
+        memoryBin "app entry plus plugins"
+        anchorFiles "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "{pm} run start"
+        scriptSource "package.json scripts"
+        notes "No required CLI."
+    }
+
+    preset {
+        id "start"
+        label "start"
+        command "pnpm run start"
+        cwd "server"
+    }
+    extract {
+        manifest "package.json" fields "dependencies.fastify" "scripts"
+    }
+}

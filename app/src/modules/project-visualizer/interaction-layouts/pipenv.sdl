@@ -1,0 +1,41 @@
+// Pipenv - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "pipenv"
+    name "Pipenv"
+    stackRef "Python"
+    profileVersion "0.1.0"
+    parentTool "python"
+
+    summary "Pipfile plus lock; pipenv run."
+
+    layout zone {
+        id "project-root"
+        title "Pipenv project"
+        order 1
+        memoryBin "Pipfile; Pipfile.lock"
+        anchorFiles "Pipfile" "Pipfile.lock"
+    }
+
+    grammar {
+        id "primary"
+        shape "pipenv run {cmd}"
+        scriptSource "Pipfile scripts"
+        notes "Prefer pipenv run over pipenv shell for scripts."
+    }
+
+    preset {
+        id "install"
+        label "install"
+        command "pipenv install"
+        cwd "project-root"
+    }
+    preset {
+        id "run"
+        label "run"
+        command "pipenv run {script}"
+        cwd "project-root"
+    }
+    extract {
+        manifest "Pipfile"
+    }
+}

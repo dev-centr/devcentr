@@ -1,0 +1,40 @@
+// .NET SDK - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "dotnet"
+    name ".NET SDK"
+    stackRef ".NET"
+    profileVersion "0.1.0"
+
+    summary "dotnet CLI; .sln / .csproj."
+
+    layout zone {
+        id "solution-root"
+        title "Solution / project"
+        order 1
+        memoryBin "*.sln; *.csproj; global.json"
+        anchorFiles "global.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "dotnet {verb} {project}"
+        scriptSource ".csproj"
+        notes "Pass .csproj path instead of cd."
+    }
+
+    preset {
+        id "build"
+        label "build"
+        command "dotnet build"
+        cwd "solution-root"
+    }
+    preset {
+        id "test"
+        label "test"
+        command "dotnet test"
+        cwd "solution-root"
+    }
+    extract {
+        manifest "global.json" fields "sdk"
+    }
+}

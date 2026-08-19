@@ -1,0 +1,35 @@
+// pip - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "pip"
+    name "pip"
+    stackRef "Python"
+    profileVersion "0.1.0"
+    parentTool "python"
+
+    summary "Default installer; requirements.txt; prefer venv."
+
+    layout zone {
+        id "project-root"
+        title "pip env"
+        order 1
+        memoryBin "requirements files; often inside .venv"
+        anchorFiles "requirements.txt"
+    }
+
+    grammar {
+        id "primary"
+        shape "python -m pip install -r {file}"
+        scriptSource "requirements files"
+        notes "Always python -m pip inside the intended venv."
+    }
+
+    preset {
+        id "install"
+        label "install"
+        command "python -m pip install -r requirements.txt"
+        cwd "project-root"
+    }
+    extract {
+        manifest "requirements.txt"
+    }
+}

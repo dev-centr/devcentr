@@ -1,0 +1,35 @@
+// Qwik - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "qwik"
+    name "Qwik"
+    stackRef "Qwik"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Resumable framework; Vite plus Qwik City."
+
+    layout zone {
+        id "src"
+        title "Qwik app"
+        order 1
+        memoryBin "src/; vite.config"
+        anchorFiles "vite.config.ts" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "{pm} run dev"
+        scriptSource "package.json scripts"
+        notes "Qwik City controls routing."
+    }
+
+    preset {
+        id "dev"
+        label "dev"
+        command "pnpm run dev"
+        cwd "src"
+    }
+    extract {
+        manifest "package.json" fields "scripts"
+    }
+}

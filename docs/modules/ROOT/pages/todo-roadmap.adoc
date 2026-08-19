@@ -31,6 +31,13 @@ This page is the **task-level** TODO and roadmap for the DevCentr app and its do
 * [ ] Finish Project Templates installation logic in `app.d`.
 * [ ] Implement real tool detection in `tool_manager.d` (currently mostly mock data).
 * [ ] Add support for `pnpm` workspace analysis.
+* [ ] **Project Visualizer (Live Blueprint)**
+** [ ] SDL loader for `project-visualizer/interaction-layouts/*.sdl`
+** [ ] Merge profiles with `project-map` scan + repo extractors (scripts, workspace members)
+** [ ] Canvas: dependency graph + control graph toggles
+** [ ] Root-first command presets from project root (no nested cd in primary UX)
+** [x] Initial interaction layout profile catalog (8 starters + 141 generated = 149; see `interaction-layouts/_catalog.tsv`)
+** [ ] Spec: xref:specifications:components/project-visualizer.adoc[Project Visualizer]
 * [ ] Integrate Secrets Manager (standalone client + repo-filtered UI).
 * [ ] Integrate SSH Manager (coordinator for agent providers, WSL bridge).
 * [ ] **Memories Manager (AI Rules & Workspace Facts)**

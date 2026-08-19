@@ -1,0 +1,35 @@
+// Electron - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "electron"
+    name "Electron"
+    stackRef "Electron"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Desktop Chromium plus Node."
+
+    layout zone {
+        id "main"
+        title "Main plus renderer"
+        order 1
+        memoryBin "main process, preload, renderer"
+        anchorFiles "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "electron . or {pm} run electron:dev"
+        scriptSource "package.json scripts"
+        notes "Main vs renderer are two process trees."
+    }
+
+    preset {
+        id "dev"
+        label "dev"
+        command "pnpm run electron:dev"
+        cwd "main"
+    }
+    extract {
+        manifest "package.json" fields "devDependencies.electron" "scripts"
+    }
+}

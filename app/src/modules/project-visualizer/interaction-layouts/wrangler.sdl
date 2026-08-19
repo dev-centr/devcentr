@@ -1,0 +1,41 @@
+// Wrangler - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "wrangler"
+    name "Wrangler"
+    stackRef "Cloudflare"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Cloudflare Workers CLI; wrangler.toml."
+
+    layout zone {
+        id "worker"
+        title "Worker project"
+        order 1
+        memoryBin "wrangler.toml; src/"
+        anchorFiles "wrangler.toml" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "wrangler {cmd}"
+        scriptSource "wrangler.toml plus package scripts"
+        notes "Often via pnpm exec wrangler."
+    }
+
+    preset {
+        id "dev"
+        label "dev"
+        command "pnpm exec wrangler dev"
+        cwd "worker"
+    }
+    preset {
+        id "deploy"
+        label "deploy"
+        command "pnpm exec wrangler deploy"
+        cwd "worker"
+    }
+    extract {
+        manifest "wrangler.toml" fields "name" "main"
+    }
+}

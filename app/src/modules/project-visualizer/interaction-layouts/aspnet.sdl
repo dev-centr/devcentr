@@ -1,0 +1,35 @@
+// ASP.NET Core - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "aspnet"
+    name "ASP.NET Core"
+    stackRef ".NET"
+    profileVersion "0.1.0"
+    parentTool "dotnet"
+
+    summary "Web stack; launchSettings.json profiles."
+
+    layout zone {
+        id "web"
+        title "ASP.NET app"
+        order 1
+        memoryBin "Program.cs; launchSettings.json"
+        anchorFiles "Program.cs" "Properties/launchSettings.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "dotnet run --launch-profile {name}"
+        scriptSource "launchSettings profiles"
+        notes "Profile name selects URLs/env."
+    }
+
+    preset {
+        id "run"
+        label "run"
+        command "dotnet run --project {projectPath}"
+        cwd "web"
+    }
+    extract {
+        manifest "Properties/launchSettings.json" fields "profiles"
+    }
+}

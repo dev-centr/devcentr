@@ -1,0 +1,41 @@
+// Nuxt - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "nuxt"
+    name "Nuxt"
+    stackRef "Nuxt"
+    profileVersion "0.1.0"
+    parentTool "vue"
+
+    summary "Vue meta-framework; nuxi CLI."
+
+    layout zone {
+        id "app"
+        title "Nuxt app"
+        order 1
+        memoryBin "nuxt.config; app/ or pages/"
+        anchorFiles "nuxt.config.ts" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "nuxi {cmd} or {pm} run {script}"
+        scriptSource "package.json scripts"
+        notes "nuxi controls Vue app lifecycle."
+    }
+
+    preset {
+        id "dev"
+        label "dev"
+        command "pnpm run dev"
+        cwd "app"
+    }
+    preset {
+        id "build"
+        label "build"
+        command "pnpm run build"
+        cwd "app"
+    }
+    extract {
+        manifest "package.json" fields "dependencies.nuxt" "scripts"
+    }
+}

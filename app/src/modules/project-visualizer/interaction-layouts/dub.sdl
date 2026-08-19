@@ -1,0 +1,60 @@
+// Dub — D language build tool and package manager.
+interactionLayout {
+    id "dub"
+    name "Dub"
+    stackRef "D"
+    profileVersion "0.1.0"
+
+    summary "D package manager and build driver; dub.sdl/dub.json at package root; selections lock versions."
+
+    layout zone {
+        id "package-root"
+        title "Dub package root"
+        order 1
+        memoryBin "Where dub build and dub run execute"
+        anchorFiles "dub.sdl" "dub.json" "dub.selections.json"
+    }
+    layout zone {
+        id "source"
+        title "Source tree"
+        order 2
+        memoryBin "source/ or package.d per dub.sdl"
+        anchorFiles "source" "package.d"
+    }
+
+    grammar {
+        id "run"
+        shape "dub run [--config=...] [-- <args>]"
+        scriptSource "dub.sdl target configurations"
+        notes "No package.json scripts; targets and configs live in dub manifest."
+    }
+    grammar {
+        id "build"
+        shape "dub build [--config=...]"
+        scriptSource "dub.sdl configurations"
+    }
+
+    preset {
+        id "build"
+        label "Dub build"
+        command "dub build"
+        cwd "package-root"
+    }
+    preset {
+        id "run"
+        label "Dub run"
+        command "dub run"
+        cwd "package-root"
+    }
+    preset {
+        id "test"
+        label "Dub test"
+        command "dub test"
+        cwd "package-root"
+    }
+
+    extract {
+        manifest "dub.sdl" fields "name" "configurations" "dependencies"
+        manifest "dub.json" fields "name" "configurations" "dependencies"
+    }
+}

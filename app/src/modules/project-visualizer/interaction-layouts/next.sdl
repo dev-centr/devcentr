@@ -1,0 +1,55 @@
+// Next.js — React meta-framework; control tree differs from dependency tree.
+interactionLayout {
+    id "next"
+    name "Next.js"
+    stackRef "Next.js"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "App Router meta-framework; controls React usage; dev via next dev; monorepos route from workspace root."
+
+    dependsOn "node" "react"
+    controls "react" "node"
+
+    layout zone {
+        id "app-router"
+        title "App Router"
+        order 1
+        memoryBin "app/ directory — routes, layouts, server components"
+        anchorFiles "app/layout.tsx" "app/page.tsx" "next.config.*"
+    }
+    layout zone {
+        id "config"
+        title "Next config"
+        order 2
+        memoryBin "next.config.js/ts — redirects, env, experimental flags"
+        anchorFiles "next.config.js" "next.config.ts" "next.config.mjs"
+    }
+
+    grammar {
+        id "dev"
+        shape "<pm> [--filter pkg | -C path] run dev  →  next dev [flags]"
+        scriptSource "package.json scripts.dev"
+        notes "next dev is the framework entry; --turbopack often passed in script string."
+    }
+
+    preset {
+        id "dev-filtered"
+        label "Next dev (monorepo)"
+        command "pnpm --filter {packageName} dev"
+        cwd "workspace-root"
+        requires "monorepo" "packageName"
+    }
+    preset {
+        id "build-filtered"
+        label "Next build"
+        command "pnpm --filter {packageName} build"
+        cwd "workspace-root"
+        requires "monorepo" "packageName"
+    }
+
+    extract {
+        manifest "package.json" fields "scripts" "dependencies.next"
+        manifest "next.config.*" fields "experimental" "redirects"
+    }
+}

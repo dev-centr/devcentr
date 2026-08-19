@@ -1,0 +1,41 @@
+// Laravel - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "laravel"
+    name "Laravel"
+    stackRef "Laravel"
+    profileVersion "0.1.0"
+    parentTool "composer"
+
+    summary "PHP framework; artisan is the control plane."
+
+    layout zone {
+        id "app"
+        title "Laravel app"
+        order 1
+        memoryBin "artisan; app/; routes/"
+        anchorFiles "artisan" "composer.json" ".env"
+    }
+
+    grammar {
+        id "primary"
+        shape "php artisan {cmd}"
+        scriptSource "artisan commands"
+        notes "Always from app root containing artisan."
+    }
+
+    preset {
+        id "serve"
+        label "serve"
+        command "php artisan serve"
+        cwd "app"
+    }
+    preset {
+        id "migrate"
+        label "migrate"
+        command "php artisan migrate"
+        cwd "app"
+    }
+    extract {
+        manifest "composer.json" fields "require"
+    }
+}

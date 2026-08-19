@@ -1,0 +1,40 @@
+// Kubernetes - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "kubernetes"
+    name "Kubernetes"
+    stackRef "Kubernetes"
+    profileVersion "0.1.0"
+
+    summary "Cluster orchestration; manifests / Helm; kubectl."
+
+    layout zone {
+        id "manifests"
+        title "K8s manifests"
+        order 1
+        memoryBin "YAML; kubeconfig context"
+        anchorFiles "kustomization.yaml"
+    }
+
+    grammar {
+        id "primary"
+        shape "kubectl apply -f {file}"
+        scriptSource "manifests / kustomize"
+        notes "Context/namespace are standing position."
+    }
+
+    preset {
+        id "apply"
+        label "apply"
+        command "kubectl apply -f {manifest}"
+        cwd "manifests"
+    }
+    preset {
+        id "get"
+        label "get"
+        command "kubectl get pods"
+        cwd "manifests"
+    }
+    extract {
+        manifest "kustomization.yaml" fields "resources"
+    }
+}

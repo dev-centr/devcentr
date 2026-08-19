@@ -2,6 +2,13 @@
 
 This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
 
+== 2026-08-19 – Project Visualizer mission and interaction layout profiles
+
+* xref:specifications:components/project-visualizer.adoc[Project Visualizer] spec — Live Blueprint renderer; mental models at point of interaction; curated SDL profiles + repo extractors; root-first command routing.
+* Initial SDL catalog: `app/src/modules/project-visualizer/interaction-layouts/` — 8 hand-maintained starters plus **141** generated profiles (**149** total); source table `_catalog.tsv`, generator `_generate-from-tsv.ps1`.
+* `project-map` `~>0.1.4`: **Vite** and **pnpm workspace** stack detection profiles.
+* xref:ROOT:project-vision.adoc[Project vision] and xref:ROOT:capabilities.adoc[Capabilities] updated; xref:specifications:reference/definition-files.adoc#interaction-layout-profiles[Definition files] documents profile location.
+
 == 2026-08-19 – Toolchain advisor: graphics rendering docs link
 
 * Toolchain advisor recommends xref:general-knowledge:explanation/architecture/graphics-rendering-engines.adoc[Graphics rendering engines] when target is desktop or web; **Read docs** opens the hub page from ranked guidance.

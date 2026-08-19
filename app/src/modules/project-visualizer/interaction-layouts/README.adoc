@@ -1,0 +1,151 @@
+= Interaction layout profiles
+
+Human-authored SDL catalogs that map **dev-tool mental models** into Project Visualizer UI zones and command presets.
+
+== Catalog size
+
+* **149** profiles on disk (`*.sdl`) — **8** hand-maintained starters plus **141** generated stubs from [`_catalog.tsv`](_catalog.tsv).
+* Regenerate stubs (preserves starters): `powershell -File _generate-from-tsv.ps1`
+
+== Files
+
+One `.sdl` per tool or framework. Join keys:
+
+* `stackRef` — `project-map` stack profile name (e.g. `Next.js`, `Node.js`).
+* `id` — stable profile id for DevCentr code.
+
+**Hand-maintained starters** (not overwritten by the generator): `node`, `npm`, `pnpm`, `vite`, `next`, `solid`, `dub`, `rust`.
+
+== Popularity / frequency catalog (141 generated)
+
+Grouped by primary stack / ecosystem. Full list: [`_catalog.tsv`](_catalog.tsv).
+
+=== JavaScript / TypeScript (Node ecosystem)
+
+Package managers and runtimes: `yarn`, `bun`, `deno`, `corepack`.
+
+Frameworks and meta-frameworks: `react`, `vue`, `nuxt`, `angular`, `svelte`, `sveltekit`, `astro`, `remix`, `gatsby`, `express`, `nestjs`, `hono`, `fastify`, `electron`, `qwik`, `ember`, `lit`.
+
+Bundlers and monorepo orchestrators: `webpack`, `rollup`, `esbuild`, `parcel`, `turborepo`, `nx`, `lerna`, `moonrepo`, `typescript`.
+
+Testing and quality: `jest`, `vitest`, `playwright`, `cypress`, `storybook`, `eslint`, `prettier`, `biome`, `dprint`.
+
+Mobile / desktop: `react-native`, `expo`, `tauri`.
+
+Backend-as-a-service and deploy: `convex`, `vercel`, `netlify`, `firebase`, `wrangler`.
+
+Data / API: `prisma`, `drizzle`, `typeorm`, `sequelize`, `graphql`, `openapi`, `protobuf`, `buf`.
+
+CSS / 3D: `tailwind`, `postcss`, `threejs`.
+
+Git hooks / release: `husky`, `changesets`, `semantic-release`.
+
+=== Python
+
+`python`, `pip`, `uv`, `poetry`, `pipenv`, `conda`, `pdm`, `hatch`, `django`, `flask`, `fastapi`, `pytest`, `tox`, `nox`, `sphinx`, `mkdocs`, `pre-commit`, `alembic`.
+
+=== Systems languages
+
+Rust: `diesel`, `sqlx`, `mdbook`.
+
+Go: `go`, `goreleaser`.
+
+D: (starter `dub` only — extend in TSV).
+
+JVM: `maven`, `gradle`, `spring-boot`, `kotlin`, `scala`, `mill`.
+
+.NET: `dotnet`, `nuget`, `aspnet`.
+
+Native build: `cmake`, `make`, `ninja`, `meson`, `bazel`.
+
+Other languages: `elixir`, `phoenix`, `swift`, `xcode`, `cocoapods`, `zig`, `julia`.
+
+=== PHP / Ruby
+
+`composer`, `laravel`, `symfony`, `bundler`, `rails`, `rake`.
+
+=== Mobile
+
+`flutter`, `dart` (plus `react-native`, `expo` under Node).
+
+=== Containers / cloud / IaC
+
+`docker`, `docker-compose`, `kubernetes`, `helm`, `terraform`, `opentofu`, `pulumi`, `ansible`, `supabase`, `aws-cli`, `gcloud`, `az`, `stripe-cli`, `sentry-cli`.
+
+=== CI / VCS
+
+`github-actions`, `gitlab-ci`, `circleci`, `git`, `gh`.
+
+=== Docs
+
+`antora`, `docusaurus`, `vitepress`, `quarto` (plus `sphinx`, `mkdocs`, `mdbook` above).
+
+=== Data stores (often Compose-backed)
+
+`postgres`, `mongodb`, `redis`, `flyway`, `liquibase`.
+
+== Tag reference (v0.1)
+
+[source,sdl]
+----
+interactionLayout {
+    id "pnpm"
+    name "pnpm"
+    stackRef "Node.js"
+    profileVersion "0.1.0"
+    docRef "general-knowledge:reference/pnpm-run-routing.adoc"
+
+    summary "Strict Node package manager; monorepo-first routing from workspace root."
+
+    controls "node" "npm"
+
+    layout zone {
+        id "workspace-root"
+        title "Workspace root"
+        order 1
+        memoryBin "Where pnpm install runs; lockfile and workspace manifest live"
+        anchorFiles "pnpm-workspace.yaml" "pnpm-lock.yaml" "package.json"
+    }
+
+    grammar {
+        id "run-script"
+        shape "pnpm [routing] run <script> [-- args]"
+        scriptSource "package.json → scripts.<script>"
+        notes "Script names are project-defined; pnpm does not ship a universal dev script."
+    }
+
+    routing {
+        flag "--filter" alias "-F"
+        meaning "Select workspace package by name from pnpm-workspace.yaml"
+        preferWhen "monorepo"
+    }
+
+    preset {
+        id "install"
+        label "Install workspace"
+        command "pnpm install"
+        cwd "workspace-root"
+    }
+
+    extract {
+        manifest "pnpm-workspace.yaml" fields "packages"
+        manifest "package.json" fields "scripts" scope "each-workspace-package"
+    }
+}
+----
+
+== UI mapping
+
+* `layout zone` → canvas / inspector region
+* `grammar` → explainer panel (epistemology of each token)
+* `routing` → contextual callouts when detection matches `preferWhen`
+* `preset` → action chips (copy / run in repo terminal)
+* `extract` → hints for repo overlay parsers
+
+Parser: not wired yet. Profiles are authoritative stubs for the Project Visualizer spec.
+
+== Maintainer workflow
+
+1. Add or edit a row in `_catalog.tsv` (tab-separated; see header row).
+2. Run `_generate-from-tsv.ps1` — overwrites generated stubs only.
+3. For high-traffic tools (`pnpm`, `next`, …), enrich the hand-maintained `.sdl` directly instead of TSV-only stubs.

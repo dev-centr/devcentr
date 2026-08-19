@@ -1,0 +1,35 @@
+// Prettier - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "prettier"
+    name "Prettier"
+    stackRef "Node.js"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Formatter; .prettierrc."
+
+    layout zone {
+        id "config"
+        title "Prettier"
+        order 1
+        memoryBin ".prettierrc; .prettierignore"
+        anchorFiles ".prettierrc" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "prettier --write {paths}"
+        scriptSource "prettier config plus scripts"
+        notes "Format from package root."
+    }
+
+    preset {
+        id "write"
+        label "write"
+        command "pnpm exec prettier --write ."
+        cwd "config"
+    }
+    extract {
+        manifest "package.json" fields "scripts.format"
+    }
+}

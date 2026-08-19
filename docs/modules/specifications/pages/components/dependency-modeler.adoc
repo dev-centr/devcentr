@@ -1,5 +1,10 @@
 = Dependency Modeler
 
-Dev Center needs a dependency modeler that looks into a project's source code and makes
-1. an intra-project dependency graph to model modules.
-2. an external dependency graph for external libraries, and dependencies on other projects.
+Builds **dependency graphs** for a opened project:
+
+1. An **intra-project** graph (modules, crates, packages inside the repo).
+2. An **external** graph (libraries, sibling projects, registry deps).
+
+The xref:project-visualizer.adoc[Project Visualizer] consumes this output together with **control-tree** edges (framework orchestrates library — Next.js over React) and xref:../reference/definition-files.adoc#interaction-layout-profiles[interaction layout profiles] for command routing at the repo root.
+
+Renderer and graph UI: Project Visualizer spec. This component owns graph construction and cache serialization only.

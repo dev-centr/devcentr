@@ -1,0 +1,35 @@
+// ESLint - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "eslint"
+    name "ESLint"
+    stackRef "Node.js"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "JS/TS linter; eslint.config.js flat config."
+
+    layout zone {
+        id "config"
+        title "ESLint"
+        order 1
+        memoryBin "eslint.config; .eslintrc legacy"
+        anchorFiles "eslint.config.js" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "eslint {paths}"
+        scriptSource "eslint config plus scripts.lint"
+        notes "Flat config is the modern standing file."
+    }
+
+    preset {
+        id "lint"
+        label "lint"
+        command "pnpm exec eslint ."
+        cwd "config"
+    }
+    extract {
+        manifest "package.json" fields "scripts.lint"
+    }
+}

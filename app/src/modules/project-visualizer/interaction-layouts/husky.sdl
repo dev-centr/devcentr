@@ -1,0 +1,35 @@
+// Husky - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "husky"
+    name "Husky"
+    stackRef "Node.js"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Git hooks for JS repos; .husky/."
+
+    layout zone {
+        id "repo-root"
+        title "Husky hooks"
+        order 1
+        memoryBin ".husky/; package.json prepare"
+        anchorFiles ".husky" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "git hook invokes lint-staged"
+        scriptSource ".husky scripts"
+        notes "Hooks fire from git — not a manual CLI usually."
+    }
+
+    preset {
+        id "install"
+        label "install"
+        command "pnpm exec husky"
+        cwd "repo-root"
+    }
+    extract {
+        manifest "package.json" fields "devDependencies.husky"
+    }
+}

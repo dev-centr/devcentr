@@ -1,0 +1,35 @@
+// Antora - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "antora"
+    name "Antora"
+    stackRef "Docs"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Docs site generator; antora-playbook.yml."
+
+    layout zone {
+        id "playbook"
+        title "Antora playbook"
+        order 1
+        memoryBin "playbook; component antora.yml"
+        anchorFiles "antora-playbook.yml" "docs/antora.yml"
+    }
+
+    grammar {
+        id "primary"
+        shape "npx antora {playbook}"
+        scriptSource "playbook content sources"
+        notes "Playbook cwd aggregates many repos."
+    }
+
+    preset {
+        id "build"
+        label "build"
+        command "pnpm exec antora antora-playbook.yml"
+        cwd "playbook"
+    }
+    extract {
+        manifest "antora-playbook.yml" fields "site"
+    }
+}

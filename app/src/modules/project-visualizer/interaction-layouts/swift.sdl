@@ -1,0 +1,40 @@
+// Swift / SPM - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "swift"
+    name "Swift / SPM"
+    stackRef "Swift"
+    profileVersion "0.1.0"
+
+    summary "Swift Package Manager; Package.swift."
+
+    layout zone {
+        id "package-root"
+        title "Swift package"
+        order 1
+        memoryBin "Package.swift"
+        anchorFiles "Package.swift"
+    }
+
+    grammar {
+        id "primary"
+        shape "swift build / swift test / swift run"
+        scriptSource "Package.swift targets"
+        notes "SPM root is Package.swift dir."
+    }
+
+    preset {
+        id "build"
+        label "build"
+        command "swift build"
+        cwd "package-root"
+    }
+    preset {
+        id "test"
+        label "test"
+        command "swift test"
+        cwd "package-root"
+    }
+    extract {
+        manifest "Package.swift"
+    }
+}

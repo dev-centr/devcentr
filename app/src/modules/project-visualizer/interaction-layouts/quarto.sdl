@@ -1,0 +1,40 @@
+// Quarto - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "quarto"
+    name "Quarto"
+    stackRef "Docs"
+    profileVersion "0.1.0"
+
+    summary "Scientific publishing; _quarto.yml."
+
+    layout zone {
+        id "project"
+        title "Quarto project"
+        order 1
+        memoryBin "_quarto.yml; qmd files"
+        anchorFiles "_quarto.yml"
+    }
+
+    grammar {
+        id "primary"
+        shape "quarto preview / quarto render"
+        scriptSource "_quarto.yml"
+        notes "Project type drives output."
+    }
+
+    preset {
+        id "preview"
+        label "preview"
+        command "quarto preview"
+        cwd "project"
+    }
+    preset {
+        id "render"
+        label "render"
+        command "quarto render"
+        cwd "project"
+    }
+    extract {
+        manifest "_quarto.yml" fields "project"
+    }
+}

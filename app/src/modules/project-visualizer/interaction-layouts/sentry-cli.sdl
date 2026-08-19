@@ -1,0 +1,34 @@
+// Sentry CLI - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "sentry-cli"
+    name "Sentry CLI"
+    stackRef "Sentry"
+    profileVersion "0.1.0"
+
+    summary "Error tracking; sentry-cli releases/sourcemaps."
+
+    layout zone {
+        id "project-root"
+        title "Sentry"
+        order 1
+        memoryBin "org/project; auth token env"
+        anchorFiles ".sentryclirc" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "sentry-cli {cmd}"
+        scriptSource ".sentryclirc plus env"
+        notes "Org/project are standing position."
+    }
+
+    preset {
+        id "info"
+        label "info"
+        command "sentry-cli info"
+        cwd "project-root"
+    }
+    extract {
+        manifest ".sentryclirc"
+    }
+}

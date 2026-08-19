@@ -1,0 +1,41 @@
+// Changesets - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "changesets"
+    name "Changesets"
+    stackRef "Node.js"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Versioning monorepos; .changeset/."
+
+    layout zone {
+        id "workspace-root"
+        title "Changesets"
+        order 1
+        memoryBin ".changeset/; package versions"
+        anchorFiles ".changeset/config.json" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "changeset / changeset version"
+        scriptSource ".changeset markdown"
+        notes "Workspace root only."
+    }
+
+    preset {
+        id "add"
+        label "add"
+        command "pnpm exec changeset"
+        cwd "workspace-root"
+    }
+    preset {
+        id "version"
+        label "version"
+        command "pnpm exec changeset version"
+        cwd "workspace-root"
+    }
+    extract {
+        manifest ".changeset/config.json"
+    }
+}

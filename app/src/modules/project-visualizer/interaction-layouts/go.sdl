@@ -1,0 +1,40 @@
+// Go - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "go"
+    name "Go"
+    stackRef "Go"
+    profileVersion "0.1.0"
+
+    summary "Language plus toolchain; go.mod module root."
+
+    layout zone {
+        id "module-root"
+        title "Go module"
+        order 1
+        memoryBin "go.mod; go.sum"
+        anchorFiles "go.mod" "go.sum"
+    }
+
+    grammar {
+        id "primary"
+        shape "go {cmd} {packages}"
+        scriptSource "go.mod module path"
+        notes "Module root is standing position; ./... selects packages."
+    }
+
+    preset {
+        id "test"
+        label "test"
+        command "go test ./..."
+        cwd "module-root"
+    }
+    preset {
+        id "tidy"
+        label "tidy"
+        command "go mod tidy"
+        cwd "module-root"
+    }
+    extract {
+        manifest "go.mod" fields "module"
+    }
+}

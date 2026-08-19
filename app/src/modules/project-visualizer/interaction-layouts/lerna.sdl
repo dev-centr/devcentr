@@ -1,0 +1,35 @@
+// Lerna - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "lerna"
+    name "Lerna"
+    stackRef "Lerna"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Multi-package publisher; --scope."
+
+    layout zone {
+        id "workspace-root"
+        title "Lerna root"
+        order 1
+        memoryBin "lerna.json; packages/*"
+        anchorFiles "lerna.json" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "lerna run {script} --scope={pkg}"
+        scriptSource "package scripts"
+        notes "--scope selects package without cd."
+    }
+
+    preset {
+        id "run"
+        label "run"
+        command "lerna run build"
+        cwd "workspace-root"
+    }
+    extract {
+        manifest "lerna.json" fields "packages"
+    }
+}

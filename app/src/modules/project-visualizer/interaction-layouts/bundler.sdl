@@ -1,0 +1,34 @@
+// Bundler - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "bundler"
+    name "Bundler"
+    stackRef "Ruby"
+    profileVersion "0.1.0"
+
+    summary "Gem dependency manager; bundle exec."
+
+    layout zone {
+        id "project-root"
+        title "Bundler root"
+        order 1
+        memoryBin "Gemfile; Gemfile.lock"
+        anchorFiles "Gemfile" "Gemfile.lock"
+    }
+
+    grammar {
+        id "primary"
+        shape "bundle exec {cmd}"
+        scriptSource "Gemfile plus binstubs"
+        notes "bundle exec ensures gem versions."
+    }
+
+    preset {
+        id "install"
+        label "install"
+        command "bundle install"
+        cwd "project-root"
+    }
+    extract {
+        manifest "Gemfile"
+    }
+}

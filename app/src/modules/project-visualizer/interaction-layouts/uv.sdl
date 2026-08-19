@@ -1,0 +1,41 @@
+// uv - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "uv"
+    name "uv"
+    stackRef "Python"
+    profileVersion "0.1.0"
+    parentTool "python"
+
+    summary "Fast Astral PM/venv; uv sync / uv run from project root."
+
+    layout zone {
+        id "project-root"
+        title "uv project"
+        order 1
+        memoryBin "pyproject.toml plus uv.lock"
+        anchorFiles "pyproject.toml" "uv.lock"
+    }
+
+    grammar {
+        id "primary"
+        shape "uv run {cmd}"
+        scriptSource "pyproject / uv run"
+        notes "uv run injects env — no manual activate required."
+    }
+
+    preset {
+        id "sync"
+        label "sync"
+        command "uv sync"
+        cwd "project-root"
+    }
+    preset {
+        id "run"
+        label "run"
+        command "uv run {script}"
+        cwd "project-root"
+    }
+    extract {
+        manifest "pyproject.toml" fields "project"
+    }
+}

@@ -1,0 +1,35 @@
+// Alembic - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "alembic"
+    name "Alembic"
+    stackRef "Python"
+    profileVersion "0.1.0"
+    parentTool "python"
+
+    summary "SQLAlchemy migrations; alembic.ini."
+
+    layout zone {
+        id "migrations"
+        title "Alembic"
+        order 1
+        memoryBin "alembic.ini; versions/"
+        anchorFiles "alembic.ini" "alembic/env.py"
+    }
+
+    grammar {
+        id "primary"
+        shape "alembic upgrade head"
+        scriptSource "alembic.ini"
+        notes "Run from directory with alembic.ini."
+    }
+
+    preset {
+        id "upgrade"
+        label "upgrade"
+        command "alembic upgrade head"
+        cwd "migrations"
+    }
+    extract {
+        manifest "alembic.ini"
+    }
+}

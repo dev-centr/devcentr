@@ -1,0 +1,34 @@
+// Liquibase - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "liquibase"
+    name "Liquibase"
+    stackRef "SQL"
+    profileVersion "0.1.0"
+
+    summary "DB changelogs; liquibase.properties."
+
+    layout zone {
+        id "migrations"
+        title "Liquibase"
+        order 1
+        memoryBin "changelog XML/YAML; properties"
+        anchorFiles "liquibase.properties"
+    }
+
+    grammar {
+        id "primary"
+        shape "liquibase update"
+        scriptSource "changelog file"
+        notes "changelogFile is the spine."
+    }
+
+    preset {
+        id "update"
+        label "update"
+        command "liquibase update"
+        cwd "migrations"
+    }
+    extract {
+        manifest "liquibase.properties"
+    }
+}

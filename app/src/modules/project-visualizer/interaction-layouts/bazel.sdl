@@ -1,0 +1,40 @@
+// Bazel - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "bazel"
+    name "Bazel"
+    stackRef "Bazel"
+    profileVersion "0.1.0"
+
+    summary "Hermetic build; MODULE.bazel; bazel build //."
+
+    layout zone {
+        id "workspace"
+        title "Bazel workspace"
+        order 1
+        memoryBin "MODULE.bazel / WORKSPACE; BUILD files"
+        anchorFiles "MODULE.bazel" "WORKSPACE"
+    }
+
+    grammar {
+        id "primary"
+        shape "bazel build {target}"
+        scriptSource "BUILD targets"
+        notes "//package:target from workspace root only."
+    }
+
+    preset {
+        id "build"
+        label "build"
+        command "bazel build //..."
+        cwd "workspace"
+    }
+    preset {
+        id "test"
+        label "test"
+        command "bazel test //..."
+        cwd "workspace"
+    }
+    extract {
+        manifest "MODULE.bazel"
+    }
+}

@@ -1,0 +1,41 @@
+// Nx - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "nx"
+    name "Nx"
+    stackRef "Nx"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Monorepo toolkit; nx run project:target."
+
+    layout zone {
+        id "workspace-root"
+        title "Nx workspace"
+        order 1
+        memoryBin "nx.json; project graph"
+        anchorFiles "nx.json" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "nx run {project}:{target}"
+        scriptSource "nx project targets"
+        notes "project:target from root — never cd into apps."
+    }
+
+    preset {
+        id "serve"
+        label "serve"
+        command "nx serve {projectName}"
+        cwd "workspace-root"
+    }
+    preset {
+        id "build"
+        label "build"
+        command "nx build {projectName}"
+        cwd "workspace-root"
+    }
+    extract {
+        manifest "nx.json" fields "targetDefaults"
+    }
+}

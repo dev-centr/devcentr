@@ -1,0 +1,40 @@
+// dprint - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "dprint"
+    name "dprint"
+    stackRef "Formatter"
+    profileVersion "0.1.0"
+
+    summary "Polyglot formatter; dprint.json; used across Dev-Centr."
+
+    layout zone {
+        id "config"
+        title "dprint"
+        order 1
+        memoryBin "dprint.json"
+        anchorFiles "dprint.json" "dprint.jsonc"
+    }
+
+    grammar {
+        id "primary"
+        shape "dprint check / dprint fmt"
+        scriptSource "dprint.json"
+        notes "Often at monorepo root."
+    }
+
+    preset {
+        id "check"
+        label "check"
+        command "dprint check"
+        cwd "config"
+    }
+    preset {
+        id "fmt"
+        label "fmt"
+        command "dprint fmt"
+        cwd "config"
+    }
+    extract {
+        manifest "dprint.json"
+    }
+}

@@ -1,0 +1,35 @@
+// Jest - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "jest"
+    name "Jest"
+    stackRef "Node.js"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "JS test runner; jest.config."
+
+    layout zone {
+        id "tests"
+        title "Jest"
+        order 1
+        memoryBin "jest.config; __tests__"
+        anchorFiles "jest.config.ts" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "jest {path}"
+        scriptSource "package.json scripts.test"
+        notes "Prefer pnpm test so config resolves."
+    }
+
+    preset {
+        id "test"
+        label "test"
+        command "pnpm test"
+        cwd "tests"
+    }
+    extract {
+        manifest "package.json" fields "scripts.test"
+    }
+}

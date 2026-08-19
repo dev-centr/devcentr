@@ -1,0 +1,35 @@
+// Lit - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "lit"
+    name "Lit"
+    stackRef "Lit"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Web Components base; Vite demos common."
+
+    layout zone {
+        id "src"
+        title "Lit elements"
+        order 1
+        memoryBin "custom elements in TS"
+        anchorFiles "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "{pm} run dev"
+        scriptSource "package.json scripts"
+        notes "Lit has no app CLI."
+    }
+
+    preset {
+        id "dev"
+        label "dev"
+        command "pnpm run dev"
+        cwd "src"
+    }
+    extract {
+        manifest "package.json" fields "dependencies.lit"
+    }
+}

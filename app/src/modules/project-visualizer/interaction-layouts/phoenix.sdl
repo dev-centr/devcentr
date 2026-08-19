@@ -1,0 +1,35 @@
+// Phoenix - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "phoenix"
+    name "Phoenix"
+    stackRef "Elixir"
+    profileVersion "0.1.0"
+    parentTool "elixir"
+
+    summary "Elixir web framework; mix phx.server."
+
+    layout zone {
+        id "app"
+        title "Phoenix app"
+        order 1
+        memoryBin "lib/; assets/; config/"
+        anchorFiles "mix.exs" "config/dev.exs"
+    }
+
+    grammar {
+        id "primary"
+        shape "mix phx.server"
+        scriptSource "mix aliases"
+        notes "phx.server from Mix project root."
+    }
+
+    preset {
+        id "server"
+        label "server"
+        command "mix phx.server"
+        cwd "app"
+    }
+    extract {
+        manifest "mix.exs"
+    }
+}

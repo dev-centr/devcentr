@@ -1,0 +1,41 @@
+// Express - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "express"
+    name "Express"
+    stackRef "Express"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Minimal Node HTTP framework; script-owned entry."
+
+    layout zone {
+        id "server"
+        title "Express app"
+        order 1
+        memoryBin "main server via package.json start"
+        anchorFiles "package.json" "src/index.ts"
+    }
+
+    grammar {
+        id "primary"
+        shape "{pm} run start"
+        scriptSource "package.json scripts"
+        notes "No Express CLI."
+    }
+
+    preset {
+        id "start"
+        label "start"
+        command "pnpm run start"
+        cwd "server"
+    }
+    preset {
+        id "dev"
+        label "dev"
+        command "pnpm run dev"
+        cwd "server"
+    }
+    extract {
+        manifest "package.json" fields "dependencies.express" "scripts"
+    }
+}

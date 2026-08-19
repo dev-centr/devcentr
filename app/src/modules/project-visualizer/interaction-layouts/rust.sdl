@@ -1,0 +1,73 @@
+// Rust — Cargo workspace and crate graph.
+interactionLayout {
+    id "rust"
+    name "Rust / Cargo"
+    stackRef "Rust"
+    profileVersion "0.1.0"
+
+    summary "Cargo builds from manifest; workspaces share target/; default cwd is crate or workspace root."
+
+    layout zone {
+        id "workspace-root"
+        title "Workspace root"
+        order 1
+        memoryBin "Cargo.toml with [workspace] members; cargo build at root builds all"
+        anchorFiles "Cargo.toml" "Cargo.lock"
+    }
+    layout zone {
+        id "crate"
+        title "Member crate"
+        order 2
+        memoryBin "Nested Cargo.toml — use -p for package selection from workspace root"
+        anchorFiles "Cargo.toml" "src/main.rs" "src/lib.rs"
+    }
+
+    grammar {
+        id "run"
+        shape "cargo run [-p <crate>] [-- <args>]"
+        scriptSource "[[bin]] name or package default-run in Cargo.toml"
+        notes "Binary name comes from manifest, not a scripts block."
+    }
+    grammar {
+        id "workspace-build"
+        shape "cargo build -p <crate>"
+        scriptSource "workspace member selection"
+    }
+
+    routing {
+        flag "-p" alias "--package"
+        meaning "Select workspace member crate by name"
+        preferWhen "workspace"
+        example "cargo run -p my-app"
+    }
+    routing {
+        flag "--manifest-path"
+        meaning "Use Cargo.toml at path without cd"
+        preferWhen "path-known"
+        example "cargo build --manifest-path crates/foo/Cargo.toml"
+    }
+
+    preset {
+        id "build-workspace"
+        label "Build workspace"
+        command "cargo build"
+        cwd "workspace-root"
+    }
+    preset {
+        id "run-package"
+        label "Run crate"
+        command "cargo run -p {crateName}"
+        cwd "workspace-root"
+        requires "workspace" "crateName"
+    }
+    preset {
+        id "test-workspace"
+        label "Test workspace"
+        command "cargo test"
+        cwd "workspace-root"
+    }
+
+    extract {
+        manifest "Cargo.toml" fields "workspace.members" "package.name" "bin" "lib"
+    }
+}

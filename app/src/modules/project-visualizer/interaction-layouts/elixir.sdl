@@ -1,0 +1,40 @@
+// Elixir / Mix - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "elixir"
+    name "Elixir / Mix"
+    stackRef "Elixir"
+    profileVersion "0.1.0"
+
+    summary "BEAM language; mix.exs; mix tasks."
+
+    layout zone {
+        id "project-root"
+        title "Mix project"
+        order 1
+        memoryBin "mix.exs; mix.lock"
+        anchorFiles "mix.exs" "mix.lock"
+    }
+
+    grammar {
+        id "primary"
+        shape "mix {task}"
+        scriptSource "mix.exs aliases / tasks"
+        notes "Always from mix.exs directory."
+    }
+
+    preset {
+        id "deps"
+        label "deps"
+        command "mix deps.get"
+        cwd "project-root"
+    }
+    preset {
+        id "test"
+        label "test"
+        command "mix test"
+        cwd "project-root"
+    }
+    extract {
+        manifest "mix.exs"
+    }
+}

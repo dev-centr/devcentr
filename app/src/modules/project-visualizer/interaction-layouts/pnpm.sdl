@@ -1,0 +1,79 @@
+// pnpm — preferred Dev-Centr Node PM; monorepo routing from workspace root.
+interactionLayout {
+    id "pnpm"
+    name "pnpm"
+    stackRef "Node.js"
+    profileVersion "0.1.0"
+    docRef "general-knowledge:reference/pnpm-run-routing.adoc"
+    parentTool "node"
+
+    summary "Content-addressable store; strict node_modules; workspace-aware — stay at repo root and route with --filter or -C."
+
+    controls "node" "npm"
+
+    layout zone {
+        id "workspace-root"
+        title "Workspace root"
+        order 1
+        memoryBin "pnpm install always from here in monorepos; lockfile + workspace manifest"
+        anchorFiles "pnpm-workspace.yaml" "pnpm-lock.yaml" "package.json"
+    }
+    layout zone {
+        id "workspace-packages"
+        title "Workspace packages"
+        order 2
+        memoryBin "Each listed folder has its own package.json scripts"
+        anchorFiles "pnpm-workspace.yaml"
+    }
+
+    grammar {
+        id "run-script"
+        shape "pnpm [routing] run <script> [-- args]"
+        scriptSource "target package.json → scripts.<script>"
+        notes "pnpm dev is shorthand for pnpm run dev. Script keys are not universal."
+    }
+
+    routing {
+        flag "--filter" alias "-F"
+        meaning "Workspace package by name (package.json name field)"
+        preferWhen "monorepo"
+        example "pnpm --filter site-nextjs dev"
+    }
+    routing {
+        flag "-C" alias "--dir"
+        meaning "Directory override — as if you cd'd there first"
+        preferWhen "path-known"
+        example "pnpm -C site-nextjs dev"
+    }
+    routing {
+        flag "-r"
+        meaning "Recursive — every workspace package that defines the script"
+        preferWhen "multi-app"
+    }
+
+    preset {
+        id "install"
+        label "Install workspace"
+        command "pnpm install"
+        cwd "workspace-root"
+    }
+    preset {
+        id "dev-root-first"
+        label "Dev (routed)"
+        command "pnpm --filter {packageName} dev"
+        cwd "workspace-root"
+        requires "monorepo" "packageName"
+    }
+    preset {
+        id "dev-dir"
+        label "Dev (-C path)"
+        command "pnpm -C {packagePath} dev"
+        cwd "workspace-root"
+        requires "packagePath"
+    }
+
+    extract {
+        manifest "pnpm-workspace.yaml" fields "packages"
+        manifest "package.json" fields "scripts" "name" scope "each-workspace-package"
+    }
+}

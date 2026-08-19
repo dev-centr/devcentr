@@ -1,0 +1,41 @@
+// Prisma - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "prisma"
+    name "Prisma"
+    stackRef "Prisma"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Node ORM; schema.prisma; prisma migrate."
+
+    layout zone {
+        id "prisma"
+        title "Prisma schema"
+        order 1
+        memoryBin "prisma/schema.prisma"
+        anchorFiles "prisma/schema.prisma" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "prisma {cmd}"
+        scriptSource "schema.prisma plus scripts"
+        notes "Run from package that owns prisma/."
+    }
+
+    preset {
+        id "generate"
+        label "generate"
+        command "pnpm exec prisma generate"
+        cwd "prisma"
+    }
+    preset {
+        id "migrate"
+        label "migrate"
+        command "pnpm exec prisma migrate dev"
+        cwd "prisma"
+    }
+    extract {
+        manifest "prisma/schema.prisma" fields "generator"
+    }
+}

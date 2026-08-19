@@ -1,0 +1,34 @@
+// Conda - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "conda"
+    name "Conda"
+    stackRef "Python"
+    profileVersion "0.1.0"
+
+    summary "Env plus package manager; environment.yml."
+
+    layout zone {
+        id "env"
+        title "Conda env"
+        order 1
+        memoryBin "environment.yml; env name"
+        anchorFiles "environment.yml"
+    }
+
+    grammar {
+        id "primary"
+        shape "conda env create -f environment.yml"
+        scriptSource "environment.yml"
+        notes "Activation is shell-stateful — surface it."
+    }
+
+    preset {
+        id "create"
+        label "create"
+        command "conda env create -f environment.yml"
+        cwd "env"
+    }
+    extract {
+        manifest "environment.yml" fields "name"
+    }
+}

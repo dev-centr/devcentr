@@ -1,0 +1,40 @@
+// Make - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "make"
+    name "Make"
+    stackRef "Make"
+    profileVersion "0.1.0"
+
+    summary "Makefile tasks; make {target}; -C for directory."
+
+    layout zone {
+        id "project-root"
+        title "Makefile"
+        order 1
+        memoryBin "Makefile; targets"
+        anchorFiles "Makefile" "GNUmakefile"
+    }
+
+    grammar {
+        id "primary"
+        shape "make -C {dir} {target}"
+        scriptSource "Makefile targets"
+        notes "-C selects directory without cd."
+    }
+
+    preset {
+        id "default"
+        label "default"
+        command "make"
+        cwd "project-root"
+    }
+    preset {
+        id "help"
+        label "help"
+        command "make help"
+        cwd "project-root"
+    }
+    extract {
+        manifest "Makefile"
+    }
+}

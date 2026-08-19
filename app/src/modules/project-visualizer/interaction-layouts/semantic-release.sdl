@@ -1,0 +1,35 @@
+// semantic-release - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "semantic-release"
+    name "semantic-release"
+    stackRef "Node.js"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Automated releases from commits."
+
+    layout zone {
+        id "project-root"
+        title "semantic-release"
+        order 1
+        memoryBin ".releaserc; release config"
+        anchorFiles ".releaserc.json" "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "semantic-release"
+        scriptSource "release config plus commits"
+        notes "Usually CI-only; local dry-run possible."
+    }
+
+    preset {
+        id "dry"
+        label "dry"
+        command "pnpm exec semantic-release --dry-run"
+        cwd "project-root"
+    }
+    extract {
+        manifest "package.json" fields "release"
+    }
+}

@@ -1,0 +1,48 @@
+// Vite — dev server and build tool (Node ecosystem).
+interactionLayout {
+    id "vite"
+    name "Vite"
+    stackRef "Vite"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "Dev server and bundler; dev script usually runs vite; config in vite.config.*"
+
+    dependsOn "node"
+    controls "node"
+
+    layout zone {
+        id "config"
+        title "Vite config"
+        order 1
+        memoryBin "vite.config.ts/js — plugins, aliases, server port"
+        anchorFiles "vite.config.ts" "vite.config.js" "vite.config.mjs"
+    }
+    layout zone {
+        id "entry"
+        title "App entry"
+        order 2
+        memoryBin "index.html + src/main.* — client bootstrap"
+        anchorFiles "index.html" "src/main.tsx" "src/main.ts"
+    }
+
+    grammar {
+        id "dev-via-script"
+        shape "<pm> run dev  →  vite [flags]"
+        scriptSource "package.json scripts.dev (often vite or vite dev)"
+        notes "Vite CLI also accepts vite dev directly via pnpm exec vite dev."
+    }
+
+    preset {
+        id "dev-via-pnpm-filter"
+        label "Vite dev (monorepo)"
+        command "pnpm --filter {packageName} dev"
+        cwd "workspace-root"
+        requires "monorepo" "packageName"
+    }
+
+    extract {
+        manifest "package.json" fields "scripts.dev" "devDependencies.vite"
+        manifest "vite.config.*" fields "server.port" "root"
+    }
+}

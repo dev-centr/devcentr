@@ -1,0 +1,46 @@
+// Flutter - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "flutter"
+    name "Flutter"
+    stackRef "Flutter"
+    profileVersion "0.1.0"
+
+    summary "Multi-platform UI SDK; pubspec.yaml."
+
+    layout zone {
+        id "project-root"
+        title "Flutter project"
+        order 1
+        memoryBin "pubspec.yaml; lib/; android/ios"
+        anchorFiles "pubspec.yaml"
+    }
+
+    grammar {
+        id "primary"
+        shape "flutter {cmd}"
+        scriptSource "pubspec plus flutter tool"
+        notes "Always from directory with pubspec.yaml."
+    }
+
+    preset {
+        id "pub-get"
+        label "pub-get"
+        command "flutter pub get"
+        cwd "project-root"
+    }
+    preset {
+        id "run"
+        label "run"
+        command "flutter run"
+        cwd "project-root"
+    }
+    preset {
+        id "test"
+        label "test"
+        command "flutter test"
+        cwd "project-root"
+    }
+    extract {
+        manifest "pubspec.yaml" fields "name" "dependencies"
+    }
+}

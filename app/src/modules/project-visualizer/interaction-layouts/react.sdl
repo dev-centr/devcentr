@@ -1,0 +1,35 @@
+// React - interaction layout profile (Project Visualizer).
+interactionLayout {
+    id "react"
+    name "React"
+    stackRef "React"
+    profileVersion "0.1.0"
+    parentTool "node"
+
+    summary "UI library; usually controlled by a meta-framework."
+
+    layout zone {
+        id "src"
+        title "React tree"
+        order 1
+        memoryBin "jsx/tsx; no CLI — parent owns dev"
+        anchorFiles "package.json"
+    }
+
+    grammar {
+        id "primary"
+        shape "{pm} run dev via host"
+        scriptSource "host framework scripts"
+        notes "Control tree points upward to Next/Vite."
+    }
+
+    preset {
+        id "dev"
+        label "dev"
+        command "pnpm run dev"
+        cwd "src"
+    }
+    extract {
+        manifest "package.json" fields "dependencies.react"
+    }
+}
