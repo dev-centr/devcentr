@@ -27,7 +27,7 @@ VerticalLayout {
             Button { id: navProject; text: "Project Analysis"; layoutWidth: fill }
             Button { id: navWorkflowTemplates; text: "Workflow templates"; layoutWidth: fill }
             Button { id: navInfra; text: "Infra"; layoutWidth: fill }
-            Button { id: navToolchainAdvisor; text: "Toolchain Advisor"; layoutWidth: fill }
+            Button { id: navToolchainAdvisor; text: "Stack Advisor"; layoutWidth: fill }
             Button { id: navWsl; text: "WSL"; layoutWidth: fill }
             Button { id: navFlutter; text: "Flutter"; layoutWidth: fill }
         }
@@ -93,7 +93,7 @@ VerticalLayout {
 
                     VerticalLayout {
                         id: choiceToolchainAdvisor; layoutWidth: 300; layoutHeight: 200; padding: 20; backgroundColor: "#252525"
-                        TextWidget { text: "Toolchain Advisor"; fontSize: 16pt; fontWeight: 600; alignment: center; margins: 10 }
+                        TextWidget { text: "Stack Advisor"; fontSize: 16pt; fontWeight: 600; alignment: center; margins: 10 }
                         TextWidget { text: "Choose host OS, target platform, and toolchain—WSL vs MinGW vs MSVC and cross-build paths explained."; fontSize: 10pt; textColor: "#AAAAAA"; alignment: center }
                         VSpacer { layoutHeight: fill }
                         Button { id: btnChoiceToolchainAdvisor; text: "Open advisor"; layoutWidth: fill }
@@ -218,11 +218,11 @@ VerticalLayout {
             VerticalLayout {
                 id: pageToolchainAdvisor; layoutWidth: fill; layoutHeight: fill; padding: 10
                 HorizontalLayout { layoutWidth: fill; margins: 5
-                    TextWidget { text: "Toolchain Advisor"; fontSize: 18pt; layoutWidth: fill }
+                    TextWidget { text: "Stack Advisor"; fontSize: 18pt; layoutWidth: fill }
                     Button { id: btnAdvisorSettings; text: "Definitions source…" }
                     Button { id: btnRefreshAdvisorCatalog; text: "Refresh definitions" }
                 }
-                TextWidget { text: "Definitions sync from github.com/dev-centr/toolchain-advisor. Walk through each step; recommendations update as you select."; fontSize: 10pt; textColor: "#AAAAAA"; margins: 5 }
+                TextWidget { text: "Definitions sync from github.com/dev-centr/stack-advisor. Walk through each step; recommendations update as you select."; fontSize: 10pt; textColor: "#AAAAAA"; margins: 5 }
                 VerticalLayout { id: toolchainAdvisorHost; layoutWidth: fill; layoutHeight: fill }
             }
 

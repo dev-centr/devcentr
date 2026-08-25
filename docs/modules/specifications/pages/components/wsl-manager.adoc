@@ -16,7 +16,7 @@ The WSL Manager is DevCentr’s **instance-oriented** front-end for Windows Subs
 | Choice | Decision
 
 | **In-app module (current)**
-| Primary surface. Lives in DevCentr so Toolchain Advisor, Secrets/SSH, and docs links stay one hop away. Matches “environment navigator” product direction.
+| Primary surface. Lives in DevCentr so Stack Advisor, Secrets/SSH, and docs links stay one hop away. Matches “environment navigator” product direction.
 
 | **Separate binary**
 | Optional later extraction: a small Windows helper (CLI or GUI) that wraps `wsl.exe` + Settings launch, callable from DevCentr *or* standalone. Do **not** start here unless a second consumer (installer, Tray app, CI bootstrap) appears.
@@ -91,5 +91,5 @@ pageWsl
 == Related
 
 * General-knowledge: xref:general-knowledge:explanation/infrastructure/wsl-distro-comparison.adoc[Choosing a WSL Linux Distro], xref:general-knowledge:how-to/wsl-setup.adoc[WSL setup]
-* xref:components/toolchain-advisor.adoc[Toolchain Advisor] (WSL as a host option)
+* xref:components/toolchain-advisor.adoc[Stack Advisor] (WSL as a host option)
 * Secrets Manager: xref:secrets-manager:explanation/connecting-to-wsl.adoc[Connecting to WSL]

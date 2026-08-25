@@ -1,6 +1,6 @@
 = Ecosystem Management
 
-Per-ecosystem management modules are DevCentr’s deep surface for a language or tooling stack: versions/pins, detected tools, health summary, bootstrap actions, and documentation links. They sit beside Install (orchestration funnel) and Toolchain Advisor (host/target decisions).
+Per-ecosystem management modules are DevCentr’s deep surface for a language or tooling stack: versions/pins, detected tools, health summary, bootstrap actions, and documentation links. They sit beside Install (orchestration funnel) and Stack Advisor (host/target decisions).
 
 == Purpose
 
@@ -112,7 +112,7 @@ pageFlutter
 
 * xref:../reference/definition-files.adoc[Definition Files]
 * xref:installation-workflow.adoc[Installation Workflow]
-* xref:toolchain-advisor.adoc[Toolchain Advisor]
+* xref:toolchain-advisor.adoc[Stack Advisor]
 * xref:toolchain-management.adoc[Toolchain Management (TCM)]
 * xref:ROOT:project-vision.adoc[Project Vision]
 * xref:ROOT:toolchain-management.adoc[Toolchain Management (product pointer)]

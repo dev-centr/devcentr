@@ -11,7 +11,7 @@ It is the in-product home for the xref:general-knowledge:explanation/infrastruct
 * Encode the Toolchain Management vocabulary in DevCentr (Pattern → Protocol → Control Plane → Framework).
 * Drive `unifiedControlPlane` metadata and top-of-module advisories when an ecosystem lacks an official plane.
 * Point maintainers at the xref:general-knowledge:explanation/infrastructure/toolchain-framework.adoc[Toolchain Framework (TCF)] repository for generating compliant planes.
-* Stay distinct from xref:toolchain-advisor.adoc[Toolchain Advisor] (host/target decision flow) and xref:cli-tools-catalog.adoc[CLI Tools Catalog] (install profiles).
+* Stay distinct from xref:toolchain-advisor.adoc[Stack Advisor] (host/target decision flow) and xref:cli-tools-catalog.adoc[CLI Tools Catalog] (install profiles).
 
 == Vocabulary (locked)
 
@@ -76,7 +76,7 @@ Bootstrap, pin/resolve, health, repair, upgrade/rollback, surface parity.
 | link:https://github.com/dev-centr/general-knowledge[`dev-centr/general-knowledge`]
 | Pattern / Protocol / Control Plane / TCF explanations (Diátaxis)
 
-| link:https://github.com/dev-centr/toolchain-advisor[`dev-centr/toolchain-advisor`]
+| link:https://github.com/dev-centr/stack-advisor[`dev-centr/stack-advisor`]
 | Unrelated: host/target advisor catalog (do not conflate)
 |===
 

@@ -74,7 +74,7 @@ Dev-Centr needs fall into two buckets:
 | Need | Examples today / soon | Format
 
 | **Owned catalogs and settings** (D parsers already wired)
-| Content Create `content-types.sdl`, Toolchain Advisor `advisor.sdl`, recognizer profiles, `.devcentr.sdl`, CentrMark frontmatter/properties, prohelp, repo-get `vcs-profiles.sdl`
+| Content Create `content-types.sdl`, Stack Advisor `advisor.sdl`, recognizer profiles, `.devcentr.sdl`, CentrMark frontmatter/properties, prohelp, repo-get `vcs-profiles.sdl`
 | **SDLang (`.sdl`)** — keep
 
 | **Greenfield / cross-language / external consumers**

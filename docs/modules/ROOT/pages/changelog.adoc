@@ -2,12 +2,18 @@
 
 This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
 
+== 2026-08-25 – Stack Advisor rename
+
+* Public product name is **Stack Advisor** (desktop labels, definitions dialog, default Git URL).
+* Definitions repository: `dev-centr/stack-advisor` (renamed from `toolchain-advisor`).
+* Internal D module path `toolchain_advisor` and on-disk cache folder name unchanged this pass.
+
 == 2026-08-25 – Toolchain Advisor language filter
 
 * Decision-step search no longer silently selects the first visible row.
   Filtering kept the Primary language *highlight* on index 0 while advice still used the previous id.
 * Ranking treats empty selection strings as unset (DIY / partial constraints).
-* See the Toolchain Browser web app in `dev-centr/toolchain-advisor` for the shared catalog UX.
+* See Stack Advisor in `dev-centr/stack-advisor` for the shared catalog UX.
 
 == 2026-08-19 – Project Visualizer mission and interaction layout profiles
 

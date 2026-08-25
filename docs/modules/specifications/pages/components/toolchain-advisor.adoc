@@ -1,6 +1,8 @@
-= Toolchain Advisor
+= Stack Advisor
 
-The Toolchain Advisor is an interactive decision flow in DevCentr that helps users choose a development setup when the “right” toolchain is unclear—especially on Windows, where choices include native MSVC, MinGW-w64/MSYS2, WSL2, cross-compilation from Linux, containers, and CI-only builds.
+The Stack Advisor is an interactive decision flow in DevCentr that helps users choose a development stack when the “right” toolchain is unclear—especially on Windows, where choices include native MSVC, MinGW-w64/MSYS2, WSL2, cross-compilation from Linux, containers, and CI-only builds.
+
+Browse and advice are modes of the same product; the noun is the stack decision outcome.
 
 == Purpose
 
@@ -42,9 +44,9 @@ The advisor does **not** replace official documentation; it routes users to a ra
 
 All steps, options, and recommendation rules live in a **dedicated Git repository**, not in application source:
 
-* **Repository:** `https://github.com/dev-centr/toolchain-advisor`
+* **Repository:** `https://github.com/dev-centr/stack-advisor`
 * **Catalog file:** `catalog/advisor.json`
-* **Shared logic (web):** `lib/src/index.ts` — parse, rank, pick best (`@dev-centr/toolchain-advisor-core`)
+* **Shared logic (web):** `lib/src/index.ts` — parse, rank, pick best (`@dev-centr/stack-advisor-core`)
 
 === Sync behavior
 
@@ -56,19 +58,19 @@ All steps, options, and recommendation rules live in a **dedicated Git repositor
 | `git clone` / `git pull` into `~/.dev-center/toolchain-advisor/repo/` (24h TTL). **Refresh definitions** forces sync. Falls back to `fallback-advisor.json` bundled with the app if Git is unavailable.
 
 | **devcentr.org**
-| Build: CI checks out `toolchain-advisor`, copies catalog to `public/catalog/advisor.json`. Runtime: fetches `catalog/advisor.json` from raw GitHub `main`, then falls back to bundled `/catalog/advisor.json`.
+| Build: CI checks out `stack-advisor`, copies catalog to `public/catalog/advisor.json`. Runtime: fetches `catalog/advisor.json` from raw GitHub `main`, then falls back to bundled `/catalog/advisor.json`.
 
 | **Contributors**
-| PR against `toolchain-advisor`; CI validates JSON parses via `lib` parser.
+| PR against `stack-advisor`; CI validates JSON parses via `lib` parser.
 |===
 
 Compile for web: `node scripts/compile-sdl.mjs` in the definitions repo (or `dub run --config=compile-catalog` from `devcentr/app` when DMD is available).
 
 == Entry points
 
-* **Home hub (desktop):** Card “Toolchain Advisor” → opens the advisor page.
-* **Sidebar (desktop):** Nav item “Toolchain Advisor”.
-* **Web:** `https://devcentr.org/toolchain-advisor` (same catalog and ranking rules).
+* **Home hub (desktop):** Card “Stack Advisor” → opens the advisor page.
+* **Sidebar (desktop):** Nav item “Stack Advisor”.
+* **Web:** `https://devcentr.org/stack-advisor` (same catalog and ranking rules).
 * **Future:** Deep links from Tool Status when a missing tool is detected (e.g. no `cl.exe`, no `x86_64-w64-mingw32-gcc`).
 
 Page id in the main layout stack: `pageToolchainAdvisor` (index **7** in the page switcher array in `app.d`).
@@ -80,7 +82,7 @@ Page id in the main layout stack: `pageToolchainAdvisor` (index **7** in the pag
 [source]
 ----
 VerticalLayout (pageToolchainAdvisor, full size, padding 10)
-├── TextWidget — title: "Toolchain Advisor" (18pt)
+├── TextWidget — title: "Stack Advisor" (18pt)
 ├── TextWidget — subtitle / one-line help (10pt, muted #AAAAAA)
 └── VerticalLayout (toolchainAdvisorHost, fill) — hosts ToolchainAdvisorPanel
 ----
@@ -153,7 +155,7 @@ Below the horizontal flow:
 
 == Decision steps (default catalog)
 
-Data file: `toolchain-advisor/catalog/advisor.json` (see Definitions repository above). Desktop fallback copy: `app/src/modules/toolchain_advisor/fallback-advisor.json`.
+Data file: `stack-advisor/catalog/advisor.json` (see Definitions repository above). Desktop fallback copy: `app/src/modules/toolchain_advisor/fallback-advisor.json`.
 
 | Step id | Title | Role
 | `host` | Host environment | Where you develop
@@ -244,11 +246,11 @@ Use the same dark palette as `main.sdl`:
 == Implementation map (current DevCentr)
 
 | Concern | Location
-| Definitions repo | `github.com/dev-centr/toolchain-advisor` — `catalog/advisor.json`, `lib/` (TS core)
+| Definitions repo | `github.com/dev-centr/stack-advisor` — `catalog/advisor.json`, `lib/` (TS core)
 | Git cache (desktop) | `app/src/modules/toolchain_advisor/cache.d` — `ToolchainAdvisorCache`
 | UI panel (desktop) | `app/src/modules/toolchain_advisor/ui.d` — `ToolchainAdvisorPanel`, `DecisionStepBox`, `FlowConnector`
 | Model / ranking (desktop) | `app/src/modules/toolchain_advisor/model.d` (D; mirrors TS core)
-| Web UI | `devcentr.org/src/routes/toolchain-advisor.tsx`, `devcentr.org/src/components/ToolchainAdvisor.tsx`
+| Web UI | `devcentr.org/src/routes/stack-advisor.tsx`, `devcentr.org/src/components/StackAdvisor.tsx`
 | Page shell | `app/src/ui/main.sdl` — `pageToolchainAdvisor`, `toolchainAdvisorHost`, `btnRefreshAdvisorCatalog`
 | Navigation | `app/src/app.d` — page index 7, home card, sidebar `navToolchainAdvisor`
 

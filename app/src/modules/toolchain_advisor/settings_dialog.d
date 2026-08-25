@@ -8,7 +8,7 @@ import std.conv : to;
 void showAdvisorSettingsDialog(Window parent, string dataRoot, string currentRepoUrl,
     void delegate(string newRepoUrl) onSave)
 {
-    auto dlg = new Dialog(UIString.fromRaw("Toolchain Advisor definitions"d), parent,
+    auto dlg = new Dialog(UIString.fromRaw("Stack Advisor definitions"d), parent,
         DialogFlag.Popup | DialogFlag.Resizable);
     dlg.minWidth(560).minHeight(200);
 

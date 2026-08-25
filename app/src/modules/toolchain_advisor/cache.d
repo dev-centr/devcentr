@@ -6,14 +6,14 @@ import std.datetime : SysTime, Clock, hours;
 import std.process : execute;
 import std.json : JSONValue, parseJSON;
 
-/// Git-backed cache for toolchain-advisor definitions (shared with devcentr.org).
+/// Git-backed cache for Stack Advisor definitions (shared with devcentr.org).
 class ToolchainAdvisorCache
 {
     private string cacheRoot;
     private string definitionsRepoUrl;
 
     enum defaults {
-        repoUrl = "https://github.com/dev-centr/toolchain-advisor.git",
+        repoUrl = "https://github.com/dev-centr/stack-advisor.git",
         catalogSdlPath = "catalog/advisor.sdl",
         catalogJsonPath = "catalog/advisor.json",
     }

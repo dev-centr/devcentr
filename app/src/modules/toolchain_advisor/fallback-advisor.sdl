@@ -1,11 +1,11 @@
-// Toolchain Advisor definitions — source of truth.
+// Stack Advisor definitions — source of truth.
 // Compiled to catalog/advisor.json for web bundles; DevCentr desktop parses this file from git.
 
 toolchainAdvisor {
     version 1
 
     meta {
-        id "dev-centr/toolchain-advisor"
+        id "dev-centr/stack-advisor"
         defaultBranch "main"
         catalogFile "catalog/advisor.sdl"
     }

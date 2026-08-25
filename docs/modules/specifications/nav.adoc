@@ -25,7 +25,7 @@
 * xref:components/iac-discovery.adoc[IaC Discovery]
 * xref:components/installation-workflow.adoc[Installation Workflow]
 * xref:components/org-setup-wizard.adoc[Org Setup Wizard]
-* xref:components/toolchain-advisor.adoc[Toolchain Advisor]
+* xref:components/toolchain-advisor.adoc[Stack Advisor]
 * xref:components/toolchain-management.adoc[Toolchain Management (TCM)]
 * xref:components/wsl-manager.adoc[WSL Manager]
 * xref:components/ecosystem-management.adoc[Ecosystem Management]

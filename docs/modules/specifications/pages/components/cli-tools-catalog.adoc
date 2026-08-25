@@ -60,7 +60,7 @@ Pass `--prefer-mutable` to favor traditional package managers.
 * **Installed** — tools from the catalog where `verifyCommand` succeeds
 * **Catalog** — browsable install profiles grouped by category; **Install** runs the resolved command interactively
 
-**Refresh catalog** pulls latest definitions from Git (24h TTL, same pattern as Toolchain Advisor).
+**Refresh catalog** pulls latest definitions from Git (24h TTL, same pattern as Stack Advisor).
 
 == Tool schema (SDL)
 

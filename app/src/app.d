@@ -800,7 +800,7 @@ class DevCenterApp {
         if (!ok && forceful)
         {
             window.showMessageBox(
-                UIString.fromRaw("Toolchain Advisor"d),
+                UIString.fromRaw("Stack Advisor"d),
                 UIString.fromRaw("Could not sync definitions from Git. Using bundled fallback. Check network and git."d)
             );
         }
