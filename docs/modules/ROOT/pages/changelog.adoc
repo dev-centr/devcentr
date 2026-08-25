@@ -2,6 +2,13 @@
 
 This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
 
+== 2026-08-25 – Toolchain Advisor language filter
+
+* Decision-step search no longer silently selects the first visible row.
+  Filtering kept the Primary language *highlight* on index 0 while advice still used the previous id.
+* Ranking treats empty selection strings as unset (DIY / partial constraints).
+* See the Toolchain Browser web app in `dev-centr/toolchain-advisor` for the shared catalog UX.
+
 == 2026-08-19 – Project Visualizer mission and interaction layout profiles
 
 * xref:specifications:components/project-visualizer.adoc[Project Visualizer] spec — Live Blueprint renderer; mental models at point of interaction; curated SDL profiles + repo extractors; root-first command routing.
@@ -77,6 +84,15 @@ This changelog records notable changes to the DevCentr application and its docum
 
 * Explanation xref:secrets-manager:explanation/api-key-vs-token.adoc[API key vs token] — forced kinds (`api_key`, `scoped_api_key`, `access_token`, `refresh_token`); index/overview vocabulary lock; cross-links general-knowledge and News.
 * See xref:changelog-details/2026-08-09 - api-key-vs-token.adoc[Detailed changelog].
+
+== 2026-08-08 – Studio MCP install strategies (docs)
+
+* AI Workflow Arrangement + AI Config MCP tab point at general-knowledge
+  xref:general-knowledge:explanation/infrastructure/studio-mcp-install-strategies.adoc[Studio MCP install strategies]
+  and the
+  xref:general-knowledge:reference/ai-studio-tooling-catalog.adoc[AI studio tooling catalog]
+  (Composio's Cursor marketplace / deeplink / `mcp.json` ladder as the SaaS-connector default).
+* Guided add: recommend connector packages via that ladder; do not invent a DevCentr-owned OAuth broker.
 
 == 2026-08-06 – DOS category: DevOps as one facet
 

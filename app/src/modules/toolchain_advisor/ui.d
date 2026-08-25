@@ -118,8 +118,19 @@ class DecisionStepBox : VerticalLayout
                 _adapter.add(to!dstring(opt.label));
             }
         }
-        if (_visibleOptions.length > 0)
-            _list.selectedItemIndex = 0;
+        // Keep the committed selection. Filtering must not silently re-select
+        // index 0 (that broke Primary language: highlight ≠ advice).
+        int keep = -1;
+        foreach (i, opt; _visibleOptions)
+        {
+            if (opt.id == _selectedId)
+            {
+                keep = cast(int)i;
+                break;
+            }
+        }
+        if (keep >= 0)
+            _list.selectedItemIndex = keep;
     }
 
     void selectByIndex(int listIndex)

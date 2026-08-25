@@ -186,6 +186,8 @@ AdvisorRecommendation[] rankRecommendations(AdvisorRecommendation[] recs, string
             if (stepId !in selections)
                 continue;
             string chosen = selections[stepId];
+            if (chosen.length == 0)
+                continue;
             if (allowed.canFind(chosen) || allowed.canFind("auto"))
                 score += 2;
             else
