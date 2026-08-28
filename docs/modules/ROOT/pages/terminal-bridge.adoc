@@ -1,0 +1,37 @@
+= Terminal bridge (Open Terminal consume)
+:navtitle: Terminal Bridge
+:page-audience: builders
+:page-usage-context: architecture
+:page-orig-author: agent on behalf of AMDphreak
+:page-last-author: agent on behalf of AMDphreak
+
+== Intent
+
+Thin DevCentr **consumption** surface for Open Terminal:
+
+* Project → spawn session registration
+* Grid cell **highlight + dull** when a terminal session is focused
+* Does **not** redefine contained tiling (HCI) or host chrome (OpenShellOrg)
+
+== Demo
+
+Interactive mock:
+link:https://hci-nerdz.github.io/shell-context-demo/#/manager[shell-context-demo · Project manager].
+
+image::terminal-bridge/grid-highlight-demo.png[DevCentr grid highlight linked to Open Terminal manager,width=100%]
+
+== Module
+
+`app/src/modules/terminal_bridge/` — `SpawnRegistrar` + `GridHighlightApi` stubs (in-process).
+
+== Cross-org faces
+
+* OpenShellOrg: link:https://github.com/openshellorg/shell-architecture/blob/main/docs/modules/ROOT/pages/devcentr-terminal-manager.adoc[devcentr-terminal-manager], link:https://github.com/openshellorg/shell-architecture/blob/main/docs/modules/ROOT/pages/nested-tiling-zones.adoc[nested-tiling-zones], link:https://github.com/openshellorg/open-terminal[open-terminal]
+* HCI-Nerdz: link:https://github.com/HCI-Nerdz/docs/blob/main/docs/modules/ROOT/pages/highlight-vs-pipe-linking.adoc[highlight-vs-pipe-linking], link:https://github.com/HCI-Nerdz/docs/blob/main/docs/modules/ROOT/pages/contained-tiling.adoc[contained-tiling]
+* Division of labor: link:https://github.com/openshellorg/shell-architecture/blob/main/docs/modules/ROOT/pages/division-of-labor.adoc[shell-architecture], xref:general-knowledge:explanation/infrastructure/devcentr-and-openshellorg.adoc[general-knowledge]
+
+== Non-goals
+
+* Shipping an OS tiling WM
+* Moving the project grid into Open Terminal
+* Production IPC (stub only in this pass)

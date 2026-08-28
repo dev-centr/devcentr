@@ -11,6 +11,7 @@
 * xref:dub-local-remote-paths.adoc[DUB Local vs Remote Paths]
 * xref:local-library-mods.adoc[Local Library Mods]
 * xref:activity-log.adoc[Activity Log]
+* xref:terminal-bridge.adoc[Terminal Bridge]
 * xref:changelog.adoc[Changelog]
 * xref:general-knowledge:index.adoc[General Knowledge]
 * xref:specifications:index.adoc[Specifications]
