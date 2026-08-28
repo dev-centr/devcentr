@@ -35,3 +35,12 @@ image::terminal-bridge/grid-highlight-demo.png[DevCentr grid highlight linked to
 * Shipping an OS tiling WM
 * Moving the project grid into Open Terminal
 * Production IPC (stub only in this pass)
+
+== Related demos
+
+Interactive facsimile (HCI-Nerdz
+link:https://hci-nerdz.github.io/shell-context-demo/[shell-context-demo]):
+
+* link:https://hci-nerdz.github.io/shell-context-demo/#/manager[Project manager] — Open Terminal vertical groups beside the DevCentr grid (highlight + dull). When you focus a session, the owning project lights up so you always know which project the terminal belongs to.
+* link:https://hci-nerdz.github.io/shell-context-demo/#/zones[Nested zones] — contained tiling zones for multi-monitor-style desks *inside* the app (not an OS WM).
+* Suite catalog: link:https://openshellorg.github.io/docs/shell-architecture/layout-demos.html[OpenShellOrg layout demos] · link:https://hci-nerdz.github.io/demos/[HCI-Nerdz demos index]

@@ -1,5 +1,9 @@
 = Changelog
 
+== 2026-08-28 -- Terminal bridge related demos
+
+* xref:terminal-bridge.adoc[Terminal Bridge]: related demos section (manager + zones + org catalogs).
+
 This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
 
 
