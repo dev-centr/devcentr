@@ -2,6 +2,11 @@
 
 This changelog records notable changes to the DevCentr application and its documentation. Entries are organized in reverse chronological order and kept brief. Each entry links to a more detailed changelog article where needed.
 
+== 2026-08-28 – CLI catalog: Hive Watch + Rules Manager
+
+* `equivalence-rules-cli` catalog adds `hive-watch` (GitHub Release install) and `rules-manager` (hive clone); bundled `fallback-tools.json` refreshed.
+* Hive Watch ships as a standalone daemon + tray HUD for CODE_ROOT git remotes; reduces agent fetch duty (see `dev-centr/hive-watch`).
+
 == 2026-08-25 – Stack Advisor rename
 
 * Public product name is **Stack Advisor** (desktop labels, definitions dialog, default Git URL).
@@ -14,6 +19,12 @@ This changelog records notable changes to the DevCentr application and its docum
   Filtering kept the Primary language *highlight* on index 0 while advice still used the previous id.
 * Ranking treats empty selection strings as unset (DIY / partial constraints).
 * See Stack Advisor in `dev-centr/stack-advisor` for the shared catalog UX.
+
+== 2026-08-20 – Startup no longer spawns hanging console probes
+
+* CLI install checks use PATH only (`where` / `where` / `which`) with suppressed consoles; no more `npx … --version` on startup.
+* Installed builds resolve and ship `ui/main.sdl` next to the exe.
+* See xref:changelog-details/2026-08-20 - startup-tool-probe-consoles.adoc[Detailed changelog].
 
 == 2026-08-19 – Project Visualizer mission and interaction layout profiles
 

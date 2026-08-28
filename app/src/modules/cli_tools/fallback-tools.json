@@ -12,6 +12,7 @@
       "label": "Windows (winget)",
       "family": "windows",
       "packageManager": "winget",
+      "format": "winget",
       "detect": "where winget"
     },
     {
@@ -19,6 +20,7 @@
       "label": "Windows (Scoop)",
       "family": "windows",
       "packageManager": "scoop",
+      "format": "scoop",
       "detect": "where scoop"
     },
     {
@@ -26,6 +28,7 @@
       "label": "Windows (Chocolatey)",
       "family": "windows",
       "packageManager": "choco",
+      "format": "choco",
       "detect": "where choco"
     },
     {
@@ -33,6 +36,7 @@
       "label": "macOS (Homebrew)",
       "family": "macos",
       "packageManager": "homebrew",
+      "format": "brew",
       "detect": "which brew"
     },
     {
@@ -40,6 +44,7 @@
       "label": "macOS (Nix)",
       "family": "macos",
       "packageManager": "nix",
+      "format": "nix",
       "detect": "which nix"
     },
     {
@@ -47,6 +52,7 @@
       "label": "Debian/Ubuntu (apt)",
       "family": "linux",
       "packageManager": "apt",
+      "format": "deb",
       "detect": "which apt-get"
     },
     {
@@ -54,6 +60,7 @@
       "label": "Ubuntu (apt)",
       "family": "linux",
       "packageManager": "apt",
+      "format": "deb",
       "inherits": "linux/debian/default"
     },
     {
@@ -61,6 +68,7 @@
       "label": "Fedora/RHEL (dnf)",
       "family": "linux",
       "packageManager": "dnf",
+      "format": "rpm",
       "detect": "which dnf"
     },
     {
@@ -68,6 +76,7 @@
       "label": "Arch Linux (pacman)",
       "family": "linux",
       "packageManager": "pacman",
+      "format": "pacman",
       "detect": "which pacman"
     },
     {
@@ -75,6 +84,7 @@
       "label": "Alpine (apk)",
       "family": "linux",
       "packageManager": "apk",
+      "format": "apk",
       "detect": "which apk"
     },
     {
@@ -82,6 +92,7 @@
       "label": "Linux (Nix)",
       "family": "linux",
       "packageManager": "nix",
+      "format": "nix",
       "detect": "which nix"
     },
     {
@@ -89,6 +100,7 @@
       "label": "GNU Guix",
       "family": "linux",
       "packageManager": "guix",
+      "format": "guix",
       "detect": "which guix"
     },
     {
@@ -96,6 +108,7 @@
       "label": "Linux (Homebrew)",
       "family": "linux",
       "packageManager": "homebrew",
+      "format": "brew",
       "detect": "which brew"
     },
     {
@@ -103,6 +116,7 @@
       "label": "Node.js (npm global)",
       "family": "cross",
       "packageManager": "npm",
+      "format": "npm",
       "detect": "which npm"
     },
     {
@@ -110,13 +124,45 @@
       "label": "Node.js (pnpm dlx one-shot)",
       "family": "cross",
       "packageManager": "pnpm",
+      "format": "pnpm",
       "detect": "which pnpm"
     },
     {
       "id": "default/curl-script",
       "label": "Official install script (curl)",
       "family": "cross",
-      "packageManager": "script"
+      "packageManager": "script",
+      "format": "script"
+    },
+    {
+      "id": "default/git-clone",
+      "label": "Git clone into CODE_ROOT hive",
+      "family": "cross",
+      "packageManager": "git",
+      "format": "script",
+      "detect": "which git"
+    },
+    {
+      "id": "windows/pwsh-script",
+      "label": "Windows (PowerShell script)",
+      "family": "windows",
+      "packageManager": "script",
+      "format": "script",
+      "detect": "where pwsh"
+    },
+    {
+      "id": "macos/curl-script",
+      "label": "macOS (curl script)",
+      "family": "macos",
+      "packageManager": "script",
+      "format": "script"
+    },
+    {
+      "id": "linux/curl-script",
+      "label": "Linux (curl script)",
+      "family": "linux",
+      "packageManager": "script",
+      "format": "script"
     }
   ],
   "tools": [
@@ -1652,6 +1698,329 @@
         {
           "context": "windows/winget",
           "command": "winget install HetznerCloud.hcloud"
+        }
+      ]
+    },
+    {
+      "id": "cascadia-mono",
+      "name": "Cascadia Mono",
+      "description": "Microsoft OFL mono without ligatures. DevCentr Appearance default.",
+      "categories": [
+        "font",
+        "typography"
+      ],
+      "homepage": "https://github.com/microsoft/cascadia-code",
+      "docs": "https://github.com/microsoft/cascadia-code",
+      "install": [
+        {
+          "context": "linux/nix/default",
+          "command": [
+            "nix",
+            "profile",
+            "install",
+            "nixpkgs#cascadia-code"
+          ],
+          "auditNote": "nixpkgs cascadia-code includes Cascadia Mono."
+        },
+        {
+          "context": "macos/nix/default",
+          "command": [
+            "nix",
+            "profile",
+            "install",
+            "nixpkgs#cascadia-code"
+          ]
+        },
+        {
+          "context": "macos/homebrew",
+          "command": [
+            "brew",
+            "install",
+            "--cask",
+            "font-cascadia-mono"
+          ]
+        },
+        {
+          "context": "windows/choco",
+          "command": [
+            "choco",
+            "install",
+            "cascadiacode",
+            "-y"
+          ],
+          "auditNote": "Chocolatey cascadiacode; prefer the Mono cut in the host. Cascadia often already ships with Windows Terminal."
+        }
+      ]
+    },
+    {
+      "id": "jetbrains-mono",
+      "name": "JetBrains Mono",
+      "description": "OFL coding mono. DevCentr Appearance supported alternate.",
+      "categories": [
+        "font",
+        "typography"
+      ],
+      "homepage": "https://www.jetbrains.com/lp/mono/",
+      "docs": "https://github.com/JetBrains/JetBrainsMono",
+      "install": [
+        {
+          "context": "linux/nix/default",
+          "command": [
+            "nix",
+            "profile",
+            "install",
+            "nixpkgs#jetbrains-mono"
+          ]
+        },
+        {
+          "context": "macos/nix/default",
+          "command": [
+            "nix",
+            "profile",
+            "install",
+            "nixpkgs#jetbrains-mono"
+          ]
+        },
+        {
+          "context": "macos/homebrew",
+          "command": [
+            "brew",
+            "install",
+            "--cask",
+            "font-jetbrains-mono"
+          ]
+        },
+        {
+          "context": "windows/choco",
+          "command": [
+            "choco",
+            "install",
+            "jetbrainsmono",
+            "-y"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fira-code",
+      "name": "Fira Code",
+      "description": "OFL ligature-first coding mono. Not the DevCentr terminal default.",
+      "categories": [
+        "font",
+        "typography"
+      ],
+      "homepage": "https://github.com/tonsky/FiraCode",
+      "docs": "https://github.com/tonsky/FiraCode",
+      "install": [
+        {
+          "context": "linux/nix/default",
+          "command": [
+            "nix",
+            "profile",
+            "install",
+            "nixpkgs#fira-code"
+          ]
+        },
+        {
+          "context": "macos/nix/default",
+          "command": [
+            "nix",
+            "profile",
+            "install",
+            "nixpkgs#fira-code"
+          ]
+        },
+        {
+          "context": "macos/homebrew",
+          "command": [
+            "brew",
+            "install",
+            "--cask",
+            "font-fira-code"
+          ]
+        },
+        {
+          "context": "windows/choco",
+          "command": [
+            "choco",
+            "install",
+            "firacode",
+            "-y"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "iosevka",
+      "name": "Iosevka",
+      "description": "Parametric OFL mono. Not the DevCentr terminal default.",
+      "categories": [
+        "font",
+        "typography"
+      ],
+      "homepage": "https://typeof.net/Iosevka/",
+      "docs": "https://github.com/be5invis/Iosevka",
+      "install": [
+        {
+          "context": "linux/nix/default",
+          "command": [
+            "nix",
+            "profile",
+            "install",
+            "nixpkgs#iosevka"
+          ]
+        },
+        {
+          "context": "macos/nix/default",
+          "command": [
+            "nix",
+            "profile",
+            "install",
+            "nixpkgs#iosevka"
+          ]
+        },
+        {
+          "context": "macos/homebrew",
+          "command": [
+            "brew",
+            "install",
+            "--cask",
+            "font-iosevka"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "monaspace",
+      "name": "GitHub Monaspace",
+      "description": "GitHub Next OFL coding superfamily.",
+      "categories": [
+        "font",
+        "typography"
+      ],
+      "homepage": "https://monaspace.githubnext.com/",
+      "docs": "https://github.com/githubnext/monaspace",
+      "install": [
+        {
+          "context": "macos/homebrew",
+          "command": [
+            "brew",
+            "install",
+            "--cask",
+            "font-monaspace"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nerd-fonts-jetbrains-mono",
+      "name": "JetBrains Mono Nerd Font",
+      "description": "Nerd Fonts patch of JetBrains Mono (CLI glyphs). Reserved-name patch, not a new foundry.",
+      "categories": [
+        "font",
+        "typography"
+      ],
+      "homepage": "https://www.nerdfonts.com/",
+      "docs": "https://github.com/ryanoasis/nerd-fonts",
+      "install": [
+        {
+          "context": "linux/nix/default",
+          "command": [
+            "nix",
+            "profile",
+            "install",
+            "nixpkgs#nerd-fonts.jetbrains-mono"
+          ]
+        },
+        {
+          "context": "macos/nix/default",
+          "command": [
+            "nix",
+            "profile",
+            "install",
+            "nixpkgs#nerd-fonts.jetbrains-mono"
+          ]
+        },
+        {
+          "context": "macos/homebrew",
+          "command": [
+            "brew",
+            "install",
+            "--cask",
+            "font-jetbrains-mono-nerd-font"
+          ]
+        },
+        {
+          "context": "windows/winget",
+          "command": [
+            "winget",
+            "install",
+            "--id",
+            "DEVCOM.JetBrainsMonoNerdFont",
+            "-e"
+          ],
+          "auditNote": "Community WiX installer on winget, not an official JetBrains package."
+        }
+      ]
+    },
+    {
+      "id": "hive-watch",
+      "name": "Hive Watch",
+      "description": "Daemon + tray HUD: fetch git remotes across CODE_ROOT, stamp machine.md, reduce agent fetch duty.",
+      "categories": [
+        "devcentr",
+        "git",
+        "agent",
+        "daemon"
+      ],
+      "homepage": "https://github.com/dev-centr/hive-watch",
+      "docs": "https://github.com/dev-centr/hive-watch#readme",
+      "verifyCommand": "hive-watch-ui --version",
+      "launchCommand": "hive-watch-ui",
+      "install": [
+        {
+          "context": "windows/pwsh-script",
+          "runtime": "pwsh",
+          "command": "irm https://github.com/dev-centr/hive-watch/releases/latest/download/hive-watch-windows-setup.exe -OutFile $env:TEMP\\\\hive-watch-setup.exe; Start-Process -Wait $env:TEMP\\\\hive-watch-setup.exe",
+          "auditNote": "Download latest Windows NSIS installer from GitHub Releases."
+        },
+        {
+          "context": "macos/curl-script",
+          "runtime": "bash",
+          "command": "curl -fsSL -o /tmp/hive-watch.dmg https://github.com/dev-centr/hive-watch/releases/latest/download/Hive%20Watch-0.1.0.dmg && open /tmp/hive-watch.dmg",
+          "auditNote": "Mount DMG and drag Hive Watch to Applications."
+        },
+        {
+          "context": "linux/curl-script",
+          "runtime": "bash",
+          "command": "curl -fsSL -o /tmp/hive-watch.AppImage https://github.com/dev-centr/hive-watch/releases/latest/download/Hive%20Watch-0.1.0.AppImage && chmod +x /tmp/hive-watch.AppImage && mv /tmp/hive-watch.AppImage $HOME/.local/bin/hive-watch.AppImage",
+          "auditNote": "AppImage path may vary by release asset name."
+        }
+      ]
+    },
+    {
+      "id": "rules-manager",
+      "name": "Rules Manager",
+      "description": "Compose and watch agent-rules (rulesd daemon + tray). Pairs with hive-watch for remotes vs rules layers.",
+      "categories": [
+        "devcentr",
+        "agent",
+        "daemon"
+      ],
+      "homepage": "https://github.com/dev-centr/rules-manager",
+      "docs": "https://github.com/dev-centr/rules-manager#readme",
+      "verifyCommand": "rulesd --version",
+      "launchCommand": "rules-manager-ui",
+      "install": [
+        {
+          "context": "default/git-clone",
+          "command": [
+            "git",
+            "clone",
+            "https://github.com/dev-centr/rules-manager.git",
+            "{code_root}/github.com/dev-centr/rules-manager"
+          ],
+          "auditNote": "Build rulesd (dub) and ui (pnpm) locally until release installers ship."
         }
       ]
     }
