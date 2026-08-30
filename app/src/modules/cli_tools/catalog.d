@@ -142,12 +142,16 @@ CliToolInstallMethod resolveInstallMethod(
 
 bool isToolInstalled(string verifyCommand) {
     if (verifyCommand.length == 0) return false;
-    import std.process : executeShell;
+    import std.process : executeShell, spawnShell, wait;
     version (Windows) {
         auto r = executeShell("cmd /c " ~ verifyCommand ~ " >nul 2>&1");
         return r.status == 0;
     } else {
-        auto r = executeShell(verifyCommand ~ " >/dev/null 2>&1");
-        return r.status == 0;
+        // Redirect inside the shell and don't capture output: reading a pipe here
+        // can fail with EINTR once the GC/SDL signal handlers are installed.
+        try
+            return wait(spawnShell(verifyCommand ~ " >/dev/null 2>&1")) == 0;
+        catch (Exception)
+            return false;
     }
 }

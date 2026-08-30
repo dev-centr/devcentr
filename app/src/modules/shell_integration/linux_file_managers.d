@@ -6,7 +6,8 @@ import std.algorithm : canFind;
 import std.array : join;
 import std.file : exists, mkdirRecurse, write, remove, readText, dirEntries, SpanMode;
 import std.path : buildPath, expandTilde, dirName;
-import std.process : environment, executeShell;
+import std.process : environment;
+import modules.util.proc : executeShell = executeShellRetry;
 import std.file : thisExePath;
 import std.string : replace, indexOf;
 

@@ -1,7 +1,7 @@
 module modules.cli_tools.context;
 
 import modules.cli_tools.model;
-import std.process : execute;
+import modules.util.proc : execute = executeRetry;
 import std.algorithm : canFind;
 
 private bool detectCommandWorks(string detectCmd) {

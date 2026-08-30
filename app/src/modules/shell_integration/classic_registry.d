@@ -4,7 +4,7 @@ version (Windows):
 
 import std.array : join;
 import std.file : thisExePath;
-import std.process : executeShell;
+import modules.util.proc : executeShell = executeShellRetry;
 import std.string : replace;
 
 private string regQuote(string s)

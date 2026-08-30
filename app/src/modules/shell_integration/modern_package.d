@@ -7,7 +7,7 @@ import std.array : join;
 import std.conv : to;
 import std.file : exists, mkdirRecurse, thisExePath, copy, write;
 import std.path : buildPath, dirName;
-import std.process : executeShell;
+import modules.util.proc : executeShell = executeShellRetry;
 import std.string : replace, strip;
 
 /// Package family identity from AppxManifest.

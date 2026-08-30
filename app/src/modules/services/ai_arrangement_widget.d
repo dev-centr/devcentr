@@ -114,13 +114,13 @@ class AIArrangementWidget : VerticalLayout
         split.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT);
 
         _canvas = new TopologyCanvasWidget();
-        _canvas.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT).minHeight(320);
+        _canvas.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT).minHeight(pointsToPixels(240));
         _canvas.onHit = &onCanvasHit;
         refreshCanvas();
         split.addChild(_canvas);
 
         auto side = new VerticalLayout();
-        side.layoutWidth(280).minWidth(240).layoutHeight(FILL_PARENT).padding(8).backgroundColor(0x222222);
+        side.layoutWidth(280).minWidth(pointsToPixels(180)).layoutHeight(FILL_PARENT).padding(8).backgroundColor(0x222222);
         side.addChild(new TextWidget(null, "Inspector"d).fontWeight(700).margins(Rect(0, 0, 0, 6)));
         _inspector = new TextWidget(null,
             "Blank map: use Add an AI tool… or click + Add on a layer.\n\nOrthogonal follow-ons (Providers / MCP / Skills) stay on the other tabs."d);
@@ -215,7 +215,7 @@ class AIArrangementWidget : VerticalLayout
         logInfo("Opening AI guided add" ~ (roleFilter.length ? " for role " ~ roleFilter : " (full spine)"));
         auto dlg = new Dialog(UIString.fromRaw("Add an AI tool"d), _parentWindow,
             DialogFlag.Popup | DialogFlag.Resizable);
-        dlg.minWidth(520).minHeight(480);
+        dlg.minWidth(pointsToPixels(390)).minHeight(pointsToPixels(360));
 
         auto content = new VerticalLayout();
         content.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT).padding(12);
@@ -249,7 +249,7 @@ class AIArrangementWidget : VerticalLayout
 
         content.addChild(new TextWidget(null, "Product"d).fontWeight(700).margins(Rect(0, 10, 0, 0)));
         auto productList = new ListWidget();
-        productList.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT).minHeight(220);
+        productList.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT).minHeight(pointsToPixels(165));
         auto productAdapter = new StringListAdapter();
         productList.ownAdapter = productAdapter;
         content.addChild(productList);

@@ -20,7 +20,7 @@ void showGitGuiSelectorDialog(Window parentWindow, string repoRoot, RepoToolsReg
 
     auto dlg = new Dialog(UIString.fromRaw("Open Git Viewer"d), parentWindow,
         DialogFlag.Popup | DialogFlag.Resizable);
-    dlg.minWidth(420).minHeight(320);
+    dlg.minWidth(pointsToPixels(315)).minHeight(pointsToPixels(240));
 
     auto content = new VerticalLayout();
     content.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT).padding(15);
@@ -45,7 +45,7 @@ void showGitGuiSelectorDialog(Window parentWindow, string repoRoot, RepoToolsReg
 
         // Icon placeholder (use tool icon if available)
         auto icon = new TextWidget(null, UIString.fromRaw("⚙"d));
-        icon.fontSize(16).minWidth(32).alignment(Align.Center);
+        icon.fontSize(16).minWidth(pointsToPixels(24)).alignment(Align.Center);
         row.addChild(icon);
 
         auto label = new TextWidget(null, UIString.fromRaw(to!dstring(viewer.label)));

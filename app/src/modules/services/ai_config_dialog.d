@@ -92,7 +92,7 @@ void showContext7IssueReportDialog(Window parentWindow, const AIClientProfile cl
     logInfo("Opening Context7 reporting helper for " ~ client.displayName);
     auto dlg = new Dialog(UIString.fromRaw("Context7 Reporting Helper"d), parentWindow,
         DialogFlag.Popup | DialogFlag.Resizable);
-    dlg.minWidth(820).minHeight(560);
+    dlg.minWidth(pointsToPixels(615)).minHeight(pointsToPixels(420));
 
     auto content = new VerticalLayout();
     content.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT).padding(12);
@@ -550,7 +550,7 @@ void showAIConfigDialog(Window parentWindow, string repoRoot = "")
     logInfo("Opening AI Config dialog.");
     auto dlg = new Dialog(UIString.fromRaw("AI Config"d), parentWindow,
         DialogFlag.Popup | DialogFlag.Resizable);
-    dlg.minWidth(1200).minHeight(760);
+    dlg.minWidth(pointsToPixels(900)).minHeight(pointsToPixels(570));
 
     auto outer = new VerticalLayout();
     outer.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT).padding(10);
@@ -612,6 +612,12 @@ void showAIConfigDialog(Window parentWindow, string repoRoot = "")
 
     auto mcpTab = new MCPSetupWidget(parentWindow, repoRoot);
     auto skillsTab = new SkillsWidget();
+
+    // TabHost requires every page to carry an id.
+    arrangementTab.id = "tabArrangement";
+    providersTab.id = "tabProviders";
+    mcpTab.id = "tabMcpSetup";
+    skillsTab.id = "tabSkills";
 
     tabs.addTab(arrangementTab, "Arrangement"d);
     tabs.addTab(providersTab, "Providers"d);

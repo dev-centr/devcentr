@@ -5,7 +5,8 @@ import std.array : array, appender;
 import std.conv : to;
 import std.file : exists;
 import std.path : buildPath;
-import std.process : execute, spawnProcess;
+import std.process : spawnProcess;
+import modules.util.proc : execute = executeRetry;
 import std.string : splitLines, toLower, strip;
 
 /// One installed WSL distribution from `wsl -l -v`.

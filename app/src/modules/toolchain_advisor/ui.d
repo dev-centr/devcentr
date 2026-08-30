@@ -23,7 +23,7 @@ class FlowConnector : Widget
     this()
     {
         super("flowConnector");
-        minWidth(24).maxWidth(24).layoutHeight(FILL_PARENT);
+        minWidth(pointsToPixels(18)).maxWidth(pointsToPixels(18)).layoutHeight(FILL_PARENT);
     }
 
     override void onDraw(DrawBuf buf)
@@ -62,7 +62,7 @@ class DecisionStepBox : VerticalLayout
         _step = step;
         _onChange = onChange;
         _onFocus = onFocus;
-        layoutWidth(WRAP_CONTENT).minWidth(220).maxWidth(280).padding(12);
+        layoutWidth(WRAP_CONTENT).minWidth(pointsToPixels(165)).maxWidth(pointsToPixels(210)).padding(12);
         backgroundColor(BoxStyle.bg).margins(Rect(0, 4, 0, 4));
 
         auto title = new TextWidget(null, to!dstring(step.title));
@@ -82,7 +82,7 @@ class DecisionStepBox : VerticalLayout
 
         _adapter = new StringListAdapter();
         _list = new ListWidget("list_" ~ step.id);
-        _list.layoutWidth(FILL_PARENT).minHeight(140).maxHeight(180);
+        _list.layoutWidth(FILL_PARENT).minHeight(pointsToPixels(105)).maxHeight(pointsToPixels(135));
         _list.adapter = _adapter;
         addChild(_list);
 
@@ -294,7 +294,7 @@ class ToolchainAdvisorPanel : VerticalLayout
         split.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT);
 
         auto leftCol = new VerticalLayout();
-        leftCol.layoutWidth(WRAP_CONTENT).layoutHeight(FILL_PARENT).minWidth(400);
+        leftCol.layoutWidth(WRAP_CONTENT).layoutHeight(FILL_PARENT).minWidth(pointsToPixels(300));
 
         auto flowScroll = new ScrollWidget();
         flowScroll.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT);
@@ -316,7 +316,7 @@ class ToolchainAdvisorPanel : VerticalLayout
         split.addChild(leftCol);
 
         _contextPanel = new OptionContextPanel(_catalog);
-        _contextPanel.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT).minWidth(320);
+        _contextPanel.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT).minWidth(pointsToPixels(240));
         split.addChild(_contextPanel);
 
         addChild(split);
@@ -375,6 +375,12 @@ class ToolchainAdvisorPanel : VerticalLayout
 
     private void refreshContext()
     {
+        // DecisionStepBox fires onStepChanged from its own constructor, so this
+        // runs while ToolchainAdvisorPanel is still building its children and
+        // before _contextPanel is assigned. It also stays null when the catalog
+        // has no steps and the constructor returns early.
+        if (_contextPanel is null)
+            return;
         _contextPanel.update(_focusStepId, _selections);
     }
 }

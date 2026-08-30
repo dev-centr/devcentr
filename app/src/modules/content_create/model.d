@@ -61,7 +61,7 @@ struct LineageEdge
 
 struct LineageScope
 {
-    string scope;
+    string scope_;
     LineageEdge[] edges;
 }
 
@@ -205,7 +205,7 @@ bool typeMatchesTags(const ref ContentTypeNode n, const string[] selectedTags)
 {
     if (selectedTags.length == 0)
         return true;
-    auto eco = n.ecosystems;
+    const(string)[] eco = n.ecosystems;
     if (eco.length == 0)
         eco = ["general"];
     foreach (t; selectedTags)
@@ -281,10 +281,10 @@ string[] ecosystemsForType(ContentClassification* klass, string id)
     return n.ecosystems;
 }
 
-LineageScope* findLineage(ref ContentTypesCatalog cat, string scope)
+LineageScope* findLineage(ref ContentTypesCatalog cat, string scope_)
 {
     foreach (ref lin; cat.lineages)
-        if (lin.scope == scope)
+        if (lin.scope_ == scope_)
             return &lin;
     return null;
 }

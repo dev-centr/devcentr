@@ -91,15 +91,15 @@ class GitignoreViewerWidget : VerticalLayout
         _templateTabs = new TabWidget();
         _templateTabs.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT);
 
-        _devcentrPanel = new ScrollWidget();
+        _devcentrPanel = new ScrollWidget("tabGitignoreDevcentr");
         _devcentrPanel.layoutWidth(FILL_PARENT).layoutHeight(150);
         _devcentrPanel.contentWidget = buildTemplateComparisonPanel(GitIgnoreSource.DevCentr);
 
-        _githubPanel = new ScrollWidget();
+        _githubPanel = new ScrollWidget("tabGitignoreGithub");
         _githubPanel.layoutWidth(FILL_PARENT).layoutHeight(150);
         _githubPanel.contentWidget = buildTemplateComparisonPanel(GitIgnoreSource.GitHub);
 
-        _localPanel = new ScrollWidget();
+        _localPanel = new ScrollWidget("tabGitignoreLocal");
         _localPanel.layoutWidth(FILL_PARENT).layoutHeight(150);
         _localPanel.contentWidget = buildTemplateComparisonPanel(GitIgnoreSource.Local);
 

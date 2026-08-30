@@ -10,7 +10,7 @@
         },
         "sdlang-d": "~>0.10.6",
         "project-map": {
-            "path": "../../../openshellorg/project-map/lib"
+            "path": "../../../openshellorg/project-map"
         }
     },
     "preBuildCommands": [

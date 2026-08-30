@@ -2,7 +2,8 @@ module modules.vcs.git_performance_dialog;
 
 import dlangui;
 import dlangui.dialogs.dialog : Dialog, DialogFlag;
-import std.process : execute, Config;
+import std.process : Config;
+import modules.util.proc : execute = executeRetry;
 import std.string : strip;
 import std.conv : to;
 import modules.infra.ui : openUrlInBrowser;
@@ -12,7 +13,7 @@ void showGitPerformanceDialog(Window parentWindow)
 {
     auto dlg = new Dialog(UIString.fromRaw("Git Performance Settings"d), parentWindow,
         DialogFlag.Popup | DialogFlag.Resizable);
-    dlg.minWidth(600).minHeight(500);
+    dlg.minWidth(pointsToPixels(450)).minHeight(pointsToPixels(375));
 
     auto content = new VerticalLayout();
     content.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT).padding(20);

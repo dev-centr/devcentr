@@ -13,7 +13,7 @@ void showAppearanceSettingsDialog(Window parent, string dataRoot,
 
     auto dlg = new Dialog(UIString.fromRaw("Appearance"d), parent,
         DialogFlag.Popup | DialogFlag.Resizable);
-    dlg.minWidth(520).minHeight(360);
+    dlg.minWidth(pointsToPixels(390)).minHeight(pointsToPixels(270));
 
     auto content = new VerticalLayout();
     content.layoutWidth(FILL_PARENT).padding(15);

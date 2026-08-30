@@ -6,7 +6,8 @@ import std.digest : toHexString;
 import std.digest.sha : sha1Of;
 import std.file : exists, timeLastModified;
 import std.path : buildPath;
-import std.process : environment, execute;
+import std.process : environment;
+import modules.util.proc : execute = executeRetry;
 import std.string : strip, toLower;
 
 /// Interactive / worker shells the repo terminal can target.

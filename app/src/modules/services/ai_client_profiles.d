@@ -1,7 +1,8 @@
 module modules.services.ai_client_profiles;
 
 import std.path : buildPath;
-import std.process : execute, environment;
+import std.process : environment;
+import modules.util.proc : execute = executeRetry;
 import std.string : replace, indexOf;
 
 struct AIClientProfile

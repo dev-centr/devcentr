@@ -160,7 +160,13 @@ class DevCenterApp {
 
     void createUI() {
         logInfo("Creating main UI window.");
-        window = Platform.instance.createWindow("Dev Center", null);
+        window = Platform.instance.createWindow("Dev Center", null, WindowFlag.Resizable, 1200, 800);
+
+
+        // arsd installs its SIGCHLD handler lazily, so re-arm once the window
+        // exists and before the first subprocess-heavy panel is mounted.
+        version (Posix)
+            restartSyscallsOnSignals();
 
         string uiPath = buildPath(getcwd(), "src", "ui", "main.sdl");
         window.mainWidget = parseML(readText(uiPath));
@@ -593,7 +599,7 @@ class DevCenterApp {
                 auto tabs = new TabWidget();
                 tabs.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT);
 
-                auto overview = new ScrollWidget();
+                auto overview = new ScrollWidget("tabRepoOverview");
                 overview.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT);
                 auto overviewContent = new VerticalLayout();
                 overviewContent.layoutWidth(FILL_PARENT).padding(10);
@@ -620,6 +626,7 @@ class DevCenterApp {
                 tabs.addTab(overview, "Overview"d);
 
                 auto terminal = new RepoTerminalWidget(selectedRepoPath, repoTools);
+                terminal.id = "tabRepoTerminal";
                 tabs.addTab(terminal, "Terminal"d);
                 previewContainer.addChild(tabs);
             }
@@ -853,8 +860,73 @@ variable "example" {
     }
 }
 
+/// SDL and the runtime install signal handlers without SA_RESTART, so any blocking
+/// read in std.process aborts with EINTR. Re-arm the existing handlers with SA_RESTART
+/// so subprocess calls survive a signal.
+version (Posix)
+private void restartSyscallsOnSignals() {
+    import core.sys.posix.signal : sigaction, sigaction_t, SA_RESTART, SIG_DFL, SIG_IGN;
+
+    foreach (int sig; 1 .. 32) {
+        sigaction_t sa;
+        if (sigaction(sig, null, &sa) != 0) continue;
+        auto handler = cast(void*) sa.sa_handler;
+        if (handler is cast(void*) SIG_DFL || handler is cast(void*) SIG_IGN) continue;
+        if (sa.sa_flags & SA_RESTART) continue;
+        sa.sa_flags |= SA_RESTART;
+        sigaction(sig, &sa, null);
+        Log.d("restartSyscallsOnSignals: added SA_RESTART to signal ", sig);
+    }
+}
+
+/// dlangui looks for fonts under /Library/Fonts, where current macOS versions no
+/// longer keep them, leaving it with no usable sans-serif face. Register the real
+/// locations so text can be laid out.
+version (OSX)
+private void registerMacFonts() {
+    import dlangui.graphics.ftfonts : FreeTypeFontManager;
+    import dlangui.graphics.fonts : FontManager, FontFamily;
+    import std.file : exists;
+
+    auto ft = cast(FreeTypeFontManager) FontManager.instance;
+    if (ft is null) return;
+
+    static struct MacFont { string path; FontFamily family; }
+    enum supplemental = "/System/Library/Fonts/Supplemental/";
+    static immutable MacFont[] fonts = [
+        MacFont(supplemental ~ "Arial.ttf", FontFamily.SansSerif),
+        MacFont(supplemental ~ "Arial Bold.ttf", FontFamily.SansSerif),
+        MacFont(supplemental ~ "Arial Italic.ttf", FontFamily.SansSerif),
+        MacFont(supplemental ~ "Arial Bold Italic.ttf", FontFamily.SansSerif),
+        MacFont(supplemental ~ "Verdana.ttf", FontFamily.SansSerif),
+        MacFont(supplemental ~ "Verdana Bold.ttf", FontFamily.SansSerif),
+        MacFont(supplemental ~ "Georgia.ttf", FontFamily.Serif),
+        MacFont(supplemental ~ "Georgia Bold.ttf", FontFamily.Serif),
+        MacFont(supplemental ~ "Courier New.ttf", FontFamily.MonoSpace),
+        MacFont(supplemental ~ "Courier New Bold.ttf", FontFamily.MonoSpace),
+        MacFont("/System/Library/Fonts/Menlo.ttc", FontFamily.MonoSpace),
+        MacFont("/System/Library/Fonts/Monaco.ttf", FontFamily.MonoSpace),
+        MacFont("/System/Library/Fonts/Helvetica.ttc", FontFamily.SansSerif),
+    ];
+
+    foreach (f; fonts)
+        if (exists(f.path))
+            ft.registerFont(f.path, f.family);
+
+    Log.i("registerMacFonts: registered font count = ", ft.registeredFontCount);
+}
+
 extern (C) int UIAppMain(string[] args) {
     import modules.content_create.launch : parseLaunchArgs, runSpecializedMode;
+
+    version (Posix)
+        restartSyscallsOnSignals();
+    version (OSX)
+        registerMacFonts();
+
+    // main.sdl paints dark backgrounds, so pair it with the dark widget theme
+    // instead of dlangui's light default.
+    Platform.instance.uiTheme = "theme_dark";
 
     auto la = parseLaunchArgs(args);
     if (la.mode == "new-file" || la.mode == "new-project"

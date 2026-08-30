@@ -231,7 +231,7 @@ private ContentClassification parseClassification(Tag t)
 private LineageScope parseLineage(Tag t)
 {
     LineageScope lin;
-    lin.scope = tagStr(t, "scope");
+    lin.scope_ = tagStr(t, "scope");
     foreach (child; t.tags)
     {
         if (child.name != "edge")

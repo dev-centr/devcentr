@@ -34,7 +34,7 @@ private dstring jobTreeLabel(const ContentTypeListItem item)
 private Widget makeLed(string vitality)
 {
     auto led = new Widget("vitalityLed");
-    led.minWidth(12).maxWidth(12).minHeight(12).maxHeight(12);
+    led.minWidth(pointsToPixels(9)).maxWidth(pointsToPixels(9)).minHeight(pointsToPixels(9)).maxHeight(pointsToPixels(9));
     led.layoutWidth(12).layoutHeight(12);
     led.backgroundColor(vitalityLedColor(vitality));
     led.margins(Rect(0, 2, 6, 2));
@@ -96,7 +96,7 @@ void showContentSubtypeDialog(Window parent, ContentTypesCatalog catalog,
 {
     auto dlg = new Dialog(UIString.fromRaw(to!dstring("Create — " ~ classification.label)), parent,
         DialogFlag.Popup | DialogFlag.Resizable);
-    dlg.minWidth(900).minHeight(560);
+    dlg.minWidth(pointsToPixels(675)).minHeight(pointsToPixels(420));
 
     auto root = new VerticalLayout();
     root.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT).padding(12);
@@ -267,7 +267,7 @@ void showContentSubtypeDialog(Window parent, ContentTypesCatalog catalog,
                 row.backgroundColor(0x333344);
             row.addChild(makeLed(it.vitality));
             dstring yearText = it.inventedYear > 0 ? to!dstring(to!string(it.inventedYear)) : "—"d;
-            row.addChild(new TextWidget(null, yearText).minWidth(40).fontSize(8).fontWeight(700).textColor(0xCCCCCC)
+            row.addChild(new TextWidget(null, yearText).minWidth(pointsToPixels(30)).fontSize(8).fontWeight(700).textColor(0xCCCCCC)
                 .margins(Rect(0, 0, 6, 0)));
             dstring label = to!dstring(it.label);
             if (it.edgeKind.length)
@@ -502,7 +502,7 @@ void showNewFileLauncher(Window parent, CreateContentOptions opts)
 
     auto dlg = new Dialog(UIString.fromRaw("New File — choose classification"d), parent,
         DialogFlag.Popup | DialogFlag.Resizable);
-    dlg.minWidth(420).minHeight(360);
+    dlg.minWidth(pointsToPixels(315)).minHeight(pointsToPixels(270));
     auto content = new VerticalLayout();
     content.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT).padding(12);
     content.addChild(new TextWidget(null, to!dstring("Folder: " ~ opts.repoPath)).fontSize(8).textColor(0x888888));

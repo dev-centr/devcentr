@@ -15,7 +15,7 @@ void showGitAttributesLocationsDialog(Window parentWindow, string repoRoot)
 {
     auto dlg = new Dialog(UIString.fromRaw(".gitattributes Locations"d), parentWindow,
         DialogFlag.Popup | DialogFlag.Resizable);
-    dlg.minWidth(500).minHeight(400);
+    dlg.minWidth(pointsToPixels(375)).minHeight(pointsToPixels(300));
 
     auto content = new VerticalLayout();
     content.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT).padding(15);

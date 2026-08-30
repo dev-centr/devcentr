@@ -4,7 +4,7 @@ import dlangui;
 import dlangui.dialogs.dialog : Dialog, DialogFlag;
 import std.conv : to;
 import std.file : exists;
-import std.process : executeShell;
+import modules.util.proc : executeShell = executeShellRetry;
 import std.string : strip, splitLines;
 
 /// Resolve Ibex (Install Builder EXtension) on PATH or common sibling location.

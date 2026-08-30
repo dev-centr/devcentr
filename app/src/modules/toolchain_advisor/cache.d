@@ -3,7 +3,7 @@ module modules.toolchain_advisor.cache;
 import std.file : exists, mkdirRecurse, readText, write;
 import std.path : buildPath, dirName, absolutePath;
 import std.datetime : SysTime, Clock, hours;
-import std.process : execute;
+import modules.util.proc : execute = executeRetry;
 import std.json : JSONValue, parseJSON;
 
 /// Git-backed cache for toolchain-advisor definitions (shared with devcentr.org).

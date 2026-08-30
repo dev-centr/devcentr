@@ -1,10 +1,10 @@
 VerticalLayout {
     layoutWidth: fill; layoutHeight: fill
-    padding: 0
+    padding: 0pt
 
     // Top Bar
     HorizontalLayout {
-        layoutWidth: fill; padding: 10; backgroundColor: "#121212"
+        layoutWidth: fill; padding: 8pt; backgroundColor: "#121212"
         TextWidget { text: "Dev Center"; fontSize: 18pt; fontWeight: 800; textColor: "#007AFF" }
         HSpacer { layoutWidth: fill }
         Button { id: btnAIConfig; text: "AI Config" }
@@ -19,7 +19,7 @@ VerticalLayout {
 
         // Left Sidebar
         VerticalLayout {
-            id: sidebar; layoutWidth: 200; layoutHeight: fill; padding: 5
+            id: sidebar; layoutWidth: 150pt; layoutHeight: fill; padding: 4pt
             backgroundColor: "#1A1A1A"
             Button { id: navHome; text: "Home"; layoutWidth: fill }
             Button { id: navDashboard; text: "Tool Status"; layoutWidth: fill }
@@ -38,8 +38,8 @@ VerticalLayout {
 
             // Page 0: Home Screen
             VerticalLayout {
-                id: pageHome; layoutWidth: fill; layoutHeight: fill; padding: 40; alignment: center
-                TextWidget { text: "Welcome to Dev Center"; fontSize: 24pt; fontWeight: 800; margins: 20; alignment: center }
+                id: pageHome; layoutWidth: fill; layoutHeight: fill; padding: 12pt; alignment: center
+                TextWidget { text: "Welcome to Dev Center"; fontSize: 24pt; fontWeight: 800; margins: 15pt; alignment: center }
 
                 VerticalLayout {
                     layoutWidth: fill; alignment: center
@@ -49,68 +49,64 @@ VerticalLayout {
 
                     // Choice 1: Browse Projects
                     VerticalLayout {
-                        id: choiceBrowse; layoutWidth: 300; layoutHeight: 350; padding: 20; backgroundColor: "#252525"
-                        ImageWidget { drawableId: "folder_open"; layoutWidth: 128; layoutHeight: 128; alignment: center; margins: 10 }
-                        TextWidget { text: "Browse Projects"; fontSize: 16pt; fontWeight: 600; alignment: center; margins: 10 }
-                        TextWidget { text: "Explore templates, discover local projects, and manage your workspace."; fontSize: 10pt; textColor: "#AAAAAA"; alignment: center }
+                        id: choiceBrowse; layoutWidth: fill; maxWidth: 180pt; layoutHeight: 150pt; padding: 15pt; backgroundColor: "#252525"
+                        TextWidget { text: "Browse Projects"; fontSize: 16pt; fontWeight: 600; alignment: center; margins: 8pt }
+                        MultilineTextWidget { text: "Explore templates, discover local projects, and manage your workspace."; fontSize: 10pt; textColor: "#AAAAAA"; alignment: center; layoutWidth: fill; maxWidth: 160pt }
                         VSpacer { layoutHeight: fill }
                         Button { id: btnChoiceBrowse; text: "Open Browser"; layoutWidth: fill }
                     }
 
                     // Choice 2: Tool Status
                     VerticalLayout {
-                        id: choiceTools; layoutWidth: 300; layoutHeight: 350; padding: 20; backgroundColor: "#252525"
-                        ImageWidget { drawableId: "settings"; layoutWidth: 128; layoutHeight: 128; alignment: center; margins: 10 }
-                        TextWidget { text: "Tool Status"; fontSize: 16pt; fontWeight: 600; alignment: center; margins: 10 }
-                        TextWidget { text: "overview of installed development tools, PATH variables, and available missing tools."; fontSize: 10pt; textColor: "#AAAAAA"; alignment: center }
+                        id: choiceTools; layoutWidth: fill; maxWidth: 180pt; layoutHeight: 150pt; padding: 15pt; backgroundColor: "#252525"
+                        TextWidget { text: "Tool Status"; fontSize: 16pt; fontWeight: 600; alignment: center; margins: 8pt }
+                        MultilineTextWidget { text: "overview of installed development tools, PATH variables, and available missing tools."; fontSize: 10pt; textColor: "#AAAAAA"; alignment: center; layoutWidth: fill; maxWidth: 160pt }
                         VSpacer { layoutHeight: fill }
                         Button { id: btnChoiceTools; text: "View Dashboard"; layoutWidth: fill }
                     }
 
                     // Choice 3: Workflow templates (replaces GitHub's broken template UX)
                     VerticalLayout {
-                        id: choiceWorkflowTemplates; layoutWidth: 300; layoutHeight: 350; padding: 20; backgroundColor: "#252525"
-                        ImageWidget { drawableId: "folder_open"; layoutWidth: 128; layoutHeight: 128; alignment: center; margins: 10 }
-                        TextWidget { text: "Workflow templates"; fontSize: 16pt; fontWeight: 600; alignment: center; margins: 10 }
-                        TextWidget { text: "Browse full workflow files to copy. Not GitHub Marketplace actions — real templates."; fontSize: 10pt; textColor: "#AAAAAA"; alignment: center }
+                        id: choiceWorkflowTemplates; layoutWidth: fill; maxWidth: 180pt; layoutHeight: 150pt; padding: 15pt; backgroundColor: "#252525"
+                        TextWidget { text: "Workflow templates"; fontSize: 16pt; fontWeight: 600; alignment: center; margins: 8pt }
+                        MultilineTextWidget { text: "Browse full workflow files to copy. Not GitHub Marketplace actions — real templates."; fontSize: 10pt; textColor: "#AAAAAA"; alignment: center; layoutWidth: fill; maxWidth: 160pt }
                         VSpacer { layoutHeight: fill }
                         Button { id: btnChoiceWorkflowTemplates; text: "Open store"; layoutWidth: fill }
                     }
 
                     // Choice 4: Install or add
                     VerticalLayout {
-                        id: choiceInstall; layoutWidth: 300; layoutHeight: 350; padding: 20; backgroundColor: "#252525"
-                        ImageWidget { drawableId: "settings"; layoutWidth: 128; layoutHeight: 128; alignment: center; margins: 10 }
-                        TextWidget { text: "Install or add"; fontSize: 16pt; fontWeight: 600; alignment: center; margins: 10 }
-                        TextWidget { text: "Add Infrastructure as Code (OpenTofu) or project technologies (frameworks, runtimes) to this repo."; fontSize: 10pt; textColor: "#AAAAAA"; alignment: center }
+                        id: choiceInstall; layoutWidth: fill; maxWidth: 180pt; layoutHeight: 150pt; padding: 15pt; backgroundColor: "#252525"
+                        TextWidget { text: "Install or add"; fontSize: 16pt; fontWeight: 600; alignment: center; margins: 8pt }
+                        MultilineTextWidget { text: "Add Infrastructure as Code (OpenTofu) or project technologies (frameworks, runtimes) to this repo."; fontSize: 10pt; textColor: "#AAAAAA"; alignment: center; layoutWidth: fill; maxWidth: 160pt }
                         VSpacer { layoutHeight: fill }
                         Button { id: btnChoiceInstall; text: "Install or add..."; layoutWidth: fill }
                     }
                 }
 
                 HorizontalLayout {
-                    layoutWidth: fill; alignment: center; margins: 20
+                    layoutWidth: fill; alignment: center; margins: 15pt
 
                     VerticalLayout {
-                        id: choiceToolchainAdvisor; layoutWidth: 300; layoutHeight: 200; padding: 20; backgroundColor: "#252525"
-                        TextWidget { text: "Toolchain Advisor"; fontSize: 16pt; fontWeight: 600; alignment: center; margins: 10 }
-                        TextWidget { text: "Choose host OS, target platform, and toolchain—WSL vs MinGW vs MSVC and cross-build paths explained."; fontSize: 10pt; textColor: "#AAAAAA"; alignment: center }
+                        id: choiceToolchainAdvisor; layoutWidth: fill; maxWidth: 180pt; layoutHeight: 150pt; padding: 15pt; backgroundColor: "#252525"
+                        TextWidget { text: "Toolchain Advisor"; fontSize: 16pt; fontWeight: 600; alignment: center; margins: 8pt }
+                        MultilineTextWidget { text: "Choose host OS, target platform, and toolchain—WSL vs MinGW vs MSVC and cross-build paths explained."; fontSize: 10pt; textColor: "#AAAAAA"; alignment: center; layoutWidth: fill; maxWidth: 160pt }
                         VSpacer { layoutHeight: fill }
                         Button { id: btnChoiceToolchainAdvisor; text: "Open advisor"; layoutWidth: fill }
                     }
 
                     VerticalLayout {
-                        id: choiceWsl; layoutWidth: 300; layoutHeight: 200; padding: 20; backgroundColor: "#252525"
-                        TextWidget { text: "WSL"; fontSize: 16pt; fontWeight: 600; alignment: center; margins: 10 }
-                        TextWidget { text: "List distros, set the default, read which Linux to pick, and open Windows WSL Settings."; fontSize: 10pt; textColor: "#AAAAAA"; alignment: center }
+                        id: choiceWsl; layoutWidth: fill; maxWidth: 180pt; layoutHeight: 150pt; padding: 15pt; backgroundColor: "#252525"
+                        TextWidget { text: "WSL"; fontSize: 16pt; fontWeight: 600; alignment: center; margins: 8pt }
+                        MultilineTextWidget { text: "List distros, set the default, read which Linux to pick, and open Windows WSL Settings."; fontSize: 10pt; textColor: "#AAAAAA"; alignment: center; layoutWidth: fill; maxWidth: 160pt }
                         VSpacer { layoutHeight: fill }
                         Button { id: btnChoiceWsl; text: "Manage WSL"; layoutWidth: fill }
                     }
 
                     VerticalLayout {
-                        id: choiceFlutter; layoutWidth: 300; layoutHeight: 200; padding: 20; backgroundColor: "#252525"
-                        TextWidget { text: "Flutter"; fontSize: 16pt; fontWeight: 600; alignment: center; margins: 10 }
-                        TextWidget { text: "Ecosystem management: community version bridges, control-plane advisory, and docs."; fontSize: 10pt; textColor: "#AAAAAA"; alignment: center }
+                        id: choiceFlutter; layoutWidth: fill; maxWidth: 180pt; layoutHeight: 150pt; padding: 15pt; backgroundColor: "#252525"
+                        TextWidget { text: "Flutter"; fontSize: 16pt; fontWeight: 600; alignment: center; margins: 8pt }
+                        MultilineTextWidget { text: "Ecosystem management: community version bridges, control-plane advisory, and docs."; fontSize: 10pt; textColor: "#AAAAAA"; alignment: center; layoutWidth: fill; maxWidth: 160pt }
                         VSpacer { layoutHeight: fill }
                         Button { id: btnChoiceFlutter; text: "Manage Flutter"; layoutWidth: fill }
                     }
@@ -119,20 +115,20 @@ VerticalLayout {
             }
 
             HorizontalLayout {
-                id: pageTemplates; layoutWidth: fill; layoutHeight: fill; padding: 10
+                id: pageTemplates; layoutWidth: fill; layoutHeight: fill; padding: 8pt
 
                 // Left side: repo tree + search
                 VerticalLayout {
                     layoutWidth: fill; layoutHeight: fill
-                    TextWidget { text: "Browse Projects"; fontSize: 14pt; margins: 5 }
+                    TextWidget { text: "Browse Projects"; fontSize: 14pt; margins: 4pt }
                     HorizontalLayout {
-                        layoutWidth: fill; margins: 5
+                        layoutWidth: fill; margins: 4pt
                         EditLine { id: searchRepos; text: ""; layoutWidth: fill }
                         Button { id: btnRefreshRepos; text: "Refresh" }
                     }
                     ListWidget { id: listRepos; layoutWidth: fill; layoutHeight: fill }
                     HorizontalLayout {
-                        layoutWidth: fill; margins: 5
+                        layoutWidth: fill; margins: 4pt
                         Button { id: btnOpenGitGui; text: "Open Git Viewer" }
                     }
                 }
@@ -151,15 +147,15 @@ VerticalLayout {
 
                         // Attached Tools sub-panel inside the right-hand area
                         VerticalLayout {
-                            layoutWidth: 280; layoutHeight: fill; padding: 10; backgroundColor: "#1E1E1E"
-                            TextWidget { text: "Attached Tools"; fontSize: 12pt; fontWeight: 700; margins: 5; textColor: "#007AFF" }
+                            layoutWidth: 210pt; layoutHeight: fill; padding: 8pt; backgroundColor: "#1E1E1E"
+                            TextWidget { text: "Attached Tools"; fontSize: 12pt; fontWeight: 700; margins: 4pt; textColor: "#007AFF" }
                             ListWidget { id: listAttachedTools; layoutWidth: fill; layoutHeight: fill }
                             Button { id: btnDiscoverTools; text: "Discover Tools" }
                         }
 
                         // Placeholder for future Readme WebView or integrated Editor
                         VerticalLayout {
-                            id: repoPreviewContainer; layoutWidth: fill; layoutHeight: fill; padding: 10;
+                            id: repoPreviewContainer; layoutWidth: fill; layoutHeight: fill; padding: 8pt;
                             TextWidget { text: "Select a repository to view details."; id: repoPreviewText; alignment: center; textColor: "#AAAAAA" }
                         }
                     }
@@ -167,8 +163,8 @@ VerticalLayout {
             }
 
             VerticalLayout {
-                id: pageProject; layoutWidth: fill; layoutHeight: fill; padding: 10
-                TextWidget { text: "Project Analysis"; fontSize: 14pt; margins: 5 }
+                id: pageProject; layoutWidth: fill; layoutHeight: fill; padding: 8pt
+                TextWidget { text: "Project Analysis"; fontSize: 14pt; margins: 4pt }
                 TextWidget { id: projectPathLabel; text: "Path: " }
                 ListWidget { id: listStacks; layoutWidth: fill; layoutHeight: fill }
                 HorizontalLayout {
@@ -178,12 +174,12 @@ VerticalLayout {
             }
 
             VerticalLayout {
-                id: pageDashboard; layoutWidth: fill; layoutHeight: fill; padding: 10
-                HorizontalLayout { layoutWidth: fill; margins: 5
+                id: pageDashboard; layoutWidth: fill; layoutHeight: fill; padding: 8pt
+                HorizontalLayout { layoutWidth: fill; margins: 4pt
                     TextWidget { text: "Tool Status Overview"; fontSize: 18pt; layoutWidth: fill }
                     Button { id: btnRefreshCliToolsCatalog; text: "Refresh catalog" }
                 }
-                TextWidget { id: cliToolsContextLabel; text: "CLI install profiles from dev-centr/equivalence-rules-cli. Installs run interactively and are logged to ~/.dev-center/install-audit/."; fontSize: 10pt; textColor: "#AAAAAA"; margins: 5 }
+                TextWidget { id: cliToolsContextLabel; text: "CLI install profiles from dev-centr/equivalence-rules-cli. Installs run interactively and are logged to ~/.dev-center/install-audit/."; fontSize: 10pt; textColor: "#AAAAAA"; margins: 4pt }
 
                 TabWidget {
                     id: dashboardTabs; layoutWidth: fill; layoutHeight: fill
@@ -193,9 +189,9 @@ VerticalLayout {
             }
 
             VerticalLayout {
-                id: pageWorkflowTemplates; layoutWidth: fill; layoutHeight: fill; padding: 10
-                TextWidget { text: "Workflow templates"; fontSize: 14pt; margins: 5 }
-                TextWidget { id: workflowInstallPathLabel; text: "Install into: "; margins: 2 }
+                id: pageWorkflowTemplates; layoutWidth: fill; layoutHeight: fill; padding: 8pt
+                TextWidget { text: "Workflow templates"; fontSize: 14pt; margins: 4pt }
+                TextWidget { id: workflowInstallPathLabel; text: "Install into: "; margins: 2pt }
                 ListWidget { id: listWorkflowTemplates; layoutWidth: fill; layoutHeight: fill }
                 HorizontalLayout {
                     Button { id: btnRefreshWorkflowTemplates; text: "Refresh list" }
@@ -205,10 +201,10 @@ VerticalLayout {
             }
 
             VerticalLayout {
-                id: pageInfra; layoutWidth: fill; layoutHeight: fill; padding: 10
-                TextWidget { text: "Infrastructure (IaC)"; fontSize: 14pt; margins: 5 }
-                TextWidget { id: infraPathLabel; text: "Scope: "; margins: 2 }
-                HorizontalLayout { layoutWidth: fill; margins: 5
+                id: pageInfra; layoutWidth: fill; layoutHeight: fill; padding: 8pt
+                TextWidget { text: "Infrastructure (IaC)"; fontSize: 14pt; margins: 4pt }
+                TextWidget { id: infraPathLabel; text: "Scope: "; margins: 2pt }
+                HorizontalLayout { layoutWidth: fill; margins: 4pt
                     Button { id: btnRefreshInfra; text: "Refresh" }
                     Button { id: btnInfraDocs; text: "Docs" }
                 }
@@ -216,45 +212,45 @@ VerticalLayout {
             }
 
             VerticalLayout {
-                id: pageToolchainAdvisor; layoutWidth: fill; layoutHeight: fill; padding: 10
-                HorizontalLayout { layoutWidth: fill; margins: 5
+                id: pageToolchainAdvisor; layoutWidth: fill; layoutHeight: fill; padding: 8pt
+                HorizontalLayout { layoutWidth: fill; margins: 4pt
                     TextWidget { text: "Toolchain Advisor"; fontSize: 18pt; layoutWidth: fill }
                     Button { id: btnAdvisorSettings; text: "Definitions source…" }
                     Button { id: btnRefreshAdvisorCatalog; text: "Refresh definitions" }
                 }
-                TextWidget { text: "Definitions sync from github.com/dev-centr/toolchain-advisor. Walk through each step; recommendations update as you select."; fontSize: 10pt; textColor: "#AAAAAA"; margins: 5 }
+                TextWidget { text: "Definitions sync from github.com/dev-centr/toolchain-advisor. Walk through each step; recommendations update as you select."; fontSize: 10pt; textColor: "#AAAAAA"; margins: 4pt }
                 VerticalLayout { id: toolchainAdvisorHost; layoutWidth: fill; layoutHeight: fill }
             }
 
             VerticalLayout {
-                id: pageInstall; layoutWidth: fill; layoutHeight: fill; padding: 20
-                TextWidget { text: "Install or add"; fontSize: 18pt; margins: 10 }
-                TextWidget { id: installPathLabel; text: "Repo: "; margins: 5 }
+                id: pageInstall; layoutWidth: fill; layoutHeight: fill; padding: 15pt
+                TextWidget { text: "Install or add"; fontSize: 18pt; margins: 8pt }
+                TextWidget { id: installPathLabel; text: "Repo: "; margins: 4pt }
                 VerticalLayout { layoutWidth: fill
-                    Button { id: btnInstallIac; text: "Add Infrastructure as Code (OpenTofu)"; layoutWidth: 300 }
-                    Button { id: btnInstallIacDocs; text: "Docs: Infrastructure as Code"; layoutWidth: 300 }
-                    Button { id: btnInstallTech; text: "Add project technologies (frameworks, runtimes)"; layoutWidth: 300 }
+                    Button { id: btnInstallIac; text: "Add Infrastructure as Code (OpenTofu)"; layoutWidth: fill }
+                    Button { id: btnInstallIacDocs; text: "Docs: Infrastructure as Code"; layoutWidth: fill }
+                    Button { id: btnInstallTech; text: "Add project technologies (frameworks, runtimes)"; layoutWidth: fill }
                 }
             }
 
             VerticalLayout {
-                id: pageWsl; layoutWidth: fill; layoutHeight: fill; padding: 10
-                HorizontalLayout { layoutWidth: fill; margins: 5
+                id: pageWsl; layoutWidth: fill; layoutHeight: fill; padding: 8pt
+                HorizontalLayout { layoutWidth: fill; margins: 4pt
                     TextWidget { text: "WSL"; fontSize: 18pt; layoutWidth: fill }
                     Button { id: btnRefreshWsl; text: "Refresh" }
                 }
-                TextWidget { text: "Instance management lives here (list, default, guidance). WSL Settings is complementary—shared VM options like memory and networking."; fontSize: 10pt; textColor: "#AAAAAA"; margins: 5 }
+                TextWidget { text: "Instance management lives here (list, default, guidance). WSL Settings is complementary—shared VM options like memory and networking."; fontSize: 10pt; textColor: "#AAAAAA"; margins: 4pt }
                 VerticalLayout { id: wslManagerHost; layoutWidth: fill; layoutHeight: fill }
             }
 
             VerticalLayout {
-                id: pageFlutter; layoutWidth: fill; layoutHeight: fill; padding: 10
-                HorizontalLayout { layoutWidth: fill; margins: 5
+                id: pageFlutter; layoutWidth: fill; layoutHeight: fill; padding: 8pt
+                HorizontalLayout { layoutWidth: fill; margins: 4pt
                     TextWidget { text: "Flutter"; fontSize: 18pt; layoutWidth: fill }
                     Button { id: btnRefreshFlutter; text: "Refresh" }
                 }
                 VerticalLayout { id: flutterAdvisoryHost; layoutWidth: fill; layoutHeight: WRAP_CONTENT }
-                TextWidget { text: "Ecosystem management for Flutter. Community version managers are a bridge until the official entrypoint owns pinning and repair."; fontSize: 10pt; textColor: "#AAAAAA"; margins: 5 }
+                TextWidget { text: "Ecosystem management for Flutter. Community version managers are a bridge until the official entrypoint owns pinning and repair."; fontSize: 10pt; textColor: "#AAAAAA"; margins: 4pt }
                 VerticalLayout { id: flutterManagerHost; layoutWidth: fill; layoutHeight: fill }
             }
         }

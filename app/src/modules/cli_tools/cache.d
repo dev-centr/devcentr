@@ -3,7 +3,7 @@ module modules.cli_tools.cache;
 import std.file : exists, mkdirRecurse, readText, write;
 import std.path : buildPath, absolutePath;
 import std.datetime : SysTime, Clock, hours;
-import std.process : execute;
+import modules.util.proc : execute = executeRetry;
 import std.json : JSONValue, parseJSON;
 
 class CliToolsCatalogCache {

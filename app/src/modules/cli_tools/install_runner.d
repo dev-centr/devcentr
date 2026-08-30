@@ -3,7 +3,7 @@ module modules.cli_tools.install_runner;
 import std.file : exists, mkdirRecurse, append;
 import std.path : buildPath, dirName;
 import std.datetime : Clock;
-import std.process : execute;
+import modules.util.proc : execute = executeRetry;
 import std.format : format;
 import std.array : replace;
 import modules.cli_tools.model;

@@ -94,14 +94,14 @@ class WslManagerPanel : VerticalLayout
         split.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT);
 
         auto left = new VerticalLayout();
-        left.layoutWidth(WRAP_CONTENT).minWidth(320).layoutHeight(FILL_PARENT).padding(8);
+        left.layoutWidth(WRAP_CONTENT).minWidth(pointsToPixels(240)).layoutHeight(FILL_PARENT).padding(8);
         left.backgroundColor(Style.bg);
 
         left.addChild(new TextWidget(null, "Installed distros"d).fontSize(11).fontWeight(700).textColor(Style.accent));
 
         _adapter = new StringListAdapter();
         _list = new ListWidget("wslDistroList");
-        _list.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT).minHeight(200);
+        _list.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT).minHeight(pointsToPixels(150));
         _list.adapter = _adapter;
         _list.itemClick = delegate(Widget source, int itemIndex) {
             showDetail(itemIndex);
@@ -139,7 +139,7 @@ class WslManagerPanel : VerticalLayout
         split.addChild(left);
 
         auto rightScroll = new ScrollWidget();
-        rightScroll.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT).minWidth(360);
+        rightScroll.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT).minWidth(pointsToPixels(270));
         _detail = new VerticalLayout();
         _detail.layoutWidth(FILL_PARENT).padding(12);
         rightScroll.contentWidget = _detail;

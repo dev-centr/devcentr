@@ -10,7 +10,7 @@ void showAdvisorSettingsDialog(Window parent, string dataRoot, string currentRep
 {
     auto dlg = new Dialog(UIString.fromRaw("Toolchain Advisor definitions"d), parent,
         DialogFlag.Popup | DialogFlag.Resizable);
-    dlg.minWidth(560).minHeight(200);
+    dlg.minWidth(pointsToPixels(420)).minHeight(pointsToPixels(150));
 
     auto content = new VerticalLayout();
     content.layoutWidth(FILL_PARENT).padding(15);

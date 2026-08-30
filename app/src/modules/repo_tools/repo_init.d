@@ -10,14 +10,14 @@ import std.algorithm;
 import modules.template_installer.installer;
 import modules.repo_tools.gitignore_template_sources;
 import modules.vcs.git_performance_dialog : showGitPerformanceDialog;
-import std.process : execute;
+import modules.util.proc : execute = executeRetry;
 
 /// Flow to initialize a repository with .gitattributes and .gitignore
 void showRepoInitDialog(Window parentWindow, string repoRoot, TemplateInstaller installer)
 {
     auto dlg = new Dialog(UIString.fromRaw("Initialize Repository"d), parentWindow,
         DialogFlag.Popup | DialogFlag.Resizable);
-    dlg.minWidth(700).minHeight(600);
+    dlg.minWidth(pointsToPixels(525)).minHeight(pointsToPixels(450));
 
     auto content = new VerticalLayout();
     content.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT).padding(15);
@@ -245,7 +245,7 @@ void showRepoInitDialog(Window parentWindow, string repoRoot, TemplateInstaller 
             
             // Execute git init if .git doesn't exist
             if (!exists(buildPath(repoRoot, ".git"))) {
-                import std.process : execute;
+                import modules.util.proc : execute = executeRetry;
                 execute(["git", "init", repoRoot]);
             }
             

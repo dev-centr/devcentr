@@ -196,7 +196,7 @@ class VersionControlWidget : HorizontalLayout
         bool wingetInstalled = isExecutableInstalled("wingetcreate");
         
         auto dlg = new Dialog(UIString.fromRaw("Winget Support"d), this.window, DialogFlag.Popup | DialogFlag.Resizable);
-        dlg.minWidth(500).minHeight(400);
+        dlg.minWidth(pointsToPixels(375)).minHeight(pointsToPixels(300));
         
         VerticalLayout content = new VerticalLayout();
         content.layoutWidth(FILL_PARENT).layoutHeight(FILL_PARENT).padding(20);

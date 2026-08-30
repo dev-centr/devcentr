@@ -20,7 +20,7 @@ void showNewProjectDialog(Window parent, string parentDir, string[] initialTags 
 
     auto dlg = new Dialog(UIString.fromRaw("New Project"d), parent,
         DialogFlag.Popup | DialogFlag.Resizable);
-    dlg.minWidth(480).minHeight(280);
+    dlg.minWidth(pointsToPixels(360)).minHeight(pointsToPixels(210));
 
     auto content = new VerticalLayout();
     content.layoutWidth(FILL_PARENT).padding(15);

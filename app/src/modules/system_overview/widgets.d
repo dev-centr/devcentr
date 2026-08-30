@@ -13,7 +13,7 @@ class ToolCard : HorizontalLayout {
 
         // Icon area
         auto iconContainer = new VerticalLayout();
-        iconContainer.minWidth(200).minHeight(200).maxWidth(200).maxHeight(200);
+        iconContainer.minWidth(pointsToPixels(150)).minHeight(pointsToPixels(150)).maxWidth(pointsToPixels(150)).maxHeight(pointsToPixels(150));
         iconContainer.padding(20).backgroundColor(0x333333); // Fixed size background
 
         auto icon = new ImageWidget(null, tool.icon);
