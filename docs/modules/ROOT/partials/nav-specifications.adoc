@@ -1,4 +1,4 @@
-** .Components
+** Components
 *** xref:specifications:components/dependency-modeler.adoc[Dependency Modeler]
 *** xref:specifications:components/project-visualizer.adoc[Project Visualizer]
 *** xref:specifications:components/project-recognizer.adoc[Project Recognizer]
@@ -30,7 +30,7 @@
 *** xref:specifications:components/wsl-manager.adoc[WSL Manager]
 *** xref:specifications:components/ecosystem-management.adoc[Ecosystem Management]
 *** xref:specifications:components/cli-tools-catalog.adoc[CLI Tools Catalog]
-** .Features
+** Features
 *** xref:specifications:features/opening-web-content-from-docs.adoc[Opening Web Content from Docs]
 *** xref:specifications:features/ai-doc-sources-and-mcp-setup.adoc[AI Doc Sources and MCP Setup]
 *** xref:specifications:features/better-automatic-ai-routing.adoc[Automatic AI Model Routing]
@@ -41,7 +41,7 @@
 *** xref:specifications:features/synchronous-literate-programming.adoc[Synchronous Literate Programming]
 *** xref:specifications:features/scriptbook-system-playbooks.adoc[Scriptbook]
 *** xref:specifications:features/page-level-version-selector.adoc[Page-level version selector]
-** .Reference
+** Reference
 *** xref:specifications:reference/definition-files.adoc[Definition Files (Services and Languages)]
 *** xref:specifications:templates-schema.adoc[Templates Repository Schema]
 *** xref:specifications:prohelp.adoc[Prohelp CLI Specification]
