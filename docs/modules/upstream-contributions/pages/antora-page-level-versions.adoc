@@ -2,7 +2,7 @@
 :navtitle: Antora page-level versions
 
 Upstream: link:https://gitlab.com/antora/antora[gitlab.com/antora/antora]  
-Fork: `dev-centr/.forks/antora` (local mirror; GitHub remote when published)
+Fork: link:https://github.com/dev-centr/antora[dev-centr/antora] (`dev-centr/.forks/antora` locally)
 
 == Status
 
@@ -20,7 +20,7 @@ Related prior art: `@antora-supplemental/unversioned-component-urls` (component-
 
 == Fork work
 
-Feature branch: `feature/page-level-version-selector`
+Feature branch: link:https://github.com/dev-centr/antora/tree/feature/page-level-version-selector[`feature/page-level-version-selector`]
 
 * RFC 0001 describing page version tracks
 * Example extension scanning `:page-version-track:` page attributes
