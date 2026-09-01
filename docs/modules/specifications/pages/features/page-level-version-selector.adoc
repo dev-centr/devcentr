@@ -1,0 +1,122 @@
+= Proposal: Page-level version selector
+:description: Let readers pick a version for an individual page or doc subsection inside a component—not only for the whole component.
+:navtitle: Page-level version selector
+
+== Problem
+
+Antora versions at the **component** boundary. The version picker in the reference UI switches every page in that component together. That fits a product manual (`uniconfig` v0.1, v0.2, …) but not a **hub component** such as DevCentr where many independent features and subsystems ship on different cadences.
+
+Examples on docs.devcentr.org:
+
+* xref:specifications:components/uniconfig.adoc[UniConfig Config Panel] — integration spec in `DevCentr`; product docs in xref:uniconfig:ROOT:index.adoc[uniconfig] at v0.1.
+* Dozens of component and feature specs under one `DevCentr` component (see xref:specifications:index.adoc[Specifications index]), each with its own maturity and release line.
+
+Today the workarounds are awkward:
+
+* Split every feature into its own Antora component (playbook noise, nav fragmentation, xref overhead).
+* Encode version only in prose (`Formats (v0.1)`) with no selector or stable URL per version.
+* Duplicate the whole component version when only one chapter changed.
+
+We already ship component-root version choosers via `@antora-supplemental/unversioned-component-urls` (selector mode at `/component/`). That extension explicitly notes page-level choosers are **not implemented yet**—component root only.
+
+== Objective
+
+Readers MUST be able to open a **specific page or subsection** (nav subtree) and choose among **that doc's versions** without switching the entire component.
+
+Authors MUST be able to declare version tracks per page (or per nav branch) without forking the whole component for every minor spec revision.
+
+== Requirements
+
+=== Reader experience
+
+* A **page version selector** (distinct from the component version selector) appears when the current page participates in a version track with more than one published version.
+* Choosing a version navigates to the same logical page in that version (stable page identity across versions).
+* Bare URLs without a version segment resolve like component roots: configurable **selector** (list versions) or **alias to latest** for that page track.
+* Version labels use `display_version` semantics where authors need friendly text (`0.1 Beta`, `2026-03 draft`).
+
+=== Author experience
+
+* Declare a page (or nav subtree root) as a **versioned doc product** without promoting it to a full component.
+* Reuse existing AsciiDoc sources where possible; avoid maintaining N full copies of unrelated pages per version.
+* Cross-xrefs inside the same version track resolve to sibling pages in that track; xrefs outside the track keep today's component-version rules.
+
+=== Site operator experience
+
+* Playbook-level defaults (selector vs alias, short-circuit single version) mirror `@antora-supplemental/unversioned-component-urls`.
+* Hub sites with `site-nav-tree` keep curated sidebars; page-level versioning must not explode forest roots.
+
+== Non-goals (initial cut)
+
+* Git-tag-per-paragraph or section-level diff inside one HTML page.
+* Replacing component versioning for standalone product manuals.
+* Automatic semver inference from commit history.
+
+== Proposed model
+
+=== Version track
+
+A **version track** is a named series of snapshots for one logical doc product (page + optional descendants).
+
+[cols="1,2"]
+|===
+| Field | Role
+
+| `track-id`
+| Stable wire id (URL-safe). Example: `uniconfig-spec`, `dependency-modeler`.
+
+| `versions[]`
+| Ordered list of `{ version, display_version?, prerelease?, src ref or content root }`.
+
+| `scope`
+| `page` (single page) or `subtree` (nav branch rooted at a landing page).
+
+| `default`
+| Latest non-prerelease, or explicit `latest_version_segment` equivalent at track scope.
+|===
+
+Published URL shape (sketch):
+
+* Versioned: `/DevCentr/latest/specifications/components/uniconfig/v0.1/` (track segment after page path, or parallel module—TBD in spike).
+* Versionless: `/DevCentr/latest/specifications/components/uniconfig/` → selector or alias per playbook policy.
+
+=== Relationship to component version
+
+Component version remains the **site snapshot** (e.g. `DevCentr` `latest` vs `2.0`). Page tracks are an **inner** axis:
+
+[source,mermaid]
+----
+flowchart TB
+  CV[Component version e.g. DevCentr latest]
+  PT[Page track e.g. uniconfig-spec]
+  V1[Track version 0.1]
+  V2[Track version 0.2]
+  CV --> PT
+  PT --> V1
+  PT --> V2
+----
+
+Most hub pages have no track (selector hidden). Spec pages with independent release lines register a track.
+
+== Implementation plan
+
+. **Document only (now)** — this spec; defer upstream GitLab issue while maintainers are busy.
+. **Extension spike** — extend `@antora-supplemental/unversioned-component-urls` (or sibling package) to register versionless + selector pages for configured track roots; prove on UniConfig spec path.
+. **Antora fork RFC** — feature branch in `dev-centr/.forks/antora` with core hook points (`contentClassified`, page URL model, UI `page-versions` partial).
+. **Absorb path** — when upstream is ready, fold into Antora core playbook keys (same story as alias-component-to-latest in xref:home:publishing/antora-essential-extensions.adoc#alias-versioned-component-root-latest-start-page[Antora essential extensions]).
+
+== Open questions
+
+* Track segment in URL vs versioned module naming (`specifications/uniconfig-v0.1/`).
+* Whether track metadata lives in page attrs (`:page-version-track:`), a sidecar `*.track.yml`, or `antora.yml` `page_versions:` map.
+* Interaction with `page-context` attrs (`page-version` today means component doc version, not inner track).
+
+== Related
+
+* xref:specifications:components/uniconfig.adoc[UniConfig Config Panel (component spec)]
+* xref:uniconfig:ROOT:reference.adoc[UniConfig reference (product versioning today)]
+* link:https://docs.antora.org/antora/latest/component-version-descriptor/[Antora component version descriptor]
+* link:https://github.com/antora-supplemental/antora-unversioned-component-urls[`@antora-supplemental/unversioned-component-urls`] — component-root selector; page-level noted as future work
+* xref:home:publishing/antora-essential-extensions.adoc[Antora essential extensions]
+
+---
+**Status**: Proposal Drafted | **Owner**: DevCentr docs | **Upstream**: deferred (internal fork first)

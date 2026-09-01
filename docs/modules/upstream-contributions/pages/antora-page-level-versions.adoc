@@ -1,0 +1,34 @@
+= Antora — page-level version selector
+:navtitle: Antora page-level versions
+
+Upstream: link:https://gitlab.com/antora/antora[gitlab.com/antora/antora]  
+Fork: `dev-centr/.forks/antora` (local mirror; GitHub remote when published)
+
+== Status
+
+**Deferred upstream.** Maintainers are busy; DevCentr documents the requirement and prototypes on a fork first.
+
+* Feature spec: xref:specifications:features/page-level-version-selector.adoc[Page-level version selector]
+* Fork RFC: `devdocs/rfc/0001-page-level-version-selector.adoc` in the Antora fork
+* Spike extension: `docs/modules/extend/examples/page-level-version-selector-extension.js`
+
+== Problem summary
+
+Antora versions whole components. Hub components such as `DevCentr` bundle many features with independent release lines (for example xref:specifications:components/uniconfig.adoc[UniConfig spec] vs product xref:uniconfig:ROOT:index.adoc[UniConfig docs]). Readers need a version picker for an individual page or nav subtree—not only at `/component/`.
+
+Related prior art: `@antora-supplemental/unversioned-component-urls` (component-root selector only; page-level noted as future work).
+
+== Fork work
+
+Feature branch: `feature/page-level-version-selector`
+
+* RFC 0001 describing page version tracks
+* Example extension scanning `:page-version-track:` page attributes
+* Core URL/UI integration left for later upstream discussion
+
+== When to upstream
+
+Open a GitLab issue or MR when:
+
+* Spike is exercised on docs.devcentr.org (UniConfig spec path or similar)
+* URL shape and playbook keys are stable enough to propose as core or official extension

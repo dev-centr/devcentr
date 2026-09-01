@@ -1,5 +1,9 @@
 = Changelog
 
+== 2026-09-01 -- Page-level version selector proposal
+
+* New xref:specifications:features/page-level-version-selector.adoc[Page-level version selector] feature spec — inner version tracks for hub pages (e.g. UniConfig spec) without splitting every feature into its own component. Upstream Antora issue deferred; spike planned on `dev-centr/.forks/antora`.
+
 == 2026-09-01 -- Sidebar label DevCentr App
 
 * Component display title is **DevCentr App** in the site nav tree (`title` in `antora.yml`); component name and URL stay `DevCentr`.

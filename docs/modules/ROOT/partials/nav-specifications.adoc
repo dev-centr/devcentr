@@ -40,6 +40,7 @@
 *** xref:specifications:features/dynamic-agent-preamble.adoc[Dynamic Agent Preamble]
 *** xref:specifications:features/synchronous-literate-programming.adoc[Synchronous Literate Programming]
 *** xref:specifications:features/scriptbook-system-playbooks.adoc[Scriptbook]
+*** xref:specifications:features/page-level-version-selector.adoc[Page-level version selector]
 ** .Reference
 *** xref:specifications:reference/definition-files.adoc[Definition Files (Services and Languages)]
 *** xref:specifications:templates-schema.adoc[Templates Repository Schema]

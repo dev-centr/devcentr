@@ -12,6 +12,7 @@ This section tracks bug reports, feature requests, and pull requests submitted f
 == Repositories
 
 * xref:dprint-vscode.adoc[dprint-vscode] – VS Code extension for the dprint formatter.
+* xref:antora-page-level-versions.adoc[Antora page-level versions] – deferred upstream; page/subsection version selector (fork RFC + extension spike).
 
 == Adding entries
 
