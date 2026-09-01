@@ -1,5 +1,9 @@
 = Changelog
 
+== 2026-09-01 -- AOP moved to general-knowledge
+
+* xref:aspect-oriented-programming.adoc[Aspect-Oriented Programming] redirect stub — body now lives in xref:general-knowledge:explanation/architecture/aspect-oriented-programming.adoc[general-knowledge Architecture].
+
 == 2026-08-28 -- Terminal bridge related demos
 
 * xref:terminal-bridge.adoc[Terminal Bridge]: related demos section (manager + zones + org catalogs).

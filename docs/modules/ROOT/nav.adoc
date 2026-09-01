@@ -4,7 +4,6 @@
 * xref:capabilities.adoc[Capabilities]
 * xref:toolchain-management.adoc[Toolchain Management]
 * xref:toolchain-control-plane.adoc[Toolchain Control Plane]
-* xref:aspect-oriented-programming.adoc[Aspect-Oriented Programming]
 * xref:todo-roadmap.adoc[Todo & Roadmap]
 * xref:gitignore-whitelist.adoc[Gitignore Strategy]
 * xref:ai-local-library-docs.adoc[AI Local Library Docs]
