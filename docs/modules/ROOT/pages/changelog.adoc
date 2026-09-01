@@ -1,5 +1,9 @@
 = Changelog
 
+== 2026-09-01 -- Retire duplicate Activity Log page
+
+* Removed xref:activity-log.adoc[Activity Log] from nav; page is a redirect stub. Org-wide timeline: xref:home:ROOT:activity-log.adoc[Home · Activity Log]. DevCentr shipping notes stay here.
+
 == 2026-09-01 -- Changelog nav typology + priority
 
 * Changelog moved to second slot under Dev Center (after index); `@antora-supplemental/nav-typology` also hoists changelog siblings site-wide.

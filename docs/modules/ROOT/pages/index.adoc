@@ -44,7 +44,8 @@ So: **everything in the docs is documentation; not everything is in the knowledg
 
 * xref:project-vision.adoc[Project Vision] — Goals and design philosophy
 * xref:todo-roadmap.adoc[Todo & Roadmap] — Outstanding tasks and roadmap
-* xref:activity-log.adoc[Activity Log] — Notable changes and doc updates
+* xref:changelog.adoc[Changelog] — DevCentr app and docs shipping notes
+* xref:home:ROOT:activity-log.adoc[Activity log (org-wide)] — Notable updates across all Dev-Centr projects (hub Home)
 * xref:upstream-contributions:index.adoc[Upstream Contributions] — Repositories we contribute to and depend on
 
 Features:

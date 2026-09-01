@@ -18,7 +18,6 @@
 * xref:ai-local-library-docs.adoc[AI Local Library Docs]
 * xref:dub-local-remote-paths.adoc[DUB Local vs Remote Paths]
 * xref:local-library-mods.adoc[Local Library Mods]
-* xref:activity-log.adoc[Activity Log]
 * xref:terminal-bridge.adoc[Terminal Bridge]
 
 * xref:specifications:index.adoc[Specifications]
