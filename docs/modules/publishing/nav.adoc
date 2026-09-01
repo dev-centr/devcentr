@@ -1,6 +1,0 @@
-.Software Publishing
-* xref:index.adoc[]
-* xref:licensing.adoc[Licensing (CSL / ANL)]
-* xref:licensing-strategy-templates.adoc[Licensing strategy templates]
-* xref:general-knowledge:explanation/architecture/software-product-essentials.adoc[Software Product Essentials]
-* xref:vercel-deployment.adoc[]

@@ -2,8 +2,16 @@
 * xref:docs-organization.adoc[Doc Organization]
 * xref:project-vision.adoc[Project Vision]
 * xref:capabilities.adoc[Capabilities]
-* xref:toolchain-management.adoc[Toolchain Management]
-* xref:toolchain-control-plane.adoc[Toolchain Control Plane]
+
+* Toolchain lifecycle
+** xref:toolchain-management.adoc[Toolchain Management]
+** xref:toolchain-control-plane.adoc[Toolchain Control Plane]
+** xref:general-knowledge:explanation/infrastructure/toolchain-management.adoc[Toolchain Management Pattern]
+** xref:general-knowledge:explanation/infrastructure/toolchain-control-plane.adoc[Toolchain Control Plane (detail)]
+** xref:general-knowledge:explanation/infrastructure/toolchain-framework.adoc[Toolchain Framework (TCF)]
+** xref:specifications:components/toolchain-management.adoc[TCM (spec)]
+** xref:specifications:components/ecosystem-management.adoc[Ecosystem Management (spec)]
+
 * xref:todo-roadmap.adoc[Todo & Roadmap]
 * xref:gitignore-whitelist.adoc[Gitignore Strategy]
 * xref:ai-local-library-docs.adoc[AI Local Library Docs]
@@ -12,10 +20,17 @@
 * xref:activity-log.adoc[Activity Log]
 * xref:terminal-bridge.adoc[Terminal Bridge]
 * xref:changelog.adoc[Changelog]
-* xref:general-knowledge:index.adoc[General Knowledge]
-* xref:specifications:index.adoc[Specifications]
-* xref:secrets-manager:index.adoc[Secrets Manager]
-* xref:publishing:index.adoc[Software Publishing]
-* xref:publishing:licensing.adoc[Licensing]
-* xref:upstream-contributions:index.adoc[Upstream Contributions]
 
+* xref:specifications:index.adoc[Specifications]
+include::partial$nav-specifications.adoc[]
+
+* xref:secrets-manager:index.adoc[Secrets Manager]
+include::partial$nav-secrets-manager.adoc[]
+
+* xref:publishing:index.adoc[Software Publishing]
+include::partial$nav-publishing.adoc[]
+
+* xref:upstream-contributions:index.adoc[Upstream Contributions]
+include::partial$nav-upstream-contributions.adoc[]
+
+* xref:general-knowledge:index.adoc[General Knowledge]

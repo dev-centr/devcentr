@@ -1,3 +1,0 @@
-.Upstream Contributions
-* xref:index.adoc[]
-* xref:dprint-vscode.adoc[dprint-vscode]

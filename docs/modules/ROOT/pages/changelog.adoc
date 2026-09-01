@@ -1,5 +1,11 @@
 = Changelog
 
+== 2026-09-01 -- Nav tree consolidation
+
+* Single ROOT nav tree with `include::` for specifications, secrets-manager, publishing, upstream-contributions — fixes parallel-tree sidebar swap and mis-placed Secrets Manager Diátaxis groups.
+* Toolchain lifecycle group (product pointers, general-knowledge canon, TCM + ecosystem specs).
+* Specifications nav grouped into Components / Features / Reference.
+
 == 2026-09-01 -- AOP moved to general-knowledge
 
 * xref:aspect-oriented-programming.adoc[Aspect-Oriented Programming] redirect stub — body now lives in xref:general-knowledge:explanation/architecture/aspect-oriented-programming.adoc[general-knowledge Architecture].
