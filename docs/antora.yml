@@ -1,5 +1,5 @@
 name: DevCentr
 version: ~
-title: DevCentr
+title: DevCentr App
 nav:
 - modules/ROOT/nav.adoc

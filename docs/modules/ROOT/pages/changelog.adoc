@@ -1,5 +1,9 @@
 = Changelog
 
+== 2026-09-01 -- Sidebar label DevCentr App
+
+* Component display title is **DevCentr App** in the site nav tree (`title` in `antora.yml`); component name and URL stay `DevCentr`.
+
 == 2026-09-01 -- Nav tree consolidation
 
 * Single ROOT nav tree with `include::` for specifications, secrets-manager, publishing, upstream-contributions — fixes parallel-tree sidebar swap and mis-placed Secrets Manager Diátaxis groups.
