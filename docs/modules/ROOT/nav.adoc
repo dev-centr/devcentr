@@ -1,4 +1,5 @@
 * xref:index.adoc[Dev Center]
+* xref:changelog.adoc[Changelog]
 * xref:docs-organization.adoc[Doc Organization]
 * xref:project-vision.adoc[Project Vision]
 * xref:capabilities.adoc[Capabilities]
@@ -19,7 +20,6 @@
 * xref:local-library-mods.adoc[Local Library Mods]
 * xref:activity-log.adoc[Activity Log]
 * xref:terminal-bridge.adoc[Terminal Bridge]
-* xref:changelog.adoc[Changelog]
 
 * xref:specifications:index.adoc[Specifications]
 include::partial$nav-specifications.adoc[]

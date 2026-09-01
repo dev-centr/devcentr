@@ -1,5 +1,14 @@
 = Changelog
 
+== 2026-09-01 -- Changelog nav typology + priority
+
+* Changelog moved to second slot under Dev Center (after index); `@antora-supplemental/nav-typology` also hoists changelog siblings site-wide.
+
+== 2026-09-01 -- Nav typology labels (drop dotted prefixes)
+
+* Specifications and Secrets Manager nav partials: plain unlinked parents (`Components`, `Reference`, …) instead of `.Label` dotted lines that rendered literally in the sidebar.
+* Secrets Manager: Overview and Architecture as linked siblings; removed artificial `.Overview & design` wrapper.
+
 == 2026-09-01 -- Page-level version selector proposal
 
 * New xref:specifications:features/page-level-version-selector.adoc[Page-level version selector] feature spec — inner version tracks for hub pages (e.g. UniConfig spec) without splitting every feature into its own component. Upstream Antora issue deferred; spike planned on `dev-centr/.forks/antora`.
