@@ -121,6 +121,7 @@ For profile authors, not runtime UX:
 
 * CLI `--help` / man pages → flag inventory.
 * Upstream repo docs → link targets in profile `docRef` fields.
+* Org wiki / curated watching → same `docRef` (or a future `learnRef`) so the stack browser can surface learning materials without becoming an article-first UI. Example: PostgreSQL profile → general-knowledge open-source discourse + Coding with Lewis Postgres history talk.
 * Static analysis of CLI entrypoints (pnpm, cargo, dub) → confirm subcommand names when refreshing a profile version.
 
 Ship curated profiles in DevCentr releases; run harvest in CI or on demand when bumping `profileVersion`.

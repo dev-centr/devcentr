@@ -1,5 +1,10 @@
 = Changelog
 
+== 2026-09-02 -- Licensing discourse + Postgres learn hook
+
+* xref:publishing:licensing.adoc[Licensing] — “why not perfectly OSS” links to general-knowledge ecosystem history discourse.
+* PostgreSQL interaction layout: `docRef` → open-source failures/successes page; profile notes for stack-browser ↔ wiki learning interconnection (README + Project Visualizer spec).
+
 == 2026-09-01 -- Retire duplicate Activity Log page
 
 * Removed xref:activity-log.adoc[Activity Log] from nav; page is a redirect stub. Org-wide timeline: xref:home:ROOT:activity-log.adoc[Home · Activity Log]. DevCentr shipping notes stay here.

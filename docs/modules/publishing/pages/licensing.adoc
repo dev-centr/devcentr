@@ -69,8 +69,16 @@ Live Fix and curated definitions *proprietary* when that is the product.
 
 Its substance is preserved as *CSL-1.0-BCI*, renamed into the family.
 
+== Why not “perfectly open source”?
+
+CSL is a deliberate trade against repeated industry failure modes: extraction without contribution, late license flips, and steward/commons entanglement. The history-book discourse (xkcd Dependency, Heartbleed, left-pad, WordPress governance fight, Postgres contrast case, curated videos with Drive backups) lives in general-knowledge:
+
+xref:general-knowledge:explanation/open-source/ecosystem-failures-and-successes.adoc[Open-source ecosystems: failures and successes]
+
 == See also
 
 * xref:licensing-strategy-templates.adoc[Licensing strategy templates]
+* xref:general-knowledge:explanation/open-source/ecosystem-failures-and-successes.adoc[Open-source ecosystems: failures and successes]
+* xref:general-knowledge:explanation/programming/curated-watching.adoc[Curated watching (programming)]
 * link:https://github.com/dev-centr/devcentr/blob/main/LICENSE[Root LICENSE]
 * xref:ROOT:gitignore-whitelist.adoc[Gitignore whitelist] (unrelated “whitelist”)

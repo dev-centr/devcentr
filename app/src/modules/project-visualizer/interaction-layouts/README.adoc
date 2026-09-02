@@ -13,6 +13,7 @@ One `.sdl` per tool or framework. Join keys:
 
 * `stackRef` — `project-map` stack profile name (e.g. `Next.js`, `Node.js`).
 * `id` — stable profile id for DevCentr code.
+* `docRef` — optional Antora page id (often `general-knowledge:…`) for structure-adjacent learning. The wiki stays text-first; the stack browser / Project Visualizer stays structure-first—`docRef` interconnects them without turning the canvas into an article reader. Future `learnRef` may point at curated-watching anchors explicitly; until then fold learning links into `docRef` + `summary`.
 
 **Hand-maintained starters** (not overwritten by the generator): `node`, `npm`, `pnpm`, `vite`, `next`, `solid`, `dub`, `rust`.
 

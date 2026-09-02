@@ -3,9 +3,9 @@ interactionLayout {
     id "postgres"
     name "PostgreSQL"
     stackRef "PostgreSQL"
-    profileVersion "0.1.0"
-
-    summary "RDBMS; psql; DATABASE_URL."
+    profileVersion "0.1.1"
+    docRef "general-knowledge:explanation/open-source/ecosystem-failures-and-successes.adoc"
+    summary "RDBMS; psql; DATABASE_URL. Learning: Postgres history + OSS ecosystem discourse (wiki ↔ watching)."
 
     layout zone {
         id "db"
