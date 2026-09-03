@@ -8,6 +8,15 @@ Our flagship project, **DevCentr**, is a **Development Orchestration Suite (DOS)
 
 The public category is **DOS**. A casual mental model is *Dev OS* (orchestration of the environment around development)—useful for association, not for marketing headlines. **DevOps** is one facet of the suite: CI/CD, infrastructure, and traditional ops where they sit on the path. We allude to DevOps in literature to widen that concept over time; we do not brand the whole product as a DevOps GUI.
 
+=== Provider data access (search + mirrors)
+
+Forge correspondence and other structured remote collections should not force agents to keep full private replicas only to RAG against them. DevCentr endorses:
+
+* **Provider-native search** (fuzzy today; vector/hybrid tomorrow) as a table-stakes API for data hosts.
+* **Opt-in mirror backups** that mimic the provider’s data shape and API so consumers retain queryable ownership.
+
+Near-term demonstration: personal `.issues` submission archives (bodies + media), xref:issues-browser::index.adoc[Issues Browser] forge backups, and GitHub CLI `--attach` for live media while keeping local copies. Encyclopedia: link:https://docs.devcentr.org/general-knowledge/explanation/internet-architecture/provider-search-and-mirror-backups.html[Provider search and mirror backups]. HCI face: link:https://hci-nerdz.github.io/docs/hci-nerdz/host-held-history.html[Host-held history].
+
 While traditional IDEs focus on the editor, DevCentr focuses on the **Orchestration** of the entire development lifecycle:
 
 *   **Ecosystem Management:** Author and version your entire environment—shells, toolchains, and infrastructure—as first-class citizens. For shells, we standardize on link:https://www.nushell.sh/[Nushell] across Windows, macOS, and Linux (structured pipelines; see xref:general-knowledge:explanation/infrastructure/nushell.adoc[Why We Recommend Nushell]). For toolchains, we endorse xref:general-knowledge:explanation/infrastructure/toolchain-management.adoc[Toolchain Management]: the ecosystem’s main entrypoint must own install, version pinning, health, repair, and upgrade—shipping a xref:general-knowledge:explanation/infrastructure/toolchain-control-plane.adoc[Toolchain Control Plane] rather than leaving newcomers to discover tribal version managers.

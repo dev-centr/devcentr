@@ -1,5 +1,9 @@
 = Changelog
 
+== 2026-09-02 -- Provider data access vision
+
+* xref:project-vision.adoc[Project vision] — Provider search + API-compatible mirror backups; near-term `.issues` / Issues Browser / `gh --attach` wedge.
+
 == 2026-09-02 -- Licensing discourse + Postgres learn hook
 
 * xref:publishing:licensing.adoc[Licensing] — “why not perfectly OSS” links to general-knowledge ecosystem history discourse.
