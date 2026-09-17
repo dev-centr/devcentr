@@ -84,7 +84,7 @@ Bootstrap, pin/resolve, health, repair, upgrade/rollback, surface parity.
 
 * xref:components/ecosystem-management.adoc[Ecosystem Management]
 * xref:components/toolchain-management.adoc[Toolchain Management (TCM)]
-* xref:ROOT:toolchain-management.adoc[Product pointer]
-* xref:ROOT:project-vision.adoc[Project Vision]
+* xref:devcentr:toolchain-management.adoc[Product pointer]
+* xref:devcentr:project-vision.adoc[Project Vision]
 * xref:reference/definition-files.adoc[Definition Files]
 * link:https://github.com/dev-centr/toolchain-framework[dev-centr/toolchain-framework (TCF)]

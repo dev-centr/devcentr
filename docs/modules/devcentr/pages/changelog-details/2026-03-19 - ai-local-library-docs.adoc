@@ -3,7 +3,7 @@
 * Added `scripts/refresh-local-library-docs.ps1` to clone or update local reference repos used by DevCentr AI-assisted development.
 * Added `AI-LOCAL-LIBRARY-DOCS.example.json5` as a committed template and standardized on `AI-LOCAL-LIBRARY-DOCS.local.json5` as the obvious gitignored machine-local manifest.
 * Added `.gitignore` entries for `docs/_local-library-docs/` and `AI-LOCAL-LIBRARY-DOCS.local.json5`.
-* Updated xref:ROOT:ai-local-library-docs.adoc[AI Local Library Docs] to define the layered source priority: MCP-hosted indexed docs such as Context7 first, repo-local cloned docs/source second, web search last.
+* Updated xref:devcentr:ai-local-library-docs.adoc[AI Local Library Docs] to define the layered source priority: MCP-hosted indexed docs such as Context7 first, repo-local cloned docs/source second, web search last.
 * Updated `README.adoc` and `docs/README.adoc` to instruct developers using AI tools to set up local library docs before doing dependency-sensitive work.
 * Added xref:specifications:features/ai-doc-sources-and-mcp-setup.adoc[AI Doc Sources and MCP Setup] to describe the future DevCentr feature for detecting MCP docs providers, guiding setup, and automating the local fallback.
 * Documented cross-platform dedupe guidance: prefer one clone with multiple remotes or Git reference-clone/mirror strategies over hardlinks or symlink-heavy setups.

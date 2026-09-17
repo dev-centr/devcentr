@@ -1,5 +1,5 @@
 // Insertable snippet: The Developer Tooling Knowledge Gap
-// Include with: include::ROOT:partial$tooling-knowledge-gap.adoc[]
+// Include with: include::devcentr:partial$tooling-knowledge-gap.adoc[]
 
 == Why Does This Documentation Exist?
 

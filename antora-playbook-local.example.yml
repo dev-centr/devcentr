@@ -1,13 +1,9 @@
-# Local dev playbook — copy to antora-playbook-local.yml (gitignored).
-# Uses sibling repos instead of remote URLs. Run: pnpm dlx antora antora-playbook-local.yml
-extends: ./antora-playbook.yml
-content:
-  sources:
-    - url: .
-      start_path: docs
-      branches: HEAD
-    - url: ../general-knowledge
-      branches: HEAD
-      start_path: docs
-    # Keep this source set aligned with production. Re-add toolchain-framework
-    # only after its docs/antora.yml component descriptor is published.
+# Example / pointer only.
+# Prefer the committed antora-playbook-local.yml in this repo (sibling checkouts, no extends).
+# Stock Antora does not support playbook extends — that was an experimental fork feature.
+#
+# Run:
+#   pnpm exec antora antora-playbook-local.yml
+#
+# Or for CI/production-shaped sources:
+#   pnpm exec antora antora-playbook.yml

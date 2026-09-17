@@ -21,7 +21,7 @@ dub add-local /path/to/your/patched-fork 1.2.3
 
 DUB will prioritize this directory over the online registry for version `1.2.3`. Your CI environment will remain unaffected since it doesn't have this local configuration.
 
-See xref:ROOT:dub-local-remote-paths.adoc[DUB Local vs Remote Paths] for detailed examples.
+See xref:devcentr:dub-local-remote-paths.adoc[DUB Local vs Remote Paths] for detailed examples.
 
 === Node.js (PNPM/NPM)
 Use `link` or Workspaces.

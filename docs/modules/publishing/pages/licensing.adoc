@@ -81,4 +81,4 @@ xref:general-knowledge::explanation/open-source/ecosystem-failures-and-successes
 * xref:general-knowledge::explanation/open-source/ecosystem-failures-and-successes.adoc[Open-source ecosystems: failures and successes]
 * xref:general-knowledge::explanation/programming/curated-watching.adoc[Curated watching (programming)]
 * link:https://github.com/dev-centr/devcentr/blob/main/LICENSE[Root LICENSE]
-* xref:ROOT:gitignore-whitelist.adoc[Gitignore whitelist] (unrelated “whitelist”)
+* xref:devcentr:gitignore-whitelist.adoc[Gitignore whitelist] (unrelated “whitelist”)

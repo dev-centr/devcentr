@@ -14,7 +14,7 @@ Fork: link:https://github.com/dev-centr/antora[dev-centr/antora] (`dev-centr/.fo
 
 == Problem summary
 
-Antora versions whole components. Hub components such as `DevCentr` bundle many features with independent release lines (for example xref:specifications:components/uniconfig.adoc[UniConfig spec] vs product xref:uniconfig:ROOT:index.adoc[UniConfig docs]). Readers need a version picker for an individual page or nav subtree—not only at `/component/`.
+Antora versions whole components. Hub components such as `DevCentr` bundle many features with independent release lines (for example xref:specifications:components/uniconfig.adoc[UniConfig spec] vs product xref:tools:uniconfig:index.adoc[UniConfig docs]). Readers need a version picker for an individual page or nav subtree—not only at `/component/`.
 
 Related prior art: `@antora-supplemental/unversioned-component-urls` (component-root selector only; page-level noted as future work).
 

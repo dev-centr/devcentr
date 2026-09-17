@@ -5,7 +5,7 @@ Added documentation for using local library mods (forks/overrides) across differ
 
 == Changes
 
-* Created xref:ROOT:local-library-mods.adoc[Local Library Mods] guide explaining techniques for DUB, PNPM, Python, and Go.
+* Created xref:devcentr:local-library-mods.adoc[Local Library Mods] guide explaining techniques for DUB, PNPM, Python, and Go.
 * Drafted xref:specifications:features/local-mod-management.adoc[Local Mod Management Feature] specification.
 * Updated navigation menus for both the main documentation and the specifications module.
 

@@ -8,7 +8,7 @@ Antora versions at the **component** boundary. The version picker in the referen
 
 Examples on docs.devcentr.org:
 
-* xref:specifications:components/uniconfig.adoc[UniConfig Config Panel] — integration spec in `DevCentr`; product docs in xref:uniconfig:ROOT:index.adoc[uniconfig] at v0.1.
+* xref:specifications:components/uniconfig.adoc[UniConfig Config Panel] — integration spec in `DevCentr`; product docs in xref:tools:uniconfig:index.adoc[uniconfig] at v0.1.
 * Dozens of component and feature specs under one `DevCentr` component (see xref:specifications:index.adoc[Specifications index]), each with its own maturity and release line.
 
 Today the workarounds are awkward:
@@ -113,7 +113,7 @@ Most hub pages have no track (selector hidden). Spec pages with independent rele
 == Related
 
 * xref:specifications:components/uniconfig.adoc[UniConfig Config Panel (component spec)]
-* xref:uniconfig:ROOT:reference.adoc[UniConfig reference (product versioning today)]
+* xref:tools:uniconfig:reference.adoc[UniConfig reference (product versioning today)]
 * link:https://docs.antora.org/antora/latest/component-version-descriptor/[Antora component version descriptor]
 * link:https://github.com/antora-supplemental/antora-unversioned-component-urls[`@antora-supplemental/unversioned-component-urls`] — component-root selector; page-level noted as future work
 * xref:home::publishing/antora-essential-extensions.adoc[Antora essential extensions]

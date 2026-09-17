@@ -43,7 +43,7 @@ To avoid tedious swapping between local and remote paths, the `add-local` comman
 
 == 5. Dev Center: unit-threaded fork
 
-Dev Center depends on xref:ROOT:index.adoc[dlangui], which transitively pulls in `unit-threaded`. Upstream unit-threaded triggers DUB warnings about sub-package references. A patched fork is maintained at https://github.com/dlang-supplemental/unit-threaded[dlang-supplemental/unit-threaded].
+Dev Center depends on xref:devcentr:index.adoc[dlangui], which transitively pulls in `unit-threaded`. Upstream unit-threaded triggers DUB warnings about sub-package references. A patched fork is maintained at https://github.com/dlang-supplemental/unit-threaded[dlang-supplemental/unit-threaded].
 
 To use the fork locally and silence those warnings:
 

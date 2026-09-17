@@ -1,5 +1,10 @@
-name: DevCentr
+name: platforms
+title: Platforms
 version: ~
-title: DevCentr App
+start_page: devcentr:index.adoc
 nav:
-- modules/ROOT/nav.adoc
+- modules/devcentr/nav.adoc
+- modules/publishing/nav.adoc
+- modules/secrets-manager/nav.adoc
+- modules/specifications/nav.adoc
+- modules/upstream-contributions/nav.adoc

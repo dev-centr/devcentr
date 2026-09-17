@@ -93,7 +93,7 @@ This changelog records notable changes to the DevCentr application and its docum
 * xref:specifications:components/project-visualizer.adoc[Project Visualizer] spec — Live Blueprint renderer; mental models at point of interaction; curated SDL profiles + repo extractors; root-first command routing.
 * Initial SDL catalog: `app/src/modules/project-visualizer/interaction-layouts/` — 8 hand-maintained starters plus **141** generated profiles (**149** total); source table `_catalog.tsv`, generator `_generate-from-tsv.ps1`.
 * `project-map` `~>0.1.4`: **Vite** and **pnpm workspace** stack detection profiles.
-* xref:ROOT:project-vision.adoc[Project vision] and xref:ROOT:capabilities.adoc[Capabilities] updated; xref:specifications:reference/definition-files.adoc#interaction-layout-profiles[Definition files] documents profile location.
+* xref:devcentr:project-vision.adoc[Project vision] and xref:devcentr:capabilities.adoc[Capabilities] updated; xref:specifications:reference/definition-files.adoc#interaction-layout-profiles[Definition files] documents profile location.
 
 == 2026-08-19 – Toolchain advisor: graphics rendering docs link
 
@@ -236,7 +236,7 @@ This changelog records notable changes to the DevCentr application and its docum
 * Spec: xref:specifications:components/content-create.adoc[Content Create] — repo right-click Create…, dual nav (job tree + evolution lineage), stub create.
 * SDL catalog: `app/src/modules/content_create/content-types.sdl`; loader/UI under `modules.content_create`.
 * Repository browser context menu + definition-files updated; `sdl.adoc` notes KDL relation.
-* See xref:ROOT:changelog-details/2026-08-06 - content-create.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-08-06 - content-create.adoc[Detailed changelog].
 
 == 2026-08-03 – Centr Source License family (CSL) + ANL
 
@@ -248,7 +248,7 @@ This changelog records notable changes to the DevCentr application and its docum
 
 * App: Arrangement tab on AI Config — topology canvas, layout recipes, **Add an AI tool…** guided add, persist `~/.dev-center/ai-stack-topology.json`.
 * Modules: `ai_stack_model.d`, `ai_stack_loader.d`, `ai_stack_state.d`, `topology_canvas_widget.d`, `ai_arrangement_widget.d`.
-* See xref:ROOT:changelog-details/2026-07-27 - ai-workflow-arrangement.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-07-27 - ai-workflow-arrangement.adoc[Detailed changelog].
 
 == 2026-07-27 – AI Workflow Arrangement + topologies
 
@@ -257,14 +257,14 @@ This changelog records notable changes to the DevCentr application and its docum
 * SDL: `agent_shell_registry.sdl` v0.2; **`ai_stack_domain_pack.sdl`** (concrete spine + layout-recipe refs).
 * Repository browser terminal: always-on human ops shell; attach to env host under remote arrangements.
 * Capabilities + todo-roadmap updated; companion docs in general-knowledge (Mermaid topologies).
-* See xref:ROOT:changelog-details/2026-07-27 - ai-workflow-arrangement.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-07-27 - ai-workflow-arrangement.adoc[Detailed changelog].
 
 == 2026-07-27 – Agent shell registry
 
 * SDL catalog: `app/src/modules/services/agent_shell_registry.sdl` — standalone shells (incl. LM Studio Bionic), fleet UIs, runtimes, inference hosts, interconnects, hardware postures.
 * Spec: xref:specifications:components/agent-shell-registry.adoc[Agent Shell Registry]; definition-files updated.
 * Companion: general-knowledge agent control planes explanation.
-* See xref:ROOT:changelog-details/2026-07-27 - agent-shell-registry.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-07-27 - agent-shell-registry.adoc[Detailed changelog].
 
 == 2026-07-26 – Shell environment refresh (terminal implementation)
 
@@ -272,35 +272,35 @@ This changelog records notable changes to the DevCentr application and its docum
 * App: repository terminal env chrome (health light, notice, command preview, Auto-run checkbox), toolbar Refresh, session commands run via detected shell.
 * Settings: `ui-settings.json` keys `envRefreshAutoRun`, `terminalShell` (Appearance dialog); merge-safe save.
 * Spec + capabilities remain the product contract; companion docs in general-knowledge / OpenShellOrg shell-architecture.
-* See xref:ROOT:changelog-details/2026-07-26 - shell-env-refresh.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-07-26 - shell-env-refresh.adoc[Detailed changelog].
 
 == 2026-07-26 – repo-get via DUB registry
 
 * Confirmed https://code.dlang.org/packages/repo-get[`repo-get` 0.2.1] on the DUB registry (GitHub update webhook).
-* `equivalence-engine` now depends on `~>0.2.1` instead of a git commit pin; docs table in xref:ROOT:dub-local-remote-paths.adoc[DUB Local vs Remote Paths] updated.
+* `equivalence-engine` now depends on `~>0.2.1` instead of a git commit pin; docs table in xref:devcentr:dub-local-remote-paths.adoc[DUB Local vs Remote Paths] updated.
 
 == 2026-07-26 – Align arsd-official with dlangui (~>11.5.3)
 
 * Bumped `app/dub.json` / selections from `arsd-official` 10.9.10 to **11.5.3** to match dlangui’s `~>11.5.3` requirement (ends the “Selected package does not match” DUB warning).
 * Removed machine-local `dub add-local` for `.forks/arsd` (10.9.10 patch fork); upstream 11+ already has the `extern(C) in` fix.
 * Deleted stale `%LOCALAPPDATA%\dub\packages\local-overrides.json` (`repo-get` → missing path), which triggered the deprecated-overrides warning.
-* See xref:ROOT:changelog-details/2026-07-26 - arsd-official-11.5.3.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-07-26 - arsd-official-11.5.3.adoc[Detailed changelog].
 
 == 2026-07-26 – Shell environment refresh (terminal spec)
 
 * Expanded xref:specifications:components/repository-browser-terminal.adoc[Repository Browser Terminal]: env chrome outside the shell canvas (health light, notice, command preview), monitor drift, preview vs inject-and-run (`envRefresh.autoRun`), shell-aware recipes (Nushell first), prefer OpenShellOrg `env-refresh` / shell-host when present.
 * Capabilities note under Environment Orchestration.
 * Companion: general-knowledge xref:general-knowledge::explanation/infrastructure/shell-env-refresh.adoc[Shell Environment Refresh]; OpenShellOrg shell-architecture plan for `env-refresh` + `shell-host`.
-* See xref:ROOT:changelog-details/2026-07-26 - shell-env-refresh.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-07-26 - shell-env-refresh.adoc[Detailed changelog].
 
 == 2026-07-24 – Toolchain Management vocabulary
 
-* Product pointers: xref:ROOT:toolchain-management.adoc[Toolchain Management] + retargeted xref:ROOT:toolchain-control-plane.adoc[Control Plane].
+* Product pointers: xref:devcentr:toolchain-management.adoc[Toolchain Management] + retargeted xref:devcentr:toolchain-control-plane.adoc[Control Plane].
 * Spec components: xref:specifications:components/toolchain-management.adoc[Toolchain Management (TCM)] and xref:specifications:components/ecosystem-management.adoc[Ecosystem Management] (protocol + advisories).
 * Vision and definition-files xrefs point at the Pattern page; Flutter advisory Learn more → `toolchain-management.html`.
 * TCF kit repo: link:https://github.com/dev-centr/toolchain-framework[`dev-centr/toolchain-framework`] (schemas, validators, CI).
 * Companion: general-knowledge vocabulary lock-in (xref:general-knowledge::changelog.adoc[Changelog]).
-* See xref:ROOT:changelog-details/2026-07-24 - toolchain-management-vocabulary.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-07-24 - toolchain-management-vocabulary.adoc[Detailed changelog].
 
 == 2026-07-24 – Toolchain Control Plane and Flutter ecosystem module
 
@@ -308,7 +308,7 @@ This changelog records notable changes to the DevCentr application and its docum
 * Spec: xref:specifications:components/ecosystem-management.adoc[Ecosystem Management]; definition files gain `unifiedControlPlane` metadata.
 * App: reusable `AdvisoryBanner`; `modules.ecosystems` loader/panel; **Flutter** home/sidebar page with advisory and community bridge tools (`fvm`, `puro`, `mise`).
 * Language SDL: `languages/flutter.sdl`; `languages/node.sdl` includes control-plane metadata.
-* See xref:ROOT:changelog-details/2026-07-24 - toolchain-control-plane.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-07-24 - toolchain-control-plane.adoc[Detailed changelog].
 * Docs sibling: general-knowledge Toolchain Control Plane + Flutter setup (xref:general-knowledge::changelog.adoc[Changelog]).
 
 == 2026-07-24 – WSL Manager page
@@ -316,7 +316,7 @@ This changelog records notable changes to the DevCentr application and its docum
 * Added sidebar/home **WSL** page: list distros (`wsl -l -v`), set default, educational blurbs from `distro-guide.sdl`, and **Open WSL Settings** (official Microsoft GUI for `.wslconfig`).
 * Links to general-knowledge comparison + setup how-to and Microsoft Learn.
 * Spec: xref:specifications:components/wsl-manager.adoc[WSL Manager].
-* See xref:ROOT:changelog-details/2026-07-24 - wsl-manager.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-07-24 - wsl-manager.adoc[Detailed changelog].
 * Docs sibling: general-knowledge 2026-07-24 WSL distro comparison (xref:general-knowledge::changelog.adoc[Changelog]).
 
 == 2026-07-22 – Appearance: Cascadia Mono / JetBrains Mono
@@ -334,34 +334,34 @@ This changelog records notable changes to the DevCentr application and its docum
 
 * Added xref:specifications:features/dynamic-agent-preamble.adoc[Dynamic Agent Preamble] specification.
 * Defines a preprocessor for RAG-based instruction injection and modular `AGENTS.md` support to reduce model context overhead and improve relevancy.
-* See xref:ROOT:changelog-details/2026-03-27 - dynamic-agent-preamble.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-03-27 - dynamic-agent-preamble.adoc[Detailed changelog].
 
 == 2026-03-21 – Local library mods and specification
 
-* Added xref:ROOT:local-library-mods.adoc[Local Library Mods] guide explaining how to use forked libraries (DUB, PNPM, Python, Go) without breaking CI/CD.
+* Added xref:devcentr:local-library-mods.adoc[Local Library Mods] guide explaining how to use forked libraries (DUB, PNPM, Python, Go) without breaking CI/CD.
 * Drafted xref:specifications:features/local-mod-management.adoc[Local Mod Management] specification for UI-based mod registration and project badges.
-* See xref:ROOT:changelog-details/2026-03-21 - local-library-mods-specs.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-03-21 - local-library-mods-specs.adoc[Detailed changelog].
 
 == 2026-03-21 – Automatic AI model routing specification
 
 * Added xref:specifications:features/better-automatic-ai-routing.adoc[Automatic AI Model Routing] under Specifications (features): routing profiles, task categories, and vendor-facing proposal for long-running sessions.
 * Fixed Specifications nav xref to xref:specifications:templates-schema.adoc[Templates Repository Schema] (was `pages/templates-schema.adoc`).
-* See xref:ROOT:changelog-details/2026-03-21 - better-automatic-ai-routing-design.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-03-21 - better-automatic-ai-routing-design.adoc[Detailed changelog].
 
 == 2026-03-19 – DUB local vs remote path management
 
-* Added xref:ROOT:dub-local-remote-paths.adoc[DUB Local vs Remote Paths] documenting how to manage build specifications in `dub.json` without manually swapping between local and remote paths.
+* Added xref:devcentr:dub-local-remote-paths.adoc[DUB Local vs Remote Paths] documenting how to manage build specifications in `dub.json` without manually swapping between local and remote paths.
 * Covers `dub.selections.json`, `dub add-local`, environment variable overrides, and git submodules for persistent patches.
 * Forked unit-threaded to dlang-supplemental; fixed sub-package DUB warnings; wired in via `dub add-local`; submitted upstream issue #329 and PR #330.
-* See xref:ROOT:changelog-details/2026-03-19 - dub-local-remote-paths.adoc[Detailed changelog].
-* See xref:ROOT:changelog-details/2026-03-19 - unit-threaded-fork-upstream-contrib.adoc[unit-threaded fork and upstream contrib].
+* See xref:devcentr:changelog-details/2026-03-19 - dub-local-remote-paths.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-03-19 - unit-threaded-fork-upstream-contrib.adoc[unit-threaded fork and upstream contrib].
 
 == 2026-03-19 – arsd-official extern(C) deprecation fix
 
 * Forked arsd into dev-centr, fixed the `in` parameter deprecation in `nsvg__cmpEdge` for arsd-official 10.9.10 (svg.d).
 * Added `scripts/patch-arsd-svg-deprecation.ps1` to re-apply the patch to the dub cache when needed.
-* See xref:ROOT:changelog-details/2026-03-19 - arsd-extern-in-deprecation-fix.adoc[Detailed changelog].
-* See xref:ROOT:changelog-details/2026-03-19 - arsd-extern-in-deprecation-fix.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-03-19 - arsd-extern-in-deprecation-fix.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-03-19 - arsd-extern-in-deprecation-fix.adoc[Detailed changelog].
 
 == 2026-03-19 – General Knowledge Extraction
 
@@ -369,7 +369,7 @@ This changelog records notable changes to the DevCentr application and its docum
 * Removed the `knowledge-base` module from devcentr. DevCentr docs are now product-focused: ROOT, specifications, secrets-manager, publishing, upstream-contributions.
 * General Knowledge holds Diátaxis-organized tutorials, how-tos, reference, and explanations (SSH keys, Git management, Windows EOL, workspace organization, package registries, etc.).
 * Updated all xrefs and app code to use `general-knowledge` component. Local playbooks use sibling path `../general-knowledge` (no remote URLs); CI playbooks use the GitHub URL.
-* See xref:ROOT:changelog-details/2026-03-19 - general-knowledge-extraction.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-03-19 - general-knowledge-extraction.adoc[Detailed changelog].
 
 == 2026-03-19 – AI Local Library Docs
 
@@ -378,13 +378,13 @@ This changelog records notable changes to the DevCentr application and its docum
 * Documented the preferred layered strategy for AI dependency docs: MCP-hosted indexed docs such as Context7 first, repo-local cloned docs second, and web search last. Added a DevCentr feature spec for MCP setup and local fallback automation.
 * Added a Context7 client profile registry and new specs for the global AI Config interface, Context7/skills setup flows, and the integrated repository-browser terminal.
 * Implemented a first working `AI Config` dialog, a repo-browser `Terminal` tab, and a small `std.logger` file logger wrapper to make runtime debugging less blind.
-* See xref:ROOT:changelog-details/2026-03-19 - ai-local-library-docs.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-03-19 - ai-local-library-docs.adoc[Detailed changelog].
 
 == 2026-03-18 – Organization Profile and Gitignore
 
 * Organization profile feature in repository browser: when selecting an owner/org in the project tree, the side-panel shows buttons to open public/private profile pages on GitHub/GitLab/Gitea, open profile repos in the browser, and highlight local profile repos in the tree.
 * Provider-specific org profile config in `app/src/modules/vcs/profiles.json5` (repo names, README paths, URL formats).
-* See xref:ROOT:changelog-details/2026-03-18 - org-profile-feature.adoc[Org Profile Feature] and xref:ROOT:changelog-details/2026-03-18 - gitignore-templates-and-eol.adoc[Gitignore details].
+* See xref:devcentr:changelog-details/2026-03-18 - org-profile-feature.adoc[Org Profile Feature] and xref:devcentr:changelog-details/2026-03-18 - gitignore-templates-and-eol.adoc[Gitignore details].
 
 == 2026-03-18 – Gitignore Templates, EOL, and Templates Schema
 
@@ -396,51 +396,51 @@ This changelog records notable changes to the DevCentr application and its docum
 * Defined xref:specifications:templates-schema.adoc[Templates Schema]: version folders per ecosystem, `_base` (preference-agnostic), `_preferences` (team/tool-specific).
 * Per-repo settings: documented `gitignore.suppressMissing` for suppressing template comparison warnings.
 * Gitignore Viewer implemented: reusable minimap, technology tree, template comparison with DevCentr/GitHub/Local tabs, missing-item strikethrough (red), Suppress button storing in `.devcentr.sdl`, side-panel integration via hallmark toolbar.
-* See xref:ROOT:changelog-details/2026-03-18 - gitignore-templates-and-eol.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-03-18 - gitignore-templates-and-eol.adoc[Detailed changelog].
 
 == 2026-03-17 – Winget Registration Documentation
 
 * Added comprehensive guides for manual and automated Winget app registration, including `wingetcreate` usage, GitHub PAT requirements, and Windows-runner workarounds for Linux-based CI/CD pipelines.
 * Integrated in-app Winget support module in `VersionControlWidget`, providing direct links to documentation and local `wingetcreate` availability checks.
-* See xref:ROOT:changelog-details/2026-03-17 - winget-registration-docs.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-03-17 - winget-registration-docs.adoc[Detailed changelog].
 
 == 2026-03-14 – AI Providers, Changelog Generation, and Repo Hallmarks
 
 * Added AI provider API key workflows, integrated a git-diff based changelog generator service, and implemented a compound-button hallmark toolbar to access standard repository roots and multiple IDE forks automatically.
-* See xref:ROOT:changelog-details/2026-03-14 - ai-providers-and-repo-hallmarks.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-03-14 - ai-providers-and-repo-hallmarks.adoc[Detailed changelog].
 
 == 2026-03-14 – Roadmap, Extensions & GraphRAG
 
 * Outlined vision and specifications for AI-audited extension registries, local module streaming from Git guest repos, and standalone GraphRAG client support.
-* See xref:ROOT:changelog-details/2026-03-14 - roadmap-extensions-graphrag.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-03-14 - roadmap-extensions-graphrag.adoc[Detailed changelog].
 
 == 2026-03-12 – Vercel deployment and build asymmetry documentation
 
 * Standardized PNPM 10 and documented the asymmetric build strategy for Vercel monorepo deployments.
-* See xref:ROOT:changelog-details/2026-03-12 - vercel-deployment-asymmetry.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-03-12 - vercel-deployment-asymmetry.adoc[Detailed changelog].
 
 == 2026-03-12 – Repository browser tools and diff stats
 
 * Added specs and initial implementation for repository tools integration, diff-stats-as-dirty indicator, and reorganization/transfer workflows.
-* See xref:ROOT:changelog-details/2026-03-12 - repository-browser-tools-and-diff-stats.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-03-12 - repository-browser-tools-and-diff-stats.adoc[Detailed changelog].
 
 == 2026-03-05 – Git management and workspace organization docs
 
 * Documented and refined workspace organization schema and Git management guidance.
-* See xref:ROOT:changelog-details/2026-03-05 - git-management-and-workspace-org.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-03-05 - git-management-and-workspace-org.adoc[Detailed changelog].
 
 == 2026-02-15 – Workspace organization and core docs
 
 * Added workspace organization schema and core project/legal docs.
-* See xref:ROOT:changelog-details/2026-02-15 - workspace-organization-and-core-docs.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-02-15 - workspace-organization-and-core-docs.adoc[Detailed changelog].
 
 == 2026-01-26 – Diátaxis and docs refactor
 
 * Reorganized docs to follow the Diátaxis model.
-* See xref:ROOT:changelog-details/2026-01-26 - diataxis-and-docs-refactor.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2026-01-26 - diataxis-and-docs-refactor.adoc[Detailed changelog].
 
 == 2025-12-09 – Antora documentation structure and spec modules
 
 * Introduced Antora-based docs structure and initial specification modules.
-* See xref:ROOT:changelog-details/2025-12-09 - antora-docs-and-spec-modules.adoc[Detailed changelog].
+* See xref:devcentr:changelog-details/2025-12-09 - antora-docs-and-spec-modules.adoc[Detailed changelog].
 

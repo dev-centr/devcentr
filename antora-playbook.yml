@@ -1,9 +1,9 @@
-# Root Strategy playbook for local and CI doc build (single-repo).
-# See docs/modules/publishing/pages/antora-deployment.adoc
+# Root Strategy playbook for local and CI doc build.
+# Includes sibling components that DevCentr pages xref into.
 site:
   title: DevCentr
   url: https://devcentr.org
-  start_page: DevCentr:ROOT:index.adoc
+  start_page: DevCentr::index.adoc
 content:
   sources:
     - url: .
@@ -12,13 +12,70 @@ content:
     - url: https://github.com/dev-centr/general-knowledge.git
       branches: HEAD
       start_path: docs
-    # Re-add toolchain-framework only after its docs/antora.yml component
-    # descriptor is published on the referenced branch.
+    - url: https://github.com/dev-centr/docs.git
+      branches: HEAD
+      start_path: docs
+    - url: https://github.com/dev-centr/business-bootstrap.git
+      branches: HEAD
+      start_path: docs
+    - url: https://github.com/dev-centr/agent-rules.git
+      branches: HEAD
+      start_path: docs
+    - url: https://github.com/dev-centr/toolchain-framework.git
+      branches: HEAD
+      start_path: docs
+    - url: https://github.com/dev-centr/uniconfig.git
+      branches: HEAD
+      start_path: docs
+    - url: https://github.com/dev-centr/uniprovider.git
+      branches: HEAD
+      start_path: docs
+    - url: https://github.com/dev-centr/issues-browser.git
+      branches: HEAD
+      start_path: docs
+    - url: https://github.com/dev-centr/scriptbook.git
+      branches: HEAD
+      start_path: docs
+    - url: https://github.com/dev-centr/equivalence-engine.git
+      branches: HEAD
+      start_path: docs
+    - url: https://github.com/dev-centr/ibex-install-builder.git
+      branches: HEAD
+      start_path: docs
+    - url: https://github.com/dev-centr/msi-generator.git
+      branches: HEAD
+      start_path: docs
+    - url: https://github.com/dev-centr/fixnow-dev.git
+      branches: HEAD
+      start_path: docs
+    - url: https://github.com/dev-centr/devcentr.org.git
+      branches: HEAD
+      start_path: docs
+    - url: https://github.com/dev-centr/rules-manager.git
+      branches: HEAD
+      start_path: docs
+    - url: https://github.com/dev-centr/repo-drive.git
+      branches: HEAD
+      start_path: docs
+    - url: https://github.com/dev-centr/switchyard.git
+      branches: HEAD
+      start_path: docs
+    - url: https://github.com/dev-centr/templates.git
+      branches: HEAD
+      start_path: docs
+    - url: https://github.com/dev-centr/ver.git
+      branches: HEAD
+      start_path: docs
+    - url: https://github.com/dev-centr/agentic-email-integration.git
+      branches: HEAD
+      start_path: docs
+    - url: https://github.com/dev-centr/themed-svg-studio.git
+      branches: HEAD
+      start_path: docs
 ui:
   bundle:
     url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
     snapshot: true
-
 antora:
   extensions:
     - require: '@antora/lunr-extension'

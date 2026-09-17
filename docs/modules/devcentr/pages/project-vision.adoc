@@ -15,7 +15,7 @@ Forge correspondence and other structured remote collections should not force ag
 * **Provider-native search** (fuzzy today; vector/hybrid tomorrow) as a table-stakes API for data hosts.
 * **Opt-in mirror backups** that mimic the provider’s data shape and API so consumers retain queryable ownership.
 
-Near-term demonstration: personal `.issues` submission archives (bodies + media), xref:issues-browser::index.adoc[Issues Browser] forge backups, and GitHub CLI `--attach` for live media while keeping local copies. Encyclopedia: link:https://docs.devcentr.org/general-knowledge/explanation/internet-architecture/provider-search-and-mirror-backups.html[Provider search and mirror backups]. HCI face: link:https://hci-nerdz.github.io/docs/hci-nerdz/host-held-history.html[Host-held history].
+Near-term demonstration: personal `.issues` submission archives (bodies + media), xref:tools:issues-browser:index.adoc[Issues Browser] forge backups, and GitHub CLI `--attach` for live media while keeping local copies. Encyclopedia: link:https://docs.devcentr.org/general-knowledge/explanation/internet-architecture/provider-search-and-mirror-backups.html[Provider search and mirror backups]. HCI face: link:https://hci-nerdz.github.io/docs/hci-nerdz/host-held-history.html[Host-held history].
 
 While traditional IDEs focus on the editor, DevCentr focuses on the **Orchestration** of the entire development lifecycle:
 

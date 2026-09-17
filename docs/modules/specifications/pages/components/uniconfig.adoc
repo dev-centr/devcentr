@@ -8,4 +8,4 @@ When `uniconfig` is on PATH, the repository "Open With" editor menu offers **Uni
 
 Config-like names: `.json`, `.yml`, `.yaml`, `.toml`, `.ini`, `.cfg`, `.sdl`, `.tfvars`, `.gitconfig`, `dub.sdl`, `.editorconfig`.
 
-Outside DevCentr, people run the same binary. Docs: xref:uniconfig:ROOT:index.adoc[UniConfig].
+Outside DevCentr, people run the same binary. Docs: xref:tools:uniconfig:index.adoc[UniConfig].

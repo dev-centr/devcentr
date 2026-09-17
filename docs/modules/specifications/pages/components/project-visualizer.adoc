@@ -43,7 +43,7 @@ The visualizer is the **cognitive projection** for *project internals* — analo
 
 == Two graphs (required)
 
-xref:ROOT:project-vision.adoc[Project vision] already requires both:
+xref:devcentr:project-vision.adoc[Project vision] already requires both:
 
 * **Dependency tree** — what depends on what (npm packages, Cargo crates, Dub packages, …).
 * **Control tree** — what *orchestrates* or *owns the workflow* over something it depends on (Next.js over React; pnpm over per-package `package.json` scripts in a workspace).

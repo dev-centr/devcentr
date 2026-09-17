@@ -15,6 +15,6 @@
 
 1. Set `"arsd-official": "~>11.5.3"` in `app/dub.json` and ran `dub upgrade` (root + `app/`) so selections record `11.5.3`.
 2. Ran `dub remove-local` on `Z:\code\github.com\dev-centr\.forks\arsd\` (fork tree can remain on disk unused).
-3. Deleted the stale `local-overrides.json`. Prefer `dub add-local` for any future local package registration (see xref:ROOT:dub-local-remote-paths.adoc[DUB Local vs Remote Paths]).
+3. Deleted the stale `local-overrides.json`. Prefer `dub add-local` for any future local package registration (see xref:devcentr:dub-local-remote-paths.adoc[DUB Local vs Remote Paths]).
 
 The March 2026 arsd fork / patch script remain historical documentation for the 10.9.x era; they are not required for current builds.

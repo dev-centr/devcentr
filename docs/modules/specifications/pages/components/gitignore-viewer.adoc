@@ -45,4 +45,4 @@ The model parses gitignore comments and patterns to infer technologies (e.g. Nod
 
 * xref:general-knowledge::reference/gitignore-template-sources.adoc[Gitignore Template Sources] — DevCentr vs GitHub vs local
 * xref:per-repo-settings.adoc[Per-Repository Settings] — `gitignore.suppressMissing` format
-* xref:ROOT:gitignore-whitelist.adoc[Gitignore Whitelist Strategy] — Asterisk strategy
+* xref:devcentr:gitignore-whitelist.adoc[Gitignore Whitelist Strategy] — Asterisk strategy

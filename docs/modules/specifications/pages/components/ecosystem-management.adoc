@@ -114,6 +114,6 @@ pageFlutter
 * xref:components/installation-workflow.adoc[Installation Workflow]
 * xref:components/toolchain-advisor.adoc[Stack Advisor]
 * xref:components/toolchain-management.adoc[Toolchain Management (TCM)]
-* xref:ROOT:project-vision.adoc[Project Vision]
-* xref:ROOT:toolchain-management.adoc[Toolchain Management (product pointer)]
+* xref:devcentr:project-vision.adoc[Project Vision]
+* xref:devcentr:toolchain-management.adoc[Toolchain Management (product pointer)]
 * link:https://github.com/dev-centr/toolchain-framework[dev-centr/toolchain-framework (TCF)]
