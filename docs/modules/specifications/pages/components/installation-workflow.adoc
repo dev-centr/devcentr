@@ -43,7 +43,7 @@ Behavior depends on context:
 * **Org + owner:** IaC flow is **org-level** infra repo (create/link). Prefer **Pulumi** from `infra-template` when the org follows Business Bootstrap; still offer **OpenTofu** as a compatible alternative. Surface a separate **Org email / messaging bootstrap** entry that opens Business Bootstrap docs (human ZeptoMail vs product Resend/Customer.io — never one wizard that picks a single ESP for everything).
 * **Org + repo:** IaC flow is **per-project** and must present the decision flow below (and orphaned/registration when relevant).
 
-During any IaC flow, a **Docs** button opens the DevCentr documentation section for Infrastructure as Code (the xref:general-knowledge:explanation/infrastructure/iac.adoc[Infrastructure as Code (IaC)] page). That page explains OpenTofu, **personal use (repo-level)** vs **organization use** (org-level, per-project, delegation patterns).
+During any IaC flow, a **Docs** button opens the DevCentr documentation section for Infrastructure as Code (the xref:general-knowledge::explanation/infrastructure/iac.adoc[Infrastructure as Code (IaC)] page). That page explains OpenTofu, **personal use (repo-level)** vs **organization use** (org-level, per-project, delegation patterns).
 
 == Decision flow: installing Infra into a repository
 
@@ -71,8 +71,8 @@ When the user attempts to **install or add IaC definitions to a repository**, th
 
 At the **organization** owner node, offer a guided add (wizard shorthand) for **email and messaging services**. This is documentation- and checklist-driven in the first version (no mandatory cloud API writes):
 
-* Present the four ITIL-shaped services separately: Email Inbound, Email Outbound Human, Email Transactional App, Marketing Journeys (see xref:business-bootstrap:explanation/itil-email-services.adoc[ITIL-shaped email services]).
-* Deep-link Docs to xref:business-bootstrap:explanation/email-decision-matrix.adoc[Email decision matrix] and xref:business-bootstrap:explanation/human-vs-product-messaging.adoc[Human vs product messaging].
+* Present the four ITIL-shaped services separately: Email Inbound, Email Outbound Human, Email Transactional App, Marketing Journeys (see xref:business-bootstrap::explanation/itil-email-services.adoc[ITIL-shaped email services]).
+* Deep-link Docs to xref:business-bootstrap::explanation/email-decision-matrix.adoc[Email decision matrix] and xref:business-bootstrap::explanation/human-vs-product-messaging.adoc[Human vs product messaging].
 * Never recommend Resend for human Gmail send-as; never recommend Brevo as the default for product journey orgs.
 * When DNS changes are needed, point operators at the org `infra` Pulumi stack (create it first if missing).
 
@@ -91,7 +91,7 @@ When DevCentr detects that:
 
 it should **mark** that project IaC as potentially orphaned (e.g. in the Infra discovery view or repo browser) and **offer assistance** to register with the central repo.
 
-Registration assistance can follow the patterns described in the xref:general-knowledge:explanation/infrastructure/iac.adoc[Infrastructure as Code (IaC)] doc (organization use):
+Registration assistance can follow the patterns described in the xref:general-knowledge::explanation/infrastructure/iac.adoc[Infrastructure as Code (IaC)] doc (organization use):
 
 * **Registration via metadata:** Add or edit a registration file in the central repo (e.g. `services/<project>.yaml`) with repo URL, environments, required modules, outputs, ownership. The central repo never holds the project’s actual `.tofu` files.
 * **Thin wrapper module:** Expose a small public module from this repo that the central repo can import; keep full IaC in the project.
@@ -111,8 +111,8 @@ This split keeps file operations clear: service definitions stay in one place; f
 
 == Related
 
-* xref:iac-discovery.adoc[IaC Discovery] — how IaC is discovered and mapped in repos.
-* xref:org-setup-wizard.adoc[Org setup wizard] — org-owner bootstrap for infra + email lanes.
-* xref:general-knowledge:explanation/infrastructure/iac.adoc[Infrastructure as Code (IaC)] — personal vs organization use (Docs button target).
-* xref:business-bootstrap:explanation/org-infra-repo-pattern.adoc[Org infra repo pattern]
-* xref:business-bootstrap:explanation/email-decision-matrix.adoc[Email decision matrix]
+* xref:components/iac-discovery.adoc[IaC Discovery] — how IaC is discovered and mapped in repos.
+* xref:components/org-setup-wizard.adoc[Org setup wizard] — org-owner bootstrap for infra + email lanes.
+* xref:general-knowledge::explanation/infrastructure/iac.adoc[Infrastructure as Code (IaC)] — personal vs organization use (Docs button target).
+* xref:business-bootstrap::explanation/org-infra-repo-pattern.adoc[Org infra repo pattern]
+* xref:business-bootstrap::explanation/email-decision-matrix.adoc[Email decision matrix]

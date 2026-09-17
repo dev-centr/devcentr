@@ -90,6 +90,6 @@ pageWsl
 
 == Related
 
-* General-knowledge: xref:general-knowledge:explanation/infrastructure/wsl-distro-comparison.adoc[Choosing a WSL Linux Distro], xref:general-knowledge:how-to/wsl-setup.adoc[WSL setup]
+* General-knowledge: xref:general-knowledge::explanation/infrastructure/wsl-distro-comparison.adoc[Choosing a WSL Linux Distro], xref:general-knowledge::how-to/wsl-setup.adoc[WSL setup]
 * xref:components/toolchain-advisor.adoc[Stack Advisor] (WSL as a host option)
 * Secrets Manager: xref:secrets-manager:explanation/connecting-to-wsl.adoc[Connecting to WSL]

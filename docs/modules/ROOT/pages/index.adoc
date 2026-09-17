@@ -59,4 +59,4 @@ Related Products:
 
 Knowledge-base:
 
-* xref:general-knowledge:index.adoc[General Knowledge] — Tutorials, how-tos, reference, and explanations of common development tools and practices (Diátaxis-organized)
+* xref:general-knowledge::index.adoc[General Knowledge] — Tutorials, how-tos, reference, and explanations of common development tools and practices (Diátaxis-organized)

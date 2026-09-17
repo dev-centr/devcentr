@@ -4,4 +4,4 @@
 
 This page moved to **general-knowledge** (product-agnostic developer reference).
 
-Go to xref:general-knowledge:explanation/architecture/aspect-oriented-programming.adoc[Aspect-Oriented Programming (AOP)].
+Go to xref:general-knowledge::explanation/architecture/aspect-oriented-programming.adoc[Aspect-Oriented Programming (AOP)].

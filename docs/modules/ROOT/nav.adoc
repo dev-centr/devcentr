@@ -7,9 +7,9 @@
 * Toolchain lifecycle
 ** xref:toolchain-management.adoc[Toolchain Management]
 ** xref:toolchain-control-plane.adoc[Toolchain Control Plane]
-** xref:general-knowledge:explanation/infrastructure/toolchain-management.adoc[Toolchain Management Pattern]
-** xref:general-knowledge:explanation/infrastructure/toolchain-control-plane.adoc[Toolchain Control Plane (detail)]
-** xref:general-knowledge:explanation/infrastructure/toolchain-framework.adoc[Toolchain Framework (TCF)]
+** xref:general-knowledge::explanation/infrastructure/toolchain-management.adoc[Toolchain Management Pattern]
+** xref:general-knowledge::explanation/infrastructure/toolchain-control-plane.adoc[Toolchain Control Plane (detail)]
+** xref:general-knowledge::explanation/infrastructure/toolchain-framework.adoc[Toolchain Framework (TCF)]
 ** xref:specifications:components/toolchain-management.adoc[TCM (spec)]
 ** xref:specifications:components/ecosystem-management.adoc[Ecosystem Management (spec)]
 
@@ -32,4 +32,4 @@ include::partial$nav-publishing.adoc[]
 * xref:upstream-contributions:index.adoc[Upstream Contributions]
 include::partial$nav-upstream-contributions.adoc[]
 
-* xref:general-knowledge:index.adoc[General Knowledge]
+* xref:general-knowledge::index.adoc[General Knowledge]

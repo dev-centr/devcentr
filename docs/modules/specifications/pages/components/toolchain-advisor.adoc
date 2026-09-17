@@ -264,6 +264,6 @@ Use the same dark palette as `main.sdl`:
 
 == Related
 
-* xref:installation-workflow.adoc[Installation Workflow] — installing runtimes after a toolchain is chosen.
+* xref:components/installation-workflow.adoc[Installation Workflow] — installing runtimes after a toolchain is chosen.
 * xref:reference/definition-files.adoc[Definition Files] — service/language definitions for install offers.
-* Secrets Manager xref:devcentr:secrets-manager:explanation/connecting-to-wsl.adoc[Connecting to WSL] — paths and bridges when WSL is part of the workflow.
+* Secrets Manager xref:DevCentr:secrets-manager:explanation/connecting-to-wsl.adoc[Connecting to WSL] — paths and bridges when WSL is part of the workflow.

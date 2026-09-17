@@ -2,11 +2,11 @@
 :navtitle: AI Workflow Arrangement
 :description: AI-stack instance of the Role Topology Composer — blank topology canvas as landing, guided add for tools, layout recipes for common placements.
 
-This is the **`ai-stack` domain pack** of the generic xref:role-topology-composer.adoc[Role Topology Composer]. Prefer generic composer terms in shared code; this page is the AI-facing product behavior.
+This is the **`ai-stack` domain pack** of the generic xref:components/role-topology-composer.adoc[Role Topology Composer]. Prefer generic composer terms in shared code; this page is the AI-facing product behavior.
 
 **Charter:** cast only the **layered** AI stack (UI / runtime / env / inference / human shell) into hierarchy so users get clean memory bins — then connect orthogonal ideas (MCP, skills, providers) later. Not a map of every relationship in the AI ecosystem.
 
-Companion explanation (arrangement diagrams): xref:general-knowledge:explanation/infrastructure/agent-control-planes.adoc[Agent control planes and compute topologies].
+Companion explanation (arrangement diagrams): xref:general-knowledge::explanation/infrastructure/agent-control-planes.adoc[Agent control planes and compute topologies].
 
 Data:
 
@@ -135,7 +135,7 @@ Recipes **suggest**; users then add/remove alternatives on the canvas.
 
 == Relation to other modules
 
-* xref:role-topology-composer.adoc[Role Topology Composer] — generic system
-* xref:ai-config-interface.adoc[AI Config Interface] — Providers / MCP / Skills; Arrangement opens this pack’s canvas
-* xref:agent-shell-registry.adoc[Agent Shell Registry] — products + arrangements as layout recipes
-* xref:repository-browser-terminal.adoc[Repository Browser Terminal] — fixed `human-shell` product
+* xref:components/role-topology-composer.adoc[Role Topology Composer] — generic system
+* xref:components/ai-config-interface.adoc[AI Config Interface] — Providers / MCP / Skills; Arrangement opens this pack’s canvas
+* xref:components/agent-shell-registry.adoc[Agent Shell Registry] — products + arrangements as layout recipes
+* xref:components/repository-browser-terminal.adoc[Repository Browser Terminal] — fixed `human-shell` product

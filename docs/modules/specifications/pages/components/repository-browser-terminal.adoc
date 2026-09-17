@@ -4,7 +4,7 @@ DevCentr should include an integrated terminal in the repository browser so user
 
 This terminal is not meant to replace full terminal apps. It is a repo-scoped command workspace with better history visibility than a plain black console pane.
 
-For the industry-wide stale-PATH problem, VS Code history, and OpenShellOrg product ownership, see xref:general-knowledge:explanation/infrastructure/shell-env-refresh.adoc[Shell Environment Refresh].
+For the industry-wide stale-PATH problem, VS Code history, and OpenShellOrg product ownership, see xref:general-knowledge::explanation/infrastructure/shell-env-refresh.adoc[Shell Environment Refresh].
 
 == Goals
 
@@ -28,7 +28,7 @@ DevCentr’s repository browser terminal is the **human ops shell** for the sele
 
 Agent managers keep their own traces and approve gates. They do not replace this surface. AI Workflow Arrangement should attach “DevCentr shell on the environment host” as a fixed layer of every topology.
 
-When the saved arrangement uses a **remote env host**, this component (or a sibling remote tab) should target that host so PATH awareness matches where tools actually run — see xref:ai-workflow-arrangement.adoc[AI Workflow Arrangement] and xref:general-knowledge:explanation/infrastructure/agent-control-planes.adoc[Agent control planes].
+When the saved arrangement uses a **remote env host**, this component (or a sibling remote tab) should target that host so PATH awareness matches where tools actually run — see xref:components/ai-workflow-arrangement.adoc[AI Workflow Arrangement] and xref:general-knowledge::explanation/infrastructure/agent-control-planes.adoc[Agent control planes].
 
 == Placement
 
@@ -132,7 +132,7 @@ It should include:
 
 Refreshing the environment must not erase the session history.
 
-Background and ownership: xref:general-knowledge:explanation/infrastructure/shell-env-refresh.adoc[Shell Environment Refresh]. Durable CLI and full terminal product: planned OpenShellOrg `env-refresh` and `shell-host` (see OpenShellOrg shell-architecture).
+Background and ownership: xref:general-knowledge::explanation/infrastructure/shell-env-refresh.adoc[Shell Environment Refresh]. Durable CLI and full terminal product: planned OpenShellOrg `env-refresh` and `shell-host` (see OpenShellOrg shell-architecture).
 
 === Modes
 

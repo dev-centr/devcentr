@@ -62,5 +62,5 @@ All backends invoke the DevCentr executable:
 
 == Related
 
-* xref:content-create.adoc[Content Create] — New File dialog, ecosystem filters, CLI modes
+* xref:components/content-create.adoc[Content Create] — New File dialog, ecosystem filters, CLI modes
 * link:https://hci-nerdz.github.io/docs/hci-nerdz/latest/file-manager-actions.html[HCI Nerdz — File manager actions] (DES-EMA revival)

@@ -19,7 +19,7 @@ Near-term demonstration: personal `.issues` submission archives (bodies + media)
 
 While traditional IDEs focus on the editor, DevCentr focuses on the **Orchestration** of the entire development lifecycle:
 
-*   **Ecosystem Management:** Author and version your entire environment—shells, toolchains, and infrastructure—as first-class citizens. For shells, we standardize on link:https://www.nushell.sh/[Nushell] across Windows, macOS, and Linux (structured pipelines; see xref:general-knowledge:explanation/infrastructure/nushell.adoc[Why We Recommend Nushell]). For toolchains, we endorse xref:general-knowledge:explanation/infrastructure/toolchain-management.adoc[Toolchain Management]: the ecosystem’s main entrypoint must own install, version pinning, health, repair, and upgrade—shipping a xref:general-knowledge:explanation/infrastructure/toolchain-control-plane.adoc[Toolchain Control Plane] rather than leaving newcomers to discover tribal version managers.
+*   **Ecosystem Management:** Author and version your entire environment—shells, toolchains, and infrastructure—as first-class citizens. For shells, we standardize on link:https://www.nushell.sh/[Nushell] across Windows, macOS, and Linux (structured pipelines; see xref:general-knowledge::explanation/infrastructure/nushell.adoc[Why We Recommend Nushell]). For toolchains, we endorse xref:general-knowledge::explanation/infrastructure/toolchain-management.adoc[Toolchain Management]: the ecosystem’s main entrypoint must own install, version pinning, health, repair, and upgrade—shipping a xref:general-knowledge::explanation/infrastructure/toolchain-control-plane.adoc[Toolchain Control Plane] rather than leaving newcomers to discover tribal version managers.
 *   **Visual DevEx:** A "Live Blueprint" approach that visually models project architecture, moving beyond simple file trees into system design. The xref:specifications:components/project-visualizer.adoc[Project Visualizer] renders dependency *and* control graphs and surfaces **interaction mental models** at the point of use — command grammar, root-first monorepo routing, and which `package.json` script (or equivalent manifest) each token comes from — so developers are not expected to `cd` through tribal knowledge or decode tutorial one-liners.
 *   **AI Vibe-Coding Synergy:** A hub that provides the deep contextual metadata necessary for human-in-the-loop AI coding to be truly effective.
 *   **Literate Programming First:** Promoting an architecture where documentation is the primary source, and code is an extracted artifact. We endorse **Synchronous Literate Programming (SLP)** to eliminate the gap between narrative and execution.
@@ -34,7 +34,7 @@ In Dev-Centr, any doc about a language—such as C or D—mentions literate prog
 
 This diagram shows the "what controls what" hierarchy of management roles, reflecting the ideal way to manage development environments.
 
-In a mature ecosystem, **version management is not a side tool the user must find**—it is part of the main toolchain entrypoint (or a thin official shim that *is* what you install). Community version managers are a bridge when the official entrypoint still lacks that capability. See xref:general-knowledge:explanation/infrastructure/toolchain-management.adoc[Toolchain Management Pattern].
+In a mature ecosystem, **version management is not a side tool the user must find**—it is part of the main toolchain entrypoint (or a thin official shim that *is* what you install). Community version managers are a bridge when the official entrypoint still lacks that capability. See xref:general-knowledge::explanation/infrastructure/toolchain-management.adoc[Toolchain Management Pattern].
 
 [mermaid]
 ----
@@ -78,7 +78,7 @@ graph TD
     ORO -.-> PNPM
 ----
 
-Package-manager policy (pnpm preferred, Bun as practical OSS alternative, Orogene as once-and-future inspiration): xref:general-knowledge:explanation/infrastructure/npm-package-managers.adoc[npm package managers].
+Package-manager policy (pnpm preferred, Bun as practical OSS alternative, Orogene as once-and-future inspiration): xref:general-knowledge::explanation/infrastructure/npm-package-managers.adoc[npm package managers].
 
 The app should contain models or diagrams of the different facets of software project management:
 
@@ -143,15 +143,15 @@ needs to support recognizing virtual environments and virtual machines. mounting
 
 the project viewer (xref:specifications:components/project-visualizer.adoc[Project Visualizer]) must show various types of models/diagrams of the project architecture. Dependency tree/graph is required. Control tree/graph is required. For cases like Next.js, which relies on React but controls React's usage, dependency doesn't communicate the whole picture. The control tree will differ from the dependency tree in cases like this.
 
-Interaction layout profiles (SDL under `app/src/modules/project-visualizer/interaction-layouts/`) map each detected tool's mental model into UI zones and root-first command presets — e.g. pnpm `--filter` vs `-C` from the workspace root (see xref:general-knowledge:reference/pnpm-run-routing.adoc[pnpm run routing]). Help output and upstream source may inform profile maintenance; they are not the primary teaching surface.
+Interaction layout profiles (SDL under `app/src/modules/project-visualizer/interaction-layouts/`) map each detected tool's mental model into UI zones and root-first command presets — e.g. pnpm `--filter` vs `-C` from the workspace root (see xref:general-knowledge::reference/pnpm-run-routing.adoc[pnpm run routing]). Help output and upstream source may inform profile maintenance; they are not the primary teaching surface.
 
-For each language ecosystem, prefer an **official Toolchain Control Plane** when one exists (`unifiedControlPlane.status` = `official` in the language definition)—that is the product of the xref:general-knowledge:explanation/infrastructure/toolchain-management.adoc[Toolchain Management Pattern]. When the ecosystem still lacks one, DevCentr:
+For each language ecosystem, prefer an **official Toolchain Control Plane** when one exists (`unifiedControlPlane.status` = `official` in the language definition)—that is the product of the xref:general-knowledge::explanation/infrastructure/toolchain-management.adoc[Toolchain Management Pattern]. When the ecosystem still lacks one, DevCentr:
 
 . Shows a short **advisory** at the top of that ecosystem’s management module (link to the Toolchain Management Pattern).
 . Offers the top community version managers as a **bridge** so the user can still pin safely.
 . Lets the user choose again per new project when multiple bridges exist.
 
-Do not treat “pick among three community VMs” as the end state—encourage maintainers to absorb pinning into the main entrypoint (optionally via the xref:general-knowledge:explanation/infrastructure/toolchain-framework.adoc[Toolchain Framework (TCF)]).
+Do not treat “pick among three community VMs” as the end state—encourage maintainers to absorb pinning into the main entrypoint (optionally via the xref:general-knowledge::explanation/infrastructure/toolchain-framework.adoc[Toolchain Framework (TCF)]).
 
 ecosystems to target:
 
@@ -181,7 +181,7 @@ The app needs an environment navigator that models the environment hierarchy/nes
 The Dev-Center application prioritizes a premium, high-fidelity user interface.
 Current UI implementation uses the `dlangui` library (Skia-backed immediate-mode rendering).
 
-When evaluating **future UI stacks** or **cross-platform desktop shells**, see xref:general-knowledge:explanation/architecture/graphics-rendering-engines.adoc[Graphics rendering engines] in general-knowledge — framework comparison, large-document patterns, and post-Skia pipelines (Graphite, Impeller, Vello).
+When evaluating **future UI stacks** or **cross-platform desktop shells**, see xref:general-knowledge::explanation/architecture/graphics-rendering-engines.adoc[Graphics rendering engines] in general-knowledge — framework comparison, large-document patterns, and post-Skia pipelines (Graphite, Impeller, Vello).
 Essay: link:https://devcentr.org/news/2026-08-19-after-skia-where-rendering-is-headed[After Skia: where rendering is headed].
 
 === Logical vs Optical Pixels

@@ -12,7 +12,7 @@ The Content Create flow lets users add a new project asset from a repository con
 == Entry points
 
 * **Repository browser:** Right-click a repository row → *Create…* → flat classification submenu (ecosystem tags inferred from the project).
-* **File manager:** *DevCentr* menu → *New File…* / *New Project…* / *Open folder* — Win11 modern menu preferred, classic/Linux adapters as fallback (see xref:explorer-shell-integration.adoc[Explorer Shell Integration]).
+* **File manager:** *DevCentr* menu → *New File…* / *New Project…* / *Open folder* — Win11 modern menu preferred, classic/Linux adapters as fallback (see xref:components/explorer-shell-integration.adoc[Explorer Shell Integration]).
 * **CLI:** `dev-center.exe --mode=new-file --path=<dir> [--tags=general,java]` (also `new-project`, `new-installer`, `emit-ci`, `inplace-path`, `open`).
 
 == Ecosystem filters
@@ -20,7 +20,7 @@ The Content Create flow lets users add a new project asset from a repository con
 Each catalog type carries one or more `ecosystem` tags (`general`, `js`, `jvm`, `java`, `dotnet`, `python`, `rust`, `go`, `d`, `cpp`, `docs`, `devops`, `data`, …). The subtype dialog shows **toggle chips** for the active tag universe.
 
 * **Show rule:** A type is visible if **any** selected chip intersects its ecosystems (OR). Missing ecosystems on a type ≡ `general`.
-* **Inference:** `inferEcosystemTags(path)` maps project-map stacks and file heuristics (`package.json`, `pom.xml`, …) onto tags; always includes `general`. If nothing is detected, chips default to `{general}`.
+* **Inference:** `inferEcosystemTags(path)` maps project-map stacks and file heuristics (`package.json`, `pom.xml`, …) onto tags; always includes `general`. If nothing is detected, chips default to `\{general}`.
 * **CLI / API:** `CreateContentOptions.initialTags` and `--tags=` populate chips; users can still toggle when `allowTagEdit` is true.
 
 == Flow
@@ -150,7 +150,7 @@ Each `lineage` block has `scope` equal to a classification `id`. Edges use `from
 
 == Create behavior
 
-* Write UTF-8 stub at `{repoRoot}/{suggestedName}{extension}` (prompt or auto-suffix if the path exists).
+* Write UTF-8 stub at `\\\{repoRoot}/\\\{suggestedName}\{extension}` (prompt or auto-suffix if the path exists).
 * Use `template` when present; otherwise an empty file or a minimal heading derived from `label`.
 * Open with the first detected editor from `editor_detector` when available; otherwise leave the file on disk and notify the user.
 * Do not scaffold full Pkl/CUE/Cap’n Proto projects in this pass—stub only.
@@ -158,6 +158,6 @@ Each `lineage` block has `scope` equal to a classification `id`. Edges use `from
 == Related docs
 
 * Product policy for human config: xref:sdl.adoc[SDL Preference]
-* Markup comparison: xref:general-knowledge:explanation/documentation/documentation-markup-comparison.adoc[Documentation markup comparison]
-* Data formats and paradigms: xref:general-knowledge:explanation/documentation/structured-data-formats.adoc[Structured data formats]
+* Markup comparison: xref:general-knowledge::explanation/documentation/documentation-markup-comparison.adoc[Documentation markup comparison]
+* Data formats and paradigms: xref:general-knowledge::explanation/documentation/structured-data-formats.adoc[Structured data formats]
 * Repository context menus: xref:components/repository-browser.adoc[Repository Browser]

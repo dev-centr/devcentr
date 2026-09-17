@@ -5,6 +5,6 @@ Builds **dependency graphs** for a opened project:
 1. An **intra-project** graph (modules, crates, packages inside the repo).
 2. An **external** graph (libraries, sibling projects, registry deps).
 
-The xref:project-visualizer.adoc[Project Visualizer] consumes this output together with **control-tree** edges (framework orchestrates library — Next.js over React) and xref:../reference/definition-files.adoc#interaction-layout-profiles[interaction layout profiles] for command routing at the repo root.
+The xref:components/project-visualizer.adoc[Project Visualizer] consumes this output together with **control-tree** edges (framework orchestrates library — Next.js over React) and xref:reference/definition-files.adoc#interaction-layout-profiles[interaction layout profiles] for command routing at the repo root.
 
 Renderer and graph UI: Project Visualizer spec. This component owns graph construction and cache serialization only.

@@ -4,15 +4,15 @@ Per-ecosystem management modules are DevCentr’s deep surface for a language or
 
 == Purpose
 
-* Give each ecosystem a dedicated management UI (pattern after xref:wsl-manager.adoc[WSL Manager]).
-* Prefer an **official Toolchain Control Plane** when the ecosystem ships one (xref:general-knowledge:explanation/infrastructure/toolchain-management.adoc[Toolchain Management Pattern]).
+* Give each ecosystem a dedicated management UI (pattern after xref:components/wsl-manager.adoc[WSL Manager]).
+* Prefer an **official Toolchain Control Plane** when the ecosystem ships one (xref:general-knowledge::explanation/infrastructure/toolchain-management.adoc[Toolchain Management Pattern]).
 * When it does not, show a short **advisory** at the top of the module and offer community version managers as a bridge.
 * Educate maintainers and users via a link to the philosophy doc—do not block setup.
 
 [[toolchain-management-protocol]]
 == Toolchain Management Protocol
 
-The **Toolchain Management Protocol** is the set of standard, repeatable *behaviors* (not a network protocol) expected of an official toolchain entrypoint. Philosophy: xref:general-knowledge:explanation/infrastructure/toolchain-management.adoc[Toolchain Management Pattern].
+The **Toolchain Management Protocol** is the set of standard, repeatable *behaviors* (not a network protocol) expected of an official toolchain entrypoint. Philosophy: xref:general-knowledge::explanation/infrastructure/toolchain-management.adoc[Toolchain Management Pattern].
 
 [cols="1,2"]
 |===
@@ -37,15 +37,15 @@ The **Toolchain Management Protocol** is the set of standard, repeatable *behavi
 | CLI, GUI, and ideally IDE/agent APIs expose the same verbs and health model.
 |===
 
-These are behavioral expectations for maintainers and tools. Wire formats and schemas arrive with the xref:general-knowledge:explanation/infrastructure/toolchain-framework.adoc[Toolchain Framework (TCF)].
+These are behavioral expectations for maintainers and tools. Wire formats and schemas arrive with the xref:general-knowledge::explanation/infrastructure/toolchain-framework.adoc[Toolchain Framework (TCF)].
 
 == Toolchain Management advisory
 
-Philosophy: xref:general-knowledge:explanation/infrastructure/toolchain-management.adoc[Toolchain Management Pattern].
-Control plane metaphor: xref:general-knowledge:explanation/infrastructure/toolchain-control-plane.adoc[Toolchain Control Plane (TCP / TCoP)].
-Maintainer toolkit (planned): xref:general-knowledge:explanation/infrastructure/toolchain-framework.adoc[Toolchain Framework (TCF)].
+Philosophy: xref:general-knowledge::explanation/infrastructure/toolchain-management.adoc[Toolchain Management Pattern].
+Control plane metaphor: xref:general-knowledge::explanation/infrastructure/toolchain-control-plane.adoc[Toolchain Control Plane (TCP / TCoP)].
+Maintainer toolkit (planned): xref:general-knowledge::explanation/infrastructure/toolchain-framework.adoc[Toolchain Framework (TCF)].
 
-Metadata lives on each language definition (`app/src/modules/languages/<ecosystem>.sdl`) in the `unifiedControlPlane` block. See xref:../reference/definition-files.adoc[Definition Files].
+Metadata lives on each language definition (`app/src/modules/languages/<ecosystem>.sdl`) in the `unifiedControlPlane` block. See xref:reference/definition-files.adoc[Definition Files].
 
 [cols="1,2"]
 |===
@@ -110,10 +110,10 @@ pageFlutter
 
 == Related
 
-* xref:../reference/definition-files.adoc[Definition Files]
-* xref:installation-workflow.adoc[Installation Workflow]
-* xref:toolchain-advisor.adoc[Stack Advisor]
-* xref:toolchain-management.adoc[Toolchain Management (TCM)]
+* xref:reference/definition-files.adoc[Definition Files]
+* xref:components/installation-workflow.adoc[Installation Workflow]
+* xref:components/toolchain-advisor.adoc[Stack Advisor]
+* xref:components/toolchain-management.adoc[Toolchain Management (TCM)]
 * xref:ROOT:project-vision.adoc[Project Vision]
 * xref:ROOT:toolchain-management.adoc[Toolchain Management (product pointer)]
 * link:https://github.com/dev-centr/toolchain-framework[dev-centr/toolchain-framework (TCF)]

@@ -7,7 +7,7 @@ DevCentr maintains a **registry of agent control-plane options** so users can ch
 == Location
 
 * **SDL (source of truth):** `app/src/modules/services/agent_shell_registry.sdl`
-* **Companion explanation:** xref:general-knowledge:explanation/infrastructure/agent-control-planes.adoc[Agent control planes and compute topologies]
+* **Companion explanation:** xref:general-knowledge::explanation/infrastructure/agent-control-planes.adoc[Agent control planes and compute topologies]
 * **Related (MCP/skills clients):** `app/src/modules/services/ai_client_profiles.json5` — different job; do not merge blindly
 
 == Product job

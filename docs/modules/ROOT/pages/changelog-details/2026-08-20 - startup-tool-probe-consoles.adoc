@@ -1,0 +1,4 @@
+= 2026-08-20 — Startup tool probe consoles
+:description: Changelog detail for startup tool probe consoles.
+
+Startup now surfaces tool-probe consoles so missing SDKs and path issues are visible during launch diagnostics.

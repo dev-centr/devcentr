@@ -47,7 +47,7 @@ The same **master front-end** pattern applies to other providers:
 * **HashiCorp Vault** — REST API; token or other auth; list/get secrets by path.
 * **AWS Secrets Manager / Azure Key Vault** — Cloud APIs; credentials for the cloud account; DevCentr would request secrets via their SDKs or APIs.
 
-Each provider has different auth (OAuth, token, IAM, certificate). The Secrets Manager UI would need a **per-provider configuration** (e.g. "Add Bitwarden," "Add 1Password") and, where applicable, **launch the provider's login GUI** so the user can authenticate; the front-end then stores only a session or token (or nothing, if the provider SDK holds the session) and uses it to send requests. Explaining this in the GUI is critical so users understand who holds the secrets — see xref:explaining-the-proxy-in-the-gui.adoc[Explaining the Proxy in the GUI].
+Each provider has different auth (OAuth, token, IAM, certificate). The Secrets Manager UI would need a **per-provider configuration** (e.g. "Add Bitwarden," "Add 1Password") and, where applicable, **launch the provider's login GUI** so the user can authenticate; the front-end then stores only a session or token (or nothing, if the provider SDK holds the session) and uses it to send requests. Explaining this in the GUI is critical so users understand who holds the secrets — see xref:explanation/explaining-the-proxy-in-the-gui.adoc[Explaining the Proxy in the GUI].
 
 == Summary
 

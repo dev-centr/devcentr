@@ -16,14 +16,14 @@ Each provider that supports organization-level profile READMEs has an `orgProfil
 * `privateRepo` — Repository name for member-only profile (e.g. `.github-private` for GitHub); `null` if not supported (GitLab has a single profile).
 * `readmePath` — Path to the README within the repo (e.g. `profile/README.md` for GitHub, `README.md` for GitLab).
 * `readmeFormat` — Format of the README (e.g. `markdown`).
-* `baseUrl` — Template for the org URL with `{org}` and `{host}` placeholders.
+* `baseUrl` — Template for the org URL with `\{org}` and `\{host}` placeholders.
 * `publicViewParam` / `memberViewParam` — Query params for profile page views (e.g. `?view_as=public`, `?view_as=member` for GitHub).
 
 === GitHub
 
 * Public: `org/.github` (must be public), README at `profile/README.md`.
 * Private: `org/.github-private`, README at `profile/README.md`.
-* Profile URLs: `https://github.com/{org}?view_as=public`, `https://github.com/{org}?view_as=member`.
+* Profile URLs: `https://github.com/\{org}?view_as=public`, `https://github.com/\{org}?view_as=member`.
 
 === GitLab
 

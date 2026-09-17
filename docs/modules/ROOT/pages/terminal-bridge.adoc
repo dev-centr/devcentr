@@ -28,7 +28,7 @@ image::terminal-bridge/grid-highlight-demo.png[DevCentr grid highlight linked to
 
 * OpenShellOrg: link:https://github.com/openshellorg/shell-architecture/blob/main/docs/modules/ROOT/pages/devcentr-terminal-manager.adoc[devcentr-terminal-manager], link:https://github.com/openshellorg/shell-architecture/blob/main/docs/modules/ROOT/pages/nested-tiling-zones.adoc[nested-tiling-zones], link:https://github.com/openshellorg/open-terminal[open-terminal]
 * HCI-Nerdz: link:https://github.com/HCI-Nerdz/docs/blob/main/docs/modules/ROOT/pages/highlight-vs-pipe-linking.adoc[highlight-vs-pipe-linking], link:https://github.com/HCI-Nerdz/docs/blob/main/docs/modules/ROOT/pages/contained-tiling.adoc[contained-tiling]
-* Division of labor: link:https://github.com/openshellorg/shell-architecture/blob/main/docs/modules/ROOT/pages/division-of-labor.adoc[shell-architecture], xref:general-knowledge:explanation/infrastructure/devcentr-and-openshellorg.adoc[general-knowledge]
+* Division of labor: link:https://github.com/openshellorg/shell-architecture/blob/main/docs/modules/ROOT/pages/division-of-labor.adoc[shell-architecture], xref:general-knowledge::explanation/infrastructure/devcentr-and-openshellorg.adoc[general-knowledge]
 
 == Non-goals
 

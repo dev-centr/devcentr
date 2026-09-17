@@ -6,7 +6,7 @@ Secrets Manager stores strings.
 Humans and agents still have to *type* those strings correctly.
 This page is mandatory vocabulary for the product: **label by architecture, not by the vendor's Generate button.**
 
-Canonical essay (org docs): xref:general-knowledge:explanation/infrastructure/api-key-vs-token.adoc[API key vs token].
+Canonical essay (org docs): xref:general-knowledge::explanation/infrastructure/api-key-vs-token.adoc[API key vs token].
 Public narrative: link:https://devcentr.org/news/2026-08-09-api-keys-wearing-token-costumes[When API keys wear token costumes].
 
 == Forced types in Secrets Manager

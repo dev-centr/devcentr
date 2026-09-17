@@ -102,7 +102,7 @@ Most hub pages have no track (selector hidden). Spec pages with independent rele
 . **Document only (now)** — this spec; defer upstream GitLab issue while maintainers are busy.
 . **Extension spike** — extend `@antora-supplemental/unversioned-component-urls` (or sibling package) to register versionless + selector pages for configured track roots; prove on UniConfig spec path.
 . **Antora fork RFC** — feature branch in `dev-centr/.forks/antora` with core hook points (`contentClassified`, page URL model, UI `page-versions` partial).
-. **Absorb path** — when upstream is ready, fold into Antora core playbook keys (same story as alias-component-to-latest in xref:home:publishing/antora-essential-extensions.adoc#alias-versioned-component-root-latest-start-page[Antora essential extensions]).
+. **Absorb path** — when upstream is ready, fold into Antora core playbook keys (same story as alias-component-to-latest in xref:home::publishing/antora-essential-extensions.adoc#alias-versioned-component-root-latest-start-page[Antora essential extensions]).
 
 == Open questions
 
@@ -116,7 +116,7 @@ Most hub pages have no track (selector hidden). Spec pages with independent rele
 * xref:uniconfig:ROOT:reference.adoc[UniConfig reference (product versioning today)]
 * link:https://docs.antora.org/antora/latest/component-version-descriptor/[Antora component version descriptor]
 * link:https://github.com/antora-supplemental/antora-unversioned-component-urls[`@antora-supplemental/unversioned-component-urls`] — component-root selector; page-level noted as future work
-* xref:home:publishing/antora-essential-extensions.adoc[Antora essential extensions]
+* xref:home::publishing/antora-essential-extensions.adoc[Antora essential extensions]
 
 ---
 **Status**: Proposal Drafted | **Owner**: DevCentr docs | **Upstream**: deferred (internal fork first)

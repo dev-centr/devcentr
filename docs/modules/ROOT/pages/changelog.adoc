@@ -49,7 +49,7 @@
 
 == 2026-09-01 -- AOP moved to general-knowledge
 
-* xref:aspect-oriented-programming.adoc[Aspect-Oriented Programming] redirect stub — body now lives in xref:general-knowledge:explanation/architecture/aspect-oriented-programming.adoc[general-knowledge Architecture].
+* xref:aspect-oriented-programming.adoc[Aspect-Oriented Programming] redirect stub — body now lives in xref:general-knowledge::explanation/architecture/aspect-oriented-programming.adoc[general-knowledge Architecture].
 
 == 2026-08-28 -- Terminal bridge related demos
 
@@ -97,7 +97,7 @@ This changelog records notable changes to the DevCentr application and its docum
 
 == 2026-08-19 – Toolchain advisor: graphics rendering docs link
 
-* Toolchain advisor recommends xref:general-knowledge:explanation/architecture/graphics-rendering-engines.adoc[Graphics rendering engines] when target is desktop or web; **Read docs** opens the hub page from ranked guidance.
+* Toolchain advisor recommends xref:general-knowledge::explanation/architecture/graphics-rendering-engines.adoc[Graphics rendering engines] when target is desktop or web; **Read docs** opens the hub page from ranked guidance.
 * `windows-desktop` and `web` option copy points at the same explanation; project vision links the essay.
 
 == 2026-08-18 – Appearance: what is in the dialog vs later
@@ -167,9 +167,9 @@ This changelog records notable changes to the DevCentr application and its docum
 == 2026-08-08 – Studio MCP install strategies (docs)
 
 * AI Workflow Arrangement + AI Config MCP tab point at general-knowledge
-  xref:general-knowledge:explanation/infrastructure/studio-mcp-install-strategies.adoc[Studio MCP install strategies]
+  xref:general-knowledge::explanation/infrastructure/studio-mcp-install-strategies.adoc[Studio MCP install strategies]
   and the
-  xref:general-knowledge:reference/ai-studio-tooling-catalog.adoc[AI studio tooling catalog]
+  xref:general-knowledge::reference/ai-studio-tooling-catalog.adoc[AI studio tooling catalog]
   (Composio's Cursor marketplace / deeplink / `mcp.json` ladder as the SaaS-connector default).
 * Guided add: recommend connector packages via that ladder; do not invent a DevCentr-owned OAuth broker.
 
@@ -229,7 +229,7 @@ This changelog records notable changes to the DevCentr application and its docum
 
 * `languages/node.sdl`: package managers now include pnpm (preferred), Bun, Yarn, npm, and **Orogene** (`closed-aspirational`); optional `status` / `notes` / `homepage` fields.
 * Ecosystem loader/UI surfaces package-manager notes; definition-files + project-vision updated.
-* Companion: general-knowledge xref:general-knowledge:explanation/infrastructure/npm-package-managers.adoc[npm package managers].
+* Companion: general-knowledge xref:general-knowledge::explanation/infrastructure/npm-package-managers.adoc[npm package managers].
 
 == 2026-08-06 – Content Create (SDL classifications + lineage)
 
@@ -290,7 +290,7 @@ This changelog records notable changes to the DevCentr application and its docum
 
 * Expanded xref:specifications:components/repository-browser-terminal.adoc[Repository Browser Terminal]: env chrome outside the shell canvas (health light, notice, command preview), monitor drift, preview vs inject-and-run (`envRefresh.autoRun`), shell-aware recipes (Nushell first), prefer OpenShellOrg `env-refresh` / shell-host when present.
 * Capabilities note under Environment Orchestration.
-* Companion: general-knowledge xref:general-knowledge:explanation/infrastructure/shell-env-refresh.adoc[Shell Environment Refresh]; OpenShellOrg shell-architecture plan for `env-refresh` + `shell-host`.
+* Companion: general-knowledge xref:general-knowledge::explanation/infrastructure/shell-env-refresh.adoc[Shell Environment Refresh]; OpenShellOrg shell-architecture plan for `env-refresh` + `shell-host`.
 * See xref:ROOT:changelog-details/2026-07-26 - shell-env-refresh.adoc[Detailed changelog].
 
 == 2026-07-24 – Toolchain Management vocabulary
@@ -299,7 +299,7 @@ This changelog records notable changes to the DevCentr application and its docum
 * Spec components: xref:specifications:components/toolchain-management.adoc[Toolchain Management (TCM)] and xref:specifications:components/ecosystem-management.adoc[Ecosystem Management] (protocol + advisories).
 * Vision and definition-files xrefs point at the Pattern page; Flutter advisory Learn more → `toolchain-management.html`.
 * TCF kit repo: link:https://github.com/dev-centr/toolchain-framework[`dev-centr/toolchain-framework`] (schemas, validators, CI).
-* Companion: general-knowledge vocabulary lock-in (xref:general-knowledge:changelog.adoc[Changelog]).
+* Companion: general-knowledge vocabulary lock-in (xref:general-knowledge::changelog.adoc[Changelog]).
 * See xref:ROOT:changelog-details/2026-07-24 - toolchain-management-vocabulary.adoc[Detailed changelog].
 
 == 2026-07-24 – Toolchain Control Plane and Flutter ecosystem module
@@ -309,7 +309,7 @@ This changelog records notable changes to the DevCentr application and its docum
 * App: reusable `AdvisoryBanner`; `modules.ecosystems` loader/panel; **Flutter** home/sidebar page with advisory and community bridge tools (`fvm`, `puro`, `mise`).
 * Language SDL: `languages/flutter.sdl`; `languages/node.sdl` includes control-plane metadata.
 * See xref:ROOT:changelog-details/2026-07-24 - toolchain-control-plane.adoc[Detailed changelog].
-* Docs sibling: general-knowledge Toolchain Control Plane + Flutter setup (xref:general-knowledge:changelog.adoc[Changelog]).
+* Docs sibling: general-knowledge Toolchain Control Plane + Flutter setup (xref:general-knowledge::changelog.adoc[Changelog]).
 
 == 2026-07-24 – WSL Manager page
 
@@ -317,7 +317,7 @@ This changelog records notable changes to the DevCentr application and its docum
 * Links to general-knowledge comparison + setup how-to and Microsoft Learn.
 * Spec: xref:specifications:components/wsl-manager.adoc[WSL Manager].
 * See xref:ROOT:changelog-details/2026-07-24 - wsl-manager.adoc[Detailed changelog].
-* Docs sibling: general-knowledge 2026-07-24 WSL distro comparison (xref:general-knowledge:changelog.adoc[Changelog]).
+* Docs sibling: general-knowledge 2026-07-24 WSL distro comparison (xref:general-knowledge::changelog.adoc[Changelog]).
 
 == 2026-07-22 – Appearance: Cascadia Mono / JetBrains Mono
 
@@ -328,7 +328,7 @@ This changelog records notable changes to the DevCentr application and its docum
 == 2026-07-22 – Nushell as recommended system shell
 
 * Capabilities and project vision now endorse link:https://www.nushell.sh/[Nushell] as the default cross-platform shell, with xrefs to general-knowledge.
-* See general-knowledge changelog: xref:general-knowledge:changelog.adoc[Changelog] (2026-07-22 entry).
+* See general-knowledge changelog: xref:general-knowledge::changelog.adoc[Changelog] (2026-07-22 entry).
 
 == 2026-03-27 – Dynamic Agent Preamble specification
 
@@ -361,7 +361,7 @@ This changelog records notable changes to the DevCentr application and its docum
 * Forked arsd into dev-centr, fixed the `in` parameter deprecation in `nsvg__cmpEdge` for arsd-official 10.9.10 (svg.d).
 * Added `scripts/patch-arsd-svg-deprecation.ps1` to re-apply the patch to the dub cache when needed.
 * See xref:ROOT:changelog-details/2026-03-19 - arsd-extern-in-deprecation-fix.adoc[Detailed changelog].
-* See xref:ROOT:changelog-details/2026-03-19 - arsd-extern-in-deprecation.adoc[Detailed changelog].
+* See xref:ROOT:changelog-details/2026-03-19 - arsd-extern-in-deprecation-fix.adoc[Detailed changelog].
 
 == 2026-03-19 – General Knowledge Extraction
 
@@ -389,10 +389,10 @@ This changelog records notable changes to the DevCentr application and its docum
 == 2026-03-18 – Gitignore Templates, EOL, and Templates Schema
 
 * Added GitHub gitignore (link:https://github.com/github/gitignore[github/gitignore]) as a template source alongside DevCentr in the Init Repo flow. Users can select source (DevCentr or GitHub) and merge templates from either.
-* Documented GitHub's base vs Global vs community layout in xref:general-knowledge:reference/gitignore-template-sources.adoc[Gitignore Template Sources]. Root = languages/core tech; Global = editors/tools/OS.
+* Documented GitHub's base vs Global vs community layout in xref:general-knowledge::reference/gitignore-template-sources.adoc[Gitignore Template Sources]. Root = languages/core tech; Global = editors/tools/OS.
 * Added `.editorconfig` tab and default template to Init Repo (LF with CRLF overrides for `.bat`, `.cmd`, `.reg`). Repo init now writes `.gitattributes`, `.gitignore`, and `.editorconfig`.
-* Updated xref:general-knowledge:reference/git-management.adoc[Git Management]: clarified `core.autocrlf input` vs `false`, when each applies, and EditorConfig step.
-* Added xref:general-knowledge:reference/windows-eol-exceptions.adoc[Windows EOL Exceptions] for batch, registry, PowerShell, Visual Studio.
+* Updated xref:general-knowledge::reference/git-management.adoc[Git Management]: clarified `core.autocrlf input` vs `false`, when each applies, and EditorConfig step.
+* Added xref:general-knowledge::reference/windows-eol-exceptions.adoc[Windows EOL Exceptions] for batch, registry, PowerShell, Visual Studio.
 * Defined xref:specifications:templates-schema.adoc[Templates Schema]: version folders per ecosystem, `_base` (preference-agnostic), `_preferences` (team/tool-specific).
 * Per-repo settings: documented `gitignore.suppressMissing` for suppressing template comparison warnings.
 * Gitignore Viewer implemented: reusable minimap, technology tree, template comparison with DevCentr/GitHub/Local tabs, missing-item strikethrough (red), Suppress button storing in `.devcentr.sdl`, side-panel integration via hallmark toolbar.

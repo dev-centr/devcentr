@@ -4,7 +4,7 @@
 
 DevCentr needs a **generic** management pattern for the **layered** parts of an architecture: a blank **topology canvas** as the landing view, plus a **guided add flow** (first-run and on demand) that fills roles in that layering. Domain packs supply the layer vocabulary, catalog bindings, icons, and install actions.
 
-The first instance is the AI agent stack (xref:ai-workflow-arrangement.adoc[AI Workflow Arrangement]). The same composer should later serve other domains that have a real stack/layer spine — without renaming the core UI to AI terms.
+The first instance is the AI agent stack (xref:components/ai-workflow-arrangement.adoc[AI Workflow Arrangement]). The same composer should later serve other domains that have a real stack/layer spine — without renaming the core UI to AI terms.
 
 == Why hierarchy at all
 
@@ -192,7 +192,7 @@ The canvas is therefore a **layered model + install surface** — a map of the s
 * Not obligated to model non-layered architecture — those concerns connect later, orthogonally
 == Instances
 
-* **AI stack** — xref:ai-workflow-arrangement.adoc[AI Workflow Arrangement] (this pack)
+* **AI stack** — xref:components/ai-workflow-arrangement.adoc[AI Workflow Arrangement] (this pack)
 * Future candidates (out of scope until needed): toolchain control-plane maps, secrets/provider graphs, env↔repo maps already hinted in product vision
 
 == Relation to other modules

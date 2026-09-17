@@ -116,4 +116,4 @@ Never: scraper hubs, vendoring commissioned fonts, a Suitcase clone branded as D
 Strong recommendation for editors and terminal hosts used with Dev-Centr workflows:
 
 * Prefer **Cascadia Mono** (or JetBrains Mono) in Windows Terminal / Cursor / VS Code for terminal and editor monospace.
-* See xref:general-knowledge:reference/recommended-tools.adoc[Recommended Tools].
+* See xref:general-knowledge::reference/recommended-tools.adoc[Recommended Tools].

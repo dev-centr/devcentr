@@ -4,7 +4,7 @@
 
 The **Project Visualizer** is DevCentr's renderer for the **Live Blueprint**: a pannable, interactive map of a repository that answers *what this project is*, *what controls what*, and *which command to run from here* — without making the user `cd` through tribal knowledge or decode tutorial incantations.
 
-It sits on top of xref:project-recognizer.adoc[Project Recognizer] (stack detection via `project-map`) and xref:dependency-modeler.adoc[Dependency Modeler] (intra- and inter-project graphs). Recognition alone lists stacks; the visualizer **teaches the mental model** and **routes actions** from the repo root.
+It sits on top of xref:components/project-recognizer.adoc[Project Recognizer] (stack detection via `project-map`) and xref:components/dependency-modeler.adoc[Dependency Modeler] (intra- and inter-project graphs). Recognition alone lists stacks; the visualizer **teaches the mental model** and **routes actions** from the repo root.
 
 == Mission
 
@@ -15,9 +15,9 @@ DevCentr treats that gap as a **first-class product problem**, not documentation
 * **At the point of interaction** — when you open a project in DevCentr, the visualizer shows the control tree, command grammar, and suggested invocations for *this repo*, rooted where you already are (workspace root by default).
 * **Accessible without archaeology** — no hunting through README fragments, copied Stack Overflow one-liners, or `--help` output that lists flags but not *why* `--filter` exists.
 * **Curated + live** — human-authored SDL **interaction layout profiles** supply the teaching spine; repo scanners overlay instance facts (script keys, workspace members, detected stacks).
-* **Root-first by default** — monorepo workflows surface `--filter` / `-C` (and equivalents) before suggesting nested-`cd` paths. See xref:general-knowledge:reference/pnpm-run-routing.adoc[pnpm run routing] as the first worked example.
+* **Root-first by default** — monorepo workflows surface `--filter` / `-C` (and equivalents) before suggesting nested-`cd` paths. See xref:general-knowledge::reference/pnpm-run-routing.adoc[pnpm run routing] as the first worked example.
 
-The visualizer is the **cognitive projection** for *project internals* — analogous to xref:role-topology-composer.adoc[Role Topology Composer] for layered AI stacks, but scoped to dependency/control structure and dev-tool command routing inside a codebase.
+The visualizer is the **cognitive projection** for *project internals* — analogous to xref:components/role-topology-composer.adoc[Role Topology Composer] for layered AI stacks, but scoped to dependency/control structure and dev-tool command routing inside a codebase.
 
 == Scope
 
@@ -153,11 +153,11 @@ Ship curated profiles in DevCentr releases; run harvest in CI or on demand when 
 
 == Related components
 
-* xref:project-recognizer.adoc[Project Recognizer] — stack detection; feeds `stackRef` matching.
-* xref:dependency-modeler.adoc[Dependency Modeler] — module and external dependency graphs.
-* xref:role-topology-composer.adoc[Role Topology Composer] — layered *environment* stacks (AI, toolchains); orthogonal to per-repo blueprint.
-* xref:../reference/definition-files.adoc#interaction-layout-profiles[Definition files — interaction layout profiles]
-* xref:general-knowledge:reference/pnpm-run-routing.adoc[pnpm run routing] — reference prose for Node monorepos (linked from pnpm profile).
+* xref:components/project-recognizer.adoc[Project Recognizer] — stack detection; feeds `stackRef` matching.
+* xref:components/dependency-modeler.adoc[Dependency Modeler] — module and external dependency graphs.
+* xref:components/role-topology-composer.adoc[Role Topology Composer] — layered *environment* stacks (AI, toolchains); orthogonal to per-repo blueprint.
+* xref:reference/definition-files.adoc#interaction-layout-profiles[Definition files — interaction layout profiles]
+* xref:general-knowledge::reference/pnpm-run-routing.adoc[pnpm run routing] — reference prose for Node monorepos (linked from pnpm profile).
 
 == Implementation status
 

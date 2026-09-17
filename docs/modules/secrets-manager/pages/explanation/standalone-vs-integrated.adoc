@@ -20,7 +20,7 @@ The Secrets Manager is designed as a **standalone application** that can run on 
 
 For the integrated view to work:
 
-* **Standalone running:** The standalone may run a small server (localhost or socket) so DevCentr can query "secrets for repo X, env Y" and send "write these to repo Z's .env". See xref:../architecture.adoc[Architecture].
+* **Standalone running:** The standalone may run a small server (localhost or socket) so DevCentr can query "secrets for repo X, env Y" and send "write these to repo Z's .env". See xref:architecture.adoc[Architecture].
 * **Standalone not running:** DevCentr can still read from a **shared database path** if the schema is documented and DevCentr opens it read-only (and the standalone is the only writer when it runs). That allows a "read-only" integrated view; write actions (copy to .env, register secret) would require starting the standalone or queuing until it is available.
 
 Recommendation: support both — **optional server** for full two-way integration, and **shared DB path** for read-only or simple write (with single-writer discipline) so that minimal setup still works.

@@ -6,9 +6,9 @@ DevCentr endorses **Toolchain Management** for every complex software ecosystem:
 
 Canonical explanations (general-knowledge):
 
-* xref:general-knowledge:explanation/infrastructure/toolchain-management.adoc[Toolchain Management Pattern] — how to think (pattern → protocol → plane → framework)
-* xref:general-knowledge:explanation/infrastructure/toolchain-control-plane.adoc[Toolchain Control Plane (TCP / TCoP)] — what you ship
-* xref:general-knowledge:explanation/infrastructure/toolchain-framework.adoc[Toolchain Framework (TCF)] — how you practice (not TMF)
+* xref:general-knowledge::explanation/infrastructure/toolchain-management.adoc[Toolchain Management Pattern] — how to think (pattern → protocol → plane → framework)
+* xref:general-knowledge::explanation/infrastructure/toolchain-control-plane.adoc[Toolchain Control Plane (TCP / TCoP)] — what you ship
+* xref:general-knowledge::explanation/infrastructure/toolchain-framework.adoc[Toolchain Framework (TCF)] — how you practice (not TMF)
 
 Product behavior:
 

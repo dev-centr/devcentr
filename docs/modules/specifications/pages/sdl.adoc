@@ -106,7 +106,7 @@ Dev-Centr needs fall into two buckets:
 
 **KDL** is the modern successor *narrative* to SDLang. DevCentr **keeps SDLang** for files it parses with `sdlang-d`. Choose **KDL** when the consumer is not that stack (or when starting a new cross-language document format). Do not invent or depend on XDL for org policy.
 
-For the wider map (JSON → SDLang/KDL → programmable config → binary), see xref:general-knowledge:explanation/documentation/structured-data-formats.adoc[Structured data formats]. For creating stubs from the repo browser, see xref:components/content-create.adoc[Content Create].
+For the wider map (JSON → SDLang/KDL → programmable config → binary), see xref:general-knowledge::explanation/documentation/structured-data-formats.adoc[Structured data formats]. For creating stubs from the repo browser, see xref:components/content-create.adoc[Content Create].
 
 == Relation to JSON5
 
