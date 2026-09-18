@@ -182,7 +182,7 @@ The Dev-Center application prioritizes a premium, high-fidelity user interface.
 Current UI implementation uses the `dlangui` library (Skia-backed immediate-mode rendering).
 
 When evaluating **future UI stacks** or **cross-platform desktop shells**, see xref:general-knowledge::explanation/architecture/graphics-rendering-engines.adoc[Graphics rendering engines] in general-knowledge — framework comparison, large-document patterns, and post-Skia pipelines (Graphite, Impeller, Vello).
-Essay: link:https://devcentr.org/news/2026-08-19-after-skia-where-rendering-is-headed[After Skia: where rendering is headed].
+Essay: link:https://devcentr.org/blog/2026-08-19-after-skia-rendering-for-documents-that-grow[After Skia: rendering for documents that grow].
 
 === Logical vs Optical Pixels
 [IMPORTANT]

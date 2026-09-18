@@ -14,7 +14,7 @@ Illustrated model::
 xref:general-knowledge::explanation/infrastructure/abstract-playbooks.adoc[Abstract playbooks]
 
 Essay::
-link:https://devcentr.org/news/2026-08-13-intents-not-shell-translation[Intents, not shell translation]
+link:https://devcentr.org/blog/2026-08-13-stop-translating-shells[Stop translating shells]
 
 == Three layers (not SLP, not shell translation)
 
