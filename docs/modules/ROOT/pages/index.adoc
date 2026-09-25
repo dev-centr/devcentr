@@ -1,0 +1,27 @@
+= Platforms
+:description: Dev-Centr platform products documented in this hub — DevCentr app and devcentr.org.
+:page-context-surface: component-home
+:keywords: platforms, DevCentr, devcentr.org, documentation hub
+
+This component is the **Platforms** documentation hub. Each product below is its own subtree in the sidebar.
+
+== Products
+
+[cols="1,2",options="header"]
+|===
+| Platform | What it is
+
+| xref:devcentr:index.adoc[DevCentr]
+| Developer tooling application (Development Orchestration Suite) — toolchain lifecycle, specifications, secrets manager, publishing, and upstream contributions.
+
+| xref:devcentr-org:index.adoc[devcentr.org]
+| Organization landing site — SolidStart marketing shell, news and changelog pipelines, Stack Advisor, and public tools.
+|===
+
+== Start here
+
+* xref:devcentr:project-vision.adoc[DevCentr project vision]
+* xref:devcentr:changelog.adoc[DevCentr changelog]
+* xref:devcentr-org:explanation/site-architecture.adoc[devcentr.org site architecture]
+* xref:devcentr-org:changelog.adoc[devcentr.org changelog]
+* xref:home::activity-log.adoc[Org-wide activity log] (Home)

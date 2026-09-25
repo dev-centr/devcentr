@@ -1,10 +1,6 @@
 name: platforms
 title: Platforms
 version: ~
-start_page: devcentr:index.adoc
+start_page: ROOT:index.adoc
 nav:
 - modules/devcentr/nav.adoc
-- modules/publishing/nav.adoc
-- modules/secrets-manager/nav.adoc
-- modules/specifications/nav.adoc
-- modules/upstream-contributions/nav.adoc

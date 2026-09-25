@@ -1,4 +1,5 @@
-* xref:index.adoc[Dev Center]
+.DevCentr
+* xref:index.adoc[Home]
 * xref:changelog.adoc[Changelog]
 * xref:docs-organization.adoc[Doc Organization]
 * xref:project-vision.adoc[Project Vision]
