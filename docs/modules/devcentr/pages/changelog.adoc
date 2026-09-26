@@ -1,5 +1,9 @@
 = Changelog
 
+== 2026-09-26 - Nav Overview label
+
+* Module landing nav label **Overview** (was Home) under Platforms > DevCentr — avoids colliding with the Home forest root.
+
 == 2026-09-26 -- Playtime SVG dark-text vars
 
 * Adapt duplicated `playtime-*.svg` baked figures so Mermaid `#my-svg` fill / `.label` color use `color.text.primary` themed-svg vars (keeps dark-mode text readable; matches general-knowledge pipeline).
