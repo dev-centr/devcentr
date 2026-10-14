@@ -1,7 +1,7 @@
 module modules.workflow_templates_store.browser;
 
 import std.process : spawnProcess, wait, environment;
-import std.path : buildPath;
+import std.path : buildPath, dirName;
 import std.file : exists, readText;
 import std.string : strip;
 
@@ -12,9 +12,15 @@ string getHomeDir()
 {
     version (Windows)
     {
+        // Prefer USERPROFILE: HOMEDRIVE/HOMEPATH can point at a share/drive
+        // root (e.g. Z:\), creating a stray "Users/" tree relative to it.
+        string up = environment.get("USERPROFILE");
+        if (up.length) return up;
+        string la = environment.get("LOCALAPPDATA");
+        if (la.length) return dirName(la);
         string drive = environment.get("HOMEDRIVE");
         string path = environment.get("HOMEPATH");
-        return drive.length && path.length ? buildPath(drive, path) : environment.get("USERPROFILE");
+        return drive.length && path.length ? buildPath(drive, path) : environment.get("HOME");
     }
     else
         return environment.get("HOME");
