@@ -3,7 +3,7 @@ module modules.cli_tools.cache;
 import std.file : exists, mkdirRecurse, readText, write;
 import std.path : buildPath, absolutePath;
 import std.datetime : SysTime, Clock, hours;
-import std.process : execute;
+import std.process : execute, Config;
 import std.json : JSONValue, parseJSON;
 
 class CliToolsCatalogCache {
@@ -60,14 +60,14 @@ class CliToolsCatalogCache {
         auto path = repoPath;
         if (!exists(path)) {
             mkdirRecurse(cacheRoot);
-            auto result = execute(["git", "clone", "--depth", "1", definitionsRepoUrl, path]);
+            auto result = execute(["git", "clone", "--depth", "1", definitionsRepoUrl, path], null, Config.suppressConsole);
             if (result.status != 0)
                 return false;
         } else {
-            auto result = execute(["git", "-C", path, "pull", "--ff-only"]);
+            auto result = execute(["git", "-C", path, "pull", "--ff-only"], null, Config.suppressConsole);
             if (result.status != 0) {
-                execute(["git", "-C", path, "fetch", "origin"]);
-                execute(["git", "-C", path, "reset", "--hard", "origin/main"]);
+                execute(["git", "-C", path, "fetch", "origin"], null, Config.suppressConsole);
+                execute(["git", "-C", path, "reset", "--hard", "origin/main"], null, Config.suppressConsole);
             }
         }
 

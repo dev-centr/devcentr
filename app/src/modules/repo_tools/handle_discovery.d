@@ -39,7 +39,7 @@ void discoverExternalToolsForRoots(RepoToolsRegistry registry, string[] repoRoot
 // ---------------------------------------------------------------------------
 private void discoverWindows(RepoToolsRegistry registry, string[] repoRoots)
 {
-    import std.process : pipeProcess, Redirect, wait;
+    import std.process : pipeProcess, Redirect, wait, Config;
 
     // Build a PowerShell one-liner that checks each process's main module path.
     // For each match, emit "PID|ProcessName|MainModulePath".
@@ -62,7 +62,9 @@ private void discoverWindows(RepoToolsRegistry registry, string[] repoRoots)
     {
         auto pipes = pipeProcess(
             ["powershell", "-NoProfile", "-Command", psScript],
-            Redirect.stdout | Redirect.stderr);
+            Redirect.stdout | Redirect.stderr,
+            null,
+            Config.suppressConsole);
 
         foreach (rawLine; pipes.stdout.byLine)
         {

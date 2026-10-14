@@ -80,6 +80,31 @@ Copy-Item -LiteralPath $ExePath -Destination (Join-Path $payload "DevCentr.exe")
 Copy-Item -LiteralPath $FreetypePath -Destination (Join-Path $payload "libfreetype-6.dll")
 Copy-Item -LiteralPath $LicensePath -Destination (Join-Path $payload "LICENSE")
 
+# Runtime UI + bundled catalog fallbacks (installed exe no longer depends on getcwd()).
+$uiSrc = Join-Path $root "app\src\ui\main.sdl"
+$uiDestDir = Join-Path $payload "ui"
+New-Item -ItemType Directory -Force -Path $uiDestDir | Out-Null
+Require-File $uiSrc "main.sdl"
+Copy-Item -LiteralPath $uiSrc -Destination (Join-Path $uiDestDir "main.sdl")
+
+$assetCopies = @(
+    @{ Src = "app\src\modules\cli_tools\fallback-tools.json"; Dest = "fallback-tools.json" },
+    @{ Src = "app\src\modules\toolchain_advisor\fallback-advisor.sdl"; Dest = "fallback-advisor.sdl" },
+    @{ Src = "app\src\modules\toolchain_advisor\fallback-advisor.json"; Dest = "fallback-advisor.json" },
+    @{ Src = "app\src\modules\wsl_manager\distro-guide.sdl"; Dest = "distro-guide.sdl" }
+)
+foreach ($a in $assetCopies) {
+    $src = Join-Path $root $a.Src
+    if (Test-Path -LiteralPath $src -PathType Leaf) {
+        Copy-Item -LiteralPath $src -Destination (Join-Path $payload $a.Dest)
+    } else {
+        Write-Warning "Optional asset missing: $src"
+    }
+}
+
+# NSIS currently installs payload root files only; also ship ui\ via recursive copy below.
+# Extend NSI to pick up ui\ and fallbacks.
+
 $portableReadme = Join-Path $root "packaging\windows\portable-readme.txt"
 Copy-Item -Path (Join-Path $payload "*") -Destination $portableFolder
 if (Test-Path -LiteralPath $portableReadme) {

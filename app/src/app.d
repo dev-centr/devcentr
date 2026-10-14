@@ -156,7 +156,18 @@ class DevCenterApp {
         logInfo("Creating main UI window.");
         window = Platform.instance.createWindow("Dev Center", null);
 
-        string uiPath = buildPath(getcwd(), "src", "ui", "main.sdl");
+        string uiPath = resolveMainUiPath();
+        if (!exists(uiPath))
+        {
+            logInfo("Main UI missing at " ~ uiPath);
+            window.showMessageBox(
+                UIString.fromRaw("DevCentr"d),
+                UIString.fromRaw(to!dstring(
+                    "UI layout file not found:\n" ~ uiPath ~
+                    "\n\nReinstall DevCentr or run from the app/ source tree.")));
+            window.show();
+            return;
+        }
         window.mainWidget = parseML(readText(uiPath));
 
         // The tab bodies are declared in DML already; just populate them.
@@ -836,15 +847,38 @@ variable "example" {
         window.showMessageBox(UIString.fromRaw("Infra"d), UIString.fromRaw("Created infra/ with main.tofu and variables.tofu. Open the Infra page to see it."d));
     }
 
-    static string getHomeDir() {
-        version(Windows) {
-            string drive = environment.get("HOMEDRIVE");
-            string path = environment.get("HOMEPATH");
-            if (drive && path) return buildPath(drive, path);
-            return environment.get("USERPROFILE");
-        }
-        else return environment.get("HOME");
+    static string getHomeDir() {
+        version(Windows) {
+            // USERPROFILE is the real user profile (C:\Users\<name>).
+            // HOMEDRIVE/HOMEPATH can point at a share/drive root (e.g. Z:\),
+            // which would create a stray "Users/" tree relative to that root.
+            string up = environment.get("USERPROFILE");
+            if (up && up.length) return up;
+            string la = environment.get("LOCALAPPDATA");
+            if (la && la.length) return dirName(la); // %LOCALAPPDATA%\.. = user profile
+            string drive = environment.get("HOMEDRIVE");
+            string path = environment.get("HOMEPATH");
+            if (drive && path) return buildPath(drive, path);
+            return environment.get("HOME");
+        }
+        else return environment.get("HOME");
     }
+}
+
+/// Prefer cwd (dev), then next to the installed exe (`ui/main.sdl` or `src/ui/main.sdl`).
+string resolveMainUiPath()
+{
+    import std.file : thisExePath;
+    string[] candidates = [
+        buildPath(getcwd(), "src", "ui", "main.sdl"),
+        buildPath(dirName(thisExePath()), "ui", "main.sdl"),
+        buildPath(dirName(thisExePath()), "src", "ui", "main.sdl"),
+        buildPath(dirName(thisExePath()), "main.sdl"),
+    ];
+    foreach (c; candidates)
+        if (exists(c))
+            return c;
+    return candidates[0];
 }
 
 extern (C) int UIAppMain(string[] args) {

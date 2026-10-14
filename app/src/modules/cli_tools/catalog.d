@@ -140,14 +140,64 @@ CliToolInstallMethod resolveInstallMethod(
     return CliToolInstallMethod.init;
 }
 
-bool isToolInstalled(string verifyCommand) {
-    if (verifyCommand.length == 0) return false;
-    import std.process : executeShell;
-    version (Windows) {
-        auto r = executeShell("cmd /c " ~ verifyCommand ~ " >nul 2>&1");
-        return r.status == 0;
-    } else {
-        auto r = executeShell(verifyCommand ~ " >/dev/null 2>&1");
-        return r.status == 0;
+/// First PATH-checkable binary from a catalog verify command.
+/// Skips package runners (`npx`, `bunx`, `pnpm dlx`, `yarn dlx`) so we never
+/// spawn network installs during dashboard refresh.
+string primaryBinaryFromVerify(string verifyCommand)
+{
+    import std.string : strip, split, startsWith;
+
+    auto parts = verifyCommand.strip.split();
+    if (parts.length == 0)
+        return "";
+
+    size_t i = 0;
+    auto first = parts[0];
+    if (first == "npx" || first == "bunx")
+        i = 1;
+    else if (first == "pnpm" && parts.length > 1 && parts[1] == "dlx")
+        i = 2;
+    else if (first == "yarn" && parts.length > 1 && parts[1] == "dlx")
+        i = 2;
+    else
+        return first;
+
+    while (i < parts.length && parts[i].startsWith("-"))
+        i++;
+    if (i >= parts.length)
+        return "";
+    return parts[i];
+}
+
+private bool commandOnPathSilent(string name)
+{
+    if (name.length == 0)
+        return false;
+    import std.process : execute, Config;
+    import std.string : strip;
+
+    try
+    {
+        version (Windows)
+        {
+            auto r = execute(["where", name], null, Config.suppressConsole);
+            return r.status == 0 && r.output.strip.length > 0;
+        }
+        else
+        {
+            auto r = execute(["which", name]);
+            return r.status == 0 && r.output.strip.length > 0;
+        }
     }
+    catch (Exception)
+    {
+        return false;
+    }
+}
+
+/// True when the tool's primary binary is on PATH.
+/// Does **not** run `verifyCommand` (no `npx … --version`, no console flashes).
+bool isToolInstalled(string verifyCommand)
+{
+    return commandOnPathSilent(primaryBinaryFromVerify(verifyCommand));
 }

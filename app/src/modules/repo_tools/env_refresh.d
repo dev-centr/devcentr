@@ -35,13 +35,18 @@ bool commandOnPath(string name)
 {
     if (name.length == 0)
         return false;
+    import std.process : Config;
+
     version (Windows)
         enum probe = "where";
     else
         enum probe = "which";
     try
     {
-        auto result = execute([probe, name]);
+        version (Windows)
+            auto result = execute([probe, name], null, Config.suppressConsole);
+        else
+            auto result = execute([probe, name]);
         return result.status == 0 && result.output.strip.length > 0;
     }
     catch (Exception)
@@ -211,13 +216,14 @@ string osEnvFingerprint()
     {
         try
         {
+            import std.process : Config;
             auto r = execute([
                 "powershell", "-NoLogo", "-NoProfile", "-Command",
                 "[Environment]::GetEnvironmentVariable('Path','Machine') + '|' + " ~
                 "[Environment]::GetEnvironmentVariable('Path','User') + '|' + " ~
                 "[Environment]::GetEnvironmentVariable('PATHEXT','Machine') + '|' + " ~
                 "[Environment]::GetEnvironmentVariable('PATHEXT','User')"
-            ]);
+            ], null, Config.suppressConsole);
             if (r.status == 0)
                 return toHexString(sha1Of(r.output.strip)).idup;
         }

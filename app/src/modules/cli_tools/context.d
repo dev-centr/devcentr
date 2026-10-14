@@ -1,18 +1,26 @@
 module modules.cli_tools.context;
 
+import modules.cli_tools.catalog : isToolInstalled;
 import modules.cli_tools.model;
-import std.process : execute;
 import std.algorithm : canFind;
+import std.array : join;
+import std.string : split, strip;
 
-private bool detectCommandWorks(string detectCmd) {
-    if (detectCmd.length == 0) return false;
-    version (Windows) {
-        auto r = execute(["cmd", "/c", detectCmd ~ " >nul 2>&1"]);
-        return r.status == 0;
-    } else {
-        auto r = execute(["sh", "-c", detectCmd ~ " >/dev/null 2>&1"]);
-        return r.status == 0;
-    }
+private bool detectCommandWorks(string detectCmd)
+{
+    if (detectCmd.length == 0)
+        return false;
+    // Catalog detect strings look like `where winget` / `which brew`.
+    // Strip the locator; PATH-check the target only (no cmd.exe console flash).
+    auto parts = detectCmd.strip.split();
+    if (parts.length == 0)
+        return false;
+    size_t i = 0;
+    if (parts[0] == "where" || parts[0] == "which")
+        i = 1;
+    if (i >= parts.length)
+        return false;
+    return isToolInstalled(parts[i .. $].join(" "));
 }
 
 /// Pick the best host context for install resolution (immutable contexts first when preferImmutable).
