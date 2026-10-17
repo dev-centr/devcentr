@@ -2,5 +2,6 @@ name: platforms
 title: Platforms
 version: ~
 start_page: ROOT:index.adoc
-nav:
-- modules/devcentr/nav.adoc
+# Nav owned by hub platforms-docs (dev-centr/docs antora.yml nav list). Antora keeps only the
+# last source's nav for a shared component name; a product nav: key here would clobber the
+# other platform's tree (Platforms sidebar showed one product + Overview only).
