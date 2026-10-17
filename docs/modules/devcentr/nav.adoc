@@ -32,5 +32,3 @@ include::partial$nav-publishing.adoc[]
 
 * xref:upstream-contributions:index.adoc[Upstream Contributions]
 include::partial$nav-upstream-contributions.adoc[]
-
-* xref:general-knowledge::index.adoc[General Knowledge]
