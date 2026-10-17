@@ -71,8 +71,8 @@ When the user attempts to **install or add IaC definitions to a repository**, th
 
 At the **organization** owner node, offer a guided add (wizard shorthand) for **email and messaging services**. This is documentation- and checklist-driven in the first version (no mandatory cloud API writes):
 
-* Present the four ITIL-shaped services separately: Email Inbound, Email Outbound Human, Email Transactional App, Marketing Journeys (see xref:business-bootstrap::explanation/itil-email-services.adoc[ITIL-shaped email services]).
-* Deep-link Docs to xref:business-bootstrap::explanation/email-decision-matrix.adoc[Email decision matrix] and xref:business-bootstrap::explanation/human-vs-product-messaging.adoc[Human vs product messaging].
+* Present the four ITIL-shaped services separately: Email Inbound, Email Outbound Human, Email Transactional App, Marketing Journeys (see xref:general-knowledge::explanation/email/itil-email-services.adoc[ITIL-shaped email services]).
+* Deep-link Docs to xref:business-bootstrap::explanation/email-decision-matrix.adoc[Email decision matrix] and xref:general-knowledge::explanation/email/human-vs-product-messaging.adoc[Human vs product messaging].
 * Never recommend Resend for human Gmail send-as; never recommend Brevo as the default for product journey orgs.
 * When DNS changes are needed, point operators at the org `infra` Pulumi stack (create it first if missing).
 
@@ -114,5 +114,5 @@ This split keeps file operations clear: service definitions stay in one place; f
 * xref:components/iac-discovery.adoc[IaC Discovery] — how IaC is discovered and mapped in repos.
 * xref:components/org-setup-wizard.adoc[Org setup wizard] — org-owner bootstrap for infra + email lanes.
 * xref:general-knowledge::explanation/infrastructure/iac.adoc[Infrastructure as Code (IaC)] — personal vs organization use (Docs button target).
-* xref:business-bootstrap::explanation/org-infra-repo-pattern.adoc[Org infra repo pattern]
+* xref:general-knowledge::explanation/infrastructure/org-infra-repo-pattern.adoc[Org infra repo pattern]
 * xref:business-bootstrap::explanation/email-decision-matrix.adoc[Email decision matrix]
