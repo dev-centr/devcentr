@@ -1,5 +1,10 @@
 = Changelog
 
+== 2026-10-20 - Project typography (font lock) spec
+
+* Spec xref:specifications:components/project-typography.adoc[Project typography (font lock)]: OSS vs retail vs mixed preference, `.devcentr/fonts.sdl`, Fontsource/Scriptbook install targets, Visual App Editor SDL mirror.
+* Catalog canonical in `dev-centr/agent-rules/catalogs/project-typefaces.sdl`; agent skill `font-project-lock`. DevCentr UI panel remains **next** (Appearance unchanged).
+
 == 2026-09-26 - Nav Overview label
 
 * Module landing nav label **Overview** (was Home) under Platforms > DevCentr — avoids colliding with the Home forest root.

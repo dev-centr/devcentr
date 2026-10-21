@@ -11,6 +11,7 @@
 *** xref:specifications:components/explorer-shell-integration.adoc[Explorer Shell Integration]
 *** xref:specifications:components/repository-browser-terminal.adoc[Repository Browser Terminal]
 *** xref:specifications:components/appearance.adoc[Appearance (code font)]
+*** xref:specifications:components/project-typography.adoc[Project typography (font lock)]
 *** xref:specifications:components/repository-tools-registry.adoc[Repository Tools Registry]
 *** xref:specifications:components/uniconfig.adoc[UniConfig Config Panel]
 *** xref:specifications:components/repository-provider-registry.adoc[Repository Provider Registry]

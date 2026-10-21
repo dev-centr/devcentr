@@ -1,0 +1,105 @@
+= Project typography (font lock)
+:description: Pin OSS or retail typefaces per project role — separate from DevCentr Appearance; catalog + install targets for web, Flutter, and Visual App Editor.
+:page-audience: Developers and agents configuring typography for a product repo opened in DevCentr or Visual App Editor
+:page-usage-context: Component spec; implements team-docs font-lock roadmap item "project Fontsource lock"
+:page-orig-author: Ryan Johnson
+:page-last-author: Cursor agent on behalf of Ryan Johnson
+:page-last-edited: 2026-10-20
+
+ifndef::page-context-active[]
+[.page-context.page-context-lead]
+****
+Audience role:: {page-audience}
+****
+endif::[]
+
+== Purpose
+
+Users choose **open/OSS**, **paid retail**, or **mixed** typography per project.
+DevCentr supplies **recommended OSS** faces and **foundry checkout links** for retail — it does not scrape fonts or auto-download commercial files.
+
+This spec is **not** xref:components/appearance.adoc[Appearance (code font)] (suite terminal/code chrome).
+
+== Status
+
+[cols="1,2",options="header"]
+|===
+| Piece | Status
+
+| Canonical catalog `project-typefaces.sdl`
+| Shipped in `dev-centr/agent-rules/catalogs/` (synced into Visual App Editor core)
+
+| Project lock `.devcentr/fonts.sdl`
+| Spec + agent skill `font-project-lock`; DevCentr UI panel **next**
+
+| Fontsource / npm apply
+| Agent-driven today; DevCentr wizard **later**
+
+| Retail faces
+| User-owned files + `license_ref`; catalog links to Type Network / foundry sites only
+|===
+
+Team-docs narrative: link:https://team.docs.devcentr.org/how-to/font-lock.html[Font lock — status and install].
+
+== Lock file (`.devcentr/fonts.sdl`)
+
+```sdl
+fonts {
+  preference mixed
+  role ui_sans face "dm-sans" tier oss install web
+  role ui_mono face "jetbrains-mono" tier oss install os
+}
+```
+
+| Field | Values |
+| --- | --- |
+| `preference` | `oss` — suggest OSS catalog picks only; `retail` — user supplies licenses; `mixed` — default |
+| `role` | `ui_sans`, `ui_mono`, `code`, `text_serif`, `display`, … |
+| `face` | Id from catalog (e.g. `dm-sans`, `graphik`) |
+| `tier` | `oss` or `retail`; must match catalog |
+| `install` | `web` (Fontsource), `os` (Scriptbook), `local` (user-provided files) |
+
+Policy detail lives in agent-rules `general/font-project-lock.md`.
+
+== Catalog and providers
+
+[cols="1,2",options="header"]
+|===
+| Source | Role
+
+| **Fontsource**
+| Default OSS web pin (`@fontsource/*` npm packages in catalog)
+
+| **Google Fonts**
+| Directory / slug audit — not recommended runtime CDN for production
+
+| **Foundry sites** (Klim, Commercial Type, Dinamo, Type Network)
+| Retail purchase; no redistribution from DevCentr
+
+| **Scriptbook + equivalence-rules-cli**
+| OS mono install (same pattern as Appearance)
+|===
+
+Recommended OSS UI sans include DM Sans, Source Sans 3, Inter, Plus Jakarta Sans, IBM Plex Sans.
+Recommended OSS code monos: JetBrains Mono, Cascadia Mono (DevCentr terminal default remains Cascadia Mono).
+
+== Visual App Editor
+
+Projects using Visual App Editor mirror typography choices in `visual_app_editor.sdl`:
+
+```sdl
+typography preference="mixed" ui_sans="dm-sans" ui_mono="jetbrains-mono"
+```
+
+Theme panel edits preview metadata only; app `ThemeData` still comes from the user's Flutter theme code until codegen exists.
+
+== Agents
+
+Load skill **`font-project-lock`** (agent-rules) when pinning or applying fonts.
+Order: **`typeface-selection`** → **`font-project-lock`** → **`self-host-fonts`** for web bundles.
+
+== Never
+
+* Scraper font hubs or unverified ZIP mirrors
+* Proprietary site fonts (Google Sans, etc.) as bundled defaults — see team-docs commissioned site fonts
+* A Suitcase-style OS font manager branded as DevCentr
