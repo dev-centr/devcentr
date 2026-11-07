@@ -55,7 +55,7 @@ DevCentr connects to a wide range of version control systems and hosting provide
 | **Enterprise** | CVS, ClearCase
 |===
 
-For a community-maintained list of self-hosted providers, see the link:https://github.com/dev-centr/repository-providers[Repository Providers registry].
+The xref:specifications:components/repository-provider-registry.adoc[Repository Provider Registry] describes the proposed provider discovery and URL-migration workflow.
 
 == 🏗️ Architecture
 DevCentr is built with an extension-first architecture, allowing the community to add support for new tools and hosting providers via the source-available codebase.

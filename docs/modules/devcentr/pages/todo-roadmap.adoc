@@ -2,7 +2,7 @@
 :navtitle: Todo & Roadmap
 :description: Outstanding tasks and development roadmap for the DevCentr application and documentation.
 
-This page is the **task-level** TODO and roadmap for the DevCentr app and its docs. The org-wide summary (themes and priorities across all Dev-Centr projects) lives on the central docs site: link:https://docs.devcentr.org/home/latest/todo-roadmap.html[Todo & Roadmap (docs.devcentr.org)]. A working copy may also be kept at the repository root as `TODO.adoc`.
+This page is the **task-level** TODO and roadmap for the DevCentr app and its docs. The org-wide summary (themes and priorities across all Dev-Centr projects) lives on the central docs site: link:https://docs.devcentr.org/home/todo-roadmap/[Todo & Roadmap (docs.devcentr.org)]. A working copy may also be kept at the repository root as `TODO.adoc`.
 
 == High priority
 

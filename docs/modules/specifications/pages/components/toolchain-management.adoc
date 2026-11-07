@@ -61,7 +61,7 @@ Bootstrap, pin/resolve, health, repair, upgrade/rollback, surface parity.
 | Flutter page (`pageFlutter`) — see xref:components/ecosystem-management.adoc[Ecosystem Management]
 
 | Docs Learn more
-| `https://docs.devcentr.org/general-knowledge/latest/explanation/infrastructure/toolchain-management.html`
+| `https://docs.devcentr.org/general-knowledge/explanation/infrastructure/toolchain-management/`
 |===
 
 == External repositories

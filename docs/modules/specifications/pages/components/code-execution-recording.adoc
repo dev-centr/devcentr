@@ -143,4 +143,4 @@ echo "This is Block 1"
 
 A robust tool would likely use the **AsciiDoc Explicit ID** if available, and then use a **Content Hash** as a _secondary ID_ or a _checksum_ to ensure the output is current relative to the code.
 
-Powered by link:https://www.gem-chat-exporter.com[Gem Chat Exporter]
+Powered by link:https://ai-chat-exporter.com/[Gem Chat Exporter]

@@ -82,9 +82,9 @@ pageWsl
 * **Guide file:** `app/src/modules/wsl_manager/distro-guide.sdl` (bundled; loaded via `bundledGuideSdlPath()`, with `builtinGuide()` fallback).
 * **Docs URLs** (also in SDL):
 
-**Comparison:** `https://docs.devcentr.org/general-knowledge/latest/explanation/infrastructure/wsl-distro-comparison.html`
+**Comparison:** `https://docs.devcentr.org/general-knowledge/explanation/infrastructure/wsl-distro-comparison/`
 
-**Setup:** `https://docs.devcentr.org/general-knowledge/latest/how-to/wsl-setup.html`
+**Setup:** `https://docs.devcentr.org/general-knowledge/how-to/wsl-setup/`
 
 **WSL Settings docs:** `https://learn.microsoft.com/windows/wsl/wsl-config`
 

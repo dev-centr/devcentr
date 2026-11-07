@@ -15,7 +15,7 @@ Forge correspondence and other structured remote collections should not force ag
 * **Provider-native search** (fuzzy today; vector/hybrid tomorrow) as a table-stakes API for data hosts.
 * **Opt-in mirror backups** that mimic the provider’s data shape and API so consumers retain queryable ownership.
 
-Near-term demonstration: personal `.issues` submission archives (bodies + media), xref:tools:issues-browser:index.adoc[Issues Browser] forge backups, and GitHub CLI `--attach` for live media while keeping local copies. Encyclopedia: link:https://docs.devcentr.org/general-knowledge/explanation/internet-architecture/provider-search-and-mirror-backups.html[Provider search and mirror backups]. HCI face: link:https://hci-nerdz.github.io/docs/hci-nerdz/host-held-history.html[Host-held history].
+Near-term demonstration: personal `.issues` submission archives (bodies + media), xref:tools:issues-browser:index.adoc[Issues Browser] forge backups, and GitHub CLI `--attach` for live media while keeping local copies. Encyclopedia: link:https://docs.devcentr.org/general-knowledge/explanation/internet-architecture/provider-search-and-mirror-backups/[Provider search and mirror backups]. HCI face: link:https://hci-nerdz.github.io/docs/hci-nerdz/host-held-history/[Host-held history].
 
 While traditional IDEs focus on the editor, DevCentr focuses on the **Orchestration** of the entire development lifecycle:
 
@@ -182,7 +182,7 @@ The Dev-Center application prioritizes a premium, high-fidelity user interface.
 Current UI implementation uses the `dlangui` library (Skia-backed immediate-mode rendering).
 
 When evaluating **future UI stacks** or **cross-platform desktop shells**, see xref:general-knowledge::explanation/architecture/graphics-rendering-engines.adoc[Graphics rendering engines] in general-knowledge — framework comparison, large-document patterns, and post-Skia pipelines (Graphite, Impeller, Vello).
-Essay: link:https://devcentr.org/blog/2026-08-19-after-skia-rendering-for-documents-that-grow[After Skia: rendering for documents that grow].
+Essay: link:https://devcentr.org/blog/2026-08-19-after-skia-modern-2d-rendering-engine-with-vello[After Skia: rendering for documents that grow].
 
 === Logical vs Optical Pixels
 [IMPORTANT]

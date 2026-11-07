@@ -106,7 +106,7 @@ pageFlutter
 == Data
 
 * Language SDL: `app/src/modules/languages/flutter.sdl` (and peers).
-* Docs URL (default): `https://docs.devcentr.org/general-knowledge/latest/explanation/infrastructure/toolchain-management.html`
+* Docs URL (default): `https://docs.devcentr.org/general-knowledge/explanation/infrastructure/toolchain-management/`
 
 == Related
 

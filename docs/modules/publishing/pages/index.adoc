@@ -23,10 +23,7 @@ Experimental **one-file** binary distribution (APE / native-slice pack + Binary 
 
 `packagehub` is a DevCentr project focused on improving how software is published and released.
 
-The primary documentation for PackageHub lives in its own docs site (built with Fumadocs), not in this Antora component. Use these links for details, guides, and API/CLI docs:
-
-* link:https://docs.packagehub.dev[docs.packagehub.dev]
-* link:https://packagehub.dev/docs[packagehub.dev/docs]
+PackageHub documentation is maintained with its source in link:https://github.com/dev-centr/packagehub[dev-centr/packagehub]. The planned standalone documentation hosts are not currently published; use the repository for guides and API/CLI details.
 
 DevCentr’s Publishing view can link you into the appropriate PackageHub docs while still relying on the shared knowledge-base articles above for the underlying concepts and best practices.
 
