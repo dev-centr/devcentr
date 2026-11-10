@@ -8,6 +8,7 @@ VerticalLayout {
         TextWidget { text: "Dev Center"; fontSize: 18pt; fontWeight: 800; textColor: "#007AFF" }
         HSpacer { layoutWidth: fill }
         Button { id: btnAIConfig; text: "AI Config" }
+        Button { id: btnTasks; text: "Tasks" }
         Button { id: btnAppearance; text: "Appearance" }
         Button { id: btnHome; text: "Home"; styleId: "BUTTON_TRANSPARENT" }
         Button { id: btnUpdate; text: "Check for Updates" }
@@ -30,6 +31,7 @@ VerticalLayout {
             Button { id: navToolchainAdvisor; text: "Stack Advisor"; layoutWidth: fill }
             Button { id: navWsl; text: "WSL"; layoutWidth: fill }
             Button { id: navFlutter; text: "Flutter"; layoutWidth: fill }
+            Button { id: navTasks; text: "Task list"; layoutWidth: fill }
         }
 
         // Main Content
@@ -256,6 +258,12 @@ VerticalLayout {
                 VerticalLayout { id: flutterAdvisoryHost; layoutWidth: fill; layoutHeight: WRAP_CONTENT }
                 TextWidget { text: "Ecosystem management for Flutter. Community version managers are a bridge until the official entrypoint owns pinning and repair."; fontSize: 10pt; textColor: "#AAAAAA"; margins: 5 }
                 VerticalLayout { id: flutterManagerHost; layoutWidth: fill; layoutHeight: fill }
+            }
+
+            VerticalLayout {
+                id: pageTasks; layoutWidth: fill; layoutHeight: fill; padding: 10
+                TextWidget { text: "Task list"; fontSize: 18pt; margins: 5 }
+                VerticalLayout { id: tasksHost; layoutWidth: fill; layoutHeight: fill }
             }
         }
     }

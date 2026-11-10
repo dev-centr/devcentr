@@ -1,5 +1,11 @@
 = Changelog
 
+== 2026-11-10
+
+=== Drop-in control and live task list
+
+* Agents can drive the desktop app from a CLI or MCP session. The resident engine is link:https://github.com/dev-centr/dropin[dropin]. The **Tasks** page reloads an SDL task file when it changes. Spec: xref:specifications:components/dropin.adoc[Drop-in control]. Detail: xref:changelog-details/2026-11-10 - dropin-control.adoc[notes].
+
 == 2026-11-07
 
 === Refresh documentation destinations

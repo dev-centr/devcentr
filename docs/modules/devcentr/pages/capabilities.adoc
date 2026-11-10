@@ -29,6 +29,7 @@ DevCentr configures and hands off to external agents; it does not replace agent 
 *   **Always-on human shell:** Repository browser terminal with env intelligence — independent of IDE/agent-manager PTYs.
 *   **Registries:** `agent_shell_registry.sdl` (shells, runtimes, inference, interconnects, arrangements); `ai_client_profiles.json5` (MCP/skills clients); `ai_stack_domain_pack.sdl` (layer spine for cognitive bins).
 *   **Planned UI:** Role Topology Composer + AI stack canvas / guided add — see xref:specifications:components/role-topology-composer.adoc[Role Topology Composer] and xref:specifications:components/ai-workflow-arrangement.adoc[AI Workflow Arrangement]. Layered placement only; MCP/skills remain AI Config tabs.
+*   **App control:** xref:specifications:components/dropin.adoc[Drop-in control] is a CLI, MCP server, and resident engine for this app, plus a task file the window reloads. It is not an agent chat and does not replace the agent shell registry.
 *   **Topologies:** xref:general-knowledge::explanation/infrastructure/agent-control-planes.adoc[Agent control planes and compute topologies].
 
 == 🛠️ Core Functional Pillars

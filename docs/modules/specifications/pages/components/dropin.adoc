@@ -1,0 +1,84 @@
+= Drop-in control
+:description: Resident engine, CLI, and MCP so an agent can drive DevCentr from outside the window, plus a task file the UI reloads.
+:page-audience: Developers and agents wiring DevCentr to a CLI or MCP client
+:page-usage-context: Component spec for the desktop task list and the dropin control session
+:page-orig-author: Ryan Johnson
+:page-last-author: Cursor agent on behalf of Ryan Johnson
+
+ifndef::page-context-active[]
+[.page-context.page-context-lead]
+****
+Audience role:: {page-audience}
+****
+endif::[]
+
+DevCentr can be driven from outside the window. The resident engine, the command-line tool, and the MCP server live in link:https://github.com/dev-centr/dropin[dropin]. This page is the desktop contract.
+
+== Two planes
+
+[cols="1,2"]
+|===
+| Plane | Job
+
+| Command
+| Precise and fast. CLI processes and the MCP server append a request to a shared ring. The resident engine is the only consumer. Use this for status, shutdown, plugin reload, and handing the session to a newly built engine.
+
+| Task file
+| The list a person looks at. An agent writes `tasks.sdl`. The window reloads it when the file's modification time changes. Use this for task lists and other documents that should stay readable and diffable.
+|===
+
+The task file is the source of truth for the list. The ring only carries commands and a short notification after a write. A write still shows up in the window if the engine is down, because the panel watches the file.
+
+== Where the file is
+
+Session name for this app: `devcentr`.
+
+----
+%USERPROFILE%\.dropin\sessions\devcentr\tasks.sdl
+----
+
+`DROPIN_HOME` replaces the `.dropin` parent. `DROPIN_SESSION` is the CLI default when `--session` is omitted. The window always reads the `devcentr` session.
+
+== Task document
+
+----
+tasks {
+  task "write-spec" {
+    title "Write the spec"
+    status "open"
+    owner "agent"
+    detail "One paragraph."
+  }
+}
+----
+
+`status` is `open`, `doing`, `done`, or `blocked`. Unknown values still render. `detail` is one SDL string; newlines are written as `\n`.
+
+== What the window does
+
+The **Tasks** button opens the list. About four times a second the panel checks the file time and reparses with SDLang. It does not send mouse or keyboard input, and it does not embed an agent chat. Agent shells stay in the xref:components/agent-shell-registry.adoc[agent shell registry].
+
+== Commands an agent runs
+
+----
+dropin --session devcentr engine
+dropin --session devcentr tasks write tasks.sdl
+dropin --session devcentr call status
+dropin --session devcentr mcp
+----
+
+MCP tool names: `dropin_status`, `dropin_tasks_read`, `dropin_tasks_write`, `dropin_call`, `dropin_plugin_reload`, `dropin_shutdown`.
+
+== Handoff
+
+The engine is a long-lived process. A newer build takes the same session by mapping the same ring file and becoming the owner. The old process finishes the request it already claimed, then exits. Do not overwrite the executable that is still running. Point `handoff` at the new binary:
+
+----
+dropin --session devcentr handoff C:\path\to\new-dropin.exe
+----
+
+Product logic that should be replaceable without restarting the engine is a shared library with the C ABI in the dropin repository (`dropin_plugin_abi`, `dropin_plugin_attach`, `dropin_plugin_detach`, `dropin_plugin_call`). The host does not choose that library's garbage collector.
+
+== Memory
+
+The ring is a file of plain bytes. It is not registered with a garbage collector. Callers can be the default GC, tgc, or `@nogc`. Do not store D pointers in the ring or expect a plugin's heap to survive `plugin reload`. State that must survive lives in the task file or the ring.

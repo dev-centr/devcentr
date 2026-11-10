@@ -33,6 +33,7 @@ import modules.cli_tools.settings : loadCliToolsSettings, CliToolsSettings;
 import modules.cli_tools.catalog : loadCliToolsCatalogFromJson;
 import modules.cli_tools.context : detectHostContext, contextLabel;
 import modules.cli_tools.model : CliToolsCatalog;
+import modules.control_plane.tasks_panel : TasksPanel;
 import modules.repo_tools.repo_terminal_widget : RepoTerminalWidget;
 import modules.services.ai_config_dialog : showAIConfigDialog;
 import modules.appearance.settings_dialog : showAppearanceSettingsDialog;
@@ -77,6 +78,7 @@ class DevCenterApp {
     BrowserItem[] browserItems; /// Maps list index to item type
     JSONValue vcsProfiles;     /// Loaded from profiles.json5
     uint discoveryTimerId;    /// Background tool-discovery timer
+    TasksPanel tasksPanel;
 
     StringListAdapter templateAdapter;
     StringListAdapter repoAdapter;
@@ -243,6 +245,7 @@ class DevCenterApp {
         setupEventHandlers();
         refreshTemplates();
         refreshProject();
+        mountTasksPanel();
         auto contentStack = window.mainWidget.childById!FrameLayout("contentStack");
         if (contentStack)
             contentStack.showChild("pageHome", Visibility.Gone);
@@ -258,7 +261,7 @@ class DevCenterApp {
 
         auto showPage = delegate(int index, bool showSidebar) {
         logInfo("Switching to page index " ~ to!string(index));
-        string[] pageIds = ["pageHome", "pageTemplates", "pageProject", "pageDashboard", "pageWorkflowTemplates", "pageInfra", "pageInstall", "pageToolchainAdvisor", "pageWsl", "pageFlutter"];
+        string[] pageIds = ["pageHome", "pageTemplates", "pageProject", "pageDashboard", "pageWorkflowTemplates", "pageInfra", "pageInstall", "pageToolchainAdvisor", "pageWsl", "pageFlutter", "pageTasks"];
         if (index >= 0 && index < pageIds.length) {
             contentStack.showChild(pageIds[index]);
         }
@@ -288,6 +291,9 @@ class DevCenterApp {
         }
         if (index == 9) {
             mountFlutterEcosystemPanel();
+        }
+        if (index == 10) {
+            mountTasksPanel();
         }
     };
 
@@ -319,6 +325,8 @@ class DevCenterApp {
         bindClick("btnRefreshWsl", delegate(Widget w) { mountWslManagerPanel(); return true; });
         bindClick("btnChoiceFlutter", delegate(Widget w) { showPage(9, true); return true; });
         bindClick("navFlutter", delegate(Widget w) { showPage(9, true); return true; });
+        bindClick("btnTasks", delegate(Widget w) { showPage(10, true); return true; });
+        bindClick("navTasks", delegate(Widget w) { showPage(10, true); return true; });
         bindClick("btnRefreshFlutter", delegate(Widget w) { mountFlutterEcosystemPanel(); return true; });
         bindClick("btnRefreshCliToolsCatalog", delegate(Widget w) {
             cliToolsCache.updateCache(true);
@@ -782,6 +790,19 @@ class DevCenterApp {
         }));
     }
 
+    void mountTasksPanel()
+    {
+        auto host = window.mainWidget.childById!VerticalLayout("tasksHost");
+        if (!host)
+            return;
+        if (tasksPanel is null)
+        {
+            tasksPanel = new TasksPanel();
+            host.addChild(tasksPanel);
+        }
+        tasksPanel.start();
+    }
+
     void mountFlutterEcosystemPanel()
     {
         auto def = loadEcosystemFromSdl(bundledLanguageSdlPath("flutter"), "flutter");
@@ -847,21 +868,21 @@ variable "example" {
         window.showMessageBox(UIString.fromRaw("Infra"d), UIString.fromRaw("Created infra/ with main.tofu and variables.tofu. Open the Infra page to see it."d));
     }
 
-    static string getHomeDir() {
-        version(Windows) {
-            // USERPROFILE is the real user profile (C:\Users\<name>).
-            // HOMEDRIVE/HOMEPATH can point at a share/drive root (e.g. Z:\),
-            // which would create a stray "Users/" tree relative to that root.
-            string up = environment.get("USERPROFILE");
-            if (up && up.length) return up;
-            string la = environment.get("LOCALAPPDATA");
-            if (la && la.length) return dirName(la); // %LOCALAPPDATA%\.. = user profile
-            string drive = environment.get("HOMEDRIVE");
-            string path = environment.get("HOMEPATH");
-            if (drive && path) return buildPath(drive, path);
-            return environment.get("HOME");
-        }
-        else return environment.get("HOME");
+    static string getHomeDir() {
+        version(Windows) {
+            // USERPROFILE is the real user profile (C:\Users\<name>).
+            // HOMEDRIVE/HOMEPATH can point at a share/drive root (e.g. Z:\),
+            // which would create a stray "Users/" tree relative to that root.
+            string up = environment.get("USERPROFILE");
+            if (up && up.length) return up;
+            string la = environment.get("LOCALAPPDATA");
+            if (la && la.length) return dirName(la); // %LOCALAPPDATA%\.. = user profile
+            string drive = environment.get("HOMEDRIVE");
+            string path = environment.get("HOMEPATH");
+            if (drive && path) return buildPath(drive, path);
+            return environment.get("HOME");
+        }
+        else return environment.get("HOME");
     }
 }
 

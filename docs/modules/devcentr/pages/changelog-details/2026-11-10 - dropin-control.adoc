@@ -1,0 +1,8 @@
+= 2026-11-10
+
+:hide-page:
+:navtree-parent: changelog.adoc
+
+== Drop-in control and live task list
+
+Agents can drive DevCentr from outside the window. The resident engine, CLI, and MCP server are the `dropin` library. The desktop **Tasks** page reloads `tasks.sdl` when the file changes.
