@@ -1,0 +1,178 @@
+= context7-submit
+:description: Library call, ctx7-submit flags, exit codes, and environment variables for sending a documentation source to Context7.
+:page-audience: Developers
+:page-usage-context: Reference for the context7-submit library and program
+:page-orig-author: Cursor Grok 4.7 on behalf of Ryan Johnson
+:page-last-author: Cursor Grok 4.7 on behalf of Ryan Johnson
+:page-last-edited: 2026-11-12
+
+ifndef::page-context-active[]
+[.page-context.page-context-lead]
+****
+Audience role:: {page-audience}
+Original author:: {page-orig-author}
+Latest contributor:: {page-last-author}
+Last updated:: {page-last-edited}
+****
+endif::[]
+
+`context7-submit` is a D library and the `ctx7-submit` program. Both post a documentation URL to Context7's Add Library API. The DevCentr window's use of the library is xref:components/context7-submit.adoc[Context7 documentation submit].
+
+The package source is https://github.com/dev-centr/context7-submit[dev-centr/context7-submit]. It is prepared for the DUB registry and is not registered there yet.
+
+== Program
+
+----
+ctx7-submit <url> [options]
+----
+
+The API key is `CONTEXT7_API_KEY`. A private Git token is `CONTEXT7_GIT_TOKEN`. Neither value is a command argument.
+
+== Options
+
+[cols="1,2"]
+|===
+| Option | Effect
+
+| `--type <kind>`
+| `github`, `gitlab`, `bitbucket`, `git`, `website`, `openapi`, or `llmstxt`. Omit it and the program detects the kind from the URL.
+
+| `--private`
+| Mark a Git repository as private.
+
+| `--skip-version-filtering`
+| Skip version-specific documentation pages.
+
+| `--generate-docs`
+| Generate docs from a private repository.
+
+| `--website-base-url <url>`
+| For a website, index only pages under this URL. This is the HTML documentation root.
+
+| `--base-url <url>`
+| Context7 deployment. The default is `https://context7.com`.
+
+| `--json`
+| Print one JSON result on stdout. The result includes `outcome`, `exitCode`, `libraryName`, `version`, `kind`, `message`, `error`, `status`, `changes`, `attention`, and `logPath`.
+
+| `-v`, `--verbose`
+| Print the run log on stderr. `CTX7_SUBMIT_VERBOSE=1` does the same. `CI=true` turns this on unless `--quiet` is set.
+
+| `--quiet`
+| Suppress the human summary.
+
+| `--help`, `-h`
+| Print usage and exit 0.
+
+| `--version`
+| Print `ctx7-submit` and the version, then exit 0.
+|===
+
+== How a URL is classified
+
+The program checks the URL in this order and stops at the first match:
+
+[cols="1,2"]
+|===
+| URL | Kind
+
+| Path ends in `llms.txt` or `/llms-full.txt`
+| `llmstxt`
+
+| Path contains `openapi` and ends in `.json`, `.yaml`, or `.yml`
+| `openapi`
+
+| Host is `github.com`, `gitlab.com`, or `bitbucket.org`, or a subdomain of one of those
+| That forge
+
+| Scheme is `git`, or the path ends in `.git`
+| `git`
+
+| Anything else with a scheme
+| `website`
+|===
+
+A documentation site with several path segments is a website. `--website-base-url` is rejected for every kind except `website`. A forge that is not GitHub, GitLab, or Bitbucket is a website unless the path ends in `.git`, in which case the kind is `git`.
+
+== Exit codes
+
+[cols="1,2"]
+|===
+| Code | Meaning
+
+| 0
+| Submitted, or the source was already indexed.
+
+| 1
+| The request failed.
+
+| 2
+| Usage error. A missing URL, an unknown option, or a URL without a scheme.
+
+| 3
+| Authentication required. `CONTEXT7_API_KEY` is missing, or Context7 rejected the key.
+
+| 4
+| Rate limited.
+|===
+
+On success without `--json`, stdout is the library id and nothing else. Diagnostics, including the log path, go to stderr.
+
+== Environment
+
+[cols="2,3,1,2"]
+|===
+| Variable | Purpose | Required | If unset
+
+| `CONTEXT7_API_KEY`
+| Authenticates the submission. Create the key at https://context7.com/dashboard[context7.com/dashboard].
+| Yes
+| The program exits 3 and does not send the request.
+
+| `CONTEXT7_GIT_TOKEN`
+| Git token for a private repository. It is placed in the request body and is not written to the log.
+| No
+| The submission is sent without a token.
+
+| `CTX7_SUBMIT_VERBOSE`
+| Set to `1` to print the run log on the terminal.
+| No
+| The terminal shows the outcome only, unless `CI=true`.
+
+| `CI`
+| When `true`, the program prints the run log unless `--quiet` is set.
+| No
+| Verbose output stays off unless requested.
+|===
+
+Logs are one file per run, pruned to the newest 20, under `%LOCALAPPDATA%\ctx7-submit\logs\` on Windows, `~/Library/Logs/ctx7-submit/` on macOS, and `$XDG_STATE_HOME/ctx7-submit/logs/` elsewhere (`~/.local/state` when `XDG_STATE_HOME` is unset). A sibling `.jsonl` file holds the same events.
+
+== Library
+
+Depend on the `library` configuration:
+
+[source,sdl]
+----
+dependency "context7-submit" path="../context7-submit"
+subConfiguration "context7-submit" "library"
+----
+
+[source,d]
+----
+import context7.submit;
+
+SubmitOptions options;
+options.websiteBaseUrl = "https://dlang.org/spec/";
+auto result = submitSource(SubmitRequest(
+    "https://dlang.org/spec/spec.html",
+    "website",
+    options,
+    apiKey
+));
+----
+
+`SubmitRequest` is the URL, an optional kind, `SubmitOptions`, the API key, and an optional `baseUrl` (default `https://context7.com`). `SubmitOptions` carries the private flag, the git token, skip-version-filtering, generate-docs, and `websiteBaseUrl`. Boolean fields are omitted from the JSON body unless the matching `has*` flag is set.
+
+`SubmitResult.ok` is true for a new submission and for a source that is already indexed (`alreadyExists`, HTTP 409). `libraryName` is the Context7 id, such as `/acme/docs`. `errorCode` is `validation_error`, `unauthorized`, `rate_limit_exceeded`, `network_error`, `invalid_response`, or `http_error`.
+
+Pass an `HttpPost` delegate as the second argument to `submitSource` to test without calling Context7. The delegate receives the endpoint URL, the JSON body, and the API key, and returns the response body plus the HTTP status.

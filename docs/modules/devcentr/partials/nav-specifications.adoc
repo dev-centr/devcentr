@@ -3,6 +3,7 @@
 *** xref:specifications:components/project-visualizer.adoc[Project Visualizer]
 *** xref:specifications:components/project-recognizer.adoc[Project Recognizer]
 *** xref:specifications:components/ai-config-interface.adoc[AI Config Interface]
+*** xref:specifications:components/context7-submit.adoc[Context7 documentation submit]
 *** xref:specifications:components/role-topology-composer.adoc[Role Topology Composer]
 *** xref:specifications:components/ai-workflow-arrangement.adoc[AI Workflow Arrangement]
 *** xref:specifications:components/agent-shell-registry.adoc[Agent Shell Registry]
@@ -45,5 +46,6 @@
 *** xref:specifications:features/page-level-version-selector.adoc[Page-level version selector]
 ** Reference
 *** xref:specifications:reference/definition-files.adoc[Definition Files (Services and Languages)]
+*** xref:specifications:reference/context7-submit.adoc[context7-submit]
 *** xref:specifications:templates-schema.adoc[Templates Repository Schema]
 *** xref:specifications:prohelp.adoc[Prohelp CLI Specification]

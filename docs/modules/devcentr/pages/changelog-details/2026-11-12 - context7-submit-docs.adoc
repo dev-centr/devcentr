@@ -1,0 +1,17 @@
+= 2026-11-12
+
+:hide-page:
+:navtree-parent: changelog.adoc
+:page-audience: Maintainers
+:page-usage-context: Changelog detail
+:page-orig-author: Cursor Grok 4.7 on behalf of Ryan Johnson
+:page-last-author: Cursor Grok 4.7 on behalf of Ryan Johnson
+
+== Context7 submit reference and architecture
+
+The specifications module now has two pages for the same package.
+
+* xref:specifications:components/context7-submit.adoc[Context7 documentation submit] is the desktop contract: the overview button, the dialog fields, and what the window does not do.
+* xref:specifications:reference/context7-submit.adoc[context7-submit] is the lookup page: program flags, URL classification, exit codes, environment variables, and `submitSource`.
+
+The capabilities page and the AI doc-source feature page link to both.

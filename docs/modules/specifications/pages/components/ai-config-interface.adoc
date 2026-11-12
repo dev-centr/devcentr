@@ -47,7 +47,7 @@ It should show:
 
 == MCP Setup tab
 
-This tab is for configuring Context7 and other MCP-backed docs/tools for supported clients.
+This tab is for configuring Context7 and other MCP-backed docs/tools for supported clients. Sending a documentation URL to the Context7 index is a separate action on the repository overview: xref:components/context7-submit.adoc[Context7 documentation submit].
 
 === Overall layout
 

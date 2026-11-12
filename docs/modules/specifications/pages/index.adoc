@@ -7,6 +7,7 @@ This section contains technical specifications for Dev Center components and fea
 * xref:components/dependency-modeler.adoc[Dependency Modeler] - Dependency modeling system for intra-project and external dependencies
 * xref:components/project-recognizer.adoc[Project Recognizer] - Project technology stack recognition module
 * xref:components/ai-config-interface.adoc[AI Config Interface] - Global AI configuration dialog for providers, MCP setup, and skills
+* xref:components/context7-submit.adoc[Context7 documentation submit] - Repository overview dialog that sends a documentation source to the Context7 index
 * xref:components/role-topology-composer.adoc[Role Topology Composer] - Generic canvas + guided-add for a domain **layer spine** (cognitive bins); orthogonal concerns attach later
 * xref:components/ai-workflow-arrangement.adoc[AI Workflow Arrangement] - `ai-stack` pack: blank map landing, Add an AI tool guided flow, layout recipes
 * xref:components/agent-shell-registry.adoc[Agent Shell Registry] - Catalog of standalone agent shells, runtimes, inference hosts, and interconnects
@@ -24,7 +25,12 @@ This section contains technical specifications for Dev Center components and fea
 * xref:json5.adoc[JSON5 Endorsement] - Use JSON5 when tools require JSON; fallback for config
 * xref:prohelp.adoc[Prohelp CLI Specification] - Hierarchical command-line progressive help system interceptor
 
+== Reference
 
+* xref:reference/context7-submit.adoc[context7-submit] - Library call, `ctx7-submit` flags, exit codes, and environment variables
+* xref:reference/definition-files.adoc[Definition Files (Services and Languages)] - SDL and JSON5 catalogs that drive discovery, install offers, and documentation links
+* xref:templates-schema.adoc[Templates Repository Schema]
+* xref:prohelp.adoc[Prohelp CLI Specification] - Hierarchical command-line progressive help system interceptor
 
 == Features
 

@@ -1,0 +1,75 @@
+= Context7 documentation submit
+:description: How the DevCentr window sends a documentation source to the Context7 index.
+:page-audience: Developers
+:page-usage-context: Component specification for the repository overview dialog
+:page-orig-author: Cursor Grok 4.7 on behalf of Ryan Johnson
+:page-last-author: Cursor Grok 4.7 on behalf of Ryan Johnson
+:page-last-edited: 2026-11-12
+
+ifndef::page-context-active[]
+[.page-context.page-context-lead]
+****
+Audience role:: {page-audience}
+Original author:: {page-orig-author}
+Latest contributor:: {page-last-author}
+Last updated:: {page-last-edited}
+****
+endif::[]
+
+A selected repository can send its documentation source to the Context7 index from the overview. The window calls the `context7-submit` library. It does not open the Context7 website, and it does not install an agent skill or an MCP server on the machine.
+
+Lookup for the program, the library call, and the environment variables is xref:reference/context7-submit.adoc[context7-submit].
+
+== Where it sits
+
+The button is **Submit docs to Context7**, on the repository overview, beside **Open Context7 Skills Browser**.
+
+MCP setup and skills stay in the AI Config dialog. That dialog configures a coding agent. This button writes a documentation source into Context7's index. The two jobs stay separate so a submit is not mistaken for a local install.
+
+The layered lookup order (indexed docs, then a local clone, then the web) is xref:features/ai-doc-sources-and-mcp-setup.adoc[AI Doc Sources and MCP Setup]. This page is only the write path: putting a source on the index when it is missing or the crawl root is wrong.
+
+== What the dialog collects
+
+[cols="1,2"]
+|===
+| Field | Behavior
+
+| Source URL
+| Required. When the repository has an `origin` remote, the field starts from that URL, rewritten to `https://` when it was an SSH or `git@` URL. A GitHub, GitLab, or Bitbucket URL is sent as a Git repository. Any other `https://` URL is sent as a website.
+
+| Website documentation root
+| Optional. Sent only as the crawl limit for a website. Use the HTML documentation root, which is often not the page the site homepage links to. A Git repository ignores this field.
+
+| API key
+| Required to send. The field starts from `CONTEXT7_API_KEY` when that variable is set. The dialog does not write the key to disk.
+|===
+
+**Submit** calls `submitSource` and shows the library id or the error in the dialog. **Close** dismisses the dialog. A source that is already indexed is a success, and the message says so.
+
+== What the window does not do
+
+* It does not guess a new documentation root when the old URL has moved.
+* It does not install Context7's MCP server or the `find-docs` skill. Those stay in AI Config.
+* It does not store `CONTEXT7_API_KEY` or `CONTEXT7_GIT_TOKEN`.
+* It does not shell out to `ctx7-submit`. The window links the library.
+
+== Code
+
+[cols="1,2"]
+|===
+| Piece | Path
+
+| Dialog
+| `app/src/modules/services/context7_submit_dialog.d`
+
+| Overview button
+| `app/src/app.d`
+
+| Library dependency
+| `app/dub.json`, package `context7-submit`, configuration `library`
+
+| Library and program
+| https://github.com/dev-centr/context7-submit[dev-centr/context7-submit]
+|===
+
+Until the package is on the DUB registry, the app depends on a sibling checkout at `../../context7-submit`. After publication, that dependency becomes a version range and keeps `subConfiguration "context7-submit" "library"`.

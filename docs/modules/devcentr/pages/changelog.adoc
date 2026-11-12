@@ -7,6 +7,11 @@
 * The repository overview can send a source URL to the Context7 index through the `context7-submit` library. The dialog does not install anything on the machine.
 * Detail: xref:changelog-details/2026-11-12 - context7-submit.adoc[notes].
 
+=== Context7 submit reference and architecture
+
+* Specifications now include the desktop contract and the library reference. Spec: xref:specifications:components/context7-submit.adoc[Context7 documentation submit]. Reference: xref:specifications:reference/context7-submit.adoc[context7-submit].
+* Detail: xref:changelog-details/2026-11-12 - context7-submit-docs.adoc[notes].
+
 == 2026-11-10
 
 === Drop-in control and live task list

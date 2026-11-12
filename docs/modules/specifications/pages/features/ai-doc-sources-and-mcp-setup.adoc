@@ -104,6 +104,12 @@ Preferred options:
 
 This is the closest practical equivalent to a pnpm-like shared store for Git repos.
 
+== Submitting a source that is not indexed yet
+
+When Context7 has no entry, or the indexed website is the wrong HTML root, DevCentr sends a URL from the repository overview. The window contract is xref:components/context7-submit.adoc[Context7 documentation submit]. Flags, exit codes, and `submitSource` are xref:reference/context7-submit.adoc[context7-submit].
+
+That write path does not install the MCP server. MCP setup stays in AI Config.
+
 == Documentation requirements
 
 When this feature is implemented in DevCentr, the docs should include:
