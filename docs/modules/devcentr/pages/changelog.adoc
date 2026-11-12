@@ -1,5 +1,12 @@
 = Changelog
 
+== 2026-11-12
+
+=== Submit a documentation source to Context7
+
+* The repository overview can send a source URL to the Context7 index through the `context7-submit` library. The dialog does not install anything on the machine.
+* Detail: xref:changelog-details/2026-11-12 - context7-submit.adoc[notes].
+
 == 2026-11-10
 
 === Drop-in control and live task list

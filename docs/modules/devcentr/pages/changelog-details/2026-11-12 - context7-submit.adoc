@@ -1,0 +1,14 @@
+= 2026-11-12
+
+:hide-page:
+:navtree-parent: changelog.adoc
+:page-audience: maintainers
+:page-usage-context: Changelog detail
+:page-orig-author: Cursor Grok 4.7 on behalf of Ryan Johnson
+:page-last-author: Cursor Grok 4.7 on behalf of Ryan Johnson
+
+== Submit a documentation source to Context7
+
+The repository overview has **Submit docs to Context7**. It calls `submitSource` from the `context7-submit` library, which lives in its own Dev-Centr repository. The API key comes from `CONTEXT7_API_KEY` or from the field in the dialog, and the dialog does not store it.
+
+The library checkout is a path dependency until the package is on the DUB registry. Dependents use the `library` configuration.

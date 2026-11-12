@@ -10,7 +10,13 @@
             "version": "457ffb3c856bedba5fdcf481fc0d787e4c9c1da3"
         },
         "sdlang-d": "~>0.10.6",
-        "project-map": "~>0.1.4"
+        "project-map": "~>0.1.4",
+        "context7-submit": {
+            "path": "../../context7-submit"
+        }
+    },
+    "subConfigurations": {
+        "context7-submit": "library"
     },
     "preBuildCommands": [
         "pnpm install"

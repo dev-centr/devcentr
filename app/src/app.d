@@ -36,6 +36,7 @@ import modules.cli_tools.model : CliToolsCatalog;
 import modules.control_plane.tasks_panel : TasksPanel;
 import modules.repo_tools.repo_terminal_widget : RepoTerminalWidget;
 import modules.services.ai_config_dialog : showAIConfigDialog;
+import modules.services.context7_submit_dialog : showContext7SubmitDialog;
 import modules.appearance.settings_dialog : showAppearanceSettingsDialog;
 import modules.content_create.ui : showCreateContentMenu;
 import modules.content_create.model : CreateContentOptions;
@@ -624,9 +625,15 @@ class DevCenterApp {
                 auto skillsBtn = new Button(null, "Open Context7 Skills Browser"d);
                 skillsBtn.click = delegate(Widget w) { openUrlInBrowser("https://context7.com/skills/"); return true; };
                 docsRow.addChild(skillsBtn);
+                auto submitDocsBtn = new Button(null, "Submit docs to Context7"d);
+                submitDocsBtn.click = delegate(Widget w) {
+                    showContext7SubmitDialog(window, selectedRepoPath);
+                    return true;
+                };
+                docsRow.addChild(submitDocsBtn);
                 overviewContent.addChild(docsRow);
                 auto note = new TextWidget(null,
-                    "Use the Terminal tab for repo-scoped commands. Use AI Config for Context7 MCP, skills, and AI provider setup."d);
+                    "Use the Terminal tab for repo-scoped commands. Use AI Config for Context7 MCP and skills. Submit docs to Context7 sends a source URL to the index."d);
                 note.textColor = 0xAAAAAA;
                 overviewContent.addChild(note);
                 overview.contentWidget = overviewContent;
