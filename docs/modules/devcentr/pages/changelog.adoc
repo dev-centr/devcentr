@@ -1,5 +1,12 @@
 = Changelog
 
+== 2026-11-15
+
+=== README contents list
+
+* The README contents list now sits under the header inside the expander.
+* Detail: xref:changelog-details/2026-11-15 - readme-contents-list.adoc[README contents list].
+
 == 2026-11-12
 
 === Submit a documentation source to Context7
@@ -636,4 +643,3 @@ This changelog records notable changes to the DevCentr application and its docum
 
 * Introduced Antora-based docs structure and initial specification modules.
 * See xref:devcentr:changelog-details/2025-12-09 - antora-docs-and-spec-modules.adoc[Detailed changelog].
-
