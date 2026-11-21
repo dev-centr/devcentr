@@ -140,6 +140,10 @@ See link:https://docs.devcentr.org[docs.devcentr.org] for install and setup guid
 
 Changelogs are recorded to the docs in xref:ROOT:changelog.adoc[Changelog]. Viewable on the site at link:https://docs.devcentr.org/changelog.html[Changelog].
 
+=== Rules editor
+
+Open **Rules** from the home screen. The list on the right is the templates already on this computer. **Install more templates** opens the extensions store in the browser (https://devcentr.org/extensions?type=rules-template). Installing a template saves the link to the file, the same kind of pointer as `DOCS_TEMPLATE`. The field names are the Antora Supplemental extensions catalog names. See xref:specifications:extensions-catalog.adoc[Extensions catalog].
+
 === AI Local Docs
 
 If you use AI tools on this repo, do not trust model memory for D or library APIs when precision matters.

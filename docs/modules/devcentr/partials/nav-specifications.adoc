@@ -48,4 +48,5 @@
 *** xref:specifications:reference/definition-files.adoc[Definition Files (Services and Languages)]
 *** xref:specifications:reference/context7-submit.adoc[context7-submit]
 *** xref:specifications:templates-schema.adoc[Templates Repository Schema]
+*** xref:specifications:extensions-catalog.adoc[Extensions catalog]
 *** xref:specifications:prohelp.adoc[Prohelp CLI Specification]

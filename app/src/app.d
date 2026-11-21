@@ -36,6 +36,7 @@ import modules.cli_tools.model : CliToolsCatalog;
 import modules.control_plane.tasks_panel : TasksPanel;
 import modules.repo_tools.repo_terminal_widget : RepoTerminalWidget;
 import modules.services.ai_config_dialog : showAIConfigDialog;
+import modules.rules_editor.panel : RulesEditorPanel, ExtensionsStorePanel;
 import modules.services.context7_submit_dialog : showContext7SubmitDialog;
 import modules.appearance.settings_dialog : showAppearanceSettingsDialog;
 import modules.content_create.ui : showCreateContentMenu;
@@ -80,6 +81,8 @@ class DevCenterApp {
     JSONValue vcsProfiles;     /// Loaded from profiles.json5
     uint discoveryTimerId;    /// Background tool-discovery timer
     TasksPanel tasksPanel;
+    RulesEditorPanel rulesEditorPanel;
+    ExtensionsStorePanel extensionsStorePanel;
 
     StringListAdapter templateAdapter;
     StringListAdapter repoAdapter;
@@ -262,7 +265,7 @@ class DevCenterApp {
 
         auto showPage = delegate(int index, bool showSidebar) {
         logInfo("Switching to page index " ~ to!string(index));
-        string[] pageIds = ["pageHome", "pageTemplates", "pageProject", "pageDashboard", "pageWorkflowTemplates", "pageInfra", "pageInstall", "pageToolchainAdvisor", "pageWsl", "pageFlutter", "pageTasks"];
+        string[] pageIds = ["pageHome", "pageTemplates", "pageProject", "pageDashboard", "pageWorkflowTemplates", "pageInfra", "pageInstall", "pageToolchainAdvisor", "pageWsl", "pageFlutter", "pageTasks", "pageRules", "pageExtensions"];
         if (index >= 0 && index < pageIds.length) {
             contentStack.showChild(pageIds[index]);
         }
@@ -296,6 +299,12 @@ class DevCenterApp {
         if (index == 10) {
             mountTasksPanel();
         }
+        if (index == 11) {
+            mountRulesEditor();
+        }
+        if (index == 12) {
+            mountExtensionsStore();
+        }
     };
 
         auto bindClick = delegate(string id, bool delegate(Widget) handler) {
@@ -311,6 +320,9 @@ class DevCenterApp {
             return true;
         });
         bindClick("navHome", delegate(Widget w) { showPage(0, false); return true; });
+        bindClick("btnChoiceRules", delegate(Widget w) { showPage(11, true); return true; });
+        bindClick("navRules", delegate(Widget w) { showPage(11, true); return true; });
+        bindClick("navExtensions", delegate(Widget w) { showPage(12, true); return true; });
         bindClick("btnChoiceBrowse", delegate(Widget w) { showPage(1, true); return true; });
         bindClick("navTemplates", delegate(Widget w) { showPage(1, true); return true; });
         bindClick("btnChoiceTools", delegate(Widget w) { showPage(3, true); return true; });
@@ -795,6 +807,36 @@ class DevCenterApp {
         host.addChild(new WslManagerPanel(guide, delegate(string title, string message) {
             window.showMessageBox(UIString.fromRaw(to!dstring(title)), UIString.fromRaw(to!dstring(message)));
         }));
+    }
+
+    void mountRulesEditor()
+    {
+        auto host = window.mainWidget.childById!VerticalLayout("rulesEditorHost");
+        if (!host)
+            return;
+        if (rulesEditorPanel is null)
+        {
+            string catalogPath = buildPath(dataRootPath, "extensions", "catalog.json");
+            rulesEditorPanel = new RulesEditorPanel(catalogPath, codeRoot);
+            host.addChild(rulesEditorPanel);
+        }
+        else
+            rulesEditorPanel.reload();
+    }
+
+    void mountExtensionsStore()
+    {
+        auto host = window.mainWidget.childById!VerticalLayout("extensionsStoreHost");
+        if (!host)
+            return;
+        if (extensionsStorePanel is null)
+        {
+            string catalogPath = buildPath(dataRootPath, "extensions", "catalog.json");
+            extensionsStorePanel = new ExtensionsStorePanel(catalogPath);
+            host.addChild(extensionsStorePanel);
+        }
+        else
+            extensionsStorePanel.refresh();
     }
 
     void mountTasksPanel()

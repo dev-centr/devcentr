@@ -23,6 +23,8 @@ VerticalLayout {
             id: sidebar; layoutWidth: 200; layoutHeight: fill; padding: 5
             backgroundColor: "#1A1A1A"
             Button { id: navHome; text: "Home"; layoutWidth: fill }
+            Button { id: navRules; text: "Rules"; layoutWidth: fill }
+            Button { id: navExtensions; text: "Extensions"; layoutWidth: fill }
             Button { id: navDashboard; text: "Tool Status"; layoutWidth: fill }
             Button { id: navTemplates; text: "Browse Projects"; layoutWidth: fill }
             Button { id: navProject; text: "Project Analysis"; layoutWidth: fill }
@@ -116,6 +118,12 @@ VerticalLayout {
                         VSpacer { layoutHeight: fill }
                         Button { id: btnChoiceFlutter; text: "Manage Flutter"; layoutWidth: fill }
                     }
+                }
+
+                VerticalLayout {
+                    layoutWidth: fill; alignment: center; margins: 10
+                    TextWidget { text: "Rules templates are links to files in a repository. The editor lists what is already on this computer."; fontSize: 10pt; textColor: "#AAAAAA"; alignment: center }
+                    Button { id: btnChoiceRules; text: "Open the rules editor"; layoutWidth: 280 }
                 }
                 }
             }
@@ -264,6 +272,16 @@ VerticalLayout {
                 id: pageTasks; layoutWidth: fill; layoutHeight: fill; padding: 10
                 TextWidget { text: "Task list"; fontSize: 18pt; margins: 5 }
                 VerticalLayout { id: tasksHost; layoutWidth: fill; layoutHeight: fill }
+            }
+
+            VerticalLayout {
+                id: pageRules; layoutWidth: fill; layoutHeight: fill
+                VerticalLayout { id: rulesEditorHost; layoutWidth: fill; layoutHeight: fill }
+            }
+
+            VerticalLayout {
+                id: pageExtensions; layoutWidth: fill; layoutHeight: fill
+                VerticalLayout { id: extensionsStoreHost; layoutWidth: fill; layoutHeight: fill }
             }
         }
     }

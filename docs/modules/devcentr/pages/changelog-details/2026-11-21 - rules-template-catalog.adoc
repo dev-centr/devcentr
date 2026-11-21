@@ -1,0 +1,18 @@
+= 2026-11-21
+
+:hide-page:
+:navtree-parent: changelog.adoc
+:page-audience: maintainers
+:page-usage-context: Changelog detail
+:page-orig-author: Cursor grok-4.7 on behalf of Ryan Johnson
+:page-last-author: Cursor grok-4.7 on behalf of Ryan Johnson
+
+== Rules template catalog
+
+The rules editor is a page in the desktop app. The right-hand list reads `%USERPROFILE%\.dev-center\extensions\catalog.json`. The first run writes the default docs template as a pointer to `templates/docs-default.md` in `dev-centr/agent-rules`.
+
+**Install more templates** opens https://devcentr.org/extensions?type=rules-template . The **Extensions** page in the app searches the same published catalog and, when you install, appends that pointer. The template body is not copied into the catalog.
+
+Field names match the Antora Supplemental extensions catalog (`id`, `name`, `description`, `repository`, `version`, `tags`, `type`, `install`). Rules templates use `type` `rules-template` and `install.pointer`. Spec: xref:specifications:extensions-catalog.adoc[Extensions catalog].
+
+Contact:: DevCentr.org — support@devcentr.org

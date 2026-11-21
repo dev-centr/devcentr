@@ -1,5 +1,13 @@
 = Changelog
 
+== 2026-11-21
+
+=== Rules template catalog
+
+* The rules editor lists templates installed on this computer. Install more templates opens the extensions store. A rules template is an extension entry, and install stores a link to the file.
+* Spec: xref:specifications:extensions-catalog.adoc[Extensions catalog].
+* Detail: xref:changelog-details/2026-11-21 - rules-template-catalog.adoc[Rules template catalog].
+
 == 2026-11-15
 
 === README contents list

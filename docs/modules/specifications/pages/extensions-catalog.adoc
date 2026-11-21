@@ -1,0 +1,93 @@
+= Extensions catalog
+:description: Rules templates are one kind of entry in the DevCentr extensions catalog. Field names match the Antora Supplemental extensions catalog.
+:page-audience: Developers
+:page-usage-context: Catalog schema for the rules editor and the extensions store
+:page-orig-author: Cursor grok-4.7 on behalf of Ryan Johnson
+:page-last-author: Cursor grok-4.7 on behalf of Ryan Johnson
+
+ifndef::page-context-active[]
+[.page-context.page-context-lead]
+****
+Audience role:: {page-audience}
+Original author:: {page-orig-author}
+Latest contributor:: {page-last-author}
+****
+endif::[]
+
+DevCentr keeps one extensions catalog. A rules template is an entry in that catalog, the same way an Antora UI module is an entry in the Antora Supplemental extensions registry. There is no second store and no second set of names for the same ideas.
+
+The published list is `catalog/extensions.json` in this repository. The desktop app copies an entry into `%USERPROFILE%\.dev-center\extensions\catalog.json` when you install it. That file holds the link, not the text of the template.
+
+Contact:: DevCentr.org — support@devcentr.org
+
+== Where the fields come from
+
+The Antora Supplemental registry (`antora-extensions-registry`, type `ExtensionCatalogEntry`) already names an extension like this. DevCentr uses those names. Rules templates set `type` to `rules-template` and put the DOCS_TEMPLATE-style link on `install.pointer`. Antora UI modules use `install.orchestrator` for a different install step. Both sit on `install`.
+
+[cols="1,2,2"]
+|===
+| Idea | DevCentr field | Antora Supplemental field
+
+| Id
+| `id`
+| `id`
+
+| Stable catalog id
+| `catalogId` (`owner/repo/id`)
+| `catalogId` (`repoSlug/moduleId`)
+
+| Name
+| `name`
+| `name`
+
+| Description
+| `description`
+| `description`
+
+| Source repository
+| `repository`
+| `repository`
+
+| Version
+| `version`
+| `version`
+
+| Tags
+| `tags`
+| `tags`
+
+| Kind
+| `type` (`rules-template`, and later other kinds)
+| `type` (`ui-module`, `ui-recipe`, `ui-bundle`, `antora-extension`)
+
+| Install pointer
+| `install.pointer` (https URL or a path in the repo)
+| `install` (UI modules set `install.orchestrator`)
+
+| Path of the file inside the repo
+| `manifestPath`
+| `manifestPath`
+|===
+
+`repositoryOwner` and `repositoryName` are the same split the Antora catalog uses so a local clone can be found under `github.com/<owner>/<name>/<manifestPath>`.
+
+== What install stores
+
+Install appends the entry. The pointer is the whole install. Example for the default docs template:
+
+[source,json]
+----
+"install": {
+  "pointer": "https://github.com/dev-centr/agent-rules/blob/main/templates/docs-default.md"
+}
+----
+
+That URL is the same one orgs record as `DOCS_TEMPLATE`. The catalog JSON does not contain the template body. Hand-copy of a rules file still works. The **Install more templates** button opens the store, which records the pointer instead.
+
+== Rules editor
+
+The desktop rules editor is the **Rules** page. The list on the right is the local catalog. **Install more templates** opens the online store at https://devcentr.org/extensions?type=rules-template[the extensions store]. The **Extensions** page in the app is the same catalog for search and install when you are already in the window. Install there writes the pointer into the local catalog file.
+
+The viewer shows the file when the clone is in the code hive. Otherwise it shows the link. DevCentr does not render AsciiDoc for this page.
+
+The same panel and store are on the organization site: `/rules` and `/extensions`.

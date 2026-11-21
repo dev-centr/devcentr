@@ -1,0 +1,22 @@
+{
+  "schema": "devcentr.extensions/1",
+  "borrowedFrom": "antora-supplemental/antora-extensions-registry ExtensionCatalogEntry",
+  "entries": [
+    {
+      "catalogId": "dev-centr/agent-rules/docs-default",
+      "id": "docs-default",
+      "name": "Default documentation template",
+      "description": "Suggested default for an org's documentation preferences. An org records a pointer to this file as DOCS_TEMPLATE. Installing it stores that link, not a pasted copy of the rules.",
+      "repository": "https://github.com/dev-centr/agent-rules",
+      "repositoryOwner": "dev-centr",
+      "repositoryName": "agent-rules",
+      "manifestPath": "templates/docs-default.md",
+      "version": "1",
+      "type": "rules-template",
+      "tags": ["docs", "agent-rules", "default"],
+      "install": {
+        "pointer": "https://github.com/dev-centr/agent-rules/blob/main/templates/docs-default.md"
+      }
+    }
+  ]
+}

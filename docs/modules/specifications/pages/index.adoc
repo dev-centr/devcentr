@@ -30,6 +30,7 @@ This section contains technical specifications for Dev Center components and fea
 * xref:reference/context7-submit.adoc[context7-submit] - Library call, `ctx7-submit` flags, exit codes, and environment variables
 * xref:reference/definition-files.adoc[Definition Files (Services and Languages)] - SDL and JSON5 catalogs that drive discovery, install offers, and documentation links
 * xref:templates-schema.adoc[Templates Repository Schema]
+* xref:extensions-catalog.adoc[Extensions catalog] - Rules templates use the Antora Supplemental extension entry fields
 * xref:prohelp.adoc[Prohelp CLI Specification] - Hierarchical command-line progressive help system interceptor
 
 == Features
