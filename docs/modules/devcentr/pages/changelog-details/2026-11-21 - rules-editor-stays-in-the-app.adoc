@@ -1,0 +1,16 @@
+= 2026-11-21
+
+:hide-page:
+:navtree-parent: changelog.adoc
+:page-audience: maintainers
+:page-usage-context: Changelog detail
+:page-orig-author: name=Ryan Johnson; harness=Cursor; model=grok-4.7
+:page-last-author: name=Ryan Johnson; harness=Cursor; model=grok-4.7
+
+== Rules editor stays in the app
+
+The Rules page is the product rules editor. The sidebar entry, the home button Open the rules editor, and the right-hand list Templates on this computer all open that page. Install more templates opens the extensions store at https://devcentr.org/extensions?type=rules-template . Install writes a pointer into `%USERPROFILE%\.dev-center\extensions\catalog.json`. The template body stays in its repository.
+
+The organization site keeps that store and the rules-template filter. It does not host a second editor. Spec: xref:specifications:extensions-catalog.adoc[Extensions catalog].
+
+Contact:: DevCentr.org — support@devcentr.org

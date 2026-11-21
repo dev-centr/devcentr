@@ -2,6 +2,11 @@
 
 == 2026-11-21
 
+=== Rules editor stays in the app
+
+* The organization site keeps the extensions store. It does not host a second rules editor. The Rules page in this app is the editor. Install more templates still opens https://devcentr.org/extensions?type=rules-template .
+* Detail: xref:changelog-details/2026-11-21 - rules-editor-stays-in-the-app.adoc[Rules editor stays in the app].
+
 === Rules template catalog
 
 * The rules editor lists templates installed on this computer. Install more templates opens the extensions store. A rules template is an extension entry, and install stores a link to the file.

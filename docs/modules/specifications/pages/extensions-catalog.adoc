@@ -3,7 +3,7 @@
 :page-audience: Developers
 :page-usage-context: Catalog schema for the rules editor and the extensions store
 :page-orig-author: Cursor grok-4.7 on behalf of Ryan Johnson
-:page-last-author: Cursor grok-4.7 on behalf of Ryan Johnson
+:page-last-author: name=Ryan Johnson; harness=Cursor; model=grok-4.7
 
 ifndef::page-context-active[]
 [.page-context.page-context-lead]
@@ -90,4 +90,4 @@ The desktop rules editor is the **Rules** page. The list on the right is the loc
 
 The viewer shows the file when the clone is in the code hive. Otherwise it shows the link. DevCentr does not render AsciiDoc for this page.
 
-The same panel and store are on the organization site: `/rules` and `/extensions`.
+The organization site keeps the extensions store at `/extensions`, including `?type=rules-template`. It does not host this editor. `/demos/rules-templates` on that site is a picture of this panel.
